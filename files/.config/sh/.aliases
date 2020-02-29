@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+# enable color support
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+	alias cgrep='grep --color=always'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Exa aliases (replacement for ls, if you are using ls, comment or change this
+alias ls='exa'
+alias ll='exa -glah'
+alias ld='exa -glahD'
+alias lt='exa -Tlagh'
+alias tree='exa -T'
+
+# Shortcuts
+alias vi='vim'
+alias rr='rm -r'
+alias mnt='mount'
+
+# Changing directories
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias .2='cd ../../'
+alias .3='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+
+# Reconfigure default py to py3
+alias py3='python3'
+alias py='python3'
+alias py2='python2'
+
+# Config access shortcuts
+alias cfvim='vim ~/.vimrc'
+alias cfzsh='vim ~/config/zsh/.zsh_config'
+alias cfzshrc='vim ~/.zshrc'
+
+# Replacements
+alias dd='dcfldd' # Use dcfldd instead of dd (shows progress)
+alias du='du -ach | sort -h' # Sort du by size
+alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
+alias ps='ps auxf' # Print all processes
+alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
+
+
+
+# Custom aliases
+alias fhere='find . -name' # Find file/dir from currrent dir
+alias ssh-list='ss | grep ssh' # List all SSH connections
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias psg='\ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
+alias ip-show="dig +short myip.opendns.com @resolver1.opendns.com" # Gets your IP address
+alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
+alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
+alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
+alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
+alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
+alias clean='rm -rf ~/.local/share/Trash/* && rm -rf ~/Downloads/*' # Remove trash and downloads files
+alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
+alias minecraft='minecraft-launcher'
+alias o='dolphin .' # open in dolphin (file manager)
+alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
+alias mount-table='df' # Show list of all mounted devices and their mount locations
+alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
+alias sound_control='alsamixer' # Sound control tool in alsa_utils package
+
+
+# If user is not root, pass all commands via sudo
+if [ $UID -ne 0 ]; then
+	# Enable aliases to be sudo’ed
+
+	## Uncomment if you are using autocompletion (is ZSH)
+	#alias sudo='nocorrect sudo'
+	## Comment this if you are not using autocompletion (in ZSH)
+	alias sudo='sudo '
+
+	alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
+fi
+
+
+
+# Functions
+if [ -f ~/.config/sh/.functions ]; then
+	source ~/.config/sh/.functions
+fi

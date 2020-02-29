@@ -1,0 +1,17 @@
+# This is Git's per-user configuration file.
+[user]
+	name = koumakpet
+	email = koumakpet@protonmail.com
+[credential]
+	helper = store
+[alias]
+	l = log --oneline --decorate --all --graph
+	lol = log --pretty=oneline --abbrev-commit --graph
+	lg = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+[merge]
+	tool = meld
+[mergetool]
+	keepbackup = false
+	keeptemporaries = false
+[diff]
+	tool = meld

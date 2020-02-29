@@ -1,0 +1,135 @@
+" TODO: Spell Checking
+
+set nocompatible				" Disable vi compatibilty (Use vi improved only)
+set encoding=utf-8				" Use UTF-8
+syntax enable					" Turn on syntax highlighting
+set showmatch					" Show matching brackets
+set ignorecase					" Do case insensitive matching
+set incsearch					" Show partial matches for a search phrase
+set number						" Show numbers
+set relativenumber				" Show relative numbersi
+set undolevels=999				" Lots of these
+set hlsearch					" Highlight Search
+set tabstop=4					" Tab size
+set noexpandtab					" Do not expand tab into spaces (change to expandtab to use spaces)
+set shiftwidth=4				" Indentation size
+set softtabstop=4				" Tabs/Spaces interrop
+set autoindent					" Enable autoindent
+set ruler						" Show cursor position
+set cursorline					" Highlight cursor line
+set mouse=a						" Enable mouse mode
+set termguicolors				" Enable true colors
+set backspace=indent,eol,start	" Delete everything
+set laststatus=2				" Always show status line
+set wildmode=longest,list,full	" Enable autocompletion
+set splitbelow splitright		" Split in more natural way
+
+
+"set nomodeline     " Disable as a security precaution
+"set wildmenu       " Enable wildmenu
+"set conceallevel=0 " Disable concealing
+"set complete-=i    " Better completion
+"set smarttab       " Better tabs
+"set ttimeout       " Set timeout
+"set ttimeoutlen=100
+"set synmaxcol=500  " Syntax limit
+"set scrolloff=3    " Scroll offset
+"set sidescrolloff=5
+"set autoread       " Reload files on change
+"set tabpagemax=50  " More tabs
+"set history=1000   " More history
+"set viminfo^=!     " Better viminfo
+"set formatoptions+=j " Delete comment character when joining commented lines
+
+"set listchars=tab:,nbsp:_,trail:,extends:>,precedes:<
+"set list           " Highlight non whitespace characters
+"set nrformats-=octal " 007 != 010
+"set sessionoptions-=options
+"set viewoptions-=option
+"set listchars=tab:\|\ " Set tab lines
+"set listchars=tab:\|\- " Set tab lines with -
+
+" Always use terminal background
+autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE
+
+" Have Vim jump to the last position when reopening a file
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\""
+endif
+
+" Shortcutting split navigation, saving a keystroke
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Check file in shellcheck
+map <leader>s :!clear && shellcheck %<CR>
+
+" Copy selected text to system clipboard (requires gvim)
+vnoremap <C-c> "*Y :let @+=@*<CR>
+map <C-p> "+P
+
+" Automatically deletes all trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
+
+" Vundle Init
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Plugins
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'airblade/vim-gitgutter' 		" Shows Git diff
+Plugin 'joshdick/onedark.vim' 			" OneDark Theme
+Plugin 'tpope/vim-fugitive' 			" Git Wrapper (also shows branch on statusline)
+Plugin 'vim-airline/vim-airline' 		" AirLine statusline
+Plugin 'vim-airline/vim-airline-themes' " AirLine statusline themes
+Plugin 'scrooloose/nerdtree' 			" Adds File-tree
+Plugin 'Xuyuanp/nerdtree-git-plugin'	" Shows git status in nerd-tree
+Plugin 'vim-syntastic/syntastic'		" Syntax checking
+Plugin 'PotatoesMaster/i3-vim-syntax'	" Add syntax for i3 config
+Plugin 'jmcantrell/vim-virtualenv'		" Manage Virtual Enviroment
+Plugin 'wakatime/vim-wakatime'			" Install WakaTime (Shows coding time)
+Plugin 'gko/vim-coloresque'				" Show color highlight in css/html/less/sass
+
+" Vundle End
+call vundle#end()
+filetype plugin indent on
+
+" NERD Tree
+autocmd StdinReadPre * let s:std_in=1
+" Show tree when opening directory
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" Use Ctrl+n to open tree
+map <C-n> :NERDTreeToggle<CR>
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['flake8']
+
+map <leader>c :SyntasticCheck<CR>
+map <leader>z :Errors<CR>
+
+" Airline
+let g:airline_theme='onedark'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_left_sep = "\uE0B0"
+let g:airline_right_sep = "\uE0B2"
+
+" One Dark
+let g:onedark_color_overrides = {
+\ "comment_grey": {"gui": "#69747C","cterm": "245", "cterm16": "8"},
+\ "gutter_fg_grey": { "gui": "#69747C", "cterm": "245", "cterm16": "8"}
+\}
+if !exists('$TMUX')
+    let g:onedark_terminal_italics = 1
+endif
+colorscheme onedark
