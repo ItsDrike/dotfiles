@@ -3,7 +3,7 @@
 # Set some basic colors using tput (8-bit color: 256 colors)
 bold="$(tput bold)"
 red="$(tput setaf 196)"
-blue="$(tput setaf 27)"
+blue="$(tput setaf 51)"
 yellow="$(tput setaf 226)"
 gold="$(tput setaf 214)"
 grey="$(tput setaf 238)"
