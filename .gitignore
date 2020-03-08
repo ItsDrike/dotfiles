@@ -4,3 +4,10 @@ files/.wakatime.cfg
 backup/
 # Don't include file backups
 *.bak
+# todo list
+*.todo
+# VSCode settings
+.vscode/
+# Python Cache
+__pycache__/
+.pytest_cache/

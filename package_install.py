@@ -1,0 +1,37 @@
+#!/bin/python3
+from lib import Print, Install
+
+
+Install.upgrade_pacman()
+
+Print.action('Package Installation')
+
+Install.package('networkmanager')
+Install.package(
+    'git', 'default + (Required for some installations, otherwise they\'ll be skipped)')
+Install.package('zsh', 'default + shell')
+Install.package('sudo')
+
+# Desktop Enviroment
+Install.multiple_packages(['plasma', 'plasma-desktop', 'gnome'], 'Do you wish to install DE (Desktop Enviroment)?', [
+    'Plasma (KDE)', 'Plasma-Desktop (KDE-Minimal dependencies)', 'Gnome'])
+# Display Manager
+Install.multiple_packages(['sddm', 'gdm', 'lightdm'], 'Do you wish to install DM (Display Manager)?', [
+    'SDDM (KDE)', 'GDM (Gnome)', 'LightDM'])
+
+# TODO: YAY install
+Install.package('exa', 'default + (Better ls tool)')
+Install.package('terminator', 'default + (advanced terminal)')
+Install.package('konsole', 'default + (KDE terminal emulator)')
+Install.package('dolphin', 'default + (File Manager)')
+Install.package('discord', 'default + (Chat App)')
+# TODO: Spotify (YAY)
+Install.package(
+    'spectacle', 'default + (Screenshot tool)')
+# TODO: Qualculate (YAY)
+Install.package('gnome-system-monitor',
+                'Do you wish to install gnome system monitor?')
+Install.package(
+    'code', 'Do you wish to install Visual Studio Code (Text/Code Editor)?')
+
+Print.action('Package Installation Complete')
