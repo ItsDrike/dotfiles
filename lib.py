@@ -242,7 +242,7 @@ class Install:
             Print.cancel(f'{package_name} already installed')
             return False
 
-    def multiple_packages(packages, install_text, options, reinstall=False):
+    def multiple_packages(packages, install_text, options=False, reinstall=False):
         '''Installation of multiple packages
 
         Arguments:
@@ -254,6 +254,8 @@ class Install:
             bool/str -- False if none / chosen package name
         '''
         if Install.check_not_installed(packages) or reinstall:
+            if not options:
+                options = packages
             choice = Input.multiple(f'{install_text}', options)
             if choice:
                 for index, option in enumerate(options):
@@ -270,8 +272,7 @@ class Install:
             return False
 
     def upgrade_pacman():
-        # if Input.yes_no('Do you wish to Sync(S), refresh(y) and upgrade(u) pacman - Recommended?'):
-        #     Command.execute('sudo pacman -Syu')
-        # else:
-        #     Print.warning('Pacman upgrade cancelled.')
-        pass
+        if Input.yes_no('Do you wish to Sync(S), refresh(y) and upgrade(u) pacman - Recommended?'):
+            Command.execute('sudo pacman -Syu')
+        else:
+            Print.warning('Pacman upgrade cancelled.')

@@ -23,7 +23,11 @@ Install.multiple_packages(['sddm', 'gdm', 'lightdm'], 'Do you wish to install DM
 Install.package('exa', 'default + (Better ls tool)')
 Install.package('terminator', 'default + (advanced terminal)')
 Install.package('konsole', 'default + (KDE terminal emulator)')
+Install.package(
+    'ark', 'default + (Managing various archive formats such as tar, gzip, zip, rar, etc.)')
+Install.package('cron', '(Task scheduling)')
 Install.package('dolphin', 'default + (File Manager)')
+Install.package('nomacs', 'default + (Photo viewer & editor)')
 Install.package('discord', 'default + (Chat App)')
 # TODO: Spotify (YAY)
 Install.package(
@@ -33,5 +37,8 @@ Install.package('gnome-system-monitor',
                 'Do you wish to install gnome system monitor?')
 Install.package(
     'code', 'Do you wish to install Visual Studio Code (Text/Code Editor)?')
+Install.package('filelight', 'default + (Disk usage statistics and graphs)')
+Install.multiple_packages(['firefox', 'chromium'],
+                          'Do you wish to install web browser?')
 
 Print.action('Package Installation Complete')
