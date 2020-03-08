@@ -43,9 +43,11 @@ alias py2='python2'
 alias cfvim='vim ~/.vimrc'
 alias cfzsh='vim ~/config/zsh/.zsh_config'
 alias cfzshrc='vim ~/.zshrc'
+alias cfalias='vim ~/.config/sh/.aliases'
+alias cffunction='vim ~/.config/sh/.functions'
 
 # Replacements
-alias dd='dcfldd' # Use dcfldd instead of dd (shows progress)
+alias dd='dcfldd' # Use dcfldd instead of dd (shows progress) (pacman -S dcfldd)
 alias du='du -ach | sort -h' # Sort du by size
 alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
 alias ps='ps auxf' # Print all processes
@@ -66,13 +68,13 @@ alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
 alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
 alias clean='rm -rf ~/.local/share/Trash/* && rm -rf ~/Downloads/*' # Remove trash and downloads files
 alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
-alias minecraft='minecraft-launcher'
 alias o='dolphin .' # open in dolphin (file manager)
 alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
 alias mount-table='df' # Show list of all mounted devices and their mount locations
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias sound_control='alsamixer' # Sound control tool in alsa_utils package
-
+alias pacman-delete-orphans='pacman -Rns $(pacman -Qtdq)' # Remove orphaned packages (oackages which are no longer required)
+alias open-ports='lsof -i'
 
 # If user is not root, pass all commands via sudo
 if [ $UID -ne 0 ]; then
@@ -80,7 +82,7 @@ if [ $UID -ne 0 ]; then
 
 	## Uncomment if you are using autocompletion (is ZSH)
 	#alias sudo='nocorrect sudo'
-	## Comment this if you are not using autocompletion (in ZSH)
+	## Comment this if you are using autocompletion (in ZSH)
 	alias sudo='sudo '
 
 	alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
