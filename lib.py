@@ -2,6 +2,7 @@
 import subprocess
 import os
 import shutil
+from pathlib import Path
 
 
 class Command:
@@ -149,7 +150,7 @@ class Input:
         Print.question(question)
         while True:
             ans = input('   Y/N: ')
-            if ans.lower() == 'y':
+            if ans.lower() == 'y' or ans == '':
                 return True
             elif ans.lower() == 'n':
                 return False
@@ -263,9 +264,9 @@ class Install:
             if Input.yes_no(install_text):
                 url = f'https://aur.archlinux.org/{repository}.git'
                 Command.execute(f'git clone {url}')
-                Command.execute(f'cd {repository}', use_os=True)
+                os.chdir(repository)
                 Command.execute('makepkg -si')
-                Command.execute('cd ..', use_os=True)
+                os.chdir(Path(__file__).parent.absolute())
                 shutil.rmtree(repository)
                 return True
             else:
