@@ -1,19 +1,28 @@
 #!/bin/python3
 import subprocess
+import os
+import shutil
 
 
 class Command:
-    def execute(command):
+    def execute(command, use_os=False):
         '''Execute bash command
 
         Arguments:
             command {str} -- full command
 
+        Keyword Arguments:
+            os {bool} -- should the os module be used instead of subprocess (default: {False})
+
         Returns:
-            int -- returncode
+            int/bool -- returncode/True if os is used
         '''
-        command = command.split(' ')
-        return subprocess.call(command)
+        if not use_os:
+            command = command.split(' ')
+            return subprocess.call(command)
+        else:
+            os.system(command)
+            return True
 
     def get_output(command):
         '''Get standard output of command
@@ -189,6 +198,18 @@ class Input:
 
 
 class Install:
+
+    def _generate_install_text(install_text, package_name, yay=False, git=False):
+        if install_text == 'default':
+            install_text = f'Do you wish to install {package_name}?'
+        if install_text[:10] == 'default + ':
+            install_text = f'Do you wish to install {package_name}? {install_text[10:]}'
+        if yay:
+            install_text += '[AUR (YAY) Package]'
+        if git:
+            install_text += '[AUR (GIT) Package]'
+        return install_text
+
     def check_not_installed(package_name):
         '''Check if specified package is currently not installed
 
@@ -217,23 +238,69 @@ class Install:
             raise TypeError(
                 'check_not_installed() only takes string or list inputs')
 
-    def package(package_name, install_text='default', reinstall=False):
-        '''Installation of package
+    def git_aur(repository, install_text='default', force=False):
+        '''Install package directly from AUR using only git and makepkg
 
         Arguments:
-            package_name {str} -- name of package to be installed
-            install_text {str} -- text presented to user before installing
+            repository {string} -- repository name
+
+        Keyword Arguments:
+            install_text {str} -- text presented to the user before installing (default: {'default' -> 'Do you wish to install [repository]'})
+            force {bool} -- should the repository be installed even if detected as installed (default: {False})
 
         Returns:
             bool -- installed
         '''
-        if Install.check_not_installed(package_name) or reinstall:
-            if install_text == 'default':
-                install_text = f'Do you wish to install {package_name}?'
-            if install_text[:10] == 'default + ':
-                install_text = f'Do you wish to install {package_name}? {install_text[10:]}'
+
+        if Install.check_not_installed('git'):
+            Print.warning(
+                f'Unable to install github repository: {repository}, git is not installed')
+            return False
+
+        if Install.check_not_installed(repository) or force:
+            install_text = Install._generate_install_text(
+                install_text, repository, git=True)
             if Input.yes_no(install_text):
-                Command.execute(f'sudo pacman -S {package_name}')
+                url = f'https://aur.archlinux.org/{repository}.git'
+                Command.execute(f'git clone {url}')
+                Command.execute(f'cd {repository}', use_os=True)
+                Command.execute('makepkg -si')
+                Command.execute('cd ..', use_os=True)
+                shutil.rmtree(repository)
+                return True
+            else:
+                Print.cancel('Skipping...')
+        else:
+            Print.cancel(
+                f'assuming {repository} already installed ({repository} is installed)')
+
+    def package(package_name, install_text='default', use_yay=False, reinstall=False):
+        '''Installation of package
+
+        Arguments:
+            package_name {str} -- name of package to be installed
+
+        Keyword Arguments:
+            install_text {str} -- text presented to user before installing (default: {'default' -> 'Do you wish to install [package_name]'})
+            use_yay {bool} -- use yay for package installation (default: {False})
+            reinstall {bool} -- should the package be reinstalled (default {False})
+
+        Returns:
+            bool -- installed
+        '''
+        if use_yay:
+            if Install.check_not_installed('yay'):
+                Print.warning(
+                    f'Unable to install AUR package: {package_name}, yay is not installed')
+                return False
+        if Install.check_not_installed(package_name) or reinstall:
+            install_text = Install._generate_install_text(
+                install_text, package_name, yay=use_yay)
+            if Input.yes_no(install_text):
+                if use_yay:
+                    Command.execute(f'yay -S {package_name}')
+                else:
+                    Command.execute(f'sudo pacman -S {package_name}')
                 return True
             else:
                 Print.cancel('Skipping...')
