@@ -208,36 +208,50 @@ class Install:
         if yay:
             install_text += '[AUR (YAY) Package]'
         if git:
-            install_text += '[AUR (GIT) Package]'
+            install_text += '[AUR (GIT+MAKEPKG) Package]'
         return install_text
 
-    def check_not_installed(package_name):
-        '''Check if specified package is currently not installed
+    def check_installed(package_name):
+        '''Check if specified package is currently installed
 
         Arguments:
-            package_name {str/list} -- name of package/es to check
+            package_name {str} -- name of package/es to check
 
         Returns:
-            bool -- is/are package/all packages not installed?
+            bool -- is/are package/ss not installed?
         '''
+        if type(package_name) == list:
+            package_name = ' '.join(package_name)
         if type(package_name) == str:
             out = Command.get_return_code(f'pacman -Qi {package_name}')
-            if out == 1:
-                # NOT INSTALLED
-                return True
-            else:
+            if out != 1:
                 # INSTALLED
-                return False
-        elif type(package_name) == list:
-            for package in package_name:
-                if not Install.check_not_installed(package):
-                    break
-            else:
                 return True
-            return False
+            else:
+                # NOT INSTALLED
+                return False
         else:
             raise TypeError(
-                'check_not_installed() only takes string or list inputs')
+                'check_installed() only takes string or list parameters')
+
+    def check_not_installed(package_name):
+        if type(package_name) == str:
+            package_name = package_name.split(' ')
+        elif type(package_name) != list:
+            Print.err(
+                'Function Install.check_not_installed() only accepts string or list parameters')
+            raise TypeError(
+                'check_not_installed() only takes string or list parameters')
+        if package_name == ['base-devel']:
+            # Check dependenceis for base-devel (group packages are not detected directly)
+            return Install.check_not_installed(
+                'guile libmpc autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make pacman patch pkgconf sed sudo texinfo which')
+        for package in package_name:
+            if Install.check_installed(package):
+                return False
+                break
+        else:
+            return True
 
     def git_aur(repository, install_text='default', force=False):
         '''Install package directly from AUR using only git and makepkg
@@ -255,7 +269,13 @@ class Install:
 
         if Install.check_not_installed('git'):
             Print.warning(
-                f'Unable to install github repository: {repository}, git is not installed')
+                f'Unable to install AUR repository: {repository}, git is not installed')
+            return False
+
+        # Base-devel group includes (requered for makepkg)
+        if Install.check_not_installed('base-devel'):
+            Print.warning(
+                f'Unable to install AUR repository: {repository}, base-devel is not installed')
             return False
 
         if Install.check_not_installed(repository) or force:

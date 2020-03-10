@@ -19,6 +19,7 @@ Install.multiple_packages(['plasma', 'plasma-desktop', 'gnome'], 'Do you wish to
 Install.multiple_packages(['sddm', 'gdm', 'lightdm'], 'Do you wish to install DM (Display Manager)?', [
     'SDDM (KDE)', 'GDM (Gnome)', 'LightDM'])
 
+Install.package('base-devel', 'default + (Required for makepkg installs)')
 Install.git_aur(
     'yay', 'default + (Required for some installations, otherwise they\'ll be skipped)')
 Install.package('exa', 'default + (Better ls tool)')
