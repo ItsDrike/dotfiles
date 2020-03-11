@@ -184,13 +184,10 @@ class Input:
 
         Print.question(question)
 
-        options_str = '0: No/Cancel / '
+        Print.question_options('0: No/Cancel')
         for index, option in enumerate(options):
-            options_str += f'{index + 1}: {option} / '
-        # Remove ending ' / '
-        options_str = options_str[:-3]
+            Print.question_options(f'{index + 1}: {option}')
 
-        Print.question_options(options_str)
         answer = get_input_range(len(options))
         if answer != 0:
             return options[answer - 1]
