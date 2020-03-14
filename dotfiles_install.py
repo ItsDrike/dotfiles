@@ -1,4 +1,5 @@
 from lib import Input, Print, Install, Path
+import os
 
 
 def make_backup(backup_floder):
@@ -33,7 +34,7 @@ def personalized_changes(file):
 
 def init(symlink):
     # Get path to files/ floder (contains all dotfiles)
-    files_dir = Path.join_paths(
+    files_dir = os.path.join(
         Path.get_parent(__file__), 'files')
     # Create optional backup
     make_backup(files_dir)
@@ -42,7 +43,7 @@ def init(symlink):
         # Make personalized changes to files
         personalized_changes(file)
         # Set symlink position ($HOME/filepath)
-        position = Path.join_paths(
+        position = os.path.join(
             Path.get_home(), file.replace(f'{files_dir}/', ''))
 
         if symlink:
