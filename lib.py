@@ -2,7 +2,7 @@
 import subprocess
 import os
 import shutil
-from pathlib import Path
+import pathlib
 
 
 class Command:
@@ -128,6 +128,14 @@ class Print:
         '''
         print(f'{Color.GREY} >> {text}{Color.RESET}')
 
+    def comment(text):
+        '''Print syntax for comments
+
+        Arguments:
+            text {str} -- text to print
+        '''
+        print(f'{Color.GREY} // {text}{Color.RESET}')
+
     def warning(text):
         '''Print syntax for warnings
 
@@ -250,24 +258,6 @@ class Install:
         else:
             return True
 
-    def check_dir_exists(paths):
-        '''Check for directory/ies existence
-
-        Arguments:
-            paths {str} -- single path or multiple paths separated by spaces (absolute paths)
-
-        Returns:
-            bool -- One of dirs exists/Single dir exists
-        '''
-        paths = paths.split(' ')
-        for dir_path in paths:
-            dir_path = os.path.expanduser(dir_path)
-            if os.path.isdir(dir_path):
-                return True
-                break
-        else:
-            return False
-
     def git_aur(repository, install_text='default', force=False):
         '''Install package directly from AUR using only git and makepkg
 
@@ -299,10 +289,10 @@ class Install:
             if Input.yes_no(install_text):
                 url = f'https://aur.archlinux.org/{repository}.git'
                 Command.execute(f'git clone {url}')
-                os.chdir(repository)
+                Path.change_to_dir(repository)
                 Command.execute('makepkg -si')
-                os.chdir(Path(__file__).parent.absolute())
-                shutil.rmtree(repository)
+                Path.change_to_dir(Path.get_parent(__file__))
+                Path.remove_dir_full(repository)
                 return True
             else:
                 Print.cancel('Skipping...')
@@ -379,3 +369,70 @@ class Install:
             Command.execute('sudo pacman -Syu')
         else:
             Print.warning('Pacman upgrade cancelled.')
+
+
+class Path:
+    def check_dir_exists(paths):
+        '''Check for directory/ies existence
+
+        Arguments:
+            paths {str} -- single path or multiple paths separated by spaces (absolute paths)
+
+        Returns:
+            bool -- One of dirs exists/Single dir exists
+        '''
+        paths = paths.split(' ')
+        for dir_path in paths:
+            dir_path = os.path.expanduser(dir_path)
+            if os.path.isdir(dir_path):
+                return True
+                break
+        else:
+            return False
+
+    def get_parent(file_path):
+        '''Get Parent directory of specified file
+
+        Arguments:
+            file {str} -- path to file
+
+        Returns:
+            str -- directory to file
+        '''
+        return pathlib.Path(file_path).parent.absolute()
+
+    def change_to_dir(dir_path):
+        os.chdir(dir_path)
+
+    def remove_dir_full(dir_path):
+        shutil.rmtree(dir_path)
+
+    def join_paths(*args):
+        args = list(args)
+        p_init = args[0]
+        args.remove(p_init)
+        for p_join in args:
+            p_init = os.path.join(p_init, p_join)
+        return p_init
+
+    def get_all_files(dir_path):
+        files_found = []
+        for subdir, dirs, files in os.walk(dir_path):
+            for file in files:
+                files_found.append(os.path.join(subdir, file))
+        return files_found
+
+    def get_home():
+        return os.environ['HOME']
+
+    def create_symlink(symlink_pointer, path):
+        Command.execute(f'ln -sf {symlink_pointer} {path}')
+        Print.comment(f'Created symlink: {path} -> {symlink_pointer}')
+
+    def copy(path, copied_path):
+
+        # If parent directory does not exists, create it
+        if not Path.check_dir_exists(Path.get_parent(copied_path)):
+            os.mkdir(Path.get_parent(copied_path))
+        Command.execute(f'cp {path} {copied_path}')
+        Print.comment(f'Copied {path} to {copied_path}')
