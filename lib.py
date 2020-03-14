@@ -289,10 +289,10 @@ class Install:
             if Input.yes_no(install_text):
                 url = f'https://aur.archlinux.org/{repository}.git'
                 Command.execute(f'git clone {url}')
-                Path.change_to_dir(repository)
+                os.chdir(repository)
                 Command.execute('makepkg -si')
-                Path.change_to_dir(Path.get_parent(__file__))
-                Path.remove_dir_full(repository)
+                os.chdir(Path.get_parent(__file__))
+                shutil.rmtree(repository)
                 return True
             else:
                 Print.cancel('Skipping...')
@@ -401,38 +401,71 @@ class Path:
         '''
         return pathlib.Path(file_path).parent.absolute()
 
-    def change_to_dir(dir_path):
-        os.chdir(dir_path)
-
-    def remove_dir_full(dir_path):
-        shutil.rmtree(dir_path)
-
-    def join_paths(*args):
-        args = list(args)
-        p_init = args[0]
-        args.remove(p_init)
-        for p_join in args:
-            p_init = os.path.join(p_init, p_join)
-        return p_init
-
     def get_all_files(dir_path):
+        '''Get list of all files in specified directory (recursive)
+
+        Arguments:
+            dir_path {str/Path} -- path to starting directory
+
+        Returns:
+            list -- files found
+        '''
         files_found = []
         for subdir, dirs, files in os.walk(dir_path):
             for file in files:
                 files_found.append(os.path.join(subdir, file))
         return files_found
 
+    def ensure_dirs(path, file_end=False, absolute_path=True):
+        '''Ensure existence of directories (usually before creating files in it)
+
+        Arguments:
+            path {str} -- full path - will check every directory it contains
+
+        Keyword Arguments:
+            file_end {bool} -- does path end with file? (default: {False})
+            absolute_path {bool} -- is path absolute? (default: {True})
+        '''
+        if not absolute_path:
+            path = pathlib.Path(path).absolute()
+        parts = pathlib.Path(path).parts
+        if file_end:
+            parts = parts[:-1]
+        cur_path = '/'
+        # ignore first element (it is root (/), which was specified earlier)
+        parts = parts[1:]
+        for part in parts:
+            cur_path = os.path.join(cur_path, part)
+            if not Path.check_dir_exists(cur_path):
+                Print.comment(f'Creating directory {cur_path}')
+                os.mkdir(cur_path)
+
     def get_home():
+        '''Get home path
+
+        Returns:
+            str -- path to user home
+        '''
         return os.environ['HOME']
 
     def create_symlink(symlink_pointer, path):
+        '''Create Symbolic link
+
+        Arguments:
+            symlink_pointer {str} -- path where symlink should be pointing
+            path {str} -- path in which the symlink should be created
+        '''
+        Path.ensure_dirs(symlink_pointer, file_end=True)
         Command.execute(f'ln -sf {symlink_pointer} {path}')
         Print.comment(f'Created symlink: {path} -> {symlink_pointer}')
 
     def copy(path, copied_path):
+        '''Create copy of specified file
 
-        # If parent directory does not exists, create it
-        if not Path.check_dir_exists(Path.get_parent(copied_path)):
-            os.mkdir(Path.get_parent(copied_path))
+        Arguments:
+            path {str} -- path to original file
+            copied_path {str} -- path to new file
+        '''
+        Path.ensure_dirs(symlink_pointer, file_end=True)
         Command.execute(f'cp {path} {copied_path}')
         Print.comment(f'Copied {path} to {copied_path}')
