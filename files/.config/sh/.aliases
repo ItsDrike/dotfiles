@@ -44,7 +44,6 @@ alias cfvim='vim ~/.vimrc'
 alias cfzsh='vim ~/config/zsh/.zsh_config'
 alias cfzshrc='vim ~/.zshrc'
 alias cfalias='vim ~/.config/sh/.aliases'
-alias cffunction='vim ~/.config/sh/.functions'
 
 # Replacements
 alias dd='dcfldd' # Use dcfldd instead of dd (shows progress) (pacman -S dcfldd)
@@ -74,7 +73,8 @@ alias mount-table='df' # Show list of all mounted devices and their mount locati
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias sound_control='alsamixer' # Sound control tool in alsa_utils package
 alias pacman-delete-orphans='pacman -Rns $(pacman -Qtdq)' # Remove orphaned packages (oackages which are no longer required)
-alias open-ports='lsof -i'
+alias open-ports='lsof -i' # Show open ports
+alias msf='msfconsole' # Metasploit console alias
 
 # If user is not root, pass all commands via sudo
 if [ $UID -ne 0 ]; then
