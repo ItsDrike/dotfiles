@@ -466,6 +466,6 @@ class Path:
             path {str} -- path to original file
             copied_path {str} -- path to new file
         '''
-        Path.ensure_dirs(symlink_pointer, file_end=True)
+        Path.ensure_dirs(copied_path, file_end=True)
         Command.execute(f'cp {path} {copied_path}')
         Print.comment(f'Copied {path} to {copied_path}')
