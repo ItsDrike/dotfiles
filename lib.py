@@ -102,7 +102,7 @@ class Print:
         Arguments:
             options {str} -- options to print
         '''
-        print(f'{Color.GREEN} # {options}{Color.RESET}')
+        print(f'{Color.GREEN}    # {options}{Color.RESET}')
 
     def action(action):
         '''Print syntax for actions
@@ -169,7 +169,7 @@ class Input:
         '''
         def get_input_range(max):
             while True:
-                inp = input('   ->')
+                inp = input(' ->')
                 try:
                     inp = int(inp)
                     for n in range(0, max + 1):
@@ -177,9 +177,9 @@ class Input:
                             return inp
                             break
                     else:
-                        Print.err(f'Invalid input, range: 1-{max}')
+                        Print.err(f'Invalid input, range: 0-{max}')
                 except ValueError:
-                    Print.err(f'Invalid input (must be number: 1-{max})')
+                    Print.err(f'Invalid input (must be number: 0-{max})')
                     continue
 
         Print.question(question)
@@ -240,7 +240,7 @@ class Install:
             raise TypeError(
                 'check_not_installed() only takes string or list parameters')
         if package_name == ['base-devel']:
-            # Check dependenceis for base-devel (group packages are not detected directly)
+            # Check dependencies for base-devel (group packages are not detected directly)
             return Install.check_not_installed(
                 'guile libmpc autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make pacman patch pkgconf sed sudo texinfo which')
         for package in package_name:
@@ -249,6 +249,24 @@ class Install:
                 break
         else:
             return True
+
+    def check_dir_exists(paths):
+        '''Check for directory/ies existence
+
+        Arguments:
+            paths {str} -- single path or multiple paths separated by spaces (absolute paths)
+
+        Returns:
+            bool -- One of dirs exists/Single dir exists
+        '''
+        paths = paths.split(' ')
+        for dir_path in paths:
+            dir_path = os.path.expanduser(dir_path)
+            if os.path.isdir(dir_path):
+                return True
+                break
+        else:
+            return False
 
     def git_aur(repository, install_text='default', force=False):
         '''Install package directly from AUR using only git and makepkg
@@ -269,7 +287,7 @@ class Install:
                 f'Unable to install AUR repository: {repository}, git is not installed')
             return False
 
-        # Base-devel group includes (requered for makepkg)
+        # Base-devel group includes (required for makepkg)
         if Install.check_not_installed('base-devel'):
             Print.warning(
                 f'Unable to install AUR repository: {repository}, base-devel is not installed')
