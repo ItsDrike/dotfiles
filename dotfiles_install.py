@@ -19,17 +19,36 @@ def check_installation():
             Print.err('Dotfiles installation cancelled - zsh not installed')
             return False
 
-    elif not Path.check_dir_exists('~/.oh-my-zsh ~/oh-my-zsh ~/ohmyzsh ~/.config/oh-my-zsh /usr/shared/oh-my-zsh'):
-        # TODO: Option to install
-        Print.err('oh-my-zsh is not installed, cannot proceed...')
-        return False
+    global oh_my_zsh_path
+    oh_my_zsh_path = None
+    if Path.check_dir_exists('~/.oh-my-zsh'):
+        oh_my_zsh_path = '$HOME/.oh-my-zsh'
+    elif Path.check_dir_exists('~/oh-my-zsh'):
+        oh_my_zsh_path = '$HOME/oh-my-zsh'
+    elif Path.check_dir_exists('~/ohmyzsh'):
+        oh_my_zsh_path = '$HOME/ohmyzsh'
+    elif Path.check_dir_exists('~/.config/oh-my-zsh'):
+        oh_my_zsh_path = '$HOME/.config/oh-my-zsh'
+    elif Path.check_dir_exists('/usr/share/oh-my-zsh'):
+        oh_my_zsh_path = '/usr/share/oh-my-zsh'
 
-    else:
+    if oh_my_zsh_path:
         return True
+    else:
+        Print.err('oh-my-zsh is not installed, cannot proceed...')
+        # TODO: Option to install
+        return False
 
 
 def personalized_changes(file):
-    pass
+    if '.zshrc' in file:
+        filedata = None
+        with open(file, 'r') as f:
+            filedata = f.read()
+        filedata = filedata.replace('"$HOME/.config/oh-my-zsh"', f'"{oh_my_zsh_path}"')
+        Print.err('Rewriting')
+        with open(file, 'w') as f:
+            f.write(filedata)
 
 
 def init(symlink):
