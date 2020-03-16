@@ -45,10 +45,12 @@ def personalized_changes(file):
         filedata = None
         with open(file, 'r') as f:
             filedata = f.read()
+        filedata_old = filedata
         filedata = filedata.replace('"$HOME/.config/oh-my-zsh"', f'"{oh_my_zsh_path}"')
-        Print.err('Rewriting')
-        with open(file, 'w') as f:
-            f.write(filedata)
+        if filedata_old != filedata:
+            Print.commend('Changing oh-my-zsh location in .zshrc')
+            with open(file, 'w') as f:
+                f.write(filedata)
 
 
 def init(symlink):
