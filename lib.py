@@ -455,7 +455,7 @@ class Path:
             symlink_pointer {str} -- path where symlink should be pointing
             path {str} -- path in which the symlink should be created
         '''
-        Path.ensure_dirs(symlink_pointer, file_end=True)
+        Path.ensure_dirs(path, file_end=True)
         Command.execute(f'ln -sf {symlink_pointer} {path}')
         Print.comment(f'Created symlink: {path} -> {symlink_pointer}')
 
