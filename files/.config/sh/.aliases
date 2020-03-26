@@ -41,7 +41,7 @@ alias py2='python2'
 
 # Config access shortcuts
 alias cfvim='vim ~/.vimrc'
-alias cfzsh='vim ~/config/zsh/.zsh_config'
+alias cfzsh='vim ~/.config/zsh/.zsh_config'
 alias cfzshrc='vim ~/.zshrc'
 
 # Replacements
@@ -54,6 +54,9 @@ alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 
 
 # Custom aliases
+
+
+alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias fhere='find . -name' # Find file/dir from currrent dir
 alias ssh-list='ss | grep ssh' # List all SSH connections
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -72,7 +75,8 @@ alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into curren
 alias mount-table='df' # Show list of all mounted devices and their mount locations
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias sound_control='alsamixer' # Sound control tool in alsa_utils package
-
+alias md-to-pdf='pandoc -s -o' # Convert markdown to pdf
+alias pdf-reader='mupdf' # Open pdf file
 
 # If user is not root, pass all commands via sudo
 if [ $UID -ne 0 ]; then

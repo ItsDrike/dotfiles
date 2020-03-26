@@ -1,7 +1,7 @@
 # Contains wakatime API which should remain private
 files/.wakatime.cfg
 # Backup directory will get created by script, no need to push it
-backup/
+Backups/
 # Don't include file backups
 *.bak
 # todo list

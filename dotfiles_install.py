@@ -1,12 +1,22 @@
 from lib import Input, Print, Install, Path
 import os
+from datetime import datetime
 
-
-def make_backup(backup_floder):
+def make_backup(files_dir):
     if Input.yes_no('Do you wish to create a backup of current state of your dotfiles?'):
         Print.action('Creating dotfiles backup')
-        Print.err('Backup is not yet implemented')
-        # TODO: Create backup
+        backup_dir = str(datetime.now()).replace(' ', '--')
+        current_backup_dir = os.path.join(Path.get_parent(__file__), 'Backups', backup_dir)
+        Path.ensure_dirs(current_backup_dir)
+        for file in Path.get_all_files(files_dir):
+            from_pos = os.path.join(
+            Path.get_home(), file.replace(f'{files_dir}/', ''))
+            to_pos = os.path.join(
+            current_backup_dir, file.replace(f'{files_dir}/', ''))
+            if os.path.isfile(from_pos):
+                Path.copy(from_pos, to_pos)
+
+        Print.action('Backup complete')
         return True
     else:
         Print.warning('Proceeding without backup')
@@ -59,8 +69,16 @@ def init(symlink):
         Path.get_parent(__file__), 'files')
     # Create optional backup
     make_backup(files_dir)
+    files_list, dirs_list = Path.get_all_dirs_and_files(files_dir)
+
+    # Create all dirs
+    for directory in dirs_list:
+        position = os.path.join(
+            Path.get_home(), directory.replace(f'{files_dir}/', ''))
+        Path.ensure_dirs(position)
+
     # Go through all files
-    for file in Path.get_all_files(files_dir):
+    for file in files_list:
         # Make personalized changes to files
         personalized_changes(file)
         # Set symlink position ($HOME/filepath)

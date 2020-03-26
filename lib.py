@@ -381,6 +381,8 @@ class Path:
         Returns:
             bool -- One of dirs exists/Single dir exists
         '''
+        if type(paths) != str:
+            paths = str(paths)
         paths = paths.split(' ')
         for dir_path in paths:
             dir_path = os.path.expanduser(dir_path)
@@ -416,7 +418,25 @@ class Path:
                 files_found.append(os.path.join(subdir, file))
         return files_found
 
-    def ensure_dirs(path, file_end=False, absolute_path=True):
+    def get_all_dirs_and_files(dir_path):
+        '''Get list of all files and directories in specified directory (recursive)
+
+        Arguments:
+            dir_path {str/Path} -- path to starting directory
+
+        Returns:
+            list, list-- files, dirs found
+        '''
+        files_found = []
+        dirs_found = []
+        for subdir, dirs, files in os.walk(dir_path):
+            for file in files:
+                files_found.append(os.path.join(subdir, file))
+            for directory in dirs:
+                dirs_found.append(os.path.join(subdir, directory))
+        return files_found, dirs_found
+
+    def ensure_dirs(path, absolute_path=True):
         '''Ensure existence of directories (usually before creating files in it)
 
         Arguments:
@@ -428,17 +448,12 @@ class Path:
         '''
         if not absolute_path:
             path = pathlib.Path(path).absolute()
-        parts = pathlib.Path(path).parts
-        if file_end:
-            parts = parts[:-1]
-        cur_path = '/'
-        # ignore first element (it is root (/), which was specified earlier)
-        parts = parts[1:]
-        for part in parts:
-            cur_path = os.path.join(cur_path, part)
-            if not Path.check_dir_exists(cur_path):
-                Print.comment(f'Creating directory {cur_path}')
-                os.mkdir(cur_path)
+        if os.path.isfile(path):
+            path = Path.get_parent(path)
+
+        if not Path.check_dir_exists(path):
+            Command.execute(f'mkdir -p {path}')
+            Print.comment(f'Creating directory {path}')
 
     def get_home():
         '''Get home path
@@ -455,7 +470,7 @@ class Path:
             symlink_pointer {str} -- path where symlink should be pointing
             path {str} -- path in which the symlink should be created
         '''
-        Path.ensure_dirs(path, file_end=True)
+        Path.ensure_dirs(path)
         Command.execute(f'ln -sf {symlink_pointer} {path}')
         Print.comment(f'Created symlink: {path} -> {symlink_pointer}')
 
@@ -466,6 +481,6 @@ class Path:
             path {str} -- path to original file
             copied_path {str} -- path to new file
         '''
-        Path.ensure_dirs(copied_path, file_end=True)
+        Path.ensure_dirs(copied_path)
         Command.execute(f'cp {path} {copied_path}')
         Print.comment(f'Copied {path} to {copied_path}')
