@@ -1,6 +1,6 @@
 " TODO: Spell Checking
 
-set nocompatible				" Disable vi compatibilty (Use vi improved only)
+set nocompatible				" Disable vi compatibilty (Use vi improved only) - required for Vundle
 set encoding=utf-8				" Use UTF-8
 syntax enable					" Turn on syntax highlighting
 set showmatch					" Show matching brackets
@@ -80,7 +80,7 @@ map <C-p> "+P
 autocmd BufWritePre * %s/\s\+$//e
 
 " Vundle Init
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.local/share/vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Plugins
@@ -96,8 +96,6 @@ Plugin 'vim-syntastic/syntastic'		" Syntax checking
 Plugin 'PotatoesMaster/i3-vim-syntax'	" Add syntax for i3 config
 Plugin 'jmcantrell/vim-virtualenv'		" Manage Virtual Enviroment
 Plugin 'wakatime/vim-wakatime'			" Install WakaTime (Shows coding time)
-Plugin 'gko/vim-coloresque'				" Show color highlight in css/html/less/sass
-
 " Vundle End
 call vundle#end()
 filetype plugin indent on

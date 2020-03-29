@@ -8,6 +8,7 @@ HISTFILE=$ZSH_CACHE/history
 # Move .zsh-update to $ZSH_CACHE
 [ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
 
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 
 # Export oh-my-zsh location as $ZSH
@@ -33,8 +34,8 @@ autoload -U colors && colors
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
-_comp_options+=(globdots)
+compinit -d $ZSH_COMPDUMP
+comp_options+=(globdots)
 
 # Setup aliases
 [ -f ~/.config/sh/.aliases ] && source ~/.config/sh/.aliases
@@ -45,11 +46,17 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 # ~/ Clean-up
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # Might break some DMs
-export WGETRC="$HOME/.config/wget/wgetrc"
+export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
 export LESSHISTFILE="-"
 export VIMINIT=":source $XDG_CONFIG_HOME"/vim/vimrc
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export WAKATIME_HOME="$XDG_CONFIG_HOME"/wakatime
+export KDEHOME="$XDG_CONFIG_HOME"/kde
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
+# Add ~/Personal/Shell-Scripts to PATH
+PATH+=":$HOME/.scripts"
 
 # Load zsh-syntax-highlighting (should be last)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
