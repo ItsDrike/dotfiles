@@ -54,9 +54,8 @@ alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 
 
 # Custom aliases
-
-
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
+alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
 alias fhere='find . -name' # Find file/dir from currrent dir
 alias ssh-list='ss | grep ssh' # List all SSH connections
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
