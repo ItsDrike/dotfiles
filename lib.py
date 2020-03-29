@@ -35,8 +35,9 @@ class Command:
             str -- stdout
         '''
         command = command.split(' ')
-        return subprocess.run(
-            command, stderr=subprocess.STDOUT, stdout=subprocess.PIPE).stdout.decode('utf-8')
+        return subprocess.run(command,
+                              stderr=subprocess.STDOUT,
+                              stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     def get_return_code(command):
         '''Get return code of command
@@ -48,8 +49,9 @@ class Command:
             int -- returncode
         '''
         command = command.split(' ')
-        return subprocess.run(
-            command, stderr=subprocess.STDOUT, stdout=subprocess.PIPE).returncode
+        return subprocess.run(command,
+                              stderr=subprocess.STDOUT,
+                              stdout=subprocess.PIPE).returncode
 
 
 class Color:
@@ -206,9 +208,12 @@ class Input:
         Print.question(text)
         return input('   >>')
 
-class Install:
 
-    def _generate_install_text(install_text, package_name, yay=False, git=False):
+class Install:
+    def _generate_install_text(install_text,
+                               package_name,
+                               yay=False,
+                               git=False):
         if install_text == 'default':
             install_text = f'Do you wish to install {package_name}?'
         if install_text[:10] == 'default + ':
@@ -247,13 +252,15 @@ class Install:
             package_name = package_name.split(' ')
         elif type(package_name) != list:
             Print.err(
-                'Function Install.check_not_installed() only accepts string or list parameters')
+                'Function Install.check_not_installed() only accepts string or list parameters'
+            )
             raise TypeError(
                 'check_not_installed() only takes string or list parameters')
         if package_name == ['base-devel']:
             # Check dependencies for base-devel (group packages are not detected directly)
             return Install.check_not_installed(
-                'guile libmpc autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make pacman patch pkgconf sed sudo texinfo which')
+                'guile libmpc autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make pacman patch pkgconf sed sudo texinfo which'
+            )
         for package in package_name:
             if Install.check_installed(package):
                 return False
@@ -277,18 +284,21 @@ class Install:
 
         if Install.check_not_installed('git'):
             Print.warning(
-                f'Unable to install AUR repository: {repository}, git is not installed')
+                f'Unable to install AUR repository: {repository}, git is not installed'
+            )
             return False
 
         # Base-devel group includes (required for makepkg)
         if Install.check_not_installed('base-devel'):
             Print.warning(
-                f'Unable to install AUR repository: {repository}, base-devel is not installed')
+                f'Unable to install AUR repository: {repository}, base-devel is not installed'
+            )
             return False
 
         if Install.check_not_installed(repository) or force:
-            install_text = Install._generate_install_text(
-                install_text, repository, git=True)
+            install_text = Install._generate_install_text(install_text,
+                                                          repository,
+                                                          git=True)
             if Input.yes_no(install_text):
                 url = f'https://aur.archlinux.org/{repository}.git'
                 Command.execute(f'git clone {url}')
@@ -302,10 +312,14 @@ class Install:
                 return False
         else:
             Print.cancel(
-                f'assuming {repository} already installed ({repository} is installed)')
+                f'assuming {repository} already installed ({repository} is installed)'
+            )
             return True
 
-    def package(package_name, install_text='default', aur=False, reinstall=False):
+    def package(package_name,
+                install_text='default',
+                aur=False,
+                reinstall=False):
         '''Installation of package
 
         Arguments:
@@ -322,11 +336,13 @@ class Install:
         if aur:
             if Install.check_not_installed('yay'):
                 Print.cancel(
-                    f'Unable to install with yay (not installed), installing AUR package: {package_name} with git instead')
+                    f'Unable to install with yay (not installed), installing AUR package: {package_name} with git instead'
+                )
                 Install.git_aur(package_name, install_text)
         if Install.check_not_installed(package_name) or reinstall:
-            install_text = Install._generate_install_text(
-                install_text, package_name, yay=aur)
+            install_text = Install._generate_install_text(install_text,
+                                                          package_name,
+                                                          yay=aur)
             if Input.yes_no(install_text):
                 if aur:
                     Command.execute(f'yay -S {package_name}')
@@ -340,7 +356,10 @@ class Install:
             Print.cancel(f'{package_name} already installed')
             return True
 
-    def multiple_packages(packages, install_text, options=False, reinstall=False):
+    def multiple_packages(packages,
+                          install_text,
+                          options=False,
+                          reinstall=False):
         '''Installation of multiple packages
 
         Arguments:
@@ -370,7 +389,9 @@ class Install:
             return False
 
     def upgrade_pacman():
-        if Input.yes_no('Do you wish to Sync(S), refresh(y) and upgrade(u) pacman - Recommended?'):
+        if Input.yes_no(
+                'Do you wish to Sync(S), refresh(y) and upgrade(u) pacman - Recommended?'
+        ):
             Command.execute('sudo pacman -Syu')
         else:
             Print.warning('Pacman upgrade cancelled.')
@@ -461,7 +482,7 @@ class Path:
                 dirs_found.append(os.path.join(subdir, directory))
         return files_found, dirs_found
 
-    def ensure_dirs(path, absolute_path=True):
+    def ensure_dirs(path, file_end=False, absolute_path=True):
         '''Ensure existence of directories (usually before creating files in it)
 
         Arguments:
@@ -473,7 +494,7 @@ class Path:
         '''
         if not absolute_path:
             path = pathlib.Path(path).absolute()
-        if Path.check_file_exists(path):
+        if Path.check_file_exists(path) or file_end:
             path = Path.get_parent(path)
 
         if not Path.check_dir_exists(path):
@@ -495,7 +516,7 @@ class Path:
             symlink_pointer {str} -- path where symlink should be pointing
             path {str} -- path in which the symlink should be created
         '''
-        Path.ensure_dirs(path)
+        Path.ensure_dirs(path, file_end=True)
         Command.execute(f'ln -sf {symlink_pointer} {path}')
         Print.comment(f'Created symlink: {path} -> {symlink_pointer}')
 
@@ -506,6 +527,6 @@ class Path:
             path {str} -- path to original file
             copied_path {str} -- path to new file
         '''
-        Path.ensure_dirs(copied_path)
+        Path.ensure_dirs(copied_path, file_end=True)
         Command.execute(f'cp {path} {copied_path}')
         Print.comment(f'Copied {path} to {copied_path}')
