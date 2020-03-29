@@ -13,7 +13,7 @@ def make_backup(files_dir):
             Path.get_home(), file.replace(f'{files_dir}/', ''))
             to_pos = os.path.join(
             current_backup_dir, file.replace(f'{files_dir}/', ''))
-            if os.path.isfile(from_pos):
+            if Path.check_file_exists(from_pos):
                 Path.copy(from_pos, to_pos)
 
         Print.action('Backup complete')
@@ -29,7 +29,12 @@ def check_installation():
             Print.err('Dotfiles installation cancelled - zsh not installed')
             return False
 
-    global oh_my_zsh_path
+    global oh_my_zsh_path, zsh_highlight_path
+
+    zsh_highlight_path = None
+    if Path.check_file_exists('/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'):
+        zsh_highlight_path = '/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+
     oh_my_zsh_path = None
     if Path.check_dir_exists('~/.oh-my-zsh'):
         oh_my_zsh_path = '$HOME/.oh-my-zsh'
@@ -50,17 +55,42 @@ def check_installation():
         return False
 
 
+
 def personalized_changes(file):
     if '.zshrc' in file:
+        global oh_my_zsh_path, zsh_highlight_path
         filedata = None
         with open(file, 'r') as f:
             filedata = f.read()
         filedata_old = filedata
+
+        # Change path to oh-my-zsh
         filedata = filedata.replace('"$HOME/.config/oh-my-zsh"', f'"{oh_my_zsh_path}"')
+
+        # Change path to zsh-color-highlight
+        if zsh_highlight_path is not None:
+            original_path='/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+            filedata = filedata.replace(f'source {original_path}', f'source {zsh_highlight_path}')
+        else:
+            if Install.package('zsh-syntax-highlighting', 'default'):
+                zsh_highlight_path = Input.question('Please specify path to your zsh-syntax-highlighting plugin (blank=do not include)')
+                if zsh_highlight_path != '':
+                    filedata = filedata.replace(f'source {original_path}', f'source {zsh_highlight_path}')
+                else:
+                    filedata = filedata.replace(f'source {original_path}', f'')
+            else:
+                filedata = filedata.replace(f'source {original_path}', f'')
+
         if filedata_old != filedata:
             Print.commend('Changing oh-my-zsh location in .zshrc')
             with open(file, 'w') as f:
                 f.write(filedata)
+
+    if 'vimrc' in file:
+        if not Input.yes_no('Do you wish to use .vimrc (If you choose yes, please install Vundle or you will get errors)'):
+            # TODO: Install vundle
+            return False
+    return True
 
 
 def init(symlink):

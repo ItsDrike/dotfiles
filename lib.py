@@ -202,6 +202,9 @@ class Input:
         else:
             return False
 
+    def question(text):
+        Print.question(text)
+        return input('   >>')
 
 class Install:
 
@@ -296,11 +299,13 @@ class Install:
                 return True
             else:
                 Print.cancel('Skipping...')
+                return False
         else:
             Print.cancel(
                 f'assuming {repository} already installed ({repository} is installed)')
+            return True
 
-    def package(package_name, install_text='default', use_yay=False, reinstall=False):
+    def package(package_name, install_text='default', aur=False, reinstall=False):
         '''Installation of package
 
         Arguments:
@@ -314,16 +319,16 @@ class Install:
         Returns:
             bool -- installed
         '''
-        if use_yay:
+        if aur:
             if Install.check_not_installed('yay'):
-                Print.warning(
-                    f'Unable to install AUR package: {package_name}, yay is not installed')
-                return False
+                Print.cancel(
+                    f'Unable to install with yay (not installed), installing AUR package: {package_name} with git instead')
+                Install.git_aur(package_name, install_text)
         if Install.check_not_installed(package_name) or reinstall:
             install_text = Install._generate_install_text(
-                install_text, package_name, yay=use_yay)
+                install_text, package_name, yay=aur)
             if Input.yes_no(install_text):
-                if use_yay:
+                if aur:
                     Command.execute(f'yay -S {package_name}')
                 else:
                     Command.execute(f'sudo pacman -S {package_name}')
@@ -333,7 +338,7 @@ class Install:
                 return False
         else:
             Print.cancel(f'{package_name} already installed')
-            return False
+            return True
 
     def multiple_packages(packages, install_text, options=False, reinstall=False):
         '''Installation of multiple packages
@@ -387,6 +392,26 @@ class Path:
         for dir_path in paths:
             dir_path = os.path.expanduser(dir_path)
             if os.path.isdir(dir_path):
+                return True
+                break
+        else:
+            return False
+
+    def check_file_exists(paths):
+        '''Check for file/s existence
+
+        Arguments:
+            paths {str} -- single path or multiple paths separated by spaces (absolute paths)
+
+        Returns:
+            bool -- One of files exists/Single file exists
+        '''
+        if type(paths) != str:
+            paths = str(paths)
+        paths = paths.split(' ')
+        for file_path in paths:
+            file_path = os.path.expanduser(file_path)
+            if os.path.isfile(file_path):
                 return True
                 break
         else:
@@ -448,7 +473,7 @@ class Path:
         '''
         if not absolute_path:
             path = pathlib.Path(path).absolute()
-        if os.path.isfile(path):
+        if Path.check_file_exists(path):
             path = Path.get_parent(path)
 
         if not Path.check_dir_exists(path):

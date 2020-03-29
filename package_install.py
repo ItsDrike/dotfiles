@@ -10,7 +10,6 @@ def main():
     Install.package('networkmanager')
     Install.package(
         'git', 'default + (Required for some installations, otherwise they\'ll be skipped)')
-    Install.package('zsh', 'default + shell')
     Install.package('sudo')
 
     # Desktop Enviroment
@@ -21,23 +20,27 @@ def main():
         'SDDM (KDE)', 'GDM (Gnome)', 'LightDM'])
 
     Install.package('base-devel', 'default + (Required for makepkg installs)')
-    Install.git_aur(
-        'yay', 'default + (Required for some installations, otherwise they\'ll be skipped)')
+    Install.package('yay', 'default', aur=True)
+    Install.package('vim')
     Install.package('exa', 'default + (Better ls tool)')
+    Install.package('zsh', 'default + (Shell)')
+    Install.package('zsh-syntax-highlighting', 'default')
     Install.package('terminator', 'default + (advanced terminal)')
     Install.package('konsole', 'default + (KDE terminal emulator)')
     Install.package(
         'ark', 'default + (Managing various archive formats such as tar, gzip, zip, rar, etc.)')
+    Install.package('timeshift', 'default + (Backup Tool), aur=True')
     Install.package('cron', 'default + (Task scheduling)')
     Install.package('dolphin', 'default + (File Manager)')
     Install.package('nomacs', 'default + (Photo viewer & editor)')
     Install.package('discord', 'default + (Chat App)')
+    Install.package('caprine', 'default + (Unofficial Messenger Chat App)')
     Install.package(
-        'spotify', 'default + (Online Music Player)', use_yay=True)
+        'spotify', 'default + (Online Music Player)', aur=True)
     Install.package(
         'spectacle', 'default + (Screenshot tool)')
     Install.package('qalculate-gtk-nognome',
-                    'Do you wish to install Qalculate! (Complex Calculator)?', use_yay=True)
+                    'Do you wish to install Qalculate! (Complex Calculator)?', aur=True)
     Install.package('gnome-system-monitor',
                     'Do you wish to install gnome system monitor?')
     Install.package(
