@@ -1,4 +1,4 @@
-from lib import Input, Print, Install, Path
+from util import Input, Print, Install, Path
 import os
 from datetime import datetime
 
