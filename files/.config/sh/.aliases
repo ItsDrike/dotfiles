@@ -60,7 +60,7 @@ alias fhere='find . -name' # Find file/dir from currrent dir
 alias ssh-list='ss | grep ssh' # List all SSH connections
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias psg='\ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
-alias ip-show="dig +short myip.opendns.com @resolver1.opendns.com" # Gets your IP address
+alias ip-show="curl ifconfig.me" # Gets your IP address
 alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
@@ -92,6 +92,7 @@ fi
 
 
 # Functions
-if [ -f ~/.config/sh/.functions ]; then
-	source ~/.config/sh/.functions
-fi
+[ -f ~/.config/sh/.functions ] && source ~/.config/sh/.functions
+
+# Extra
+[ -f ~/.config/sh/.extra ] && source ~/.config/sh/.extra
