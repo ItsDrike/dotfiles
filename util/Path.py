@@ -4,8 +4,6 @@ import pathlib
 
 from util import Command, Print
 
-WORKING_FLODER = os.path.dirname(os.path.realpath(__file__))
-
 
 def check_dir_exists(paths):
     '''Check for directory/ies existence
@@ -111,7 +109,7 @@ def ensure_dirs(path, file_end=False, absolute_path=True):
     if check_file_exists(path) or file_end:
         path = get_parent(path)
 
-    if not check_dir_exists(path):
+    if not check_dir_exists(path)[0]:
         Command.execute(f'mkdir -p {path}')
         Print.comment(f'Creating directory {path}')
 
@@ -156,4 +154,7 @@ def join(*paths):
     Returns:
         str -- Joined paths
     '''
-    return os.path.join(paths)
+    return os.path.join(*paths)
+
+
+WORKING_FLODER = get_parent(os.path.dirname(os.path.realpath(__file__)))

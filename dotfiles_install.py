@@ -1,4 +1,4 @@
-from util import Path, Print, Install
+from util import Path, Print, Install, Input
 from datetime import datetime
 
 
@@ -11,7 +11,8 @@ class InstallationChecks:
     @staticmethod
     def get_installation_path(standard_paths):
         dir_exists, path = Path.check_dir_exists(standard_paths)
-        path = path.replace('~', '$HOME')
+        if dir_exists:
+            path = path.replace('~', '$HOME')
 
         return dir_exists, path
 
@@ -84,7 +85,35 @@ class Dotfiles:
         self.dotfiles_location = Path.join(Path.WORKING_FLODER, 'files')
 
     def start(self):
+        Print.action('Installing dotfiles')
+
+        # Check for necessary packages
         self.initial_checks()
+
+        # Check backup
+        if Input.yes_no(
+                'Do you wish to create backup of your current dotfiles?'):
+            self.make_backup()
+        else:
+            Print.warning(
+                'Proceeding without backup, you will loose your current dotfiles settings'
+            )
+
+        # Symlinks or Files
+        create_dotfiles = Input.multiple('Do you wish to create dotfiles?', [
+            'symlinks (dotfiles/ dir will be required)',
+            'files (dotfiles/ dir can be removed afterwards)'
+        ])
+
+        if create_dotfiles == 'symlinks':
+            self.use_symlinks = True
+        elif create_dotfiles == 'files':
+            self.use_symlinks = False
+        else:
+            Print.err('Symlink creation aborted (canceled by user.)')
+            return False
+
+        self.create_dotfiles()
 
     def initial_checks(self):
         if not InstallationChecks.check_zsh():
@@ -123,6 +152,20 @@ class Dotfiles:
 
     def personalized_changes(self, file):
         pass
+
+    def create_dotfiles(self):
+        file_list = Path.get_all_files(self.dotfiles_location)
+        for target_file in file_list:  # Loop through every file in dotfiles
+            self.personalized_changes(target_file)
+
+            # Remove dotfiles_location from file path
+            file_blank = target_file.replace(f'{self.dotfiles_location}/', '')
+            destination = Path.join(Path.get_home(), file_blank)
+
+            if self.use_symlinks:
+                Path.create_symlink(target_file, destination)
+            else:
+                Path.copy(target_file, destination)
 
 
 if __name__ == "__main__":

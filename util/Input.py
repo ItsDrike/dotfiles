@@ -1,5 +1,6 @@
 #!/bin/python3
 from util import Print
+import re
 
 
 def yes_no(question):
@@ -30,7 +31,7 @@ def multiple(question, options):
         options {list} -- list of possible options (strings)
 
     Returns:
-        str -- one of options
+        str -- one of options (without content in brackets in the end)
     '''
     def get_input_range(max):
         while True:
@@ -55,7 +56,14 @@ def multiple(question, options):
 
     answer = get_input_range(len(options))
     if answer != 0:
-        return options[answer - 1]
+        result = options[answer - 1]
+        result = re.sub(r'\(.*\)$', '',
+                        result)  # remove bracket content in the end
+        if result[
+                -1] == ' ':  # remove remaining space (might happen after removing brackets)
+            result = result[:-1]
+        return result
+
     else:
         return False
 
