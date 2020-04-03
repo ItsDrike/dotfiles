@@ -55,8 +55,9 @@ export KDEHOME="$XDG_CONFIG_HOME"/kde
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
-# Add ~/Personal/Shell-Scripts to PATH
+# Add Script dirs to PATH
 PATH+=":$HOME/.scripts"
+PATH+=":$HOME/.local/bin"
 
 # Load zsh-syntax-highlighting (should be last)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
