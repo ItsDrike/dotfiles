@@ -22,10 +22,10 @@ def check_dir_exists(paths):
     for dir_path in paths:
         dir_path = os.path.expanduser(dir_path)
         if os.path.isdir(dir_path):
-            return True
+            return True, dir_path
             break
     else:
-        return False
+        return False, None
 
 
 def check_file_exists(paths):

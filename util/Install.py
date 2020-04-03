@@ -5,6 +5,10 @@ import shutil
 from util import Command, Input, Print, Path
 
 
+class InstallationError(Exception):
+    pass
+
+
 def _generate_install_text(install_text, package_name, yay=False, git=False):
     if install_text == 'default':
         install_text = f'Do you wish to install {package_name}?'
