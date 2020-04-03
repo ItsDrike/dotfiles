@@ -4,6 +4,8 @@ import pathlib
 
 from util import Command, Print
 
+WORKING_FLODER = os.path.dirname(os.path.realpath(__file__))
+
 
 def check_dir_exists(paths):
     '''Check for directory/ies existence
@@ -145,3 +147,13 @@ def copy(path, copied_path):
     ensure_dirs(copied_path, file_end=True)
     Command.execute(f'cp {path} {copied_path}')
     Print.comment(f'Copied {path} to {copied_path}')
+
+
+def join(*paths):
+    '''Join paths together
+    (This function is here to avoid re-importing os module in other scripts)
+
+    Returns:
+        str -- Joined paths
+    '''
+    return os.path.join(paths)
