@@ -79,6 +79,47 @@ class InstallationChecks:
                 'RECOMMENDED zsh extension')
 
 
+class PersonalizedChanges:
+    @staticmethod
+    def zshrc(dotfiles, file):
+        with open(file, 'r') as f:
+            filedata = f.read()
+
+        # Set oh-my-zsh path
+        filedata = filedata.replace('"$HOME/.config/oh-my-zsh"',
+                                    f'"{dotfiles.oh_my_zsh_path}"')
+
+        # Set path to zsh-color-highlighting
+        if dotfiles.zsh_syntax_highlighting_installed:
+            filedata = filedata.replace(
+                '/usr/share/zsh/plugins/zsh-syntax-highlighting',
+                dotfiles.zsh_syntax_highlighting_path)
+        else:
+            filedata = filedata.replace(
+                '# Load zsh-syntax-highlighting (should be last)', '')
+            filedata = filedata.replace(
+                'source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh',
+                '')
+
+        # TODO: XDG Standard following + dirs creation
+
+        # Write changes
+        with open(file, 'w') as f:
+            f.write(filedata)
+        return True
+
+    @staticmethod
+    def vimrc(file):
+        if Input.yes_no(
+                'Do you wish to use .vimrc (If you choose yes, please install Vundle or adjust .vimrc file (without Vundle multiple errors will occur)'
+        ):
+            # TODO: Vundle installation
+            # TODO: XDG Standard following + dirs creation
+            return True
+        else:
+            return False
+
+
 class Dotfiles:
     def __init__(self):
         self.backup_location = Path.join(Path.WORKING_FLODER, 'Backups')
@@ -114,6 +155,17 @@ class Dotfiles:
             return False
 
         self.create_dotfiles()
+
+        Print.action('Dotfiles installation complete')
+        if self.use_symlinks:
+            Print.warning(
+                'Do not remove this floder, all dotfiles depend on it')
+            Print.warning(
+                'If you wish to remove this floder, please select files instead of symlinks for dotfile creation'
+            )
+        else:
+            Print.comment('This directory can now be removed')
+        return True
 
     def initial_checks(self):
         if not InstallationChecks.check_zsh():
@@ -151,12 +203,18 @@ class Dotfiles:
         Print.action('Backup complete')
 
     def personalized_changes(self, file):
-        pass
+        if '.zshrc' in file:
+            return PersonalizedChanges.zshrc(self, file)
+        elif 'vimrc' in file:
+            return PersonalizedChanges.vimrc(file)
+        else:
+            return True
 
     def create_dotfiles(self):
         file_list = Path.get_all_files(self.dotfiles_location)
         for target_file in file_list:  # Loop through every file in dotfiles
-            self.personalized_changes(target_file)
+            if not self.personalized_changes(target_file):
+                continue
 
             # Remove dotfiles_location from file path
             file_blank = target_file.replace(f'{self.dotfiles_location}/', '')
