@@ -2,82 +2,113 @@ from util import Path, Print, Install, Input
 from datetime import datetime
 
 
-class InstallationChecks:
+class InstallChecks:
     @staticmethod
     def installation_error(package):
         Print.err(f'Dotfiles installation cancelled - {package} not installed')
         raise Install.InstallationError(f'{package} not installed')
 
     @staticmethod
-    def get_installation_path(standard_paths):
-        dir_exists, path = Path.check_dir_exists(standard_paths)
-        if dir_exists:
-            path = path.replace('~', '$HOME')
-
-        return dir_exists, path
-
-    @staticmethod
-    def install_package(package, standard_paths, status, use_aur=False):
-        if not Install.package(
-                package,
-                f'default + (This is {status} for dotfiles to work)',
-                aur=use_aur):
-            return False, None
+    def get_installation_path(standard_paths, file_end=False):
+        if file_end:
+            path_exists, path = Path.check_file_exists(standard_paths)
+            print(f'Installation path -> {path_exists}, {path}')
         else:
-            installation_path = InstallationChecks.get_installation_path(
-                standard_paths)
+            path_exists, path = Path.check_dir_exists(standard_paths)
 
-            if not installation_path:  # Package was not found in standard paths after installation
-                Print.err(
-                    f'Installation location of {package} has changed, please contact the developer'
-                )
-                return False, None
-            else:
-                return True, installation_path
+        return path
 
     @staticmethod
-    def check_zsh():
+    def _make_install_text(status):
+        return f'default + (This is {status} for dotfiles to work)'
+
+    @staticmethod
+    def zsh():
         if Install.check_not_installed('zsh'):
             if not Install.package(
                     'zsh',
                     'default + (This is REQUIRED shell for dotfiles to work)'):
-                return False
-        return True
+                InstallChecks.installation_error('zsh')
 
     @staticmethod
-    def check_oh_my_zsh():
+    def oh_my_zsh(dotfiles):
         standard_paths = [
             '~/.oh-my-zsh', '~/oh-my-zsh', '~/ohmyzsh', '~/.config/oh-my-zsh',
             '/usr/share/oh-my-zsh'
         ]
-        oh_my_zsh_path = InstallationChecks.get_installation_path(
-            standard_paths)
 
-        if oh_my_zsh_path[0]:  # Check if package was found in standard paths
-            return True, oh_my_zsh_path[1]
-        else:  # Package wasn't found, try to install it
-            return InstallationChecks.install_package('oh-my-zsh',
-                                                      standard_paths,
-                                                      'REQUIRED zsh package',
-                                                      use_aur=True)
+        oh_my_zsh_path = InstallChecks.get_installation_path(standard_paths)
+
+        # Check if package was found in standard paths
+        if oh_my_zsh_path:
+            dotfiles.oh_my_zsh = True
+            dotfiles.oh_my_zsh_path = oh_my_zsh_path
+        # Package wasn't found, try to install it
+        else:
+            install_text = InstallChecks._make_install_text(
+                'REQUIRED zsh package')
+            dotfiles.oh_my_zsh = Install.package('oh-my-zsh',
+                                                 install_text,
+                                                 aur=True)
+            dotfiles.oh_my_zsh_path = InstallChecks.get_installation_path(
+                standard_paths)
+
+        if not dotfiles.oh_my_zsh:
+            InstallChecks.installation_error('oh-my-zsh')
 
     @staticmethod
-    def check_zsh_highlight():
+    def zsh_highlight(dotfiles):
         standard_paths = [
-            '/usr/share/zsh/plugins/zsh-syntax-highlighting',
-            '/usr/share/zsh/zsh-syntax-highlighting',
-            '/usr/share/zsh-syntax-highlighting'
+            '/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh',
+            '/usr/share/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh',
+            '/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
         ]
-        zsh_highlight_path = InstallationChecks.get_installation_path(
-            standard_paths)
+        zsh_highlight_path = InstallChecks.get_installation_path(
+            standard_paths, file_end=True)
 
-        if zsh_highlight_path[
-                0]:  # Check if package was found in standard paths
-            return True, zsh_highlight_path[1]
-        else:  # Package wasn't found, try to install it
-            return InstallationChecks.install_package(
-                'zsh-syntax-highlighting', standard_paths,
+        # Check if package was found in standard paths
+        if zsh_highlight_path:
+            dotfiles.zsh_highlight = True
+            dotfiles.zsh_highlight_path = zsh_highlight_path
+        # Package wasn't found, try to install it
+        else:
+            install_text = InstallChecks._make_install_text(
                 'RECOMMENDED zsh extension')
+
+            dotfiles.zsh_highlight = Install.package('zsh-syntax-highlighting',
+                                                     install_text,
+                                                     aur=False)
+            dotfiles.zsh_highlight_path = InstallChecks.get_installation_path(
+                standard_paths, file_end=True)
+
+        if not dotfiles.zsh_highlight:
+            Print.comment('Proceeding without zsh-syntax-highlighting')
+
+    @staticmethod
+    def vim_vundle(dotfiles, installation_path='~/.vim/bundle/Vundle.vim'):
+        standard_paths = [
+            '~/.vim/bundle/Vundle.vim', '~/.local/share/vim/bundle/Vundle.vim'
+        ]
+
+        vim_vundle_path = InstallChecks.get_installation_path(standard_paths)
+        # Check if package was found in standard paths
+        if vim_vundle_path:
+            dotfiles.vim_vundle = True
+            dotfiles.vim_vundle_path = vim_vundle_path
+        # Package wasn't found, try to install it
+        else:
+            install_text = InstallChecks._make_install_text(
+                'RECOMMENDED Vim Package Manager')
+            dotfiles.vim_vundle = Install.git_install(
+                'https://github.com/VundleVim/Vundle.vim.git',
+                installation_path, install_text)
+            if dotfiles.vim_vundle:
+                dotfiles.vim_vundle_path = installation_path
+            else:
+                dotfiles.vim_vundle_path = None
+
+        if not dotfiles.vim_vundle:
+            Print.comment('Proceeding without zsh-syntax-highlighting')
 
 
 class PersonalizedChanges:
@@ -90,11 +121,12 @@ class PersonalizedChanges:
         filedata = filedata.replace('"$HOME/.config/oh-my-zsh"',
                                     f'"{dotfiles.oh_my_zsh_path}"')
 
-        # Set path to zsh-color-highlighting
-        if dotfiles.zsh_syntax_highlighting_installed:
+        # Set zsh-color-highlighting
+        InstallChecks.zsh_highlight(dotfiles)
+        if dotfiles.zsh_highlight:
             filedata = filedata.replace(
-                '/usr/share/zsh/plugins/zsh-syntax-highlighting',
-                dotfiles.zsh_syntax_highlighting_path)
+                '/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh',
+                dotfiles.zsh_highlight_path)
         else:
             filedata = filedata.replace(
                 '# Load zsh-syntax-highlighting (should be last)', '')
@@ -110,15 +142,33 @@ class PersonalizedChanges:
         return True
 
     @staticmethod
-    def vimrc(file):
+    def vimrc(dotfiles, file):
         if Input.yes_no(
-                'Do you wish to use .vimrc (If you choose yes, please install Vundle or adjust .vimrc file (without Vundle multiple errors will occur)'
+                'Do you wish to follow XDG Standard for vim (.vim floder in .local/share/vim instead of home floder)'
         ):
-            # TODO: Vundle installation
-            # TODO: XDG Standard following + dirs creation
-            return True
+            # Ensure XDG Directories
+            Path.ensure_dirs('~/.local/share/vim/bundle')
+            Path.ensure_dirs('~/.local/share/vim/swap')
+            Path.ensure_dirs('~/.local/share/vim/undo')
+            Path.ensure_dirs('~/.local/share/vim/backup')
+
+            InstallChecks.vim_vundle(dotfiles,
+                                     '~/.local/share/vim/bundle/Vundle.vim')
         else:
-            return False
+            # TODO: Change vimrc not to follow XDG
+            InstallChecks.vim_vundle(dotfiles)
+            Print.warning(
+                'vim will produce multiple errors, please adjust paths not to use XDG Standard'
+            )
+
+        if not dotfiles.vim_vundle:
+            if Input.yes_no(
+                    'Do you wish to proceed without Vundle (.vimrc will produce multiple errors without Vundle )'
+            ):
+                return True
+            else:
+                return False
+        return True
 
     @staticmethod
     def gitconfig(file):
@@ -188,16 +238,8 @@ class Dotfiles:
         return True
 
     def initial_checks(self):
-        if not InstallationChecks.check_zsh():
-            InstallationChecks.installation_error('zsh')
-
-        self.oh_my_zsh_installed, self.oh_my_zsh_path = InstallationChecks.check_oh_my_zsh(
-        )
-        if not self.oh_my_zsh_installed:
-            InstallationChecks.installation_error('oh-my-zsh')
-
-        self.zsh_syntax_highlighting_installed, self.zsh_syntax_highlighting_path = InstallationChecks.check_zsh_highlight(
-        )
+        InstallChecks.zsh()
+        InstallChecks.oh_my_zsh(self)
 
     def make_backup(self):
         Print.action('Creating current dotfiles backup')
@@ -217,7 +259,7 @@ class Dotfiles:
             to_pos = Path.join(backup_dir, file_blank)
 
             # If file is in home directory, back it up
-            if Path.check_file_exists(from_pos):
+            if Path.check_file_exists(from_pos)[0]:
                 Path.copy(from_pos, to_pos)
 
         Print.action('Backup complete')
@@ -226,7 +268,7 @@ class Dotfiles:
         if '.zshrc' in file:
             return PersonalizedChanges.zshrc(self, file)
         elif 'vimrc' in file:
-            return PersonalizedChanges.vimrc(file)
+            return PersonalizedChanges.vimrc(self, file)
         elif '.gitconfig' in file:
             return PersonalizedChanges.gitconfig(file)
         else:

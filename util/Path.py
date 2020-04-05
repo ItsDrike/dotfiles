@@ -51,10 +51,10 @@ def check_file_exists(paths):
     for file_path in paths:
         file_path = os.path.expanduser(file_path)
         if os.path.isfile(file_path):
-            return True
+            return True, file_path
             break
     else:
-        return False
+        return False, None
 
 
 def get_parent(file_path):

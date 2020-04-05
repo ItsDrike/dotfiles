@@ -9,15 +9,21 @@ class InstallationError(Exception):
     pass
 
 
-def _generate_install_text(install_text, package_name, yay=False, git=False):
+def _generate_install_text(install_text,
+                           package_name,
+                           yay=False,
+                           git=False,
+                           git_aur=False):
     if install_text == 'default':
         install_text = f'Do you wish to install {package_name}?'
     if install_text[:10] == 'default + ':
         install_text = f'Do you wish to install {package_name}? {install_text[10:]}'
     if yay:
         install_text += '[AUR (YAY) Package]'
-    if git:
+    if git_aur:
         install_text += '[AUR (GIT+MAKEPKG) Package]'
+    if git:
+        install_text += '[GIT Package]'
     return install_text
 
 
@@ -67,6 +73,34 @@ def check_not_installed(package_name):
         return True
 
 
+def git_install(url,
+                destination,
+                install_text='default',
+                package_name='default'):
+    '''Install package directly using GIT
+
+    Arguments:
+        url {string} -- url for installation
+        destination {string} -- installation path
+
+    Keyword Arguments:
+        install_text {str} -- text presented to the user before installing (default: {'default' -> 'Do you wish to install [repository]'})
+        package_name {str} -- name of package displayed to user (default: {'default' -> Last part of url})
+
+    Returns:
+        bool -- installed
+    '''
+    if package_name == 'default':
+        package_name = url.split(' ')[-1].replace('.git', '')
+    install_text = _generate_install_text(install_text, package_name, git=True)
+    if Input.yes_no(install_text):
+        Command.execute(f'git clone {url} {destination}')
+        return True
+    else:
+        Print.cancel('Skipping...')
+        return False
+
+
 def git_aur(repository, install_text='default', force=False):
     '''Install package directly from AUR using only git and makepkg
 
@@ -97,7 +131,7 @@ def git_aur(repository, install_text='default', force=False):
     if check_not_installed(repository) or force:
         install_text = _generate_install_text(install_text,
                                               repository,
-                                              git=True)
+                                              git_aur=True)
         if Input.yes_no(install_text):
             url = f'https://aur.archlinux.org/{repository}.git'
             Command.execute(f'git clone {url}')
