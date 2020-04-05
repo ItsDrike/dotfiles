@@ -81,7 +81,7 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " Vundle Init
 set rtp+=~/.local/share/vim/bundle/Vundle.vim
-call vundle#begin()
+call vundle#begin('~/.local/share/vim/bundle')
 
 " Plugins
 Plugin 'VundleVim/Vundle.vim'
