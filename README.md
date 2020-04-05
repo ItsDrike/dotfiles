@@ -9,7 +9,7 @@
 * Adjust the settings any way you want
 * You are in charge (install what you want, remove what you don't like)
 
-## Requirements:
+## Requirements
 
 Note that it is required to have Python 3 installed to run this.
 
@@ -22,4 +22,4 @@ Before you run **installer.py**, you should take a look at the files included an
 All files which will be added are in files/ directory.
 You can remove files which you don't want, or adjust them in any way. <br>
 When you are prepared, you can run installer.py <br>
-`$ python3 ~/dotfiles/instal.sh` (assuming you cloned repository to your home directory)
+`$ python3 ~/dotfiles/instal.py` (assuming you cloned repository to your home directory)
