@@ -53,8 +53,8 @@ class InstallationChecks:
         oh_my_zsh_path = InstallationChecks.get_installation_path(
             standard_paths)
 
-        if oh_my_zsh_path:  # Check if package was found in standard paths
-            return True, oh_my_zsh_path
+        if oh_my_zsh_path[0]:  # Check if package was found in standard paths
+            return True, oh_my_zsh_path[1]
         else:  # Package wasn't found, try to install it
             return InstallationChecks.install_package('oh-my-zsh',
                                                       standard_paths,
@@ -71,8 +71,9 @@ class InstallationChecks:
         zsh_highlight_path = InstallationChecks.get_installation_path(
             standard_paths)
 
-        if zsh_highlight_path:  # Check if package was found in standard paths
-            return True, zsh_highlight_path
+        if zsh_highlight_path[
+                0]:  # Check if package was found in standard paths
+            return True, zsh_highlight_path[1]
         else:  # Package wasn't found, try to install it
             return InstallationChecks.install_package(
                 'zsh-syntax-highlighting', standard_paths,
@@ -226,7 +227,7 @@ class Dotfiles:
             return PersonalizedChanges.zshrc(self, file)
         elif 'vimrc' in file:
             return PersonalizedChanges.vimrc(file)
-        elif 'gitignore' in file:
+        elif '.gitconfig' in file:
             return PersonalizedChanges.gitconfig(file)
         else:
             return True

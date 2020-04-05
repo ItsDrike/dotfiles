@@ -14,9 +14,14 @@ def check_dir_exists(paths):
     Returns:
         bool -- One of dirs exists/Single dir exists
     '''
-    if type(paths) != str:
-        paths = str(paths)
-    paths = paths.split(' ')
+    if type(paths) == pathlib.PosixPath:
+        paths = [str(paths)]
+    elif type(paths) == str:
+        paths = paths.split(' ')
+    elif type(paths) != list:
+        raise TypeError(
+            f'check_dir_exists() can only accept list, str or pathlib.PosixPath, not {type(paths)}'
+        )
     for dir_path in paths:
         dir_path = os.path.expanduser(dir_path)
         if os.path.isdir(dir_path):
@@ -35,9 +40,14 @@ def check_file_exists(paths):
     Returns:
         bool -- One of files exists/Single file exists
     '''
-    if type(paths) != str:
-        paths = str(paths)
-    paths = paths.split(' ')
+    if type(paths) == pathlib.PosixPath:
+        paths = [str(paths)]
+    elif type(paths) == str:
+        paths = paths.split(' ')
+    elif type(paths) != list:
+        raise TypeError(
+            f'check_file_exists() can only accept list, str or pathlib.PosixPath, not {type(paths)}'
+        )
     for file_path in paths:
         file_path = os.path.expanduser(file_path)
         if os.path.isfile(file_path):
@@ -106,7 +116,7 @@ def ensure_dirs(path, file_end=False, absolute_path=True):
     '''
     if not absolute_path:
         path = pathlib.Path(path).absolute()
-    if check_file_exists(path) or file_end:
+    if file_end:
         path = get_parent(path)
 
     if not check_dir_exists(path)[0]:
