@@ -119,6 +119,25 @@ class PersonalizedChanges:
         else:
             return False
 
+    @staticmethod
+    def gitconfig(file):
+        with open(file, 'r') as f:
+            filedata = f.read()
+
+        # Replace git name for commits
+        name = Input.question(
+            'Please enter your git name (used only for commits - not github login)'
+        )
+        filedata = filedata.replace('name = koumakpet', f'name = {name}')
+
+        # Replace git mail for commits
+        mail = Input.question(
+            'Please enter your git username (used only for commits - not github login)'
+        )
+        filedata = filedata.replace('email = koumakpet@protonmail.com',
+                                    f'email = {mail}')
+        return True
+
 
 class Dotfiles:
     def __init__(self):
@@ -207,6 +226,8 @@ class Dotfiles:
             return PersonalizedChanges.zshrc(self, file)
         elif 'vimrc' in file:
             return PersonalizedChanges.vimrc(file)
+        elif 'gitignore' in file:
+            return PersonalizedChanges.gitconfig(file)
         else:
             return True
 
