@@ -47,7 +47,7 @@ class InstallChecks:
         else:
             install_text = InstallChecks._make_install_text(
                 'REQUIRED zsh package')
-            dotfiles.oh_my_zsh = Install.package('oh-my-zsh',
+            dotfiles.oh_my_zsh = Install.package('oh-my-zsh-git',
                                                  install_text,
                                                  aur=True)
             dotfiles.oh_my_zsh_path = InstallChecks.get_installation_path(
