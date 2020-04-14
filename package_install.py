@@ -36,10 +36,13 @@ def main():
         'ark',
         'default + (Managing various archive formats such as tar, gzip, zip, rar, etc.)'
     )
-    Install.package('timeshift', 'default + (Backup Tool), aur=True')
+    Install.package('timeshift', 'default + (Backup Tool)', aur=True)
     Install.package('cron', 'default + (Task scheduling)')
     Install.package('dolphin', 'default + (File Manager)')
     Install.package('nomacs', 'default + (Photo viewer & editor)')
+    Install.multiple_packages(['vlc', 'mpv', 'dragon'],
+                              'Do you wish to install video player?',
+                              ['VLC Player', 'Dragon Player', 'MPV Player'])
     Install.package('discord', 'default + (Chat App)')
     Install.package('caprine', 'default + (Unofficial Messenger Chat App)')
     Install.package('spotify', 'default + (Online Music Player)', aur=True)
