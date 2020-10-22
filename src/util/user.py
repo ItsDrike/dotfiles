@@ -18,7 +18,7 @@ class Print:
 
     def err(text: str) -> None:
         """Print syntax for error"""
-        print(f"{Color.RED}   !! {text}{Color.RESET}")
+        print(f"\n{Color.RED}   !! {text}{Color.RESET}")
 
     def cancel(text: str) -> None:
         """Print syntax for cancellation"""
