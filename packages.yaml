@@ -1,9 +1,39 @@
 pacman:
+    # Common
+    - base-devel
+    - git
     - vim
+    - sudo
+    - networkmanager
+
+    # CLI
+    - cron # Scheduling program
+    - zsh # shell
+    - zsh-syntax-highlighting # colored zsh
+    - exa # Modern ls replacement
+
+    # GUI
+    - mpv # Video player
+    - terminator # Terminal emulator
+    - dolphin # File manager
+    - ark # Archive manager (tar, gzip, zip, rar, etc.)
+    - nomacs # Photo viewer
+    - discord # Popular chat app
+    - spectacle # Screenshot taking tool
+    - peek # Gif/mp3 screen recording tool
+    - qalculate-gtk-nognome # Calculator with thousands of features
+    - filelight # Disk usage monitoring
+    - firefox # Browser
+
+    # DE/DM
+    - plasma
+    - sddm
+
 
 git:
     - https://aur.archlinux.org/yay-git.git
 
 aur:
-    - spotify
+    - spotify # Online music player
+    - timeshift # Backup utility
 
