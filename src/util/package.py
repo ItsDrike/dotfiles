@@ -43,6 +43,8 @@ class Package:
 
     def __repr__(self) -> str:
         if self.git:
+            if self.name == self.git_url:
+                return f"<Git package: {self.name}>"
             return f"<Git package: {self.name} ({self.git_url})>"
         elif self.aur:
             return f"<Aur package: {self.name}>"
