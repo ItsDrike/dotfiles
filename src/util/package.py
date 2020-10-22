@@ -1,4 +1,7 @@
+import typing as t
+
 from src.util.install import Install
+from src.util.user import Print
 
 
 class InvalidPackage(Exception):
@@ -34,7 +37,7 @@ class Package:
 
         if self.aur:
             if not Install.is_installed("yay"):
-                raise InvalidPackage(f"Package {self} can't be installed (missing `yay` - AUR installation software)")
+                raise InvalidPackage(f"Package {self} can't be installed (missing `yay` - AUR installation software), alternatively, you can use git")
             Install.yay_install(self.name)
         elif self.git:
             Install.git_install(self.git_url)
@@ -49,3 +52,14 @@ class Package:
         elif self.aur:
             return f"<Aur package: {self.name}>"
         return f"<Package: {self.name}>"
+
+    @classmethod
+    def safe_load(cls, packages: t.List[str], aur: bool = False, git: bool = False) -> t.List["Package"]:
+        loaded_packages = []
+        for package in packages:
+            try:
+                loaded_packages.append(cls(package, aur=aur, git=git))
+            except InvalidPackage as e:
+                Print.warning(e)
+
+        return loaded_packages

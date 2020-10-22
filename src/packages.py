@@ -15,12 +15,9 @@ def obtain_packages() -> t.List[Package]:
     git_packages = yaml_file["git"]
 
     packages = []
-    for package in pacman_packages:
-        packages.append(Package(package))
-    for package in git_packages:
-        packages.append(Package(package, git=True))
-    for package in aur_packages:
-        packages.append(Package(package, aur=True))
+    packages += Package.safe_load(pacman_packages)
+    packages += Package.safe_load(aur_packages, aur=True)
+    packages += Package.safe_load(git_packages, git=True)
 
     return packages
 
