@@ -2,7 +2,7 @@ import shutil
 import os
 
 from src.util import command
-from src.util.user import Print
+from src.util.user import Print, Input
 
 
 class Install:
@@ -38,12 +38,11 @@ class Install:
             Print.comment(f"Git repository {dir_name} doesn't contain PKGBUILD, only downloaded.")
             return
 
-        cwd = os.getcwd()
-        print(cwd)
-
-        os.chdir(dir_name)
-
-        command.execute("makepkg -si")
-
-        os.chdir(cwd)
-        shutil.rmtree(dir_name)
+        if Input.yes_no("Do you wish to run makepkg on the downloaded git repository?"):
+            cwd = os.getcwd()
+            os.chdir(dir_name)
+            command.execute("makepkg -si")
+            os.chdir(cwd)
+            shutil.rmtree(dir_name)
+        else:
+            command.execute(f"mv {dir_name} home/")
