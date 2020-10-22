@@ -12,7 +12,7 @@ export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
 
 
 # Export oh-my-zsh location as $ZSH
- export ZSH="/usr/share/oh-my-zsh"
+export ZSH="/usr/share/oh-my-zsh"
 
 # Set theme
 ZSH_THEME="af-magic"
@@ -63,6 +63,11 @@ export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
 export GOPATH="$XDG_DATA_HOME"/go
 export IPYTHONDIR="$XDG_CONFIG_HOME"/ipython
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
+export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
+export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
+export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
+export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
 
 # Add executable directories into PATH
 PATH+=":$HOME/.local/bin"
@@ -70,6 +75,6 @@ PATH+=":$HOME/.local/bin"
 export PIPENV_VENV_IN_PROJECT=1
 
 # Load zsh-syntax-highlighting (should be last)
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #neofetch --cpu_temp C --gtk2 off --gtk3 off --color_blocks on --pixterm
