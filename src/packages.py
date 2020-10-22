@@ -3,7 +3,7 @@ import yaml
 
 from src.util.package import Package, PackageAlreadyInstalled, InvalidPackage
 from src.util.install import Install
-from src.util.user import Print
+from src.util.user import Print, Input
 
 
 def obtain_packages() -> t.List[Package]:
@@ -27,7 +27,8 @@ def obtain_packages() -> t.List[Package]:
 
 def install_packages() -> None:
     packages = obtain_packages()
-    Install.upgrade_pacman()
+    if Input.yes_no("Do you wish to perform system upgrade first? (Recommended)"):
+        Install.upgrade_pacman()
     for package in packages:
         try:
             Print.action(f"Installing {package}")
