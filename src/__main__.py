@@ -1,6 +1,7 @@
 import os
 
 from src.packages import install_packages
+from src.dotfiles import install_dotfiles
 from src.util.user import Input, Print
 
 
@@ -11,6 +12,8 @@ def main():
 
     if Input.yes_no("Do you wish to perform package install (from `packages.yaml`)?"):
         install_packages()
+    if Input.yes_no("Do you wish to install dotfiles (sync `home/` and `root/` directories accordingly)? You can make a backup."):
+        install_dotfiles()
 
 
 try:
