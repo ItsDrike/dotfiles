@@ -3,7 +3,7 @@ import yaml
 
 from src.util.package import Package, PackageAlreadyInstalled, InvalidPackage
 from src.util.install import Install
-from src.util import log
+from src.util.user import Print
 
 
 def obtain_packages() -> t.List[Package]:
@@ -30,9 +30,13 @@ def install_packages() -> None:
     Install.upgrade_pacman()
     for package in packages:
         try:
-            log.action(f"Installing {package}")
+            Print.action(f"Installing {package}")
             package.install()
         except PackageAlreadyInstalled:
-            log.cancel(f"Package {package} is already installed.")
+            Print.cancel(f"Package {package} is already installed.")
         except InvalidPackage as e:
-            log.warning(e)
+            Print.warning(e)
+
+
+if __name__ == "__main__":
+    install_packages()
