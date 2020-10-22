@@ -45,4 +45,6 @@ class Install:
             os.chdir(cwd)
             shutil.rmtree(dir_name)
         else:
-            command.execute(f"mv {dir_name} home/")
+            os.makedirs("download")
+            command.execute(f"mv {dir_name} download/")
+            Print.action(f"Your git repository was cloned into `download/{dir_name}`")
