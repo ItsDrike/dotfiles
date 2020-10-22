@@ -1,8 +1,9 @@
 pacman:
     - vim
 
+git:
+    - https://aur.archlinux.org/yay-git.git
+
 aur:
     - spotify
 
-git:
-    - https://aur.archlinux.org/yay-git.git
