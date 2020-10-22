@@ -1,0 +1,26 @@
+
+# Ignore python cache
+__pycache__/
+
+# virtualenv
+env/
+venv/
+.venv
+
+# Vscode settings
+.vscode/
+
+# Ignore intellij Files (PyCharm)
+.idea
+
+# Ignore spyder Files
+.spyproject/
+
+# Ignore ds store files
+.DS_STORE
+
+# Backup files
+*.bak
+
+# Personal TODO files
+TODO
