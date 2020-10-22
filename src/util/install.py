@@ -1,4 +1,8 @@
+import shutil
+import os
+
 from src.util import command
+from src.util.user import Print
 
 
 class Install:
@@ -9,11 +13,11 @@ class Install:
 
     def upgrade_pacman() -> None:
         """Run full sync, refresh the package database and upgrade."""
-        command.execute("pacman -Syu")
+        command.execute("sudo pacman -Syu")
 
     def pacman_install(package: str) -> None:
         """Install given `package`"""
-        command.execute(f"pacman -S {package}")
+        command.execute(f"sudo pacman -S {package}")
 
     def yay_install(package: str) -> None:
         """Install give package via `yay` (from AUR)"""
@@ -21,4 +25,25 @@ class Install:
 
     def git_install(url: str) -> None:
         """Clone a git repository with given `url`"""
-        command.execute(f"git clone {url}")
+        dir_name = url.split("/")[-1].replace(".git", "")
+        if os.path.exists(dir_name):
+            Print.cancel(f"Git repository {dir_name} already exists")
+
+        ret_code = command.get_return_code(f"git clone {url}")
+        if ret_code == 128:
+            Print.warning(f"Unable to install git repository {url}")
+            return
+
+        if not os.path.exists(f"{dir_name}/PKGBUILD"):
+            Print.comment(f"Git repository {dir_name} doesn't contain PKGBUILD, only downloaded.")
+            return
+
+        cwd = os.getcwd()
+        print(cwd)
+
+        os.chdir(dir_name)
+
+        command.execute("makepkg -si")
+
+        os.chdir(cwd)
+        shutil.rmtree(dir_name)

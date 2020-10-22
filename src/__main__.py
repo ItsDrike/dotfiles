@@ -5,8 +5,8 @@ from src.util.user import Input, Print
 
 
 def main():
-    if os.geteuid() != 0:
-        Print.err("You need to run this program as root user")
+    if os.geteuid() == 0:
+        Print.err("You can't to run this program as root user")
         return
 
     if Input.yes_no("Do you wish to perform package install (from `packages.yaml`)?"):
