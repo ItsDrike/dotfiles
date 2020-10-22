@@ -30,3 +30,6 @@ TODO
 
 # Ignore backups
 backup/
+
+# Ignore git downloads
+download/
