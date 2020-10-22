@@ -1,20 +1,22 @@
 import os
 import shutil
+import time
 from datetime import datetime
 from contextlib import suppress
 
+from src.util import command
 from src.util.user import Print, Input
 
 
-def _backup_file(backup_dir: str, subdir: str, file: str):
+def _backup_file(backup_dir: str, subdir: str, file: str) -> None:
     """
-    Backup given `file` in given `subdir`
+    Backup given `file` in given `subdir` from system
     """
-    origin_subdir = subdir.replace("home/", f"{os.environ['HOME']}/").replace("root/", "/")
-    origin_path = os.path.join(origin_subdir, file)
+    system_subdir = subdir.replace("home", f"{os.environ['HOME']}/").replace("root", "/")
+    system_path = os.path.join(system_subdir, file)
 
     # Only backup files which exists in origin destination (real system destination)
-    if os.path.exists(origin_path):
+    if os.path.exists(system_path):
         backup_subdir = os.path.join(backup_dir, subdir)
         backup_path = os.path.join(backup_subdir, file)
         # Ensure directory existence in the new backup directory
@@ -22,8 +24,8 @@ def _backup_file(backup_dir: str, subdir: str, file: str):
             os.makedirs(backup_subdir)
 
         if file != "placeholder":
-            Print.comment(f"Backing up {origin_path}")
-            shutil.copyfile(origin_path, backup_path)
+            Print.comment(f"Backing up {system_path}")
+            shutil.copyfile(system_path, backup_path)
 
 
 def make_backup() -> None:
@@ -50,9 +52,43 @@ def make_backup() -> None:
     Print.action("Backup complete")
 
 
-def install_dotfiles():
+def _overwrite_dotfile(subdir: str, dotfile: str) -> None:
+    """Overwrite given `dotfile` in `subdir` from system with the local one"""
+    local_path = os.path.join(subdir, dotfile)
+    system_subdir = subdir.replace("home", f"{os.environ['HOME']}").replace("root", "/")
+    system_path = os.path.join(system_subdir, dotfile)
+
+    # Ensure existence of system directory
+    with suppress(FileExistsError):
+        os.makedirs(system_subdir)
+
+    if dotfile != "placeholder":
+        Print.comment(f"Overwriting {system_path}")
+        # Use sudo to avoid PermissionError
+        command.execute(f"sudo cp {local_path} {system_path}")
+
+
+def overwrite_dotfiles() -> None:
+    # overwrite system dotfiles with local in `home`
+    for subdir, _, files in os.walk("home"):
+        for file in files:
+            _overwrite_dotfile(subdir, file)
+    # overwrite system dotfiles with local in `root`
+    for subdir, _, files in os.walk("root"):
+        for file in files:
+            _overwrite_dotfile(subdir, file)
+
+
+def install_dotfiles() -> None:
     if Input.yes_no("Do you want to backup current dotfiles? (Recommended)"):
         make_backup()
+
+    Print.action("Installing dotfiles (this will overwrite your original files)")
+    time.sleep(2)
+
+    overwrite_dotfiles()
+
+    Print.action("Dotfile installation complete, make sure to adjust the dotfiles to your liking.")
 
 
 if __name__ == "__main__":
