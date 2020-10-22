@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+# enable color support
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+	alias cgrep='grep --color=always'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Exa aliases (replacement for ls, if you are using ls, comment or change this
+alias ls='exa'
+alias ll='exa -glah'
+alias ld='exa -glahD'
+alias lt='exa -Tlagh'
+alias tree='exa -T'
+alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
+alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
+alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
+
+# Shortcuts
+alias vi='vim'
+alias rr='rm -r'
+alias sv='systemctl'
+
+# Changing directories
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias .2='cd ../../'
+alias .3='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+
+# Python
+alias py3='python3'
+alias py2='python2'
+alias py='ipython'
+alias ipy='ipython'
+alias bpy='bpython'
+
+# Config access shortcuts
+alias cfzshrc='vim ~/.zshrc'
+alias cfvim='vim ~/.config/vim/vimrc'
+alias cfalias='vim ~/.config/sh/aliases'
+
+# Replacements
+alias du='du -ach | sort -h' # Sort du by size
+alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
+alias ps='ps auxf' # Print all processes
+alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
+
+
+
+# Custom aliases
+alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
+alias ip-show="dig +short myip.opendns.com @resolver1.opendns.com" # Gets your IP address
+alias fhere='find . -name' # Find file/dir from currrent dir
+alias ssh-list='ss | grep ssh' # List all SSH connections
+alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
+alias cpu-stress='fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null & }; fulload; read; killall dd'
+alias psg='\ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
+alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
+alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
+alias mount-table='df' # Show list of all mounted devices and their mount locations
+alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
+alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
+alias clean='rm -rf ~/.local/share/Trash/* && rm -rf ~/Downloads/*' # Remove trash and downloads files
+
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
+alias o='dolphin .' # open in dolphin (file manager)
+alias batinfo='sudo watch -d -n 2 tlp-stat -b'
+alias sound_control='alsamixer' # Sound control tool in alsa_utils package
+alias firefox="GTK_USE_PORTAL=1 firefox"
+alias pdf-reader='mupdf' # Open pdf file
+alias md-to-pdf='pandoc -s -o' # Convert markdown to pdf
+alias minecraft='minecraft-launcher'
+alias metasploit='msfconsole'
+
+# If user is not root, pass all commands via sudo
+if [ $UID -ne 0 ]; then
+	# Enable aliases to be sudo’ed
+
+	## Uncomment if you are using autocompletion (is ZSH)
+	#alias sudo='nocorrect sudo'
+	## Comment this if you are not using autocompletion (in ZSH)
+	alias sudo='sudo '
+
+	alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
+fi
+
+# Normalize `open` across Linux, macOS, and Windows.
+# This is needed to make `open` function (see below) cross-platform
+if [ ! $(uname -s) = 'Darwin' ]; then
+	if grep -q Microsoft /proc/version; then
+		# Ubuntu on Windows using the Linux subsystem
+		alias open='explorer.exe'
+	else
+		alias open='xdg-open'
+	fi
+fi
+
+# Functions
+if [ -f ~/.config/sh/functions ]; then
+	source ~/.config/sh/functions
+fi
+
+# Extra
+if [ -f ~/.config/sh/extra ]; then
+	source ~/.config/sh/extra
+fi
