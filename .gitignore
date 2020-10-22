@@ -27,3 +27,6 @@ venv/
 
 # Personal TODO files
 TODO
+
+# Ignore backups
+backup/
