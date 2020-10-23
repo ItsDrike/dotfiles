@@ -13,6 +13,7 @@ pacman:
     - exa # Modern ls replacement
 
     # GUI
+    - gedit # Graphical text editor
     - mpv # Video player
     - terminator # Terminal emulator
     - dolphin # File manager
@@ -37,4 +38,5 @@ git:
 aur:
     - spotify # Online music player
     - timeshift # Backup utility
+    - onlyoffice-bin # Full office suite (MS Office alternative)
 
