@@ -24,6 +24,7 @@ pacman:
     - qalculate-gtk-nognome # Calculator with thousands of features
     - filelight # Disk usage monitoring
     - firefox # Browser
+    - code # Visual Studio Code text editor for programmers
 
     # DE/DM
     - plasma
