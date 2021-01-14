@@ -1,6 +1,6 @@
 import typing as t
 
-from src.util.install import Install
+from src.util import install
 from src.util.user import Print
 
 
@@ -32,17 +32,17 @@ class Package:
             self.git_url = f"https://github.com/{self.name}"
 
     def install(self) -> None:
-        if not self.git and Install.is_installed(self.name):
+        if not self.git and install.is_installed(self.name):
             raise PackageAlreadyInstalled(f"Package {self} is already installed")
 
         if self.aur:
-            if not Install.is_installed("yay"):
+            if not install.is_installed("yay"):
                 raise InvalidPackage(f"Package {self} can't be installed (missing `yay` - AUR installation software), alternatively, you can use git")
-            Install.yay_install(self.name)
+            install.yay_install(self.name)
         elif self.git:
-            Install.git_install(self.git_url)
+            install.git_install(self.git_url)
         else:
-            Install.pacman_install(self.name)
+            install.pacman_install(self.name)
 
     def __repr__(self) -> str:
         if self.git:
