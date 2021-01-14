@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+export XMR_ADDRESS="45vtSq96QPjf5hvtHyR5Za7zAnCscHjvnPtCiBmB7BZtBVni3EfT8XeEYWfBxCPCpkR6HJL9iQdJE1BeBhKmUVMTV5Bp4an"
+
+alias backup-x="rsync -av /home/itsdrike/Personal/Other/X /run/media/itsdrike/dc32bd7d-3ad4-45b0-a495-b99907a23de9/"
+alias xmrmine="xmrig -o pool.minexmr.com:443 -u $XMR_ADDRESS -k --tls --rig-id Telcast"

@@ -1,31 +1,28 @@
 #!/usr/bin/env bash
 
-# enable color support
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-	alias cgrep='grep --color=always'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+# I'm not the greatest typist
+alias sl='ls'
+alias mdkir='mkdir'
+alias soruce='source'
+alias souce='source'
 
 # Exa aliases (replacement for ls, if you are using ls, comment or change this
 alias ls='exa'
-alias ll='exa -glah'
+alias l='exa -glah'
+alias ll='exa -glah --classify -s=size --group-directories-first -r'
 alias ld='exa -glahD'
-alias lt='exa -Tlagh'
-alias tree='exa -T'
+alias tree='exa -Tlagh'
 alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
 alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
 alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
 
 # Shortcuts
-alias vi='vim'
 alias rr='rm -r'
 alias sv='systemctl'
+
+# Aliases for piping directly (f.e.: history G ssh)
+alias -g G='| grep'
+alias -g H='| head'
 
 # Changing directories
 alias ..='cd ..'
@@ -48,39 +45,116 @@ alias bpy='bpython'
 alias cfzshrc='vim ~/.zshrc'
 alias cfvim='vim ~/.config/vim/vimrc'
 alias cfalias='vim ~/.config/sh/aliases'
+alias cffunctions='vim ~/.config/sh/functions'
+alias cfenviron='vim ~/.config/sh/environ'
+alias cfhandlers='vim ~/.config/sh/handlers'
 
 # Replacements
+alias wget='wget -c' # Resume wget by default
 alias du='du -ach | sort -h' # Sort du by size
+alias df='df -H' # Show sizes as powers of 1000
 alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
-alias ps='ps auxf' # Print all processes
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
+alias vi='vim' # Nobody uses `vi` anymore, go directly to `vim`
 
+# Fallbacks
+command -v hd > /dev/null || alias hd="hexdump -C" # Cannonical hex dump; some systems have this symlinked
+command -v md5sum > /dev/null || alias md5sum="md5" # Fallback from `md5sum` to `md5`
+command -v sha1sum > /dev/null || alias sha1sum="shasum" # Fallback from `sha1sum` to `shasum`
 
+# Regular expressions
+alias reg_email='echo "[^[:space:]]+@[^[:space:]]+"'
+alias reg_mac='echo "([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}"'
+alias reg_ipv4='echo "([0-9]{1,3}\.){3}[0-9]{1,3}"'
+alias reg_ipv6='echo "\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*"' # Also catches loopbacks (::1), (for valid matching, it needs to be this long...)
+alias reg_ip='echo "(`reg_ipv4`|`reg_ipv6`)"' # Match both IPv4 and IPv6
 
-# Custom aliases
-alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
-alias ip-show="dig +short myip.opendns.com @resolver1.opendns.com" # Gets your IP address
-alias fhere='find . -name' # Find file/dir from currrent dir
+alias grep_email='grep -E `reg_email`'
+alias grep_ip='grep -E `reg_ip`'
+alias grep_mac='grep -E `reg_mac`'
+
+# Validate things
+alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"'
+alias jsoncheck='jq "." >/dev/null <'
+
+# IPTables (firewall) aliases
+alias ipt='sudo iptables' # Shortcut
+alias iptlist='sudo iptables -L -n -v --line-numbers'  # All rules
+alias iptlistin='sudo iptables -L INPUT -n -v --line-numbers' # IN rules
+alias iptlistout='sudo iptables -L OUTPUT -n -v --line-numbers' # OUT rules
+alias iptlistfw='sudo iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
+alias firewall=iptlist
+
+# Network
+alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
+alias ip-info='curl https://ipinfo.io/json' # Show public IP info (IP,region,country,timezone,...)
+alias ips="ifconfig -a | grep -oE \"inet6? (addr:)?s?\`reg_ip\`\" | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias local-devices='nmap -T5 -sP 192.168.0.0-255'
+alias ports='netstat -tulanp'
+alias listening-ports='netstat -vtlnp --listening'
 alias ssh-list='ss | grep ssh' # List all SSH connections
-alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
-alias cpu-stress='fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null & }; fulload; read; killall dd'
-alias psg='\ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
-alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
-alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
-alias mount-table='df' # Show list of all mounted devices and their mount locations
-alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
-alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
-alias clean='rm -rf ~/.local/share/Trash/* && rm -rf ~/Downloads/*' # Remove trash and downloads files
+alias serve='python -m http.server'  # Serve current directorty as HTTP
+alias serve-public='python -m http.server --bind 192.168.0.102'  # Serve publically
 
+# System info
+alias meminfo='free -m -l -t'
+alias cpuinfo='lscpu'
+alias batinfo='sudo watch -d -n 2 tlp-stat -b'
+alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
+alias distro="cat /etc/*-release"
+
+# Processes
+alias psmem='ps auxf | sort -nr -k 4' # Top memory eaters
+alias pscpu='ps auxf | sort -nr -k 3' # Top cpu eaters
+alias psg='ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
+
+# Time info
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+alias week='date +%V'
+
+# Git aliases
+alias g='git'
+alias gs='git status'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias ga='git add'
+alias gaa='git add all'
+alias gb='git branch'
+alias gcb='git checkout -b'
+alias gcda='git diff --cached'  # Diff any files staged for commit
+alias gf='git fetch'
+alias gm='git merge'
+alias gp='git push'
+alias glog='git log --oneline --decorate --graph'
+alias gundo='git reset HEAD~'
+alias gredo="git reset 'HEAD@{1}'"
+alias undopush="git push -f origin HEAD^:master"
+
+# Other headless aliases
+alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
+alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
+alias fhere='find . -name' # Find file/dir from currrent dir
+alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
+alias diskspace_report="df -P -kHl"
+alias mount-table='df' # Show list of all mounted devices and their mount locations
+alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
+alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
+alias ubu-key='gpg --keyserver keyserver.ubuntu.com --recv-key'
+alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
+alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"' # Encode strings as URLs (space->%20, etc.)
+alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
+alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
+alias cpu-stress='fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null & }; fulload; read; killall dd'
+
+# Graphical custom aliases
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
-alias o='dolphin .' # open in dolphin (file manager)
-alias batinfo='sudo watch -d -n 2 tlp-stat -b'
 alias sound_control='alsamixer' # Sound control tool in alsa_utils package
-alias firefox="GTK_USE_PORTAL=1 firefox"
+alias firefox='GTK_USE_PORTAL=1 firefox'
 alias pdf-reader='mupdf' # Open pdf file
 alias md-to-pdf='pandoc -s -o' # Convert markdown to pdf
-alias minecraft='minecraft-launcher'
 alias metasploit='msfconsole'
 
 # If user is not root, pass all commands via sudo
@@ -93,6 +167,18 @@ if [ $UID -ne 0 ]; then
 	alias sudo='sudo '
 
 	alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
+fi
+
+# enable color support
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+	alias cgrep='grep --color=always'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # Normalize `open` across Linux, macOS, and Windows.
