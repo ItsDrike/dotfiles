@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 50 50"
+ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny">
+<title>Qt SVG Document</title>
+<desc>Generated with Qt</desc>
+<defs>
+</defs>
+<g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
+
+<g fill="#000000" fill-opacity="1" stroke="none" transform="matrix(2.27273,0,0,2.27273,-104.545,0)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+opacity="0.001" >
+<rect x="46" y="0" width="22" height="22"/>
+</g>
+
+<g fill="#ffffff" fill-opacity="1" stroke="none" transform="matrix(2.27273,0,0,2.27273,-104.545,0)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+opacity="0.19" >
+<circle cx="57" cy="11" r="11"/>
+</g>
+
+<g fill="#dedede" fill-opacity="1" stroke="none" transform="matrix(2.27273,0,0,2.27273,-104.545,0)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="nonzero" d="M53.0031,7.00023 L54.0028,7.00023 C54.0131,7.00011 54.0235,6.99977 54.034,7.00023 C54.2888,7.01143 54.5437,7.1288 54.7212,7.31272 L57.0016,9.5939 L59.3132,7.31272 C59.5787,7.08223 59.7597,7.00723 60.0004,7.00023 L61,7.00023 L61,8.0002 C61,8.28666 60.9657,8.55083 60.7501,8.75018 L58.4697,11.0314 L60.7189,13.2813 C60.907,13.4695 61,13.7347 61,14 L61,15 L60.0004,15 C59.7352,15 59.47,14.9069 59.2819,14.7188 L57.0016,12.4376 L54.7212,14.7188 C54.5331,14.9069 54.2679,15 54.0028,15 L53.0031,15 L53.0031,14 C53.0031,13.7347 53.0962,13.4695 53.2843,13.2813 L55.5646,11.0314 L53.2843,8.75018 C53.0736,8.55555 52.9812,8.28094 53.0031,8.0002 L53.0031,7.00023"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans" font-size="10" font-weight="400" font-style="normal" 
+>
+</g>
+</g>
+</svg>
