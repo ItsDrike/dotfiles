@@ -1,23 +1,23 @@
-
-# Ignore python cache
+# Byte-compiled / optimized / DLL Files
 __pycache__/
+*.py[cod]
+*$py.class
 
-# Ignore pytest cache
-.pytest_cache
-
-# virtualenv
-env/
-venv/
+# Virtual Envornments
 .venv
+venv/
+env/
 
-# Vscode settings
+# Editor project settings
+## VSCode
 .vscode/
-
-# Ignore intellij Files (PyCharm)
-.idea
-
-# Ignore spyder Files
+## PyCharm intellij
+.idea/
+## repl.it
+.replit
+## Spyder
 .spyproject/
+.spyderproject/
 
 # Ignore ds store files
 .DS_STORE
