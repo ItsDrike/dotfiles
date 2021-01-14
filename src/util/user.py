@@ -4,6 +4,7 @@ from src.util import color
 
 
 class Print:
+    @staticmethod
     def question(question: str, options: t.Optional[list] = None) -> None:
         """Print syntax for question with optional `options` to it"""
         text = [f"{color.GREEN} // {question}{color.RESET}"]
@@ -12,28 +13,34 @@ class Print:
                 text.append(f"{color.GREEN}    # {option}{color.RESET}")
         print("\n".join(text))
 
+    @staticmethod
     def action(action: str) -> None:
         """Print syntax for action"""
         print(f"{color.GOLD} >> {action}{color.RESET}")
 
+    @staticmethod
     def err(text: str) -> None:
         """Print syntax for error"""
         print(f"\n{color.RED}   !! {text}{color.RESET}")
 
+    @staticmethod
     def cancel(text: str) -> None:
         """Print syntax for cancellation"""
         print(f"{color.GREY} >> {text}{color.RESET}")
 
+    @staticmethod
     def comment(text: str) -> None:
         """Print syntax for comments"""
         print(f"{color.GREY} // {text}{color.RESET}")
 
+    @staticmethod
     def warning(text: str) -> None:
         """Print syntax for warnings"""
         print(f"{color.YELLOW} ** {text}{color.RESET}")
 
 
 class Input:
+    @staticmethod
     def yes_no(question: str) -> bool:
         """Ask a yes/no `question`, return True(y)/False(n)"""
         while True:
@@ -46,6 +53,7 @@ class Input:
             else:
                 Print.err("Invalid option (Y/N)")
 
+    @staticmethod
     def multiple(question: str, options: t.List[str], abort: bool = False) -> int:
         """
         Ask `question` with multiple `options`
@@ -69,6 +77,7 @@ class Input:
             else:
                 Print.err(f"Invalid option, outside of the number range 1-{len(options)}")
 
+    @staticmethod
     def text(text: str) -> str:
         Print.question(text)
         return input("  >>")
