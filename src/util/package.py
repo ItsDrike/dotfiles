@@ -60,6 +60,6 @@ class Package:
             try:
                 loaded_packages.append(cls(package, aur=aur, git=git))
             except InvalidPackage as e:
-                Print.warning(e)
+                Print.warning(str(e))
 
         return loaded_packages

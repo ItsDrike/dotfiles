@@ -33,7 +33,7 @@ def install_packages() -> None:
         except PackageAlreadyInstalled:
             Print.cancel(f"Package {package} is already installed.")
         except InvalidPackage as e:
-            Print.warning(e)
+            Print.warning(str(e))
 
 
 if __name__ == "__main__":
