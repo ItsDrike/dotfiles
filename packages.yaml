@@ -10,7 +10,9 @@ pacman:
     - cron # Scheduling program
     - zsh # shell
     - zsh-syntax-highlighting # colored zsh
+    - zsh-autosuggestions # Suggestions from previous commands
     - exa # Modern ls replacement
+    - pkgfile # Pacman metadata explorer
 
     # GUI
     - gedit # Graphical text editor
@@ -25,7 +27,8 @@ pacman:
     - qalculate-gtk-nognome # Calculator with thousands of features
     - filelight # Disk usage monitoring
     - firefox # Browser
-    - code # Visual Studio Code text editor for programmers
+    - krita # Image editing software (gimp alternative)
+    # - code # Open sourced version of vscode (doesn't support many extensions)
 
     # DE/DM
     - plasma
@@ -36,7 +39,10 @@ git:
     - https://aur.archlinux.org/yay-git.git
 
 aur:
+    - autojump # Faster way to navigate in CLI
     - spotify # Online music player
     - timeshift # Backup utility
     - onlyoffice-bin # Full office suite (MS Office alternative)
-
+    - ngrok # Forward your localhost
+    - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
+    - exodus # Software cryptocurrency wallet
