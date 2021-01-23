@@ -1,18 +1,28 @@
 pacman:
     # Common
-    - base-devel
+    - base-devel # Necessary for building AUR and yay install
     - git
     - vim
     - sudo
     - networkmanager
 
     # CLI
+    - exa # Modern ls replacement
     - cron # Scheduling program
+    - pkgfile # Pacman metadata explorer
+    - xsel # CLI tool for get/set contents of X11 clipboard (alternatively there's xclip)
+    # ZSH + Plugins
     - zsh # shell
     - zsh-syntax-highlighting # colored zsh
     - zsh-autosuggestions # Suggestions from previous commands
-    - exa # Modern ls replacement
-    - pkgfile # Pacman metadata explorer
+    # Security
+    - macchanger # Tool for changing MAC address
+    - dnsutils # Tools for managing DNS
+    - arch-audit # Similar to pkg-audit (AUR), based on Arch CVE Monitoring Team data
+    - apparmor # Mandantoy Access Control using Linux Security Module
+    - lynis # Security and System auditing tool
+    - firejail # Sandboxing isolation tool
+    - clamav # Anti-virus toolkit
 
     # GUI
     - gedit # Graphical text editor
@@ -36,13 +46,20 @@ pacman:
 
 
 git:
-    - https://aur.archlinux.org/yay-git.git
+    - https://aur.archlinux.org/yay-git.git # Yay tool, for AUR installation
 
 aur:
-    - autojump # Faster way to navigate in CLI
+    # CLI
+    # ZSH Extensions
+    - autojump # Faster way to navigate in CLI (j command)
+    # Security
+    - ngrok # Forward your localhost without ip recovery
+    - pkg-audit # AUdit installed packages against known vulnerabilities, not necessary with arch-audit, but it does provide more detailed info
+    - opensnitch # onitor all network traffic (Installation can be quite slow ~15min)
+
+    # GUI
     - spotify # Online music player
     - timeshift # Backup utility
     - onlyoffice-bin # Full office suite (MS Office alternative)
-    - ngrok # Forward your localhost
     - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
     - exodus # Software cryptocurrency wallet

@@ -6,24 +6,6 @@ alias mdkir='mkdir'
 alias soruce='source'
 alias souce='source'
 
-# Exa aliases (replacement for ls, if you are using ls, comment or change this
-alias ls='exa'
-alias l='exa -glah'
-alias ll='exa -glah --classify -s=size --group-directories-first -r'
-alias ld='exa -glahD'
-alias tree='exa -Tlagh'
-alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
-alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
-alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
-
-# Shortcuts
-alias rr='rm -r'
-alias sv='systemctl'
-
-# Aliases for piping directly (f.e.: history G ssh)
-alias -g G='| grep'
-alias -g H='| head'
-
 # Changing directories
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -34,12 +16,30 @@ alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 
+# Shortcuts
+alias rr='rm -r'
+alias sv='systemctl'
+
+# Aliases for piping directly (f.e.: history G ssh)
+alias -g G='| grep'
+alias -g H='| head'
+
 # Python
 alias py3='python3'
 alias py2='python2'
 alias py='ipython'
 alias ipy='ipython'
 alias bpy='bpython'
+
+# Exa aliases (replacement for ls, if you are using ls, comment or change this
+alias ls='exa'
+alias l='exa -glah'
+alias ll='exa -glah --classify -s=size --group-directories-first -r'
+alias ld='exa -glahD'
+alias tree='exa -Tlagh'
+alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
+alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
+alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
 
 # Config access shortcuts
 alias cfzshrc='vim ~/.zshrc'
@@ -62,8 +62,14 @@ command -v hd > /dev/null || alias hd="hexdump -C" # Cannonical hex dump; some s
 command -v md5sum > /dev/null || alias md5sum="md5" # Fallback from `md5sum` to `md5`
 command -v sha1sum > /dev/null || alias sha1sum="shasum" # Fallback from `sha1sum` to `shasum`
 
+# X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
+command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
+command -v xclip > /dev/null && alias pbpaste='xclip -selection clipboard -o'
+command -v xsel > /dev/null && alias pbcopy='xsel --clipboard --input'
+command -v xsel > /dev/null && alias pbpaste='xsel --clipboard --output'
+
 # Regular expressions
-alias reg_email='echo "[^[:space:]]+@[^[:space:]]+"'
+alias reg_email='echo "[a-Z0-9._%-]+@[a-Z0-9.-]+\.[a-Z]{2,10}"'
 alias reg_mac='echo "([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}"'
 alias reg_ipv4='echo "([0-9]{1,3}\.){3}[0-9]{1,3}"'
 alias reg_ipv6='echo "\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*"' # Also catches loopbacks (::1), (for valid matching, it needs to be this long...)
@@ -110,7 +116,7 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process w
 
 # Time info
 alias now='date +"%T"'
-alias nowtime=now
+alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 alias week='date +%V'
 
@@ -134,6 +140,8 @@ alias undopush="git push -f origin HEAD^:master"
 
 # Other headless aliases
 alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
+alias vuln='arch-audit' # Show vulnerable packages that can be upgraded (Arch Linux)
+alias update-vuln="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias fhere='find . -name' # Find file/dir from currrent dir
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
