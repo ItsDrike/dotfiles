@@ -46,6 +46,8 @@ autoload -U colors && colors # enable color support
 [ -f ~/.config/sh/handlers ] && source ~/.config/sh/handlers
 # Load key bindings
 [ -f ~/.config/sh/keybinds ] && source ~/.config/sh/keybinds
+# Load prompt
+[ -f ~/.config/sh/theme ] && . ~/.config/sh/theme
 
 
 # Load extensions (should be last)
