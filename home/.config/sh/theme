@@ -10,22 +10,20 @@ PURPLE="%F{105}"
 RESET="%f"
 
 git_prompt() {
-  branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/*\(.*\)/\1/')
-
-  if [ ! -z $branch ]; then
-    echo -n "$ORANGE$branch"
+    ref=$(command git symbolic-ref HEAD 2> /dev/null) || ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
+    echo -n "$ORANGE${ref#refs/heads/}"
 
     if [ ! -z "$(git status --short)" ]; then
-      echo "$RED+"
+        echo "$RED+"
     fi
-  fi
 }
+
 setopt PROMPT_SUBST
 
 # Primary Prompt
 [ "$EUID" -eq 0 ] && PS1="$RED%n@%m$RESET" || PS1="$GRAY%n@%m$RESET" # user@machine
 PS1+=" $BLUE%~" # Working directory
-PS1+="\$(git_prompt)"
+PS1+=" \$(git_prompt)"
 PS1+=" $PURPLE%(!.#.»)$RESET " # Final symbol (# or »)
 
 # Next line prompt
