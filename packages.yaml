@@ -23,6 +23,7 @@ pacman:
     - lynis # Security and System auditing tool
     - firejail # Sandboxing isolation tool
     - clamav # Anti-virus toolkit
+    - rkhunter # Check for the presence of rootkits and other unwanted tools.
 
     # GUI
     - gedit # Graphical text editor
