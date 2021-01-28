@@ -26,8 +26,8 @@ if command -v pkgfile > /dev/null; then
 elif [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
 	# Ubuntu handle for bash default command-not-found
 	# it works similarely to the above arch alternative,
-	# this is a clone of the original bash implementation
-	function command_not_found_handle {
+	# this is based on the original bash implementation
+	command_not_found_handler() {
 		# check because cmd not found could've been removed in the meantime
 		if [ -x /usr/lib/command-not-found ]; then
 			/usr/lib/command-not-found -- "$1"
