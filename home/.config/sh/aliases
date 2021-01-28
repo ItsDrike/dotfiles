@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # I'm not the greatest typist
 alias sl='ls'
@@ -90,6 +90,8 @@ alias iptlistin='sudo iptables -L INPUT -n -v --line-numbers' # IN rules
 alias iptlistout='sudo iptables -L OUTPUT -n -v --line-numbers' # OUT rules
 alias iptlistfw='sudo iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias firewall=iptlist
+command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
+
 
 # Network
 alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
@@ -101,6 +103,9 @@ alias listening-ports='netstat -vtlnp --listening'
 alias ssh-list='ss | grep ssh' # List all SSH connections
 alias serve='python -m http.server'  # Serve current directorty as HTTP
 alias serve-public='python -m http.server --bind 192.168.0.102'  # Serve publically
+alias reverse-dns='host' # It might be easier to just use `host` though
+alias torify='source torsocks on' # Pass every command via torsocks
+alias untorify='source torsocks off' # Stop passing commands via torsocks
 
 # System info
 alias meminfo='free -m -l -t'
@@ -119,6 +124,13 @@ alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 alias week='date +%V'
+
+# Cleanup
+alias clean-trash='\rm -rf ~/.local/share/Trash/* || echo "Trash already empty"'
+alias clean-down='\rm -rf ~/Downloads/* || echo "Downloads directory is already empty"'
+alias clean-journal='journalctl --vacuum-size=200M || echo "You have to be root to clean journal"'
+alias clean-pacman='pacman -Sc || echo "You have to be root to clean pacman cache"'
+alias cleanup='clean-trash && clean-down && clean-journal && clean-pacman'
 
 # Git aliases
 alias g='git'
@@ -141,7 +153,7 @@ alias undopush="git push -f origin HEAD^:master"
 # Other headless aliases
 alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
 alias vuln='arch-audit' # Show vulnerable packages that can be upgraded (Arch Linux)
-alias update-vuln="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
+alias vuln-upgrade="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias fhere='find . -name' # Find file/dir from currrent dir
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
@@ -155,6 +167,7 @@ alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.a
 alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
 alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
 alias cpu-stress='fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null & }; fulload; read; killall dd'
+alias metasploit='msfconsole'
 
 # Graphical custom aliases
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -163,7 +176,6 @@ alias sound_control='alsamixer' # Sound control tool in alsa_utils package
 alias firefox='GTK_USE_PORTAL=1 firefox'
 alias pdf-reader='mupdf' # Open pdf file
 alias md-to-pdf='pandoc -s -o' # Convert markdown to pdf
-alias metasploit='msfconsole'
 
 # If user is not root, pass all commands via sudo
 if [ $UID -ne 0 ]; then
