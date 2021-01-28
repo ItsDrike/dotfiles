@@ -1,13 +1,14 @@
 # ZSH Cache config
-ZSH_CACHE="$HOME/.cache/zsh"
+export ZSH_CACHE="$HOME/.cache/zsh"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
-# Move .zsh-update to $ZSH_CACHE
+export HISTFILE=$ZSH_CACHE/history
+# Move certain files directly
 [ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
+[ -f ~/.zcompdump ] && mv ~/.zcompdump $ZSH_CACHE/zcompdump-$ZSH_VERSION # Ubuntu refuses to follow env ZSH_COMPDUMP
 
 # ZSH History config
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=$ZSH_CACHE/history
 setopt appendhistory
 
 # oh-my-zsh configuration
@@ -28,6 +29,9 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit -d $ZSH_COMPDUMP
 comp_options+=(globdots)
+
+# Automatic file removal for cleanup
+[ -f ~/.sudo_as_admin_sucessful ] && rm ~/.sudo_as_admin_successful # Ubuntu makes this every with sudo usage
 
 # Environmental variable exports, including XDG standard definitions
 [ -f ~/.config/sh/environ ] && source ~/.config/sh/environ
