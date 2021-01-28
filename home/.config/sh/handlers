@@ -1,24 +1,43 @@
 #!/usr/bin/env bash
 
-# Command not found hook that uses `pkgfile` package
-# to search through the package database in order to
-# find a package which includes given command, which
-# was resolved as not found, if there are no such packages
-# only print command not found message
-command_not_found_handler() {
-	local pkgs cmd="$1" files=()
-	printf 'zsh: command not found: %s' "$cmd" # print command not found asap, then search for packages
-	files=(${(f)"$(pkgfile ${cmd})"})
-	if (( ${#files[@]} )); then
-		printf '\r%s may be found in the following packages:\n' "$cmd"
-		local res=() repo package version file
-		for file in "$files[@]"; do
-			res=("${(0)file}")
-			repo="$res[1]"
-			printf '  %s\n' "$repo"
-		done
-	else
-		printf '\n'
-	fi
-	return 127
-}
+if command -v pkgfile > /dev/null; then
+	# Command not found hook that uses `pkgfile` package
+	# to search through the package index in order to find
+	# a package which includes given command, which was resolved
+	# and not found, if there are no such packages, only print
+	# command not found message
+	command_not_found_handler() {
+		local pkgs cmd="$1" files=()
+		printf 'zsh: command not found: %s' "$cmd" # print command not found asap, then search for packages
+		files=(${(f)"$(pkgfile ${cmd})"})
+		if (( ${#files[@]} )); then
+			printf '\r%s may be found in the following packages:\n' "$cmd"
+			local res=() repo package version file
+			for file in "$files[@]"; do
+				res=("${(0)file}")
+				repo="$res[1]"
+				printf '  %s\n' "$repo"
+			done
+		else
+			printf '\n'
+		fi
+		return 127
+	}
+elif [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
+	# Ubuntu handle for bash default command-not-found
+	# it works similarely to the above arch alternative,
+	# this is a clone of the original bash implementation
+	function command_not_found_handle {
+		# check because cmd not found could've been removed in the meantime
+		if [ -x /usr/lib/command-not-found ]; then
+			/usr/lib/command-not-found -- "$1"
+			return $?
+		elif [ -x /usr/share/command-not-found/command-not-found ]; then
+			/usr/share/command-not-found/command-not-found -- "$1"
+			return $?
+		else
+			printf "%s: command not found\n" "$1" >&2
+			return 127
+		fi
+	}
+fi
