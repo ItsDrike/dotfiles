@@ -44,6 +44,6 @@ bindkey '^ ' autosuggest-accept
 # Load extensions (should be last)
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null  # Syntax highlighting
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null  # Auto suggestions
-source /etc/profile.d/autojump.sh 2>/dev/null  # Auto-Jump
+source /usr/share/autojump/autojump.zsh 2>/dev/null  # Auto-Jump
 
 #neofetch --cpu_temp C --gtk2 off --gtk3 off --color_blocks on --pixterm
