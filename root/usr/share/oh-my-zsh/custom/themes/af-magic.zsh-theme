@@ -1,31 +1,28 @@
+#!/usr/bin/env zsh
 # af-magic.zsh-theme
 # Repo: https://github.com/andyfleming/oh-my-zsh
 # Direct Link: https://github.com/andyfleming/oh-my-zsh/blob/master/themes/af-magic.zsh-theme
 
-
 # settings
 typeset +H return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
-typeset +H my_gray="$FG[237]"
-typeset +H my_orange="$FG[214]"
-typeset +H my_red="$FG[196]"
+typeset +H GRAY="$FG[237]"
+typeset +H RED="$FG[196]"
+typeset +H YELLOW="$FG[226]"
+typeset +H BLUE="$FG[032]"
+typeset +H PURPLE="$FG[105]"
 
-# separator dashes size
-function afmagic_dashes {
-#	[[ -n "${VIRTUAL_ENV-}" && -z "${VIRTUAL_ENV_DISABLE_PROMPT-}" && "$PS1" = \(* ]] \
-#		&& echo $(( COLUMNS - ${#VIRTUAL_ENV} - 3 )) \
-#		|| echo $COLUMNS
-}
+# Primary Prompt
+[ "$EUID" -eq 0 ] && PS1="$RED%n@%m " || PS1="$GRAY%n@%m " # user@machine (red/gray based on root)
+PS1+="$BLUE%~" # cwd
+PS1+='$(git_prompt_info)$(hg_prompt_info)' # git,hg
+PS1+=" $PURPLE%(!.#.»)%{$reset_color%} " # final symbol
 
-# primary prompt
-[ "$EUID" -eq 0 ] && PS1='$my_red%n@%m ' || PS1='$my_gray%n@%m '
+# Next line prompt
+PS2="%{$RED%}\ %{$reset_color%}"
 
-PS1+='$FG[032]%~$(git_prompt_info)$(hg_prompt_info) $FG[105]%(!.#.»)%{$reset_color%} '
-PS2='%{$fg[red]%}\ %{$reset_color%}'
-RPS1='${return_code}'
-
-# right prompt
-(( $+functions[virtualenv_prompt_info] )) && RPS1+='$(virtualenv_prompt_info)'
-#RPS1+=' $my_gray%n@%m%{$reset_color%}%'
+# Right side prompt
+RPS1="${return_code}"
+(( $+functions[virtualenv_prompt_info] )) && RPS1+="$(virtualenv_prompt_info)"
 
 # git settings
 ZSH_THEME_GIT_PROMPT_PREFIX="$FG[075]($FG[078]"
