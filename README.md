@@ -23,7 +23,7 @@ Python 3 is requred to run the automated installation script, but you can move t
 
 ## Sample images
 
-- Prompt (Fully adjustable, either manually, or using other oh-my-zsh themes) ![image](https://user-images.githubusercontent.com/20902250/106213937-0df13180-61ce-11eb-9a06-867b89ea2fd6.png)
+- Prompt (Fully adjustable, either manually, or using other oh-my-zsh themes) ![image](https://user-images.githubusercontent.com/20902250/106214493-2ada3480-61cf-11eb-9226-5293b6eb3c75.png)
 - Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
 - Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/106214104-645e7000-61ce-11eb-9c80-d0762338ce59.png)
 
@@ -34,9 +34,9 @@ Clone this repository anywhere you like
 
 `$ git clone https://github.com/ItsDrike/dotfiles`
 
-Before you run, you should take a look at the files included and adjust them however you like.  
+Before you run, you should take a look at the files included and adjust them however you like.
 All files which will be added are in `home/` and `root/` directory.
-You can remove files which you don't want, or adjust them in any way.  
+You can remove files which you don't want, or adjust them in any way.
 You should also take a look at `packages.yaml` and remove all packages which you don't want and add those you do.
 
 When you are prepared, you can run the installer
