@@ -16,6 +16,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 - [XDG configuration](home/.config/sh/environ) to avoid too much cluttering in home directory
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
+- Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
 
 ## Requirements
 
@@ -23,22 +24,19 @@ Python 3 is requred to run the automated installation script, but you can move t
 
 ## Sample images
 
-- Prompt (Fully adjustable, either manually, or using other oh-my-zsh themes) ![image](https://user-images.githubusercontent.com/20902250/106214493-2ada3480-61cf-11eb-9226-5293b6eb3c75.png)
+- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/106214493-2ada3480-61cf-11eb-9226-5293b6eb3c75.png)
 - Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
 - Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/106214104-645e7000-61ce-11eb-9c80-d0762338ce59.png)
 
-
 ## Automated script usage
 
-Clone this repository anywhere you like
-
+Clone this repository anywhere you like  
 `$ git clone https://github.com/ItsDrike/dotfiles`
 
 Before you run, you should take a look at the files included and adjust them however you like.
-All files which will be added are in `home/` and `root/` directory.
-You can remove files which you don't want, or adjust them in any way.
-You should also take a look at `packages.yaml` and remove all packages which you don't want and add those you do.
 
-When you are prepared, you can run the installer
+- All files which will be added are in [`home/`](home) and [`root/`](root) directory. You can remove files which you don't want, or adjust them in any way.
+- You should also take a look at [`packages.yaml`](packages.yaml) and remove all packages which you don't want and add those you do.
 
+When you are prepared, you can run the installer  
 `$ python3 -m src` (assuming you're in the clonned repository)
