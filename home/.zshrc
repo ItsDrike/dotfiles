@@ -10,12 +10,12 @@ HISTFILE="$ZSH_CACHE/history"
 HISTSIZE=10000
 SAVEHIST=10000
 
-# oh-my-zsh configuration
-export ZSH="/usr/share/oh-my-zsh"
-ZSH_THEME="af-magic"
-UPDATE_ZSH_DAYS=5
-ENABLE_CORRECTION="false"
-source $ZSH/oh-my-zsh.sh # Run oh-my-zsh
+# oh-my-zsh configuration (DISABLED by default, if you want oh-my-zsh, uncomment these)
+#export ZSH="/usr/share/oh-my-zsh"
+#ZSH_THEME="af-magic"
+#UPDATE_ZSH_DAYS=8
+#ENABLE_CORRECTION="false"
+#source $ZSH/oh-my-zsh.sh # Run oh-my-zsh
 
 # Basic auto/tab complete
 autoload -Uz compinit
