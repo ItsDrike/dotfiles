@@ -54,4 +54,3 @@ autoload -U colors && colors # enable color support
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null  # Syntax highlighting
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null  # Auto suggestions
 source /usr/share/autojump/autojump.zsh 2>/dev/null  # Auto-Jump
-
