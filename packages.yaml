@@ -24,6 +24,7 @@ pacman:
     - firejail # Sandboxing isolation tool
     - clamav # Anti-virus toolkit
     - rkhunter # Check for the presence of rootkits and other unwanted tools.
+    #- ufw # Uncomplicated firewall, a simple way of defining firewall (disabled, because opensnitch FW is more detailed and better)
 
     # GUI
     - gedit # Graphical text editor
@@ -56,7 +57,7 @@ aur:
     # Security
     - ngrok # Forward your localhost without ip recovery
     - pkg-audit # AUdit installed packages against known vulnerabilities, not necessary with arch-audit, but it does provide more detailed info
-    - opensnitch # Monitor all network traffic (Installation can be quite slow ~15min)
+    - opensnitch # Application level firewall, with full traffic monitoring, this FW is slower than kernel level ones which build upon iptables, but the advantages are worth it (Installation can be quite slow ~15min)
 
     # GUI
     - spotify # Online music player
