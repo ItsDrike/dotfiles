@@ -20,7 +20,8 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 
 ## Requirements
 
-Python 3 is requred to run the automated installation script, but you can move the files and optionally also install the packages from [`packages.yaml`](packages.yaml) manually.
+`curl` and `tar`, or `git` to clone the repository itself.  
+Installation uses `python` and `pip` and `pyyaml` library for python, but that will get installed automatically by the `install.sh` script.
 
 ## Sample images
 
@@ -28,15 +29,23 @@ Python 3 is requred to run the automated installation script, but you can move t
 - Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
 - Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/106214104-645e7000-61ce-11eb-9c80-d0762338ce59.png)
 
-## Automated script usage
+## Installation
 
 Clone this repository anywhere you like  
 `$ git clone https://github.com/ItsDrike/dotfiles`
+
+If you don't want to install git (running straight from newly installed os), you can use `curl`:  
+`$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master`  
+And extract from `.tar.gz` archive:  
+`$ tar xvf [archive name]`
+
+## Running the script
 
 Before you run, you should take a look at the files included and adjust them however you like.
 
 - All files which will be added are in [`home/`](home) and [`root/`](root) directory. You can remove files which you don't want, or adjust them in any way.
 - You should also take a look at [`packages.yaml`](packages.yaml) and remove all packages which you don't want and add those you do.
 
-When you are prepared, you can run the installer  
-`$ python3 -m src` (assuming you're in the clonned repository)
+When you are prepared, you can run the installer  (assuming you're in the clonned directory):
+`$ chmod +x install.sh` (Make installation script executable)
+`$ sh install.sh` (run the installation script, which will begin the instalaltion)
