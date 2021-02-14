@@ -1,0 +1,16 @@
+{
+  "created": "2021-02-13T23:56:57.320167106+01:00",
+  "updated": "2021-02-13T23:56:57.320204749+01:00",
+  "name": "Spotify",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/opt/spotify/spotify",
+    "list": []
+  }
+}

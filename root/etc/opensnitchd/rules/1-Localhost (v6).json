@@ -1,0 +1,16 @@
+{
+  "created": "2021-02-14T12:27:14.331641433+01:00",
+  "updated": "2021-02-14T12:27:14.331679703+01:00",
+  "name": "1-Localhost (v6)",
+  "enabled": true,
+  "precedence": false,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "network",
+    "operand": "dest.network",
+    "sensitive": false,
+    "data": "::1/128",
+    "list": []
+  }
+}

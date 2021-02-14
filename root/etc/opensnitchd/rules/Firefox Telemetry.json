@@ -1,0 +1,16 @@
+{
+  "created": "2021-02-14T10:47:26.440467737+01:00",
+  "updated": "2021-02-14T10:47:26.440519824+01:00",
+  "name": "Firefox Telemetry",
+  "enabled": true,
+  "precedence": false,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/lib/firefox/pingsender",
+    "list": []
+  }
+}
