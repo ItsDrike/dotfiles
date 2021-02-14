@@ -56,7 +56,7 @@ aur:
     # Security
     - ngrok # Forward your localhost without ip recovery
     - pkg-audit # AUdit installed packages against known vulnerabilities, not necessary with arch-audit, but it does provide more detailed info
-    - opensnitch # onitor all network traffic (Installation can be quite slow ~15min)
+    - opensnitch # Monitor all network traffic (Installation can be quite slow ~15min)
 
     # GUI
     - spotify # Online music player
