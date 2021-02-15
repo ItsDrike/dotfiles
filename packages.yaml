@@ -37,6 +37,9 @@ pacman:
     - dnsutils # Tools for managing DNS
     - arch-audit # Similar to pkg-audit (AUR), based on Arch CVE Monitoring Team data
     - apparmor # Mandantoy Access Control using Linux Security Module
+      # You'll want to also enable apparmor on boot with grub:
+      # Go to `/etc/default/grub` and append `apparmor=1 security=apparmor` to `GRUB_CMDLINE_LINUX_DEFAULT` variable, then run `grub-mkconfig -o /boot/grub/grub.cfg`
+    - audit # Framework for CAPP-compliant (Controlled Access Protection Profile) auditing system, that collects info about any relevant event on system, needed for apparmor profile generation (`auditd` service has to be enabled, and a boot param of audit=1 should be added - same process as above)
     - lynis # Security and System auditing tool
     - firejail # Sandboxing isolation tool
     - clamav # Anti-virus toolkit
