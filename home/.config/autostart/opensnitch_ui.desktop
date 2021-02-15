@@ -1,0 +1,12 @@
+[Desktop Entry]
+Categories=System;Filesystem;Network;
+Exec=/bin/sh -c 'pkill -15 opensnitch-ui; opensnitch-ui'
+GenericName=OpenSnitch Firewall
+Icon=opensnitch-ui
+Keywords=system;firewall;policies;security;polkit;policykit;douane;
+Name=OpenSnitch
+NoDisplay=false
+Terminal=false
+Type=Application
+X-GNOME-Autostart-Delay=3
+X-GNOME-Autostart-enabled=true
