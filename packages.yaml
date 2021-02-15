@@ -5,6 +5,7 @@ pacman:
     - vim
     - sudo
     - networkmanager
+    - net-tools
 
     # CLI
     - exa # Modern ls replacement
