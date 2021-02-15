@@ -16,6 +16,12 @@ pacman:
     - zsh-syntax-highlighting # colored zsh
     - zsh-autosuggestions # Suggestions from previous commands
     # KVM Virtualization
+      # For installation, you'll also have to enable service `libvirtd` and make a new bridge interface
+      # You'll also want to create a new bridge. Use a config file `br10.xml`
+      # This file is already located in `home/.config/network-bridge/br10.xml` if you use dotfiles installation
+      # Then you can define bridge with `virsh net-def br10.xml` and start it `virsh net-start br10`
+      # We will also want to autostart this interface with `virsh net-autostart br10`
+      # If further instructions are necessary, check `https://youtu.be/itZf5FpDcV0` for video tutorial
     - virt-manager # Frontend GUI for KVM
     - qemu # Base emulator and virtualizer
     - qemu-arch-extra # Virtualization for foregin architectures
