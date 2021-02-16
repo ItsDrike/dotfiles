@@ -5,8 +5,9 @@ alias sl='ls'
 alias mdkir='mkdir'
 alias soruce='source'
 alias souce='source'
+alias suod='sudo '
 
-# Changing directories
+# Directories
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
@@ -15,10 +16,13 @@ alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
+alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
 
 # Shortcuts
 alias rr='rm -r'
 alias sv='systemctl'
+alias md='mkdir'
+alias massgrep='grep -rni'
 
 # Aliases for piping directly (f.e.: history G ssh)
 alias -g G='| grep'
@@ -47,13 +51,16 @@ alias cfvim='vim ~/.config/vim/vimrc'
 alias cfalias='vim ~/.config/sh/aliases'
 alias cffunctions='vim ~/.config/sh/functions'
 alias cfenviron='vim ~/.config/sh/environ'
+alias cfxdg='cfenviron'
 alias cfhandlers='vim ~/.config/sh/handlers'
+alias cftheme='vim ~/.config/sh/theme'
+alias cfprompt='cftheme'
+alias cfkeybinds='vim ~/.config/sh/keybinds'
 
 # Replacements
 alias wget='wget -c' # Resume wget by default
 alias du='du -ach | sort -h' # Sort du by size
 alias df='df -H' # Show sizes as powers of 1000
-alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias vi='vim' # Nobody uses `vi` anymore, go directly to `vim`
 
@@ -83,21 +90,22 @@ alias grep_mac='grep -E `reg_mac`'
 alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"'
 alias jsoncheck='jq "." >/dev/null <'
 
-# IPTables (firewall) aliases
-alias ipt='sudo iptables' # Shortcut
-alias iptlist='sudo iptables -L -n -v --line-numbers'  # All rules
-alias iptlistin='sudo iptables -L INPUT -n -v --line-numbers' # IN rules
-alias iptlistout='sudo iptables -L OUTPUT -n -v --line-numbers' # OUT rules
-alias iptlistfw='sudo iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
-alias firewall=iptlist
+# Firewall aliases (IPTables/UFW)
+command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
 command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
+alias ipt='iptables' # Shortcut
+alias iptlist='iptables -L -n -v --line-numbers'  # All rules
+alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
+alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
+alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 
 
 # Network
 alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
 alias ip-info='curl https://ipinfo.io/json' # Show public IP info (IP,region,country,timezone,...)
 alias ips="ifconfig -a | grep -oE \"inet6? (addr:)?s?\`reg_ip\`\" | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
-alias local-devices='nmap -T5 -sP 192.168.0.0-255'
+alias lan-device-scan='nmap -T5 -sP 192.168.0.0-255'
+alias lan-vuln-scan='nmap -sT -O --script vuln 192.168.0.0-255'
 alias ports='netstat -tulanp'
 alias listening-ports='netstat -vtlnp --listening'
 alias ssh-list='ss | grep ssh' # List all SSH connections
@@ -140,7 +148,8 @@ alias gcm='git commit -m'
 alias ga='git add'
 alias gaa='git add all'
 alias gb='git branch'
-alias gcb='git checkout -b'
+alias gch='git checkout'
+alias gchb='git checkout -b'
 alias gcda='git diff --cached'  # Diff any files staged for commit
 alias gf='git fetch'
 alias gm='git merge'

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # Show application listening on given port
 function port() {
@@ -181,3 +181,4 @@ function targz() {
 
 	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
+
