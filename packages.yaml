@@ -32,6 +32,7 @@ pacman:
     - dnsmasq # Easy to configure DNS forwarder and DHCP server
     - bridge-utils # Ethernet bridge configuration (VMs should be using this bridge, not real interface)
     - openbsd-netcat # OpenBSD variant of netcat
+    - virt-viewer # A viewer for virtualized machines, virt-manager alone doesn't support copy-paste
     # Security
     - macchanger # Tool for changing MAC address
     - dnsutils # Tools for managing DNS
@@ -44,24 +45,39 @@ pacman:
     - firejail # Sandboxing isolation tool
     - clamav # Anti-virus toolkit
     - rkhunter # Check for the presence of rootkits and other unwanted tools.
+    - step-cli
     #- ufw # Uncomplicated firewall, a simple way of defining firewall (disabled, because opensnitch FW is more detailed and better)
 
     # GUI
-    - gedit # Graphical text editor
-    - mpv # Video player
+    - kate # Graphical text editor, alternatively, there's gnome's default gedit
+    - mpv # Video player, alternatively there's kde default dragon
+    - nomacs # Photo viewer, alternatively there's kde default gwenview
+    - ffmpegthumbs # FFmpeg based thumbnail creator for videos
     - terminator # Terminal emulator
+    - konsole # Terminal emulator from KDE, terminator is better, but konsole isused  in many kde applications
     - dolphin # File manager
     - ark # Archive manager (tar, gzip, zip, rar, etc.)
-    - nomacs # Photo viewer
     - discord # Popular chat app
     - spectacle # Screenshot taking tool
     - peek # Gif/mp3 screen recording tool
-    - qalculate-gtk-nognome # Calculator with thousands of features
+    - qalculate-gtk-nognome # Calculator with thousands of features, there's also less powerful kde default's kcalc
     - filelight # Disk usage monitoring
     - firefox # Browser
     - krita # Image editing software (gimp alternative)
     - plasma-systemmonitor # A more modern version of ksysguard, released in KDE 5.21
-    # - code # Open sourced version of vscode (doesn't support many extensions)
+    - kcharselect # Character selector
+    - kdenlive # Video editing software
+    - ksystemlog # System log viewer tool
+    #- yakuake # Dropdown terminal using konsole
+    #- kgpg # GnuPG frontend
+    #- kleopatra # Certificate manager
+    #- kalarm # Personal alarm scheduler
+    #- kalgebra # Graph calculator
+    #- kalzium # Periodic table of elements
+    #- kamera # Camera viewer, you can also use kamoso for webcam recorder
+    #- elisa # Music player for KDE
+    #- sweeper # System cleaner
+    #- code # Open sourced version of vscode (doesn't support many extensions)
 
     # DE/DM
     - plasma
@@ -82,7 +98,7 @@ aur:
 
     # GUI
     - spotify # Online music player
-    - timeshift # Backup utility
+    - timeshift # Backup utility, there's also kde's default kbackup
     - onlyoffice-bin # Full office suite (MS Office alternative)
     - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
     - exodus # Software cryptocurrency wallet
