@@ -17,7 +17,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
 - Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
--[ Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads. These rules are located
+- [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads. These rules are located
 
 ## Requirements
 
