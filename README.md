@@ -17,10 +17,11 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
 - Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
+-[ Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads. These rules are located
 
 ## Requirements
 
-`curl` and `tar`, or `git` to clone the repository itself.  
+`curl` and `tar`, or `git` to clone the repository itself.
 Installation uses `python` and `pip` and `pyyaml` library for python, but that will get installed automatically by the `install.sh` script.
 
 ## Sample images
@@ -31,12 +32,12 @@ Installation uses `python` and `pip` and `pyyaml` library for python, but that w
 
 ## Installation
 
-Clone this repository anywhere you like  
+Clone this repository anywhere you like
 `$ git clone https://github.com/ItsDrike/dotfiles`
 
-If you don't want to install git (running straight from newly installed os), you can use `curl`:  
-`$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master`  
-And extract from `.tar.gz` archive:  
+If you don't want to install git (running straight from newly installed os), you can use `curl`:
+`$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master`
+And extract from `.tar.gz` archive:
 `$ tar xvf [archive name]`
 
 ## Running the script
