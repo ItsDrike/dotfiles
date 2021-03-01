@@ -1,0 +1,38 @@
+{
+  "created": "2021-02-16T11:55:31.950395802+01:00",
+  "updated": "2021-02-16T11:55:31.950531189+01:00",
+  "name": "DonloadHelper HTTPS",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/home/itsdrike/net.downloadhelper.coapp-1.6.0/bin/net.downloadhelper.coapp-linux-64\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/home/itsdrike/net.downloadhelper.coapp-1.6.0/bin/net.downloadhelper.coapp-linux-64",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      }
+    ]
+  }
+}

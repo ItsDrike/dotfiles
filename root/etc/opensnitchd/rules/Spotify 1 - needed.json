@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-01T20:04:39.570767993+01:00",
+  "updated": "2021-03-01T20:04:39.570848018+01:00",
+  "name": "Spotify 1 - needed",
+  "enabled": true,
+  "precedence": true,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/spotify/spotify\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.host\", \"data\": \"(.*\\\\.?spotify\\\\.com)|(audio.+spotify.+\\\\.akamaized\\\\.net)|(.*\\\\.?scdn\\\\.co)\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/opt/spotify/spotify",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "dest.host",
+        "sensitive": false,
+        "data": "(.*\\.?spotify\\.com)|(audio.+spotify.+\\.akamaized\\.net)|(.*\\.?scdn\\.co)",
+        "list": null
+      }
+    ]
+  }
+}

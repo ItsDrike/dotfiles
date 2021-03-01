@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-01T20:20:07.151232333+01:00",
+  "updated": "2021-03-01T20:20:07.151303255+01:00",
+  "name": "Zoom deny rest",
+  "enabled": true,
+  "precedence": false,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/opt/zoom/zoom",
+    "list": []
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-15T13:29:25.065236008+01:00",
-  "updated": "2021-02-15T13:29:25.065387003+01:00",
-  "name": "Discord HTTPS",
+  "created": "2021-02-16T15:17:18.298172602+01:00",
+  "updated": "2021-02-16T15:17:18.298287419+01:00",
+  "name": "Pkgfile HTTPS",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/discord/Discord\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/pkgfile\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,7 +23,7 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/opt/discord/Discord",
+        "data": "/usr/bin/pkgfile",
         "list": null
       },
       {

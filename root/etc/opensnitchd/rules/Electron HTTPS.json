@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-14T00:13:41.961199834+01:00",
-  "updated": "2021-02-14T00:13:41.961289962+01:00",
-  "name": "Git HTTPS",
+  "created": "2021-02-19T00:24:20.370479504+01:00",
+  "updated": "2021-02-19T00:24:20.370634955+01:00",
+  "name": "Electron HTTPS",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/git\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/electron/electron\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,7 +23,7 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/bin/git",
+        "data": "/usr/lib/electron/electron",
         "list": null
       },
       {

@@ -1,0 +1,31 @@
+{
+  "created": "2021-02-15T01:22:26.772953567+01:00",
+  "updated": "2021-02-15T01:22:26.773090799+01:00",
+  "name": "Discord UDP",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/discord/Discord\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "udp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/opt/discord/Discord",
+        "list": null
+      }
+    ]
+  }
+}

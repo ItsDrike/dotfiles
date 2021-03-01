@@ -1,0 +1,16 @@
+{
+  "created": "2021-02-22T13:28:34.500529324+01:00",
+  "updated": "2021-02-22T13:28:34.500593302+01:00",
+  "name": "Tor Browser ALL",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/home/itsdrike/.config/tor-browser/app/Browser/TorBrowser/Tor/tor",
+    "list": []
+  }
+}

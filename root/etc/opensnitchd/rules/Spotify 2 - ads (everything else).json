@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-01T19:58:54.03179178+01:00",
+  "updated": "2021-03-01T19:58:54.031858532+01:00",
+  "name": "Spotify 2 - ads (everything else)",
+  "enabled": true,
+  "precedence": false,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/opt/spotify/spotify",
+    "list": []
+  }
+}

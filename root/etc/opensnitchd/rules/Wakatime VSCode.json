@@ -1,0 +1,38 @@
+{
+  "created": "2021-02-15T14:18:48.745490294+01:00",
+  "updated": "2021-02-15T14:18:48.74566463+01:00",
+  "name": "Wakatime VSCode",
+  "enabled": true,
+  "precedence": true,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"process.path\", \"data\": \"\\\\/home\\\\/itsdrike\\\\/\\\\.local\\\\/share\\\\/vscode\\\\/extensions\\\\/wakatime\\\\.vscode-wakatime-[0-9\\\\.]+\\\\/wakatime-cli\\\\/wakatime-cli\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "\\/home\\/itsdrike\\/\\.local\\/share\\/vscode\\/extensions\\/wakatime\\.vscode-wakatime-[0-9\\.]+\\/wakatime-cli\\/wakatime-cli",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "created": "2021-02-20T19:03:50.477917059+01:00",
+  "updated": "2021-02-20T19:03:50.478029169+01:00",
+  "name": "Arch-Audit",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/arch-audit\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.host\", \"data\": \"security.archlinux.org\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/bin/arch-audit",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.host",
+        "sensitive": false,
+        "data": "security.archlinux.org",
+        "list": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "created": "2021-02-19T00:28:51.198864766+01:00",
+  "updated": "2021-02-19T00:28:51.198995323+01:00",
+  "name": "Caprine UDP",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.command\", \"data\": \"/usr/lib/electron/electron /usr/bin/caprine\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"53\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "udp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.command",
+        "sensitive": false,
+        "data": "/usr/lib/electron/electron /usr/bin/caprine",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "53",
+        "list": null
+      }
+    ]
+  }
+}

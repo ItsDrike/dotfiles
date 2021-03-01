@@ -1,0 +1,45 @@
+{
+  "created": "2021-02-17T12:00:56.475733011+01:00",
+  "updated": "2021-02-17T12:00:56.475877494+01:00",
+  "name": "Chromium Google DNS",
+  "enabled": true,
+  "precedence": false,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/chromium/chromium\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"5228\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.host\", \"data\": \"mtalk.google.com\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/lib/chromium/chromium",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "5228",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.host",
+        "sensitive": false,
+        "data": "mtalk.google.com",
+        "list": null
+      }
+    ]
+  }
+}

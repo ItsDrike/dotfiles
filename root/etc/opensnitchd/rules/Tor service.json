@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-13T23:56:57.320167106+01:00",
-  "updated": "2021-02-13T23:56:57.320204749+01:00",
-  "name": "Spotify",
+  "created": "2021-02-15T12:00:44.377009767+01:00",
+  "updated": "2021-02-15T12:00:44.377062795+01:00",
+  "name": "Tor service",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "simple",
     "operand": "process.path",
     "sensitive": false,
-    "data": "/opt/spotify/spotify",
+    "data": "/usr/bin/tor",
     "list": []
   }
 }
