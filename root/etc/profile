@@ -1,6 +1,8 @@
 # /etc/profile
 
-# Set our umask
+# Set umask, 027 might be too strict for some people. if that's the case
+# you can fall back to 022 (allowing others to read everything by default)
+# or even to 002 (allowing groups to write into files just like owners)
 umask 027
 
 # Append "$1" to $PATH when not already in.
