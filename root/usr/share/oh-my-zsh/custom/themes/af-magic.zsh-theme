@@ -1,7 +1,11 @@
 #!/usr/bin/env zsh
 # Inspired by af-magic.zsh-theme
 # Repo: https://github.com/andyfleming/oh-my-zsh
-# Direct Link: https://github.com/andyfleming/oh-my-zsh/blob/master/themes/af-magic.zsh-theme
+
+# This is oh-my-zsh theme, it doesn't need to be included if you
+# decide against using oh-my-zsh, included custom theme is a replica
+# of this one, without depending on oh-my-zsh at all
+
 
 # settings
 typeset +H return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
