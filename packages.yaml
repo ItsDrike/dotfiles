@@ -94,7 +94,7 @@ aur:
     # Security
     - ngrok # Forward your localhost without ip recovery
     - pkg-audit # AUdit installed packages against known vulnerabilities, not necessary with arch-audit, but it does provide more detailed info
-    - opensnitch # Application level firewall, with full traffic monitoring, this FW is slower than kernel level ones which build upon iptables, but the advantages are worth it (Installation can be quite slow ~15min)
+    - opensnitch # Application level firewall, with full traffic monitoring, slower than kernel level iptables, but the advantages are worth it, alternatively there's also portmaster, but it's currently in early development stages, but it may be worth looking into later: `https://github.com/safing/portmaster`
 
     # GUI
     - spotify # Online music player
