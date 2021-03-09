@@ -5,5 +5,5 @@ if ! type "pip3" &> /dev/null; then
 	sudo pacman -S python-pip
 fi
 
-pip install pyyaml
+pip install -r requirements.txt
 python3 -m src
