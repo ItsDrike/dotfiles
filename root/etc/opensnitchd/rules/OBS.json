@@ -1,16 +1,16 @@
 {
-  "created": "2021-02-17T12:00:56.475733011+01:00",
-  "updated": "2021-02-17T12:00:56.475877494+01:00",
-  "name": "Chromium Google DNS",
+  "created": "2021-03-09T21:36:39.088161018+01:00",
+  "updated": "2021-03-09T21:36:39.088329487+01:00",
+  "name": "OBS",
   "enabled": true,
   "precedence": false,
-  "action": "deny",
+  "action": "allow",
   "duration": "always",
   "operator": {
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/chromium/chromium\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"5228\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.host\", \"data\": \"mtalk.google.com\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/obs\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.host\", \"data\": \"obsproject.com\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,21 +23,21 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/lib/chromium/chromium",
+        "data": "/usr/bin/obs",
         "list": null
       },
       {
         "type": "simple",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "5228",
+        "data": "443",
         "list": null
       },
       {
         "type": "simple",
         "operand": "dest.host",
         "sensitive": false,
-        "data": "mtalk.google.com",
+        "data": "obsproject.com",
         "list": null
       }
     ]

@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-13T23:30:34.914828627+01:00",
-  "updated": "2021-02-13T23:30:34.914954116+01:00",
-  "name": "Wget HTTP",
+  "created": "2021-03-01T21:22:51.723767504+01:00",
+  "updated": "2021-03-01T21:22:51.723947736+01:00",
+  "name": "7 - Wget HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/wget\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"80\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/wget\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -27,10 +27,10 @@
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "80",
+        "data": "^(80|443)$",
         "list": null
       }
     ]

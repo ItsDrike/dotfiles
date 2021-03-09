@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-01T21:29:44.7636044+01:00",
+  "updated": "2021-03-01T21:29:44.76373548+01:00",
+  "name": "7 - Git All",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"process.path\", \"data\": \"(\\\\/usr\\\\/bin\\\\/git)|(\\\\/usr\\\\/lib\\\\/git-core\\\\/git-remote-https?)\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "(\\/usr\\/bin\\/git)|(\\/usr\\/lib\\/git-core\\/git-remote-https?)",
+        "list": null
+      }
+    ]
+  }
+}

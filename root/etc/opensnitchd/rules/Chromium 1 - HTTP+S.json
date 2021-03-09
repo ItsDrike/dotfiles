@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-15T13:29:25.065236008+01:00",
-  "updated": "2021-02-15T13:29:25.065387003+01:00",
-  "name": "Discord HTTPS",
+  "created": "2021-03-01T21:41:41.212782195+01:00",
+  "updated": "2021-03-01T21:41:41.21289267+01:00",
+  "name": "Chromium 1 - HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/discord/Discord\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/chromium/chromium\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,14 +23,14 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/opt/discord/Discord",
+        "data": "/usr/lib/chromium/chromium",
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "443",
+        "data": "^(80|443)$",
         "list": null
       }
     ]

@@ -1,6 +1,6 @@
 {
-  "created": "2021-02-14T00:00:26.151773147+01:00",
-  "updated": "2021-02-14T00:00:26.151968278+01:00",
+  "created": "2021-03-01T21:34:00.214241703+01:00",
+  "updated": "2021-03-01T21:34:00.21437314+01:00",
   "name": "VSCode HTTPS",
   "enabled": true,
   "precedence": false,
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/visual-studio-code/code\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"process.path\", \"data\": \"(\\\\/opt\\\\/visual-studio-code\\\\/code)|(\\\\/home\\\\/.+\\\\/\\\\.local\\\\/share\\\\/vscode\\\\/.+)\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -20,10 +20,10 @@
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/opt/visual-studio-code/code",
+        "data": "(\\/opt\\/visual-studio-code\\/code)|(\\/home\\/.+\\/\\.local\\/share\\/vscode\\/.+)",
         "list": null
       },
       {

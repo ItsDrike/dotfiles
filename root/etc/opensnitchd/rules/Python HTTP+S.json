@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-14T11:07:14.893922125+01:00",
-  "updated": "2021-02-14T11:07:14.89400606+01:00",
-  "name": "Python HTTPS",
+  "created": "2021-03-01T21:23:27.597128697+01:00",
+  "updated": "2021-03-01T21:23:27.597317986+01:00",
+  "name": "Python HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"process.path\", \"data\": \"/usr/bin/python*\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"process.path\", \"data\": \"/usr/bin/python*\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -27,10 +27,10 @@
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "443",
+        "data": "^(80|443)$",
         "list": null
       }
     ]

@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-19T00:29:16.119021299+01:00",
-  "updated": "2021-02-19T00:29:16.119128892+01:00",
-  "name": "Caprine IP grabbers",
+  "created": "2021-03-01T21:39:55.235940148+01:00",
+  "updated": "2021-03-01T21:39:55.236057227+01:00",
+  "name": "Caprine 2 - IP Grabbers",
   "enabled": true,
   "precedence": true,
   "action": "deny",

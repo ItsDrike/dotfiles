@@ -1,7 +1,7 @@
 {
-  "created": "2021-03-01T19:58:54.03179178+01:00",
-  "updated": "2021-03-01T19:58:54.031858532+01:00",
-  "name": "Spotify 2 - ads (everything else)",
+  "created": "2021-03-01T21:43:14.486480845+01:00",
+  "updated": "2021-03-01T21:43:14.486530002+01:00",
+  "name": "Firefox 3 - Telemetry",
   "enabled": true,
   "precedence": false,
   "action": "deny",
@@ -10,7 +10,7 @@
     "type": "simple",
     "operand": "process.path",
     "sensitive": false,
-    "data": "/opt/spotify/spotify",
+    "data": "/usr/lib/firefox/pingsender",
     "list": []
   }
 }

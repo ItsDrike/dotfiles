@@ -1,7 +1,7 @@
 {
-  "created": "2021-03-01T20:20:07.151232333+01:00",
-  "updated": "2021-03-01T20:20:07.151303255+01:00",
-  "name": "Zoom deny rest",
+  "created": "2021-03-01T21:37:17.67293651+01:00",
+  "updated": "2021-03-01T21:37:17.672999662+01:00",
+  "name": "Zoom 2 - telemetry",
   "enabled": true,
   "precedence": false,
   "action": "deny",

@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-15T00:45:05.734560163+01:00",
-  "updated": "2021-02-15T00:45:05.734609624+01:00",
-  "name": "Clord (color management daemon)",
+  "created": "2021-03-01T21:17:24.774744912+01:00",
+  "updated": "2021-03-01T21:17:24.774890683+01:00",
+  "name": "7 - Clord (color management daemon)",
   "enabled": true,
   "precedence": false,
   "action": "allow",

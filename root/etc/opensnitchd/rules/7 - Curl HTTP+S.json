@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-15T13:19:58.353616558+01:00",
-  "updated": "2021-02-15T13:19:58.353662508+01:00",
-  "name": "SSH",
+  "created": "2021-03-01T21:22:42.115763864+01:00",
+  "updated": "2021-03-01T21:22:42.115902561+01:00",
+  "name": "7 - Curl HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/ssh\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"22\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/curl\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,14 +23,14 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/bin/ssh",
+        "data": "/usr/bin/curl",
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "22",
+        "data": "^(80|443)$",
         "list": null
       }
     ]

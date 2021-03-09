@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-13T23:43:52.316119041+01:00",
-  "updated": "2021-02-13T23:43:52.316217252+01:00",
-  "name": "Firefox HTTP",
+  "created": "2021-03-01T21:42:50.766044053+01:00",
+  "updated": "2021-03-01T21:42:50.766180097+01:00",
+  "name": "Firefox 1 - HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/firefox/firefox\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"80\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/firefox/firefox\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -27,10 +27,10 @@
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "80",
+        "data": "^(80|443)$",
         "list": null
       }
     ]

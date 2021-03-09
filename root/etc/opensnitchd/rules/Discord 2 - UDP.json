@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-13T23:47:47.99371662+01:00",
-  "updated": "2021-02-13T23:47:47.993816348+01:00",
-  "name": "Firefox UDP",
+  "created": "2021-03-01T21:42:31.061655729+01:00",
+  "updated": "2021-03-01T21:42:31.061769254+01:00",
+  "name": "Discord 2 - UDP",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/firefox/firefox\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/discord/Discord\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,7 +23,7 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/lib/firefox/firefox",
+        "data": "/opt/discord/Discord",
         "list": null
       }
     ]

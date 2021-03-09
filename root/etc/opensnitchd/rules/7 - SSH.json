@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-14T00:18:20.623018681+01:00",
-  "updated": "2021-02-14T00:18:20.62324739+01:00",
-  "name": "Chromium HTTPS",
+  "created": "2021-03-01T21:19:30.12880345+01:00",
+  "updated": "2021-03-01T21:19:30.128933642+01:00",
+  "name": "7 - SSH",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/chromium/chromium\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/ssh\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(22|69)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,14 +23,14 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/lib/chromium/chromium",
+        "data": "/usr/bin/ssh",
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "443",
+        "data": "^(22|69)$",
         "list": null
       }
     ]

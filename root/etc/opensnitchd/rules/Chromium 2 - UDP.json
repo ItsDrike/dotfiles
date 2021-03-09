@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-15T13:33:07.582364723+01:00",
-  "updated": "2021-02-15T13:33:07.582471317+01:00",
-  "name": "Git All TCP",
+  "created": "2021-03-01T21:41:52.260963319+01:00",
+  "updated": "2021-03-01T21:41:52.261076398+01:00",
+  "name": "Chromium 2 - UDP",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,20 +10,20 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/git\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/chromium/chromium\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
         "operand": "protocol",
         "sensitive": false,
-        "data": "tcp",
+        "data": "udp",
         "list": null
       },
       {
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/bin/git",
+        "data": "/usr/lib/chromium/chromium",
         "list": null
       }
     ]

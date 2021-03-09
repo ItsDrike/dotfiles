@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-14T12:04:29.819374748+01:00",
-  "updated": "2021-02-14T12:04:29.819497235+01:00",
-  "name": "Git Remote HTTP",
+  "created": "2021-03-01T21:16:57.02241505+01:00",
+  "updated": "2021-03-01T21:16:57.022570136+01:00",
+  "name": "7 - Yay (AUR) HTTPS",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/git-core/git-remote-http\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/yay\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,7 +23,7 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/lib/git-core/git-remote-http",
+        "data": "/usr/bin/yay",
         "list": null
       },
       {

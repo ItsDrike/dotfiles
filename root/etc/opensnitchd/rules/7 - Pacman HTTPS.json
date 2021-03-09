@@ -1,7 +1,7 @@
 {
-  "created": "2021-02-14T17:47:02.764007397+01:00",
-  "updated": "2021-02-14T17:47:02.764115564+01:00",
-  "name": "Curl HTTPS",
+  "created": "2021-03-01T21:16:30.742147712+01:00",
+  "updated": "2021-03-01T21:16:30.742295608+01:00",
+  "name": "7 - Pacman HTTPS",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/curl\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/pacman\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -23,7 +23,7 @@
         "type": "simple",
         "operand": "process.path",
         "sensitive": false,
-        "data": "/usr/bin/curl",
+        "data": "/usr/bin/pacman",
         "list": null
       },
       {
