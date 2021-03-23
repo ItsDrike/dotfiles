@@ -34,6 +34,12 @@ function dir-size() {
 	fi;
 }
 
+function randmac() {
+	sudo ip link set dev $1 down
+	sudo macchanger -A $1
+	sudo ip link set dev $1 up
+}
+
 # Go to the root of a git tree
 cdgit () {
 	git rev-parse --is-inside-work-tree > /dev/null 2>&1
