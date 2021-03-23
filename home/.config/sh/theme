@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+# hide EOL sign ('%')
+export PROMPT_EOL_MARK=""
+
 # Color definition
 GRAY="%F{237}"
 RED="%F{196}"
@@ -18,7 +21,8 @@ git_prompt() {
     fi
 }
 
-setopt PROMPT_SUBST
+
+setopt promptsubst  # enable command substitution in prompt
 
 # Primary Prompt
 [ "$EUID" -eq 0 ] && PS1="$RED%n@%m$RESET" || PS1="$GRAY%n@%m$RESET" # user@machine
