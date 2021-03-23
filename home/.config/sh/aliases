@@ -104,7 +104,6 @@ alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
 alias ip-info='curl https://ipinfo.io/json' # Show public IP info (IP,region,country,timezone,...)
 alias ips="ifconfig -a | grep -oE \"inet6? (addr:)?s?\`reg_ip\`\" | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
-alias mac="ip link show | grep_mac"
 alias lan-device-scan='nmap -T5 -sP 192.168.0.0-255'
 alias lan-vuln-scan='nmap -sT -O --script vuln 192.168.0.0-255'
 alias ports='netstat -tulanp'
