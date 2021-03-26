@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-26T15:06:47.786430608+01:00",
+  "updated": "2021-03-26T15:06:47.786567338+01:00",
+  "name": "6 - Gimagereader HTTPS",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/gimagereader-qt5\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/bin/gimagereader-qt5",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      }
+    ]
+  }
+}

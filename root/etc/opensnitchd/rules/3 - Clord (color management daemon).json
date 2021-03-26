@@ -1,0 +1,38 @@
+{
+  "created": "2021-03-26T14:54:35.691185369+01:00",
+  "updated": "2021-03-26T14:54:35.691334733+01:00",
+  "name": "3 - Clord (color management daemon)",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/colord-sane\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.ip\", \"data\": \"255.255.255.255\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"user.id\", \"data\": \"974\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/lib/colord-sane",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.ip",
+        "sensitive": false,
+        "data": "255.255.255.255",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "user.id",
+        "sensitive": false,
+        "data": "974",
+        "list": null
+      }
+    ]
+  }
+}

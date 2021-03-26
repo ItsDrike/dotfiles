@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-26T14:35:19.095504822+01:00",
+  "updated": "2021-03-26T14:35:19.095575256+01:00",
+  "name": "1 - Local Network 2: IPv6",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "network",
+    "operand": "dest.network",
+    "sensitive": false,
+    "data": "ff00::/8",
+    "list": []
+  }
+}

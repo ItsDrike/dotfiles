@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-26T15:08:32.002388702+01:00",
+  "updated": "2021-03-26T15:08:32.002444202+01:00",
+  "name": "7 - Google Remote Desktop (Start)",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/google/chrome-remote-desktop/start-host\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/opt/google/chrome-remote-desktop/start-host",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      }
+    ]
+  }
+}

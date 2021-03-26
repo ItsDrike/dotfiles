@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-26T15:08:48.779949158+01:00",
+  "updated": "2021-03-26T15:08:48.78007234+01:00",
+  "name": "7 - Google remote desktop host HTTPS",
+  "enabled": false,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/opt/google/chrome-remote-desktop/chrome-remote-desktop-host\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/opt/google/chrome-remote-desktop/chrome-remote-desktop-host",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "443",
+        "list": null
+      }
+    ]
+  }
+}

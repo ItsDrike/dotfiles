@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-26T14:34:29.750639149+01:00",
+  "updated": "2021-03-26T14:34:29.750717553+01:00",
+  "name": "1 - Local Network 1: Loopback IPv4",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "network",
+    "operand": "dest.network",
+    "sensitive": false,
+    "data": "127.0.0.0/8",
+    "list": []
+  }
+}

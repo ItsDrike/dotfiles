@@ -1,0 +1,38 @@
+{
+  "created": "2021-03-26T14:25:45.324185722+01:00",
+  "updated": "2021-03-26T14:25:45.324300946+01:00",
+  "name": "3 - NetworkManager HTTP+S",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/NetworkManager\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/bin/NetworkManager",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "^(80|443)$",
+        "list": null
+      }
+    ]
+  }
+}

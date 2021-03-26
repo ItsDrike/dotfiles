@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-26T14:31:12.698421478+01:00",
+  "updated": "2021-03-26T14:31:12.698577981+01:00",
+  "name": "3 - Time Synchronization",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/systemd/systemd-timesyncd\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "udp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/lib/systemd/systemd-timesyncd",
+        "list": null
+      }
+    ]
+  }
+}

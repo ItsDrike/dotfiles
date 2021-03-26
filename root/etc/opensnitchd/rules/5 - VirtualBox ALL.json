@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-26T15:06:09.065865819+01:00",
+  "updated": "2021-03-26T15:06:09.065936078+01:00",
+  "name": "5 - VirtualBox ALL",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/lib/virtualbox/VirtualBoxVM",
+    "list": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "created": "2021-03-26T15:05:42.793872103+01:00",
+  "updated": "2021-03-26T15:05:42.793987628+01:00",
+  "name": "6 - Caprine 2 - IP Grabbers",
+  "enabled": true,
+  "precedence": true,
+  "action": "deny",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"process.command\", \"data\": \"/usr/lib/electron/electron /usr/bin/caprine\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.host\", \"data\": \"(icanhazip.com|myip.opendns.com|api.ipify.org)\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "process.command",
+        "sensitive": false,
+        "data": "/usr/lib/electron/electron /usr/bin/caprine",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "dest.host",
+        "sensitive": false,
+        "data": "(icanhazip.com|myip.opendns.com|api.ipify.org)",
+        "list": null
+      }
+    ]
+  }
+}

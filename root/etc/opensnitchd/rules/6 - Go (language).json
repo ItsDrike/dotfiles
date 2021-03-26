@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-26T15:10:53.909451068+01:00",
+  "updated": "2021-03-26T15:10:53.90953488+01:00",
+  "name": "6 - Go (language)",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/lib/go/bin/go",
+    "list": []
+  }
+}

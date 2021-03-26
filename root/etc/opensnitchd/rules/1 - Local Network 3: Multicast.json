@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-26T14:35:34.624303764+01:00",
+  "updated": "2021-03-26T14:35:34.624381925+01:00",
+  "name": "1 - Local Network 3: Multicast",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "network",
+    "operand": "dest.network",
+    "sensitive": false,
+    "data": "224.0.0.0/8",
+    "list": []
+  }
+}

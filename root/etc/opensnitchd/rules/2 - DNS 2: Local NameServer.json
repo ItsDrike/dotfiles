@@ -1,0 +1,38 @@
+{
+  "created": "2021-03-26T14:11:37.6695327+01:00",
+  "updated": "2021-03-26T14:11:37.669693753+01:00",
+  "name": "2 - DNS 2: Local NameServer",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"udp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"53\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.ip\", \"data\": \"192.168.0.1\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "udp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "53",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "dest.ip",
+        "sensitive": false,
+        "data": "192.168.0.1",
+        "list": null
+      }
+    ]
+  }
+}
