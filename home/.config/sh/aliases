@@ -120,7 +120,28 @@ alias meminfo='free -m -l -t'
 alias cpuinfo='lscpu'
 alias batinfo='sudo watch -d -n 2 tlp-stat -b'
 alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
-alias distro="cat /etc/*-release"
+alias distro='cat /etc/*-release'
+
+# Pacman aliases (using pacman is often faster, but I have goldfish memory)
+alias all-pkgs='pacman -Q' # List all installed packages
+alias installed-pkgs='pacman -Qe' # Only list explicitly installed packages
+alias aur-pkgs='pacman -Qm' # Not necessarely AUR, but generally foreign (not in sync db)
+alias orphan-pkgs='pacman -Qdt' # Packages without any packages that depend on them
+alias rm-orphans='pacman -Rns $(pacman -Qdtq)'
+alias search-pkgs='pacman -Ss' # Lookup package by name from sync database
+alias search-local-pkgs='pacman -Qs' # Lookup package by name from local database
+alias pkg-info='pacman -Qi' # Show detailed info about a local package
+alias pkg-remote-info='pacman -Si' # Show detailed info about a package in sync db
+alias download-upgrades='pacman -Syyuw' # Download all upgradeable packages, but don't upgrade
+alias clean-pacman-cache='pacman -Sc' # Remove all old packages in pacman cache
+alias file-pkg-owner='pacman -F' # Look in the sync db and check what package owns given filei
+alias file-pkg-owner-regex='pacman -Fx' # Same as above, but works with partial names or regex patterns
+alias all-owned-files='pacman -Fl' # Show all files owned by given package from sync db
+alias all-local-owned-files='pacman -Ql' # Same as above, but for locally installed packages
+alias file-pkg-owner-local='pacman -Qo' # Look in the local index and find which packge given file belongs to
+alias count-pkg-files='pacman -Qk' # Print amount of owned files, with the amount of missing files
+alias group-packages='pacman -Sg' # List all packages which will be installed with a group
+alias local-group-packages='pacman -Qg' # Only list locally installed packages from given group
 
 # Processes
 alias psmem='ps auxf | sort -nr -k 4' # Top memory eaters
@@ -175,7 +196,7 @@ alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f
 alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"' # Encode strings as URLs (space->%20, etc.)
 alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
 alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
-alias cpu-stress='fulload() { dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null | dd if=/dev/zero of=/dev/null & }; fulload; read; killall dd'
+alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done'
 alias metasploit='msfconsole'
 
 # Graphical custom aliases
