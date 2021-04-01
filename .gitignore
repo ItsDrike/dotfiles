@@ -22,9 +22,6 @@ env/
 # Ignore ds store files
 .DS_STORE
 
-# Backup files
-*.bak
-
 # Personal TODO files
 TODO
 

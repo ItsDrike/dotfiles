@@ -8,6 +8,7 @@ pacman:
     - net-tools
 
     # CLI
+    - pacman-contrib # Contains many useful scripts for pacman, such as paccache
     - exa # Modern ls replacement
     - ncdu # Show folder sizes in a neat CLI graphical way
     - cron # Scheduling program
