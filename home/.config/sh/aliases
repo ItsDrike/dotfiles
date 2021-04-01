@@ -17,23 +17,11 @@ alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 alias mkdir='mkdir -p' # Mkdir with automatic creation of parent directories
-
-# Shortcuts
-alias rr='rm -r'
-alias sv='systemctl'
 alias md='mkdir'
-alias massgrep='grep -rni'
 
 # Aliases for piping directly (f.e.: history G ssh)
 alias -g G='| grep'
 alias -g H='| head'
-
-# Python
-alias py3='python3'
-alias py2='python2'
-alias py='ipython'
-alias ipy='ipython'
-alias bpy='bpython'
 
 # Exa aliases (replacement for ls, if you are using ls, comment or change this
 alias ls='exa'
@@ -59,10 +47,16 @@ alias cfkeybinds='vim ~/.config/sh/keybinds'
 
 # Replacements
 alias wget='wget -c' # Resume wget by default
-alias du='du -ach | sort -h' # Sort du by size
 alias df='df -H' # Show sizes as powers of 1000
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias vi='vim' # Nobody uses `vi` anymore, go directly to `vim`
+
+# Python
+alias py3='python3'
+alias py2='python2'
+alias py='ipython'
+alias ipy='ipython'
+alias bpy='bpython'
 
 # Fallbacks
 command -v hd > /dev/null || alias hd="hexdump -C" # Cannonical hex dump; some systems have this symlinked
@@ -75,6 +69,12 @@ command -v xclip > /dev/null && alias pbpaste='xclip -selection clipboard -o'
 command -v xsel > /dev/null && alias pbcopy='xsel --clipboard --input'
 command -v xsel > /dev/null && alias pbpaste='xsel --clipboard --output'
 
+# File formats and validation
+alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"' # Validate YAML
+alias jsoncheck='jq "." >/dev/null <' # Validate JSON
+alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"' # Encode strings as URLs (space->%20, etc.)
+alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
+
 # Regular expressions
 alias reg_email='echo "[a-Z0-9._%-]+@[a-Z0-9.-]+\.[a-Z]{2,10}"'
 alias reg_mac='echo "([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}"'
@@ -86,20 +86,6 @@ alias grep_email='grep -E `reg_email`'
 alias grep_ip='grep -E `reg_ip`'
 alias grep_mac='grep -E `reg_mac`'
 
-# Validate things
-alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"'
-alias jsoncheck='jq "." >/dev/null <'
-
-# Firewall aliases (IPTables/UFW)
-command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
-command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
-alias ipt='iptables' # Shortcut
-alias iptlist='iptables -L -n -v --line-numbers'  # All rules
-alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
-alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
-alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
-
-
 # Network
 alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
 alias ip-info='curl https://ipinfo.io/json' # Show public IP info (IP,region,country,timezone,...)
@@ -110,38 +96,30 @@ alias ports='netstat -tulanp'
 alias listening-ports='netstat -vtlnp --listening'
 alias ssh-list='ss | grep ssh' # List all SSH connections
 alias serve='python -m http.server'  # Serve current directorty as HTTP
-alias serve-public='python -m http.server --bind 192.168.0.102'  # Serve publically
 alias reverse-dns='host' # It might be easier to just use `host` though
 alias torify='source torsocks on' # Pass every command via torsocks
 alias untorify='source torsocks off' # Stop passing commands via torsocks
 
-# System info
+# Firewall aliases (IPTables/UFW)
+command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
+command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
+alias ipt='iptables' # Shortcut
+alias iptlist='iptables -L -n -v --line-numbers'  # All rules
+alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
+alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
+alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
+
+# System
 alias meminfo='free -m -l -t'
 alias cpuinfo='lscpu'
 alias batinfo='sudo watch -d -n 2 tlp-stat -b'
 alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
 alias distro='cat /etc/*-release'
-
-# Pacman aliases (using pacman is often faster, but I have goldfish memory)
-alias all-pkgs='pacman -Q' # List all installed packages
-alias installed-pkgs='pacman -Qe' # Only list explicitly installed packages
-alias aur-pkgs='pacman -Qm' # Not necessarely AUR, but generally foreign (not in sync db)
-alias orphan-pkgs='pacman -Qdt' # Packages without any packages that depend on them
-alias rm-orphans='pacman -Rns $(pacman -Qdtq)'
-alias search-pkgs='pacman -Ss' # Lookup package by name from sync database
-alias search-local-pkgs='pacman -Qs' # Lookup package by name from local database
-alias pkg-info='pacman -Qi' # Show detailed info about a local package
-alias pkg-remote-info='pacman -Si' # Show detailed info about a package in sync db
-alias download-upgrades='pacman -Syyuw' # Download all upgradeable packages, but don't upgrade
-alias clean-pacman-cache='pacman -Sc' # Remove all old packages in pacman cache
-alias file-pkg-owner='pacman -F' # Look in the sync db and check what package owns given filei
-alias file-pkg-owner-regex='pacman -Fx' # Same as above, but works with partial names or regex patterns
-alias all-owned-files='pacman -Fl' # Show all files owned by given package from sync db
-alias all-local-owned-files='pacman -Ql' # Same as above, but for locally installed packages
-alias file-pkg-owner-local='pacman -Qo' # Look in the local index and find which packge given file belongs to
-alias count-pkg-files='pacman -Qk' # Print amount of owned files, with the amount of missing files
-alias group-packages='pacman -Sg' # List all packages which will be installed with a group
-alias local-group-packages='pacman -Qg' # Only list locally installed packages from given group
+alias diskspace_report="df -P -kHl"
+alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done' # Run `yes > /dev/null` on all cores as stress test
+alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
+alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
+alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
 
 # Processes
 alias psmem='ps auxf | sort -nr -k 4' # Top memory eaters
@@ -155,8 +133,8 @@ alias nowdate='date +"%d-%m-%Y"'
 alias week='date +%V'
 
 # Cleanup
-alias clean-trash='\rm -rf ~/.local/share/Trash/* || echo "Trash already empty"'
-alias clean-down='\rm -rf ~/Downloads/* || echo "Downloads directory is already empty"'
+alias clean-trash='rm -rf ~/.local/share/Trash/* || echo "Trash already empty"'
+alias clean-downloads='rm -rf ~/Downloads/* || echo "Downloads directory is already empty"'
 alias clean-journal='journalctl --vacuum-size=200M || echo "You have to be root to clean journal"'
 alias clean-pacman='pacman -Sc || echo "You have to be root to clean pacman cache"'
 alias cleanup='clean-trash && clean-down && clean-journal && clean-pacman'
@@ -178,30 +156,46 @@ alias gp='git push'
 alias glog='git log --oneline --decorate --graph'
 alias gundo='git reset HEAD~'
 alias gredo="git reset 'HEAD@{1}'"
-alias undopush="git push -f origin HEAD^:master"
+alias gundopush="git push -f origin HEAD^:master"
 
-# Other headless aliases
-alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
+# Pacman aliases (using pacman directly would be faster, but I have goldfish memory)
+alias pac-pkgs='pacman -Q' # List all packages on the system
+alias pac-installed-pkgs='pacman -Qe' # Only list explicitly installed packages
+alias pac-aur-pkgs='pacman -Qm' # Not necessarely AUR, but generally foreign (not in sync db)
+alias pac-orphan-pkgs='pacman -Qdt' # Packages without any packages that depend on them
+alias pac-rm-orphans='pacman -Rns $(pacman -Qdtq)' # Remove all orphaned packages
+alias pac-search='pacman -Ss' # Lookup package by name from sync database
+alias pac-search-local='pacman -Qs' # Lookup package by name from local database
+alias pac-info='pacman -Qi' # Show detailed info about a local package
+alias pac-info-remote='pacman -Si' # Show detailed info about a package in sync db
+alias pac-download-upgrades='pacman -Syyuw' # Download all upgradeable packages, but don't upgrade
+alias pac-extract='pacman -Syw --cachedir .' # Download given package to current directory
+alias pac-cache-clean='pacman -Sc' # Remove all old packages in pacman cache
+alias pac-file-owner='pacman -F' # Look in the sync db and check what package owns given filei
+alias pac-file-owner-regex='pacman -Fx' # Same as above, but works with partial names or regex patterns
+alias pac-file-owner-local='pacman -Qo' # Look in the local index and find which packge given file belongs to
+alias pac-owned-files='pacman -Fl' # Show all files owned by given package from sync db
+alias pac-owned-files-local='pacman -Ql' # Same as above, but for locally installed packages
+alias pac-count-files='pacman -Qk' # Print amount of owned files, with the amount of missing files
+alias pac-group-packages='pacman -Sg' # List all packages which will be installed with a group
+alias pac-group-packages-local='pacman -Qg' # Only list locally installed packages from given group
 alias vuln='arch-audit' # Show vulnerable packages that can be upgraded (Arch Linux)
 alias vuln-upgrade="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
+alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
+
+# Other CLI aliases
+alias rr='rm -r'
+alias sv='systemctl'
+alias massgrep='grep -rni'
+alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
+alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias fhere='find . -name' # Find file/dir from currrent dir
-alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
-alias diskspace_report="df -P -kHl"
-alias mount-table='df' # Show list of all mounted devices and their mount locations
-alias pacman-extract='pacman -Syw --cachedir .' # Extract package/es into current floders
-alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
-alias ubu-key='gpg --keyserver keyserver.ubuntu.com --recv-key'
 alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
-alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"' # Encode strings as URLs (space->%20, etc.)
-alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
-alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
-alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done'
 alias metasploit='msfconsole'
 
 # Graphical custom aliases
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias sound_control='alsamixer' # Sound control tool in alsa_utils package
 alias firefox='GTK_USE_PORTAL=1 firefox'
 alias pdf-reader='mupdf' # Open pdf file
@@ -213,10 +207,8 @@ if [ $UID -ne 0 ]; then
 
 	## Uncomment if you are using autocompletion (is ZSH)
 	#alias sudo='nocorrect sudo'
-	## Comment this if you are not using autocompletion (in ZSH)
+	## if the above is uncommented, comment this
 	alias sudo='sudo '
-
-	alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
 fi
 
 # enable color support
