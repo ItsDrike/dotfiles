@@ -17,6 +17,7 @@ pacman:
     - trash-cli # CLI tool to interract with trash (for example trash-put instead of rm will mv file to trash)
     - youtube-dl # Tool for easy downloading of youtube videos
     - ranger # Simple, vim-like file manager
+    - rmlint # Tool for finding and removing duplicate files quickly
     # ZSH + Plugins
     - zsh # shell
     - zsh-syntax-highlighting # colored zsh
