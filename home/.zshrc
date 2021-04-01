@@ -22,7 +22,7 @@ export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION" # for auto/tab completio
 HISTFILE="$ZSH_CACHE/history"
 HISTSIZE=10000
 SAVEHIST=10000
-setopt appendhistory # save history entries as soon as they are entered
+setopt appendhistory			# save history entries as soon as they are entered
 setopt hist_ignore_space        # ignore commands that start with space
 setopt hist_verify              # show commands with history expansion to user before running it
 #setopt hist_ignore_dups        # ignore duplicated commands history list
