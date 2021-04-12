@@ -7,7 +7,8 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 
 ## What does it do
 
-- Fully fledged ZSH configuration without the need to rely on oh-my-zsh
+- Automated arch installation script
+- Full fledged ZSH configuration without the need to rely on oh-my-zsh
   - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.zshrc) to enable it
   - Even though enabling it is an option, it is not a necessary thing to do, oh-my-zsh has a lot of code that is mostly irrelevant and unused, these dotfiles give you the ability to completely avoid it, if you desire to do so
 - Custom [prompt](home/.config/sh/theme), both for oh-my-zsh configuration or for standalone usage
@@ -17,12 +18,12 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
 - Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
-- [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads. These rules are located
+- [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads.
 
 ## Requirements
 
 `curl` and `tar`, or `git` to clone the repository itself.
-Installation uses `python` and `pip` and `pyyaml` library for python, but that will get installed automatically by the `install.sh` script.
+Installation uses `python` and `pip` with some python packages in `requirements.txt` but these will get installed automatically by the `install.sh` script.
 
 ## Sample images
 
