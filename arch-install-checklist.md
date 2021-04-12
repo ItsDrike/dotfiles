@@ -1,3 +1,10 @@
+# Arch installation checklist
+This file contains simplified instructions for Arch Linux installation
+Following these should lead to a full installation of barebone Arch system,
+with grub bootloader and a priviledged sudoer user.
+
+Note: Running the script can automated many of these points, if you are comming
+here after running the script, look for a line saying: **Proceed from this line, if you're reading after chrooting**
 ## Set keyboard layout
 Default layout will be US
 `ls /usr/share/kbd/keymaps/**/*.map.gz` <- list keymaps
@@ -43,6 +50,7 @@ First select mirrors (`/etc/pacman.d/mirrorlist`)
 
 ## Chroot
 `arch-chroot /mnt`
+# Proceed from this line, if you're reading after chrooting
 
 ## Set time zone
 `ln -sf /usr/share/zoneinfo/Region/Ciry /etc/localtime` <- specify timezone

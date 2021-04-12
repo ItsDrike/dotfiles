@@ -1,9 +1,13 @@
 import typing as t
+
+import colorama
+import inquirer.shortcuts
 import yaml
 
-from src.util.package import Package, PackageAlreadyInstalled, InvalidPackage
-from src.util import install
-from src.util.user import Print, Input
+from src.util.command import run_root_cmd
+from src.util.package import InvalidPackage, Package, PackageAlreadyInstalled
+
+colorama.init(autoreset=True)
 
 
 def obtain_packages() -> t.List[Package]:
@@ -16,24 +20,25 @@ def obtain_packages() -> t.List[Package]:
 
     packages = []
     packages += Package.safe_load(pacman_packages)
-    packages += Package.safe_load(aur_packages, aur=True)
     packages += Package.safe_load(git_packages, git=True)
+    packages += Package.safe_load(aur_packages, aur=True)
 
     return packages
 
 
 def install_packages() -> None:
     packages = obtain_packages()
-    if Input.yes_no("Do you wish to perform system upgrade first? (Recommended)"):
-        install.upgrade_pacman()
+    if inquirer.shortcuts.confirm("Do you wish to perform system upgrade first? (Recommended)", default=True):
+        run_root_cmd("pacman -Syu")
+
     for package in packages:
         try:
-            Print.action(f"Installing {package}")
+            print(f"{colorama.Fore.CYAN}Installing {package}")
             package.install()
         except PackageAlreadyInstalled:
-            Print.cancel(f"Package {package} is already installed.")
+            print(f"{colorama.Style.DIM}Package {package} is already installed, skipping")
         except InvalidPackage as e:
-            Print.warning(str(e))
+            print(f"{colorama.Fore.RED}{str(e)}")
 
 
 if __name__ == "__main__":
