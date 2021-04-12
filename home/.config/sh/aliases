@@ -54,6 +54,9 @@ alias wget='wget -c' # Resume wget by default
 alias df='df -H' # Show sizes as powers of 1000
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias vi='vim' # Nobody uses `vi` anymore, go directly to `vim`
+alias cp='cp -iv' # Ask before overwriting files, verbose mode
+alias mv='mv -iv' # Same as above
+alias rm='rm -v' # Verbose rm
 
 # Python
 alias py3='python3'

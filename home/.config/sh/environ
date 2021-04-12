@@ -9,7 +9,6 @@ export BASH_SILENCE_DEPRECATION_WARNING=1 # Hide the “default interactive shel
 
 # Add executable directories into PATH
 PATH+=":$HOME/.local/bin"
-#PATH+=":/snap/bin" # Uncomment this if snap is installed
 
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
