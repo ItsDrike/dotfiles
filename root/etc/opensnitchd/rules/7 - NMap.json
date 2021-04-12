@@ -1,0 +1,16 @@
+{
+  "created": "2021-03-27T22:17:47.411966515+01:00",
+  "updated": "2021-03-27T22:17:47.412029252+01:00",
+  "name": "7 - NMap",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/bin/nmap",
+    "list": []
+  }
+}

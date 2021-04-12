@@ -1,0 +1,38 @@
+{
+  "created": "2021-04-02T23:28:24.475396074+02:00",
+  "updated": "2021-04-02T23:28:24.475553501+02:00",
+  "name": "6 - LibreWolf HTTP+S",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "list",
+    "operand": "list",
+    "sensitive": false,
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/lib/librewolf/librewolf\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
+    "list": [
+      {
+        "type": "simple",
+        "operand": "protocol",
+        "sensitive": false,
+        "data": "tcp",
+        "list": null
+      },
+      {
+        "type": "simple",
+        "operand": "process.path",
+        "sensitive": false,
+        "data": "/usr/lib/librewolf/librewolf",
+        "list": null
+      },
+      {
+        "type": "regexp",
+        "operand": "dest.port",
+        "sensitive": false,
+        "data": "^(80|443)$",
+        "list": null
+      }
+    ]
+  }
+}

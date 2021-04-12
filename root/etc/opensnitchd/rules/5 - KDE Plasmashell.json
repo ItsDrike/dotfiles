@@ -1,0 +1,16 @@
+{
+  "created": "2021-04-01T02:54:46.246760182+02:00",
+  "updated": "2021-04-01T02:54:46.246834823+02:00",
+  "name": "5 - KDE Plasmashell",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/bin/plasmashell",
+    "list": []
+  }
+}

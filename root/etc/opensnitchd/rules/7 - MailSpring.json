@@ -1,0 +1,16 @@
+{
+  "created": "2021-04-02T23:29:09.554510897+02:00",
+  "updated": "2021-04-02T23:29:09.554599422+02:00",
+  "name": "7 - MailSpring",
+  "enabled": true,
+  "precedence": false,
+  "action": "allow",
+  "duration": "always",
+  "operator": {
+    "type": "simple",
+    "operand": "process.path",
+    "sensitive": false,
+    "data": "/usr/share/mailspring/mailspring",
+    "list": []
+  }
+}

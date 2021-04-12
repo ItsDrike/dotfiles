@@ -1,7 +1,7 @@
 {
-  "created": "2021-03-26T14:52:15.458656023+01:00",
-  "updated": "2021-03-26T14:52:15.458812681+01:00",
-  "name": "4 - Pacman HTTPS",
+  "created": "2021-04-01T02:59:52.127387559+02:00",
+  "updated": "2021-04-01T02:59:52.127534491+02:00",
+  "name": "4 - Pacman HTTP+S",
   "enabled": true,
   "precedence": false,
   "action": "allow",
@@ -10,7 +10,7 @@
     "type": "list",
     "operand": "list",
     "sensitive": false,
-    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/pacman\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"dest.port\", \"data\": \"443\", \"sensitive\": false}]",
+    "data": "[{\"type\": \"simple\", \"operand\": \"protocol\", \"data\": \"tcp\", \"sensitive\": false}, {\"type\": \"simple\", \"operand\": \"process.path\", \"data\": \"/usr/bin/pacman\", \"sensitive\": false}, {\"type\": \"regexp\", \"operand\": \"dest.port\", \"data\": \"^(80|443)$\", \"sensitive\": false}]",
     "list": [
       {
         "type": "simple",
@@ -27,10 +27,10 @@
         "list": null
       },
       {
-        "type": "simple",
+        "type": "regexp",
         "operand": "dest.port",
         "sensitive": false,
-        "data": "443",
+        "data": "^(80|443)$",
         "list": null
       }
     ]
