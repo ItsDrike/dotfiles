@@ -18,6 +18,7 @@ pacman:
     - youtube-dl # Tool for easy downloading of youtube videos
     - ranger # Simple, vim-like file manager
     - rmlint # Tool for finding and removing duplicate files quickly
+    - links # Terminal text-only web browser
     # ZSH + Plugins
     - zsh # shell
     - zsh-syntax-highlighting # colored zsh
@@ -109,3 +110,4 @@ aur:
     - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
     - exodus # Software cryptocurrency wallet
     - notion-app # Online text manipulation tool with databases and very rich interface
+    #- mailspring-libre # Beautiful and fast mail client, without tracking of default mailspring
