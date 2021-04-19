@@ -27,15 +27,21 @@ alias fhere='find . -name'
 alias -g G='| grep'
 alias -g H='| head'
 
-# Exa aliases (replacement for ls, if you are using ls, comment or change this
-alias ls='exa'
-alias l='exa -glah'
-alias ll='exa -glah --classify -s=size --group-directories-first -r'
-alias ld='exa -glahD'
-alias tree='exa -Tlagh'
-alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
-alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
-alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
+# Directory listing aliases, defaults to exa, if aviable
+if command -v exa > /dev/null; then
+	alias ls='exa'
+	alias l='exa -glah --classify'
+	alias ll='exa -glah --classify -s=size --group-directories-first -r'
+	alias ld='exa -glahD'
+	alias tree='exa -Tlagh'
+	alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
+	alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
+	alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
+else
+	alias ls='ls --color=auto'
+	alias l='ls -lahX --classify'
+	alias ll='ls -lahX --classify --group-directories-first'
+fi
 
 # Config access shortcuts
 alias cfzshrc='vim ~/.zshrc'
@@ -93,7 +99,7 @@ alias reg_ip='echo "(`reg_ipv4`|`reg_ipv6`)"' # Match both IPv4 and IPv6
 alias grep_email='grep -E `reg_email`'
 alias grep_ip='grep -E `reg_ip`'
 alias grep_mac='grep -E `reg_mac`'
-alias massgrep='grep -rni'
+alias massgrep='grep -RHIni'
 
 # Network
 alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
@@ -223,14 +229,6 @@ if [ -x /usr/bin/dircolors ]; then
 
     alias diff='diff --color=auto'
     alias ip='ip --color=auto'
-
-    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
-    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
-    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
-    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
     # Take advantage of $LS_COLORS for completion as well
     zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
