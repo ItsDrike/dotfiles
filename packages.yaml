@@ -90,6 +90,10 @@ pacman:
     - plasma
     - sddm
 
+    # Printer
+    - cups # Daemon for printing
+    - hplip # Tool to set-up HP printers
+    - print-manager # KDE utility for managing printers
 
 git:
     - https://aur.archlinux.org/yay-git.git # Yay tool, for AUR installation
