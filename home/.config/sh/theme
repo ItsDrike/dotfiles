@@ -3,13 +3,25 @@
 # hide EOL sign ('%')
 export PROMPT_EOL_MARK=""
 
-# Color definition
-GREEN="%F{047}"
-RED="%F{196}"
-ORANGE="%F{214}"
-BLUE="%F{027}"
-LBLUE="%F{075}"
-PURPLE="%F{105}"
+# TTY (pure linux) terminal only has 8-bit color support
+# (unless you change it in kernel), respect this and downgrade
+# the color scheme accordingly (it won't look best, but it's
+# still better than no colors)
+if [ $TERM = "linux" ]; then
+	GREEN="%F{002}"
+	RED="%F{001}"
+	ORANGE="%F{003}"
+	BLUE="%F{004}"
+	LBLUE="%F{006}"
+	PURPLE="%F{005}"
+else
+	GREEN="%F{047}"
+	RED="%F{196}"
+	ORANGE="%F{214}"
+	BLUE="%F{027}"
+	LBLUE="%F{075}"
+	PURPLE="%F{105}"
+fi
 RESET="%f"
 
 # Signals git status of CWD repository (if any)
