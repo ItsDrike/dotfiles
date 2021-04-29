@@ -2,7 +2,7 @@
 [user]
 	name = ItsDrike
 	email = itsdrikeofficial@gmail.com
-	signingkey = 252D306F545351FC
+	signingkey = B5F6B41F708C3ADD
 [credential]
 	helper = store
 [alias]
