@@ -6,6 +6,7 @@ alias mdkir='mkdir'
 alias soruce='source'
 alias souce='source'
 alias suod='sudo '
+alias sduo='sudo '
 
 # Files/Directories
 alias ..='cd ..'
@@ -67,9 +68,9 @@ alias rm='rm -v' # Verbose rm
 # Python
 alias py3='python3'
 alias py2='python2'
-alias py='ipython'
 alias ipy='ipython'
 alias bpy='bpython'
+command -v ipython > /dev/null && alias py='ipython' || alias py='python'
 
 # Fallbacks
 command -v hd > /dev/null || alias hd="hexdump -C" # Cannonical hex dump; some systems have this symlinked
@@ -116,8 +117,8 @@ alias torify='source torsocks on' # Pass every command via torsocks
 alias untorify='source torsocks off' # Stop passing commands via torsocks
 
 # Firewall aliases (IPTables/UFW)
-command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
 command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
+command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
 alias ipt='iptables' # Shortcut
 alias iptlist='iptables -L -n -v --line-numbers'  # All rules
 alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
@@ -135,6 +136,7 @@ alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/nu
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
+alias upload-journal='sudo journalctl -b -1 | curl -F "f:1=<-" ix.io' # Upload journalctl from last boot to ix.io
 alias sv='systemctl'
 
 # Processes
