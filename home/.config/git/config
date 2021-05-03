@@ -4,7 +4,7 @@
 	email = itsdrikeofficial@gmail.com
 	signingkey = B5F6B41F708C3ADD
 [credential]
-	helper = store
+	helper = store --file ~/.config/git/git-credentials
 [alias]
 	l = log --oneline --decorate --all --graph
 	lol = log --pretty=oneline --abbrev-commit --graph
