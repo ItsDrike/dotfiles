@@ -6,7 +6,7 @@
 # This script will respect .rsync-filter files, which can be used
 # to define custom exclude rules for files/dirs in which it is present
 
-if [ $# -ge 2 ]; then
+if [ $# -lt 2 ]; then
 	echo "Invalid amount of arguments passed!"
 	echo "Arguments: [Source path] [Backup path]"
 	echo "  Source path: directory to be backed up, usually '/'"
@@ -28,4 +28,10 @@ rsync -avHAXS \
 	--link-dest "${LATEST_LINK}" \
 	"${@:3}" "${SOURCE_DIR}/" "${BACKUP_PATH}"
 
-ln -sf "${BACKUP_PATH}" "${LATEST_LINK}"
+# Only attempt to override the symlink if we made new backup_path
+# user might've passed --dry-run option in which case we wouldn't
+# want to override latest symlink to non-existent location
+if [ -d "${BACKUP_PATH}" ]; then
+	rm "${LATEST_LINK}" 2>/dev/null
+	ln -s "${BACKUP_PATH}" "${LATEST_LINK}"
+fi
