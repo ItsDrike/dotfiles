@@ -1,0 +1,21 @@
+# Filter file for rsync based backups
+# rsync needs to be ran with --filter 'dir-merge /.rsync-filter'
+# argument to look through this filter file
+- /dev/*
+- /proc/*
+- /sys/*
+- /media/*
+- /mnt/*
+- /tmp/*
+- /run/*
+- /var/run/*
+- /var/lock/*
+- /var/lib/docker/*
+- /var/lib/schroot/*
+- /lost+found
+- /data/*
+- /DATA/*
+- /cdrom/*
+- /sdcard/*
+- /swapfile
+- /swap/*
