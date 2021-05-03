@@ -18,13 +18,13 @@ set autoindent					" Enable autoindent
 set ruler						" Show cursor position
 set cursorline					" Highlight cursor line
 set mouse=a						" Enable mouse mode
-set termguicolors				" Enable true colors
 set backspace=indent,eol,start	" Delete everything
 set laststatus=2				" Always show status line
 set wildmode=longest,list,full	" Enable autocompletion
 set splitbelow splitright		" Split in more natural way
 
 "set nomodeline     " Disable as a security precaution
+"set termguicolors	" Enable true colors (breaks TTY vim)
 "set wildmenu       " Enable wildmenu
 "set conceallevel=0 " Disable concealing
 "set complete-=i    " Better completion
