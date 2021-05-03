@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Make sure the partition is mounted according to fstab
+mount /mnt/gentoo 2>/dev/null
+
+# Mount necessary directories for chroot to be possible
+mount --types proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --make-rslave /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
+mount --make-rslave /mnt/gentoo/dev
+
+# Chroot with bash shell
+chroot /mnt/gentoo /bin/bash
+
+# Unmount recursively mounted directories
+umount -l /mnt/gentoo/dev{/shm,/pts,}
+umount -R /mnt/gentoo
+
+# Remount partition accordingly to fstab
+# (the above umountings will unmount gentoo completely,
+# which means that remounting is necessary)
+mount /mnt/gentoo
