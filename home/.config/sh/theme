@@ -24,6 +24,11 @@ else
 fi
 RESET="%f"
 
+# Once we are too deep in the filestructure, we can usually afford to shorten
+# the whole working directory and only print something like ~/.../dir3/dir4/dir5
+# instead of ~/dir1/dir2/dir3/dir4/dir5. If this isn't desired, set this to 0
+USE_SHORTENED_WORKDIR=1
+
 # Signals git status of CWD repository (if any)
 git_prompt() {
     ref=$(command git symbolic-ref HEAD 2> /dev/null) || ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
@@ -38,9 +43,24 @@ git_prompt() {
 foreign_prompt() {
 	if [ "$(awk '$5=="/" {print $1}' </proc/1/mountinfo)" != "$(awk '$5=="/" {print $1}' </proc/$$/mountinfo)" ]; then
 		echo -n "@${ORANGE}chroot"
-	fi
-	if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+	elif [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 		echo -n "@${ORANGE}ssh"
+	fi
+}
+
+# Prints appropriate working directory
+working_directory() {
+	# By default up to 5 directories will be tolerated before shortening
+	# After we surpass that, first directory (or ~) will be printed together with last 3
+	# This feature uses special symbol '…', but this isn't aviable when in TTY. Because
+	# of this, when we are in TTY, we fall back to longer '...'
+
+	if [ $USE_SHORTENED_WORKDIR != 1 ]; then
+		echo -n " $BLUE$~"
+	elif [ $TERM = "linux" ]; then
+		echo -n " $BLUE%(5~|%-1~/.../%3~|%4~)"
+	else
+		echo -n " $BLUE%(5~|%-1~/…/%3~|%4~)"
 	fi
 }
 
@@ -49,9 +69,8 @@ setopt promptsubst  # enable command substitution in prompt
 # Primary Prompt
 [ "$EUID" -eq 0 ] && PS1="$RED%n$RESET" || PS1="$GREEN%n$RESET" # user
 PS1+="$(foreign_prompt)"
-#PS1+=" $BLUE%~" # Working directory
-PS1+=" $BLUE%(5~|%-1~/…/%3~|%4~)" # Shortened working directory
 PS1+="\$(git_prompt)"
+PS1+="$(working_directory)"
 PS1+=" $PURPLE%(!.#.»)$RESET " # Final symbol (# or »)
 
 # Next line prompt
