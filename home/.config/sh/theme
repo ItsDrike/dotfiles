@@ -69,8 +69,8 @@ setopt promptsubst  # enable command substitution in prompt
 # Primary Prompt
 [ "$EUID" -eq 0 ] && PS1="$RED%n$RESET" || PS1="$GREEN%n$RESET" # user
 PS1+="$(foreign_prompt)"
-PS1+="\$(git_prompt)"
 PS1+="$(working_directory)"
+PS1+="\$(git_prompt)"
 PS1+=" $PURPLE%(!.#.»)$RESET " # Final symbol (# or »)
 
 # Next line prompt
