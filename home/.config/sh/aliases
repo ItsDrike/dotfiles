@@ -138,6 +138,7 @@ alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to
 alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
 alias upload-journal='sudo journalctl -b -1 | curl -F "f:1=<-" ix.io' # Upload journalctl from last boot to ix.io
 alias sv='systemctl'
+alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
 
 # Processes
 alias psmem='ps auxf | sort -nr -k 4' # Top memory eaters
