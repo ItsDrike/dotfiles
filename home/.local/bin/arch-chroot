@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ "$EUID" -ne 0 ]; then
+    echo "Must be ran as root"
+    exit
+fi
+
+# Make sure the partition is mounted according to fstab
+mount /mnt/arch
+
+# Mount necessary directories for chroot to be possible
+mount --types proc /proc /mnt/arch/proc
+mount --rbind /sys /mnt/arch/sys
+mount --make-rslave /mnt/arch/sys
+mount --rbind /dev /mnt/arch/dev
+mount --make-rslave /mnt/arch/dev
+
+# Chroot with bash shell
+chroot /mnt/arch /bin/bash
+
+# Unmount recursively mounted directories
+umount -l /mnt/arch/dev{/shm,/pts,}
+umount -R /mnt/arch
+
+# Remount partition accordingly to fstab
+# (the above umountings will unmount gentoo completely,
+# which means that remounting is necessary)
+mount /mnt/arch
