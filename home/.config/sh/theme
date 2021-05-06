@@ -77,6 +77,10 @@ PS1+=" $PURPLE%(!.#.»)$RESET " # Final symbol (# or »)
 PS2="$RED\ $RESET"
 
 # Right side prompt (on error)
-RPS1="%(?..$RED%? ↵$RESET)"
+if [ $TERM = "linux" ]; then
+	RPS1="%(?..$RED%? X$RESET)"
+else
+	RPS1="%(?..$RED%? ↵$RESET)"
+fi
 
 
