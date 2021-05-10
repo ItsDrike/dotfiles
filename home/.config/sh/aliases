@@ -8,7 +8,7 @@ alias souce='source'
 alias suod='sudo '
 alias sduo='sudo '
 
-# Files/Directories
+# Directory changing
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
@@ -17,16 +17,21 @@ alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
+
+# Files/Directories utilities
 alias mkdir='mkdir -p'
 alias md='mkdir'
+alias fhere='find . -name'
 alias rr='rm -r'
 alias rf='rm -f'
 alias rrf='rm -rf'
-alias fhere='find . -name'
 
-# Aliases for piping directly (f.e.: history G ssh)
-alias -g G='| grep'
-alias -g H='| head'
+# Replacements (adding flags)
+alias cp='cp -iv' # Ask before overwriting, verbose
+alias mv='mv -iv' # Ask before overwriting, verbose
+alias rm='rm -v'  # Verbose (asking here is too annoying)
+alias wget='wget -c' # Resume wget by default
+alias df='df -H' # Show sizes as powers of 1000
 
 # Directory listing aliases, defaults to exa, if aviable
 if command -v exa > /dev/null; then
@@ -35,13 +40,17 @@ if command -v exa > /dev/null; then
 	alias ll='exa -glah --classify -s=size --group-directories-first -r'
 	alias ld='exa -glahD'
 	alias tree='exa -Tlagh'
-	alias dotfiles='exa -hula -d .[a-z]* | grep -v ^d' # Show all dotfiles
-	alias dotdirs='exa -hulaD -d .[a-z]*' # Show all dotdirs
-	alias dotall='exa -hula -d .[a-z]*' # Show both dotdirs and dotfiles
+	alias dotall='exa -hulad .[a-z]*' # Show both dotdirs and dotfiles
+	alias dotfiles='dotall | grep -v ^d' # Show all dotfiles
+	alias dotdirs='dotall | grep --color=never ^d' # Show all dotdirs
 else
 	alias ls='ls --color=auto'
 	alias l='ls -lahX --classify'
 	alias ll='ls -lahX --classify --group-directories-first'
+	alias ld='ls -lahX --classify | grep --color=never ^d'
+	alias dotall='ls -lahXd .[a-z]*'
+	alias dotfiles='dotall | grep -v ^d'
+	alias dotdirs='dotall | grep --color=never ^d'
 fi
 
 # Config access shortcuts
@@ -56,15 +65,6 @@ alias cftheme='vim ~/.config/sh/theme'
 alias cfprompt='cftheme'
 alias cfkeybinds='vim ~/.config/sh/keybinds'
 
-# Replacements
-alias wget='wget -c' # Resume wget by default
-alias df='df -H' # Show sizes as powers of 1000
-alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
-alias vi='vim' # Nobody uses `vi` anymore, go directly to `vim`
-alias cp='cp -iv' # Ask before overwriting files, verbose mode
-alias mv='mv -iv' # Same as above
-alias rm='rm -v' # Verbose rm
-
 # Python
 alias py3='python3'
 alias py2='python2'
@@ -73,9 +73,10 @@ alias bpy='bpython'
 command -v ipython > /dev/null && alias py='ipython' || alias py='python'
 
 # Fallbacks
-command -v hd > /dev/null || alias hd="hexdump -C" # Cannonical hex dump; some systems have this symlinked
-command -v md5sum > /dev/null || alias md5sum="md5" # Fallback from `md5sum` to `md5`
-command -v sha1sum > /dev/null || alias sha1sum="shasum" # Fallback from `sha1sum` to `shasum`
+command -v hd > /dev/null || alias hd='hexdump -C' # Cannonical hex dump; some systems have this symlinked
+command -v md5sum > /dev/null || alias md5sum='md5' # Fallback from `md5sum` to `md5`
+command -v sha1sum > /dev/null || alias sha1sum='shasum' # Fallback from `sha1sum` to `shasum`
+command -v vim > /dev/null && alias vi='vim' || alias vim='vi' # Only use vi if vim isn't found, alias it to vim if it is
 
 # X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
 command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
@@ -117,32 +118,38 @@ alias torify='source torsocks on' # Pass every command via torsocks
 alias untorify='source torsocks off' # Stop passing commands via torsocks
 
 # Firewall aliases (IPTables/UFW)
-command -v ufw > /dev/null && alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
-command -v ufw > /dev/null && alias firewall='ufw' || alias firewall='iptables'
 alias ipt='iptables' # Shortcut
 alias iptlist='iptables -L -n -v --line-numbers'  # All rules
 alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
 alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
 alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
+alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
 
-# System
-alias meminfo='free -m -l -t'
-alias cpuinfo='lscpu'
-alias batinfo='sudo watch -d -n 2 tlp-stat -b'
-alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
-alias distro='cat /etc/*-release'
-alias diskspace_report="df -P -kHl"
+# System actions
+alias sv='systemctl'
+alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
+alias upload='curl -F "f:1=<-" ix.io'
+alias upload-journal='sudo journalctl -b -1 | upload' # Upload journalctl from last boot to ix.io
 alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done' # Run `yes > /dev/null` on all cores as stress test
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
-alias upload-journal='sudo journalctl -b -1 | curl -F "f:1=<-" ix.io' # Upload journalctl from last boot to ix.io
-alias sv='systemctl'
-alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
 
-# Processes
+# System info
+alias meminfo='free -m -l -t'
+alias cpuinfo='lscpu'
+alias batinfo='sudo watch -d -n 2 tlp-stat -b'
+alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
+alias journalerr='sudo journalctl -p 3 -xb'
+alias distro='cat /etc/*-release'
+alias diskspace_report="df -P -kHl"
+alias kernel='uname -r'
+
+# System processes
 alias psmem='ps auxf | sort -nr -k 4' # Top memory eaters
+alias psmem10='psmem | head -10' # Top 10 memory eaters
 alias pscpu='ps auxf | sort -nr -k 3' # Top cpu eaters
+alias pscpu10='pscpu | head -10' # Top 10 cpu eaters
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e' # Get searchable process with nice output
 
 # Time info
@@ -161,17 +168,18 @@ alias cleanup='clean-trash && clean-down && clean-journal && clean-pacman'
 # Git aliases
 alias g='git'
 alias gs='git status'
-alias gc='git commit'
-alias gcm='git commit -m'
 alias ga='git add'
 alias gaa='git add all'
-alias gb='git branch'
-alias gch='git checkout'
+alias gc='git commit'
+alias gcm='git commit -m' && alias commit='git commit -m'
+alias gp='git push'       && alias push='git push'
+alias gpl='git pull'      && alias pull='git pull'
+alias gf='git fetch'      && alias fetch='git fetch'
+alias gb='git branch'     && alias branch='git branch'
+alias gch='git checkout'  && alias checkout='git checkout'
+alias gau='git add -u'    && alias addup='git add -u'
 alias gchb='git checkout -b'
 alias gcda='git diff --cached'  # Diff any files staged for commit
-alias gf='git fetch'
-alias gm='git merge'
-alias gp='git push'
 alias glog='git log --oneline --decorate --graph'
 alias gundo='git reset HEAD~'
 alias gredo="git reset 'HEAD@{1}'"
@@ -200,7 +208,18 @@ alias pac-group-packages='pacman -Sg' # List all packages which will be installe
 alias pac-group-packages-local='pacman -Qg' # Only list locally installed packages from given group
 alias vuln='arch-audit' # Show vulnerable packages that can be upgraded (Arch Linux)
 alias vuln-upgrade="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
-alias create_mirror_list='reflector --country Slovakia --country Czechia --country Poland --country Hungary --country Ukraine --country Germany --country US --latest 800 --protocol https --sort rate --save mirrorlist'
+
+# Get fastest mirrors (using reflector)
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+
+# Youtube-dl aliases
+alias ytv-best='youtube-dl -f bestvideo+bestaudio'
+alias yta-best='youtube-dl --extract-audio --audio-format best'
+alias yta-mp3='youtube-dl --extract-audio --audio-format mp3'
+alias yta-wav='youtube-dl --extract-audio --audio-format wav'
 
 # Shell aliases
 alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell)
@@ -208,6 +227,8 @@ alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
+alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
+alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 
 # If user is not root, pass all commands via sudo
 if [ $UID -ne 0 ]; then
