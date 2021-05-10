@@ -91,6 +91,11 @@ pacman:
     - plasma
     - sddm
 
+    # Fonts
+    - libxft
+    - ttf-hack
+    - ttf-joypixels
+
     # Printer
     - cups # Daemon for printing
     - hplip # Tool to set-up HP printers
@@ -116,3 +121,5 @@ aur:
     - exodus # Software cryptocurrency wallet
     - notion-app # Online text manipulation tool with databases and very rich interface
     #- mailspring-libre # Beautiful and fast mail client, without tracking of default mailspring
+    # Fonts
+    - nerd-fonts-complete
