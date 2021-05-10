@@ -76,7 +76,8 @@ command -v ipython > /dev/null && alias py='ipython' || alias py='python'
 command -v hd > /dev/null || alias hd='hexdump -C' # Cannonical hex dump; some systems have this symlinked
 command -v md5sum > /dev/null || alias md5sum='md5' # Fallback from `md5sum` to `md5`
 command -v sha1sum > /dev/null || alias sha1sum='shasum' # Fallback from `sha1sum` to `shasum`
-command -v vim > /dev/null && alias vi='vim' || alias vim='vi' # Only use vi if vim isn't found, alias it to vim if it is
+command -v vim > /dev/null && alias vi='vim' # Let vim take precedence over vi
+command -v nvim > /dev/null && alias vi='nvim' && alias vim='nvim' # Let nvim take precedence over vi/vim
 
 # X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
 command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
