@@ -5,6 +5,12 @@ Source code for this automated script is in `src` directory, and the dotfiles ar
 
 You are highly adviced to first go through these dotfiles yourself and adjust them to your liking.
 
+## Sample images
+
+- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
+- Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
+- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
+
 ## What does it do
 
 - Automated arch installation script
@@ -12,24 +18,20 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.zshrc) to enable it
   - Even though enabling it is an option, it is not a necessary thing to do, oh-my-zsh has a lot of code that is mostly irrelevant and unused, these dotfiles give you the ability to completely avoid it, if you desire to do so
 - Custom [prompt](home/.config/sh/theme), both for oh-my-zsh configuration or for standalone usage
-- Custom [VIM configuration](home/.config/vim/vimrc) (this was designed for regular vim, nvim support can't be guaranteed)
-- Many handy [aliases](home/.config/sh/aliases) (likely too many, you should adjust that to your needs)
+- Custom [VIM configuration](home/.config/vim/vimrc) (designed for nvim, but should work fine with regular vim too)
+- Many handy [aliases](home/.config/sh/aliases) and [functions](home/.config/sh/functions) (likely too many, you should adjust that to your needs)
 - [XDG configuration](home/.config/sh/environ) to avoid too much cluttering in home directory
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
 - Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
 - [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads.
+- Automatic logout for TTY sessions or for root logins after 10 minutes of inactivity
+- NetworkManager configuration which assigns new mac for each network
 
 ## Requirements
 
 `curl` and `tar`, or `git` to clone the repository itself.
 Installation uses `python` and `pip` with some python packages in `requirements.txt` but these will get installed automatically by the `install.sh` script.
-
-## Sample images
-
-- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
-- Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
-- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
 
 ## Installation
 
