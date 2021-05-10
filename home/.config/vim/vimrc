@@ -73,22 +73,28 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
+"
+map <C-c> "+y
+vnoremap <C-v> "+p
+
 " Vundle
 filetype off					" required
 set nocompatible				" be iMproved, required
 
-set rtp+=~/.local/share/vim/bundle/Vundle.vim
-call vundle#begin('~/.local/share/vim/bundle')
+"set rtp+=~/.local/share/vim/bundle/Vundle.vim
+"all vundle#begin('~/.local/share/vim/bundle')
+call plug#begin('~/.local/share/vim/plugged')
 
-Plugin 'VundleVim/Vundle.vim'			" Let vundle manage itself
-Plugin 'airblade/vim-gitgutter'			" Shows Git diff
-Plugin 'joshdick/onedark.vim'			" OneDark theme
-Plugin 'vim-airline/vim-airline'		" AirLine statusline
-Plugin 'vim-airline/vim-airline-themes'	" AirLine statusline themes
-Plugin 'vim-syntastic/syntastic'		" Syntax checking
-Plugin 'vim-python/python-syntax'		" Python highlighting
+Plug 'VundleVim/Vundle.vim'				" Let vundle manage itself
+Plug 'airblade/vim-gitgutter'			" Shows Git diff
+Plug 'joshdick/onedark.vim'				" OneDark theme
+Plug 'vim-airline/vim-airline'			" AirLine statusline
+Plug 'vim-airline/vim-airline-themes'	" AirLine statusline themes
+Plug 'vim-syntastic/syntastic'			" Syntax checking
+Plug 'vim-python/python-syntax'			" Python highlighting
 
-call vundle#end()
+"call vundle#end()
+call plug#end()
 filetype plugin indent on
 
 " User interface / Theme
