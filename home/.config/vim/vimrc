@@ -107,9 +107,14 @@ set guioptions-=L	" remove left-hand scrollbar
 let g:airline_theme='onedark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#tabline#formatter = 'unique_tail'
-let g:airline_symbols_ascii = 1 " Enable ASCII only for TTY
-let g:airline_left_sep = "\uE0B0" " Change to ASCII symbol on TTY (>)
-let g:airline_right_sep = "\uE0B2" " Change to ASCII symbol on TTY (<)
+if empty($DISPLAY) " Automatically apply ASCII only config if we don't have DISPLAY (TTY)
+    let g:airline_left_sep = '►'
+    let g:airline_right_sep = '◄'
+    let g:airline_symbols_ascii = 1
+else
+    let g:airline_left_sep = "\uE0B0"
+    let g:airline_right_sep = "\uE0B2"
+endif
 
 " Neomake
 let g:neomake_python_enabled_makers = ['flake8']
@@ -125,8 +130,8 @@ let g:jedi#use_splits_not_buffers = "right"
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeDirArrowExpandable = '►' " Change to ASCII symbol on TTY (>)
-let g:NERDTreeDirArrowCollapsible = '▼' " Change to ASCII symbol on TTY (V)
+let g:NERDTreeDirArrowExpandable = '►'
+let g:NERDTreeDirArrowCollapsible = '▼'
 let NERDTreeShowLineNumbers=1
 let NERDTreeShowHidden=1
 let NERDTreeMinimalUI = 1
