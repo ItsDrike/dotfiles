@@ -7,7 +7,7 @@ set relativenumber				" Show relative numbersi
 set undolevels=999				" Lots of these
 set history=1000				" More history
 set hlsearch					" Highlight Search
-set noexpandtab					" Do not expand tab into spaces (change to expandtab to use spaces)
+set expandtab					" Expand tabs to spaces (inverse: noexpandtab)
 set tabstop=4					" Tab size
 set shiftwidth=4				" Indentation size
 set softtabstop=4				" Tabs/Spaces interrop
@@ -21,11 +21,10 @@ set wildmode=longest,list,full	" Enable autocompletion
 set splitbelow splitright		" Split in more natural way
 set formatoptions+=j			" Delete comment character when joining commented lines
 set autoread					" Reload files on change
-set mouse=a						" Enable mouse mode (won't have any effect on TTY)
+set mouse=a						" Enable mouse mode
+set encoding=utf-8				" Use UTF-8, not ASCII (May cause issues on TTY)
+"set termguicolors				" Use true colors (256) (May cause issues on TTY)
 syntax enable					" Turn on syntax highlighting
-" Non TTY Settings (Uncomment if you are on full graphical environment)
-set encoding=utf-8				" Use UTF-8, not ASCII
-"set termguicolors				" Use true colors (256)
 
 " XDG Support
 " Avoid using this with root, sudo causes issues with this
@@ -58,9 +57,6 @@ endif
 " Automatically deletes all trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
-" Perform shellcheck on files
-map <leader>s :!clear && shellcheck %<CR>
-
 " Remap splits navigation to just CTRL + hjkl
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -73,39 +69,39 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
-"
+" System clipboard interractions
 map <C-c> "+y
 vnoremap <C-v> "+p
 
-" Vundle
-filetype off					" required
-set nocompatible				" be iMproved, required
-
-"set rtp+=~/.local/share/vim/bundle/Vundle.vim
-"all vundle#begin('~/.local/share/vim/bundle')
+" Vim-Plug (Plugins)
 call plug#begin('~/.local/share/vim/plugged')
 
-Plug 'VundleVim/Vundle.vim'				" Let vundle manage itself
-Plug 'airblade/vim-gitgutter'			" Shows Git diff
-Plug 'joshdick/onedark.vim'				" OneDark theme
-Plug 'vim-airline/vim-airline'			" AirLine statusline
-Plug 'vim-airline/vim-airline-themes'	" AirLine statusline themes
-Plug 'vim-syntastic/syntastic'			" Syntax checking
-Plug 'vim-python/python-syntax'			" Python highlighting
+Plug 'airblade/vim-gitgutter'                                   " Shows Git diff
+Plug 'jiangmiao/auto-pairs'				                        " Quote and bracket completion
+Plug 'neomake/neomake'					                        " Syntax checking
+Plug 'zchee/deoplete-jedi'                                      " Pyhon jedi autocompletion
+Plug 'davidhalter/jedi-vim'                                     " Python implementation check
+Plug 'preservim/nerdcommenter'                                  " Comment plugin
+Plug 'preservim/nerdtree'                                       " File manager
+Plug 'joshdick/onedark.vim'				                        " OneDark theme
+Plug 'vim-airline/vim-airline'			                        " AirLine statusline
+Plug 'vim-airline/vim-airline-themes'	                        " AirLine statusline themes
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }   " Auto-completion
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
-"call vundle#end()
 call plug#end()
-filetype plugin indent on
 
 " User interface / Theme
 colorscheme onedark
-"autocmd ColorScheme * highlight! Normal ctermbg=NONE guibg=NONE  " Terminal background
 set guioptions-=m	" remove menubar
 set guioptions-=T	" remove toolbar
 set guioptions-=r	" remove right-hand scrollbar
 set guioptions-=L	" remove left-hand scrollbar
-
-let g:python_highlight_all = 1	" Enable pyhton-syntax support
 
 " Airline
 let g:airline_theme='onedark'
@@ -115,19 +111,24 @@ let g:airline_symbols_ascii = 1 " Enable ASCII only for TTY
 let g:airline_left_sep = "\uE0B0" " Change to ASCII symbol on TTY (>)
 let g:airline_right_sep = "\uE0B2" " Change to ASCII symbol on TTY (<)
 
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" Neomake
+let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_python_flake8_maker = {'args': ['--ignore=E501', '--format=default']}
+call neomake#configure#automake('nrwi', 500)
 
-let g:syntastic_alays_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
-map <leader>c :SyntasticCheck<CR>
-map <leader>z :Errors<CR>
+" Jedi-vim
+let g:jedi#completions_enabled = 0 " disable completions, since we use deoplete
+let g:jedi#use_splits_not_buffers = "right"
 
-
+" NERDTree
+map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable = '►' " Change to ASCII symbol on TTY (>)
+let g:NERDTreeDirArrowCollapsible = '▼' " Change to ASCII symbol on TTY (V)
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize=38
 
