@@ -27,26 +27,27 @@ Installation uses `python` and `pip` with some python packages in `requirements.
 
 ## Sample images
 
-- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/106214493-2ada3480-61cf-11eb-9226-5293b6eb3c75.png)
+- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
 - Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/106214028-3c6f0c80-61ce-11eb-96a2-3a46c77853e7.png)
-- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/106214104-645e7000-61ce-11eb-9c80-d0762338ce59.png)
+- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
 
 ## Installation
 
 Clone this repository anywhere you like
 `$ git clone https://github.com/ItsDrike/dotfiles`
 
-If you don't want to install git (running straight from newly installed os), you can use `curl`:
-`$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master`
+If you don't want to install git (running straight from newly installed os), you can use `curl`: <br>
+`$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master` <br>
 And extract from `.tar.gz` archive:
 `$ tar xvf [archive name]`
 
 ## Running the script
 
-Before you run, you should take a look at the files included and adjust them however you like.
+**Before you run, you should take a look at the files included and adjust them however you like.** <br>
+Make sure you only run the script after you've adjusted everything to your liking, there are many things which aren't needed and might not be desired, make sure to really check every file this will add and remove/adjust those you don't want
 
-- All files which will be added are in [`home/`](home) and [`root/`](root) directory. You can remove files which you don't want, or adjust them in any way.
-- You should also take a look at [`packages.yaml`](packages.yaml) and remove all packages which you don't want and add those you do.
+- All config files which will be added are in [`home/`](home) and [`root/`](root) directory. Make sure to remove the undesired ones.
+- All packages are located in [`packages.yaml`](packages.yaml), Make sure to remove all packages which you don't want to be installed.
 
 When you are prepared, you can run the installer  (assuming you're in the clonned directory):
 `$ chmod +x install.sh` (Make installation script executable)
