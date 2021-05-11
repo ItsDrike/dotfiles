@@ -2,3 +2,4 @@ pyyaml
 psutil
 colorama
 pyinquirer
+inquirer
