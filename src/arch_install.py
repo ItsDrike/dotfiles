@@ -100,7 +100,7 @@ def run_pacstrap(root_mountpoint: Path):
 
     extra_pkgs = inquirer.shortcuts.checkbox(
         "You can choose to install additional packages with pacstrap here (select with space)",
-        choices=["NetworkManager", "base-devel", "vim", "nano"]
+        choices=["networkmanager", "base-devel", "vim", "nano"]
     )
     run_root_cmd(f"pacstrap {root_mountpoint} base linux linux-firmware {' '.join(extra_pkgs)}")
 
