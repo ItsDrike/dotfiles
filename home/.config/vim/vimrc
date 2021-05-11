@@ -86,6 +86,7 @@ Plug 'preservim/nerdtree'                                       " File manager
 Plug 'joshdick/onedark.vim'				                        " OneDark theme
 Plug 'vim-airline/vim-airline'			                        " AirLine statusline
 Plug 'vim-airline/vim-airline-themes'	                        " AirLine statusline themes
+Plug 'wakatime/vim-wakatime'                                    " Wakatime integration for coding stats
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }   " Auto-completion
 else
