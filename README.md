@@ -8,7 +8,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
 ## Sample images
 
 - Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
-- Vim configuration (Fully adjustable, simply edit [`vimrc`](home/.config/vim/vimrc)) ![image](https://user-images.githubusercontent.com/20902250/117735100-5adc9f00-b1e4-11eb-93ea-231717064d7b.png)
+- Neovim configuration (Fully adjustable, simply edit [`init.vim`](home/.config/nvim/init.vim)) ![image](https://user-images.githubusercontent.com/20902250/117735100-5adc9f00-b1e4-11eb-93ea-231717064d7b.png)
 - Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
 
 ## What does it do
@@ -18,7 +18,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.zshrc) to enable it
   - Even though enabling it is an option, it is not a necessary thing to do, oh-my-zsh has a lot of code that is mostly irrelevant and unused, these dotfiles give you the ability to completely avoid it, if you desire to do so
 - Custom [prompt](home/.config/sh/theme), both for oh-my-zsh configuration or for standalone usage
-- Custom [VIM configuration](home/.config/vim/vimrc) (designed for nvim, but should work fine with regular vim too)
+- Custom [VIM configuration](home/.config/nvim/init.vim) (designed for nvim, but will work for vim with some adjustments)
 - Many handy [aliases](home/.config/sh/aliases) and [functions](home/.config/sh/functions) (likely too many, you should adjust that to your needs)
 - [XDG configuration](home/.config/sh/environ) to avoid too much cluttering in home directory
 - [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
