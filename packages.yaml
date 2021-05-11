@@ -2,7 +2,7 @@ pacman:
     # Common
     - base-devel # Necessary for building AUR and yay install
     - git
-    - vim
+    - nvim
     - sudo
     - networkmanager
     - net-tools
