@@ -95,6 +95,9 @@ pacman:
     - libxft
     - ttf-hack
     - ttf-joypixels
+    - noto-fonts
+    - noto-fonts-cjk
+    - noto-fonts-emoji
 
     # Printer
     - cups # Daemon for printing
