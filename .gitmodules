@@ -1,3 +1,0 @@
-[submodule "home/.local/share/vim/bundle/Vundle.vim"]
-	path = home/.local/share/vim/bundle/Vundle.vim
-	url = https://github.com/VundleVim/Vundle.vim
