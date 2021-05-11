@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Environmental variables
-export EDITOR=vim
+export EDITOR=nvim
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 export GPG_TTY=${tty}
 export LESS_TERMCAP_md="${yellow}" # Highlight section titles in manual pages
