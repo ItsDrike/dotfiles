@@ -10,15 +10,15 @@ from src.util.internet import connect_internet
 colorama.init(autoreset=True)
 
 
-def mount_partition(partition_path: Path, mount_path: Optional[Path] = None) -> Path:
+def mount_partition(partition_path: Path, mount_path: Optional[Path] = None, default_path: str = "/mnt") -> Path:
     """
-    Mount given `partition_path` to `mount_path`.
+    Mount given `partition_path` to `mount_path`.;
     If `mount_path` wasn't provided, ask user for it.
 
     After mounting, mount_path will be returned
     """
     if not mount_path:
-        mount_path = Path(inquirer.shortcuts.path(f"Specify mountpoint for {partition_path}", default="/mnt"))
+        mount_path = Path(inquirer.shortcuts.path(f"Specify mountpoint for {partition_path}", default=default_path))
 
     if not mount_path.exists():
         run_root_cmd(f"mkdir -p {mount_path}")
@@ -57,7 +57,7 @@ def partition_disk() -> Path:
         efi_part = Path(inquirer.shortcuts.path("Specify EFI partition (/dev/sdXY)", exists=True))
         if inquirer.shortcuts.confirm(f"Do you wish to make FAT32 filesystem on {efi_part}?", default=True):
             run_root_cmd(f"mkfs.fat -F32 {efi_part}")
-        mount_partition(efi_part, Path(root_mountpoint, "/boot"))
+        mount_partition(efi_part, default_path=str(Path(root_mountpoint, "boot")))
     elif uefi:
         print(
             f"{colorama.Fore.RED}Proceeding without EFI partition on UEFI system is not adviced, "
