@@ -25,6 +25,8 @@ alias fhere='find . -name'
 alias rr='rm -r'
 alias rf='rm -f'
 alias rrf='rm -rf'
+alias vimdiff='nvim -d'
+alias ccat='highlight --out-format=ansi'
 
 # Replacements (adding flags)
 alias cp='cp -iv' # Ask before overwriting, verbose
@@ -55,7 +57,8 @@ fi
 
 # Config access shortcuts
 alias cfzshrc='vim ~/.zshrc'
-alias cfvim='vim ~/.config/vim/vimrc'
+alias cfvim='vim ~/.config/nvim/init.vim'
+alias cfnvim='cfvim'
 alias cfalias='vim ~/.config/sh/aliases'
 alias cffunctions='vim ~/.config/sh/functions'
 alias cfenviron='vim ~/.config/sh/environ'
