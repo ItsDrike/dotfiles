@@ -14,6 +14,7 @@ pacman:
     - cron # Scheduling program
     - pkgfile # Pacman metadata explorer
     - xsel # CLI tool for get/set contents of X11 clipboard (alternatively there's xclip)
+    - highlight # CLI cat-like tool that outputs highlighted text according to file's language
     - trash-cli # CLI tool to interract with trash (for example trash-put instead of rm will mv file to trash)
     - youtube-dl # Tool for easy downloading of youtube videos
     - ranger # Simple, vim-like file manager
