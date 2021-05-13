@@ -71,7 +71,7 @@ setopt promptsubst  # enable command substitution in prompt
 PS1+="$(foreign_prompt)"
 PS1+="$(working_directory)"
 PS1+="\$(git_prompt)"
-PS1+=" $PURPLE%(!.#.»)$RESET " # Final symbol (# or »)
+PS1+=" $PURPLE%(!.#.$)$RESET " # Final symbol (# or $/»)
 
 # Next line prompt
 PS2="$RED\ $RESET"
