@@ -8,12 +8,11 @@ files = {
     '/etc/pam.d/system-auth': '89d62406b2d623a76d53c33aca98ce8ee124ed4a450ff6c8a44cfccca78baa2f',
     '/etc/pam.d/su': '7d8962b4a2cd10cf4bc13da8949a4a6151b572d39e87b7125be55f882b16c4da',
     '/etc/pam.d/sudo': 'd1738818070684a5d2c9b26224906aad69a4fea77aabd960fc2675aee2df1fa2',
-    '/etc/pam.d/sddm': 'e80cd484ab66d47f50830464c7d60a9107d011d68c9c97855156859f3ae18ddc',
-    '/etc/pam.d/kde': '00090291204baabe9d6857d3b1419832376dd2e279087d718b64792691e86739',
+    '/etc/passwd': '28d6bec52ac5b4957a2c30dfcd15008dc1a39665c27abce97408489f3dbf02c9',
+    '/etc/shadow': 'a24f72cba4cbc6b0a8433da2f4b011f31345068e3e5d6bebed6fb6a35769bd59',
+    '/etc/ssh/sshd_config': '515db2484625122b425447f7e673649e3d89b57577eaa29395017676735907b',
     '/bin/sudo': '0ffaf9e93a080ca1698837729641c283d24500d6cdd2cb4eb8e42427566a230e',
     '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
-    '/etc/ssh/sshd_config': '515db2484625122b425447f7e673649e3d89b57577eaa29395017676735907b',
-    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
     '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
     '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
     '/usr/bin/chfn': '63178af1347a62f58874640d38d605d3cb1bebe8092533787965ba317e8b553b',
@@ -48,9 +47,11 @@ def _print_help(prepend_newline=False):
         print()
     print(
         'Accepted flags:\n'
-        '  `--update`: If invalid checksum is found, ask user if it should be updated (y/n)\n'
+        '  `-u`/`--update`: If invalid checksum is found, ask user if it should be updated (y/n)\n'
+        '  `-a=path`/`--add=path`: Add a new file to the list of check entries\n'
         '  `--no-confirm`: Used in combination with `--update`, automatically assumes `y` for all questions\n'
         '  `--auto-update`: Combines `--update` and `--no-confirm`\n'
+        '  `-e`/`--edit`: Edit this file using your $EDITOR (falls back to vi)\n'
         '  `-h`/`--help`: Show this help'
     )
 
@@ -152,6 +153,33 @@ def _get_checksum(file):
     return proc_stdout.replace(f'  {file}\n', '')
 
 
+def _command_exists(command):
+    proc = subprocess.run(f'which {command}', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    return proc.returncode == 0
+
+
+def run_editor():
+    try:
+        editor = os.environ['EDITOR']
+    except KeyError:
+        for candidate in ('nvim', 'vim', 'vi', 'emacs', 'nano', 'ne', 'tilde'):
+            if _command_exists(candidate):
+                editor = candidate
+                break
+        else:
+            print('Unable to find editor software, set $EDITOR')
+            exit(2)
+
+    this = os.path.abspath(__file__)
+    cmd = f'{editor} {this}'
+    if not os.access(this, os.W_OK):
+        if _command_exists('sudo'):
+            cmd = 'sudo ' + cmd
+        elif _command_exists('doas'):
+            cmd = 'doas ' + cmd
+    return subprocess.run(cmd, shell=True)
+
+
 def run_check():
     not_matched = []
     for file, checksum in files.items():
@@ -178,20 +206,23 @@ def analyze_args():
         return
 
     for arg in args:
-        if arg == '--update':
+        if arg in ('-u', '--update'):
             ENABLE_UPDATE = True
         elif arg == '--no-confirm':
             AUTO_UPDATE = True
         elif arg == '--auto-update':
             ENABLE_UPDATE = True
             AUTO_UPDATE = True
-        elif '--add=' in arg:
-            path = arg.replace('--add=', '')
+        elif '--add=' in arg or '-a=' in arg:
+            path = arg.replace('--add=', '').replace('-a=', '')
             if os.path.exists(path):
                 TO_ADD.append(path)
             else:
                 print(f"Can't add {path} -> non-existent path")
                 exit(2)
+        elif arg in ('-e', '--edit'):
+            run_editor()
+            exit()
         elif arg in ('-h', '--help'):
             _print_help()
             exit()
