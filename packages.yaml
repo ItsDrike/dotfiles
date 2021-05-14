@@ -21,6 +21,7 @@ pacman:
     - rmlint # Tool for finding and removing duplicate files quickly
     - links # Terminal text-only web browser
     - lshw # List hardware components and their attributes
+    #- figlet # generate ascii text banners in terminal
     # ZSH + Plugins
     - zsh # shell
     - zsh-syntax-highlighting # colored zsh
@@ -32,16 +33,16 @@ pacman:
       # Then you can define bridge with `virsh net-def br10.xml` and start it `virsh net-start br10`
       # We will also want to autostart this interface with `virsh net-autostart br10`
       # If further instructions are necessary, check `https://youtu.be/itZf5FpDcV0` for video tutorial
-    - virt-manager # Frontend GUI for KVM
-    - qemu # Base emulator and virtualizer
-    - qemu-arch-extra # Virtualization for foregin architectures
-    - ovmf # UEFI virtual machines (without it, only BIOS is possible)
-    - vde2 # Networking tool
-    - ebtables # Ethernet bridge filtering utilities
-    - dnsmasq # Easy to configure DNS forwarder and DHCP server
-    - bridge-utils # Ethernet bridge configuration (VMs should be using this bridge, not real interface)
-    - openbsd-netcat # OpenBSD variant of netcat
-    - virt-viewer # A viewer for virtualized machines, virt-manager alone doesn't support copy-paste
+    #- virt-manager # Frontend GUI for KVM
+    #- qemu # Base emulator and virtualizer
+    #- qemu-arch-extra # Virtualization for foregin architectures
+    #- ovmf # UEFI virtual machines (without it, only BIOS is possible)
+    #- vde2 # Networking tool
+    #- ebtables # Ethernet bridge filtering utilities
+    #- dnsmasq # Easy to configure DNS forwarder and DHCP server
+    #- bridge-utils # Ethernet bridge configuration (VMs should be using this bridge, not real interface)
+    #- openbsd-netcat # OpenBSD variant of netcat
+    #- virt-viewer # A viewer for virtualized machines, virt-manager alone doesn't support copy-paste
     # Security
     - macchanger # Tool for changing MAC address
     - dnsutils # Tools for managing DNS
