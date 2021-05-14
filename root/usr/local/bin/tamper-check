@@ -10,7 +10,7 @@ files = {
     '/etc/pam.d/sudo': 'd1738818070684a5d2c9b26224906aad69a4fea77aabd960fc2675aee2df1fa2',
     '/etc/passwd': '28d6bec52ac5b4957a2c30dfcd15008dc1a39665c27abce97408489f3dbf02c9',
     '/etc/shadow': 'a24f72cba4cbc6b0a8433da2f4b011f31345068e3e5d6bebed6fb6a35769bd59',
-    '/etc/ssh/sshd_config': '515db2484625122b425447f7e673649e3d89b57577eaa29395017676735907b',
+    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
     '/bin/sudo': '0ffaf9e93a080ca1698837729641c283d24500d6cdd2cb4eb8e42427566a230e',
     '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
     '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
@@ -150,6 +150,8 @@ def _get_checksum(file):
             "check the 'files' dictionary on the top of the program and remove this entry."
         )
         exit(2)
+    elif "Permission denied" in proc_stdout:
+        raise PermissionError(f"PermissionError: Unable to read file '{file}'")
     return proc_stdout.replace(f'  {file}\n', '')
 
 
@@ -183,7 +185,11 @@ def run_editor():
 def run_check():
     not_matched = []
     for file, checksum in files.items():
-        sha256_sum = _get_checksum(file)
+        try:
+            sha256_sum = _get_checksum(file)
+        except PermissionError as e:
+            print(f'{e} -- skipping file...')
+            continue
         if sha256_sum != checksum:
             print(f"WARNING: {file} doesn't match the checksum")
             print(f"   -> detected: {sha256_sum}")
