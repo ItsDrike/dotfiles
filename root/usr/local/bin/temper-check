@@ -6,13 +6,13 @@
 # to automatically update all stored checksums to new values
 files = {
     '/etc/pam.d/system-auth': '89d62406b2d623a76d53c33aca98ce8ee124ed4a450ff6c8a44cfccca78baa2f',
-    '/etc/pam.d/su': 'ac2b504ba30d9a773e9b0b40b693dd79966cf390b619fcde41a66b79487a6b9e',
+    '/etc/pam.d/su': '7d8962b4a2cd10cf4bc13da8949a4a6151b572d39e87b7125be55f882b16c4da',
     '/etc/pam.d/sudo': 'd1738818070684a5d2c9b26224906aad69a4fea77aabd960fc2675aee2df1fa2',
     '/etc/pam.d/sddm': 'e80cd484ab66d47f50830464c7d60a9107d011d68c9c97855156859f3ae18ddc',
     '/etc/pam.d/kde': '00090291204baabe9d6857d3b1419832376dd2e279087d718b64792691e86739',
     '/bin/sudo': '0ffaf9e93a080ca1698837729641c283d24500d6cdd2cb4eb8e42427566a230e',
     '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
-    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
+    '/etc/ssh/sshd_config': '515db2484625122b425447f7e673649e3d89b57577eaa29395017676735907b',
     '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
     '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
     '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
@@ -92,8 +92,13 @@ def _add_file(file_path, checksum):
         add_position += 2
 
     new_contents = contents[:add_position] + new_line + contents[add_position:]
-    with open(this, 'w') as f:
-        f.write(new_contents)
+
+    try:
+        with open(this, 'w') as f:
+            f.write(new_contents)
+    except PermissionError:
+        print(f"PermissionError: To add a new rule, you must have write access to: '{this}' (forgot sudo?)")
+        exit(2)
 
     return True
 
@@ -113,8 +118,12 @@ def _update_file(file_path, new_checksum, stored_checksum):
     if contents == new_contents:  # Line wasn't find, perhaps it's a new file?
         return False
 
-    with open(this, 'w') as f:
-        f.write(new_contents)
+    try:
+        with open(this, 'w') as f:
+            f.write(new_contents)
+    except PermissionError as e:
+        print(f"PermissionError: To update a rule, you must have write access to: '{this}' (forgot sudo?)")
+        exit(2)
 
     return True
 
