@@ -14,6 +14,9 @@ files = {
     '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
     '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
     '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
+    '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
+    '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
+    '/usr/bin/chfn': '63178af1347a62f58874640d38d605d3cb1bebe8092533787965ba317e8b553b',
 }
 
 # default state of ENABLE_UPDATE variable, this should be kept to false
