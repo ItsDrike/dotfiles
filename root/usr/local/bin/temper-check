@@ -1,0 +1,209 @@
+#!/bin/python3
+
+
+# Dict of file paths with their sha256 checksums
+# make sure to run with `--auto-update` flag if you're running first time on this machine
+# to automatically update all stored checksums to new values
+files = {
+    '/etc/pam.d/system-auth': '89d62406b2d623a76d53c33aca98ce8ee124ed4a450ff6c8a44cfccca78baa2f',
+    '/etc/pam.d/su': 'ac2b504ba30d9a773e9b0b40b693dd79966cf390b619fcde41a66b79487a6b9e',
+    '/etc/pam.d/sudo': 'd1738818070684a5d2c9b26224906aad69a4fea77aabd960fc2675aee2df1fa2',
+    '/etc/pam.d/sddm': 'e80cd484ab66d47f50830464c7d60a9107d011d68c9c97855156859f3ae18ddc',
+    '/etc/pam.d/kde': '00090291204baabe9d6857d3b1419832376dd2e279087d718b64792691e86739',
+    '/bin/sudo': '0ffaf9e93a080ca1698837729641c283d24500d6cdd2cb4eb8e42427566a230e',
+    '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
+    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
+    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
+}
+
+# default state of ENABLE_UPDATE variable, this should be kept to false
+# to make sure this script can run as cronjob, not just manually by user
+# this variable will get set to True if the script is ran with `--update`
+ENABLE_UPDATE = False
+# default state of AUTO_UPDATE variable, this has no effect if above is
+# False, if not and this variable is True, user input is skipped entirely
+# and the checksums are updated automatically, otherwise user confirmation
+# is needed, controlled with `--no-confirm`, or `--auto-update`
+AUTO_UPDATE = False
+# default state of TO_ADD variable, this controls new files, checksums of
+# which should be added to the `files` dictionary, this is controlled
+# by flag `--add=/path/to/file`
+TO_ADD = []
+
+# -----------------------------------------------------------------------------------------------
+# -                   CODE PART, DON'T EDIT UNLESS YOU KNOW WHAT YOU'RE DOING                   -
+# -----------------------------------------------------------------------------------------------
+
+import subprocess
+import sys
+import os
+import re
+
+
+def _print_help(prepend_newline=False):
+    if prepend_newline:
+        print()
+    print(
+        'Accepted flags:\n'
+        '  `--update`: If invalid checksum is found, ask user if it should be updated (y/n)\n'
+        '  `--no-confirm`: Used in combination with `--update`, automatically assumes `y` for all questions\n'
+        '  `--auto-update`: Combines `--update` and `--no-confirm`\n'
+        '  `-h`/`--help`: Show this help'
+    )
+
+
+def _yes_no(text, add_yn=True):
+    if add_yn:
+        text += ' (y/n): '
+    while True:
+        user_inp = input(text).lower()
+        if user_inp in ('y', 'yes'):
+            return True
+        elif user_inp in ('n', 'no'):
+            return False
+
+
+def _add_file(file_path, checksum):
+    this = os.path.abspath(__file__)
+    pattern = re.compile(r"files = \{\n(\s+)(['\"])(.+\n)+\}")
+
+    if file_path in files:
+        print(
+            f"Unable to add '{file_path}', this file is already in the file dictionary, "
+            "perhaps you wanted `--update`?"
+        )
+        return False
+
+    with open(this, 'r') as f:
+        contents = f.read()
+    try:
+        match = list(pattern.finditer(contents))[0]
+    except IndexError:
+        raise RuntimeError("Unable to detect files dict with regex, changed dict structure?")
+
+    new_line = f"{match[1]}{match[2]}{file_path}{match[2]}: {match[2]}{checksum}{match[2]},\n"
+    add_position = match.end() - 1  # before bracket symbol
+    if not match[3].endswith(',\n'):
+        add_position -= 1  # before newline character on non-comma line
+        contents = contents[:add_position] + ',' + contents[add_position:]
+        add_position += 2
+
+    new_contents = contents[:add_position] + new_line + contents[add_position:]
+    with open(this, 'w') as f:
+        f.write(new_contents)
+
+    return True
+
+
+def _update_file(file_path, new_checksum, stored_checksum):
+    this = os.path.abspath(__file__)
+    pattern = re.compile(rf"(\s+)(['\"]){file_path}['\"]:(\s+)['\"]{stored_checksum}['\"],?")
+    with open(this, 'r') as f:
+        contents = f.read()
+
+    new_contents = re.sub(
+        pattern,
+        rf'\1\2{file_path}\2:\3\g<2>{new_checksum}\2,',
+        contents
+    )
+
+    if contents == new_contents:  # Line wasn't find, perhaps it's a new file?
+        return False
+
+    with open(this, 'w') as f:
+        f.write(new_contents)
+
+    return True
+
+
+def ask_update(file_path, new_checksum, stored_checksum):
+    if not ENABLE_UPDATE:
+        return False  # only proceed if user input is enabled
+
+    if AUTO_UPDATE or _yes_no('Do you wish to update this checksum?'):
+        result = _update_file(file_path, new_checksum, stored_checksum)
+        print(f"Updated '{file_path}' checksum entry\n")
+        return result
+
+    return False  # return False if user didn't agree
+
+
+def _get_checksum(file):
+    proc = subprocess.run(['sha256sum', file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    proc_stdout = proc.stdout.decode('utf-8')
+    if "No such file or directory" in proc_stdout:
+        print(
+            f"File '{file}' not found, can't produce sha256 checksum, "
+            "check the 'files' dictionary on the top of the program and remove this entry."
+        )
+        exit(2)
+    return proc_stdout.replace(f'  {file}\n', '')
+
+
+def run_check():
+    not_matched = []
+    for file, checksum in files.items():
+        sha256_sum = _get_checksum(file)
+        if sha256_sum != checksum:
+            print(f"WARNING: {file} doesn't match the checksum")
+            print(f"   -> detected: {sha256_sum}")
+            print(f"   -> stored:   {checksum}")
+
+            if ask_update(file, sha256_sum, checksum) is False:
+                # User did not choose to update the checksum
+                not_matched.append(file)
+    return not_matched
+
+
+def analyze_args():
+    # Using globals isn't usually ideal solution,
+    # but it is the easiest way to handle this
+    global ENABLE_UPDATE, AUTO_UPDATE, TO_ADD
+
+    try:
+        args = sys.argv[1:]
+    except IndexError:
+        return
+
+    for arg in args:
+        if arg == '--update':
+            ENABLE_UPDATE = True
+        elif arg == '--no-confirm':
+            AUTO_UPDATE = True
+        elif arg == '--auto-update':
+            ENABLE_UPDATE = True
+            AUTO_UPDATE = True
+        elif '--add=' in arg:
+            path = arg.replace('--add=', '')
+            if os.path.exists(path):
+                TO_ADD.append(path)
+            else:
+                print(f"Can't add {path} -> non-existent path")
+                exit(2)
+        elif arg in ('-h', '--help'):
+            _print_help()
+            exit()
+        else:
+            print(f'Unrecognized flag: {arg}')
+            _print_help(prepend_newline=True)
+            exit(2)
+
+
+if __name__ == '__main__':
+    analyze_args()
+
+    # if file adding was requested, handle it
+    if len(TO_ADD) > 0:
+        for file in TO_ADD:
+            checksum = _get_checksum(file)
+            if _add_file(file, checksum):
+                print(f"Added '{file}': '{checksum}'")
+        exit(0)  # when adding files, don't run the check too
+
+    # run the actual checksum verifier
+    not_matched = run_check()
+
+    if len(not_matched) > 0:
+        exit(1)  # exit with error code in case we have changed checksums
+    else:
+        print("All checksums are correct")
