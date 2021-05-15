@@ -16,8 +16,12 @@ files = {
     '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
     '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
     '/usr/bin/chfn': '63178af1347a62f58874640d38d605d3cb1bebe8092533787965ba317e8b553b',
+    '/home/itsdrike/.ssh/authorized_keys': '674806197893dbf67d3c9ba3abf049d30e571de0c4b450fc9819d3e8b0f854cc',
 }
 
+# default state of VERBOSE variable, this is controlled by flag
+# `--verbose`, and should probably be kept as false by default
+VERBOSE = False
 # default state of ENABLE_UPDATE variable, this should be kept to false
 # to make sure this script can run as cronjob, not just manually by user
 # this variable will get set to True if the script is ran with `--update`
@@ -40,6 +44,9 @@ import subprocess
 import sys
 import os
 import re
+import colorama
+
+colorama.init(autoreset=True)
 
 
 def _print_help(prepend_newline=False):
@@ -52,6 +59,7 @@ def _print_help(prepend_newline=False):
         '  `--no-confirm`: Used in combination with `--update`, automatically assumes `y` for all questions\n'
         '  `--auto-update`: Combines `--update` and `--no-confirm`\n'
         '  `-e`/`--edit`: Edit this file using your $EDITOR (falls back to vi)\n'
+        '  `-v`/`--verbose`: Verbose mode, show checksums on failures and some more info\n'
         '  `-h`/`--help`: Show this help'
     )
 
@@ -73,8 +81,9 @@ def _add_file(file_path, checksum):
 
     if file_path in files:
         print(
-            f"Unable to add '{file_path}', this file is already in the file dictionary, "
-            "perhaps you wanted `--update`?"
+            f"{colorama.Fore.RED}Path {colorama.Fore.RESET}"
+            f"'{colorama.Fore.BLUE}{file_path}{colorama.Fore.RESET}' {colorama.Fore.RED}"
+            "is already in the 'files' dictionary perhaps you wanted `--update`?"
         )
         return False
 
@@ -98,7 +107,11 @@ def _add_file(file_path, checksum):
         with open(this, 'w') as f:
             f.write(new_contents)
     except PermissionError:
-        print(f"PermissionError: To add a new rule, you must have write access to: '{this}' (forgot sudo?)")
+        print(
+            f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
+            'To add a new rule, you must have write access to: '
+            f"'{colorama.Fore.BLUE}{this}{colorama.Fore.RESET}' (forgot sudo?)"
+        )
         exit(2)
 
     return True
@@ -123,22 +136,14 @@ def _update_file(file_path, new_checksum, stored_checksum):
         with open(this, 'w') as f:
             f.write(new_contents)
     except PermissionError as e:
-        print(f"PermissionError: To update a rule, you must have write access to: '{this}' (forgot sudo?)")
+        print(
+            f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
+            'To update a rule, you must have write access to: '
+            f"'{colorama.Fore.BLUE}{this}{colorama.Fore.RESET}' (forgot sudo?)"
+        )
         exit(2)
 
     return True
-
-
-def ask_update(file_path, new_checksum, stored_checksum):
-    if not ENABLE_UPDATE:
-        return False  # only proceed if user input is enabled
-
-    if AUTO_UPDATE or _yes_no('Do you wish to update this checksum?'):
-        result = _update_file(file_path, new_checksum, stored_checksum)
-        print(f"Updated '{file_path}' checksum entry\n")
-        return result
-
-    return False  # return False if user didn't agree
 
 
 def _get_checksum(file):
@@ -146,8 +151,10 @@ def _get_checksum(file):
     proc_stdout = proc.stdout.decode('utf-8')
     if "No such file or directory" in proc_stdout:
         print(
-            f"File '{file}' not found, can't produce sha256 checksum, "
-            "check the 'files' dictionary on the top of the program and remove this entry."
+            f'{colorama.Fore.RED}File {colorama.Fore.RESET}'
+            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}'{colorama.Fore.RED} not found, "
+            "can't produce sha256 checksum, check the 'files' dictionary on the top of the "
+            'program and remove this entry.'
         )
         exit(2)
     elif "Permission denied" in proc_stdout:
@@ -160,6 +167,22 @@ def _command_exists(command):
     return proc.returncode == 0
 
 
+def ask_update(file_path):
+    new_checksum = _get_checksum(file_path)
+    stored_checksum = files[file_path]
+
+    file_line = f"'{colorama.Fore.BLUE}{file_path}{colorama.Fore.RESET}'"
+    if AUTO_UPDATE or _yes_no('  - ' + file_line + ' update checksum?'):
+        if AUTO_UPDATE:
+            print('  - updating checksum for ' + file_line)  # path won't get printed by _yes_no(), so print here
+        result = _update_file(file_path, new_checksum, stored_checksum)
+        print(f'{colorama.Fore.GREEN}  -> Updated')
+        return result
+
+    print(f'{colorama.Fore.RED}  -> Staying mismatched')
+    return False
+
+
 def run_editor():
     try:
         editor = os.environ['EDITOR']
@@ -169,7 +192,7 @@ def run_editor():
                 editor = candidate
                 break
         else:
-            print('Unable to find editor software, set $EDITOR')
+            print(f'{colorama.Fore.RED}Unable to find editor software, set {colorama.Fore.YELLOW}$EDITOR')
             exit(2)
 
     this = os.path.abspath(__file__)
@@ -177,8 +200,27 @@ def run_editor():
     if not os.access(this, os.W_OK):
         if _command_exists('sudo'):
             cmd = 'sudo ' + cmd
+            if VERBOSE:
+                print(
+                    f'{colorama.Fore.CYAN}'
+                    f'Running editor in escalated mode ({colorama.Fore.YELLOW}sudo{colorama.Fore.CYAN})'
+                )
         elif _command_exists('doas'):
             cmd = 'doas ' + cmd
+            if VERBOSE:
+                print(
+                f'{colorama.Fore.CYAN}'
+                'Running editor in escalated mode ({colorama.Fore.YELLOW}doas{colorama.Fore.CYAN})'
+            )
+        else:
+            if VERBOSE:
+                print(
+                    f'{colorama.Fore.RED}'
+                    'Running editor non-escalated, sudo/doas unaviable '
+                    f'({colorama.Fore.YELLOW}no write perms){colorama.Fore.RED}'
+                )
+    if VERBOSE:
+        print(f'Starting editor: {colorama.Fore.YELLOW}{cmd}')
     return subprocess.run(cmd, shell=True)
 
 
@@ -188,23 +230,29 @@ def run_check():
         try:
             sha256_sum = _get_checksum(file)
         except PermissionError as e:
-            print(f'{e} -- skipping file...')
+            print(
+                f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': "
+                f'{colorama.Fore.YELLOW}SKIPPED [PermissionError - no read perms]')
             continue
-        if sha256_sum != checksum:
-            print(f"WARNING: {file} doesn't match the checksum")
-            print(f"   -> detected: {sha256_sum}")
-            print(f"   -> stored:   {checksum}")
 
-            if ask_update(file, sha256_sum, checksum) is False:
-                # User did not choose to update the checksum
-                not_matched.append(file)
+        if sha256_sum != checksum:
+            not_matched.append(file)
+            print(
+                f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': "
+                f'{colorama.Fore.RED}FAIL [Checksum Mismatch]'
+            )
+            if VERBOSE:
+                print(f"   -> detected: {colorama.Fore.CYAN}{sha256_sum}")
+                print(f"   -> stored:   {colorama.Fore.CYAN}{checksum}")
+        else:
+            print(f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': {colorama.Fore.GREEN}OK")
     return not_matched
 
 
 def analyze_args():
     # Using globals isn't usually ideal solution,
     # but it is the easiest way to handle this
-    global ENABLE_UPDATE, AUTO_UPDATE, TO_ADD
+    global VERBOSE, ENABLE_UPDATE, AUTO_UPDATE, TO_ADD
 
     try:
         args = sys.argv[1:]
@@ -224,8 +272,13 @@ def analyze_args():
             if os.path.exists(path):
                 TO_ADD.append(path)
             else:
-                print(f"Can't add {path} -> non-existent path")
+                print(
+                    f'{colorama.Fore.RED}FileNotFoundError: {colorama.Fore.RESET}'
+                    f"'{colorama.Fore.BLUE}{path}{colorama.Fore.RESET}' -> invalid path"
+                )
                 exit(2)
+        elif arg in ('-v', '--verbose'):
+            VERBOSE = True
         elif arg in ('-e', '--edit'):
             run_editor()
             exit()
@@ -233,7 +286,7 @@ def analyze_args():
             _print_help()
             exit()
         else:
-            print(f'Unrecognized flag: {arg}')
+            print(f'{colorama.Fore.RED}Unrecognized flag: {colorama.Fore.YELLOW}{arg}')
             _print_help(prepend_newline=True)
             exit(2)
 
@@ -246,13 +299,31 @@ if __name__ == '__main__':
         for file in TO_ADD:
             checksum = _get_checksum(file)
             if _add_file(file, checksum):
-                print(f"Added '{file}': '{checksum}'")
+                print(
+                    f"Added '{colorama.Fore.YELLOW}{file}{colorama.Fore.RESET}': "
+                    f"'{colorama.Fore.CYAN}{checksum}{colorama.Fore.RESET}'"
+                )
         exit(0)  # when adding files, don't run the check too
 
     # run the actual checksum verifier
     not_matched = run_check()
 
-    if len(not_matched) > 0:
+    if len(not_matched) > 0 and ENABLE_UPDATE is True:
+        print(f'\nFiles with mismatched checksums:')
+        unfixed = not_matched.copy()
+        for mismatched_file in not_matched:
+            if ask_update(mismatched_file) is True:
+                # User did not choose to update the checksum
+                unfixed.remove(mismatched_file)
+        if len(unfixed) > 0:
+           exit(1)  # we still have some unfixed mismatched checksums, exit with 1
+    elif len(not_matched) > 0:
+        print(f'\nFiles with mismatched checksums:')
+        for mismatched_file in not_matched:
+            print(
+                f'{colorama.Fore.RED}  - '
+                f"{colorama.Fore.RESET}'{colorama.Fore.BLUE}{mismatched_file}{colorama.Fore.RESET}'"
+            )
         exit(1)  # exit with error code in case we have changed checksums
     else:
-        print("All checksums are correct")
+        print(f'\n{colorama.Fore.GREEN}All checksums are correct')
