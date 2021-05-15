@@ -17,6 +17,8 @@ files = {
     '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
     '/usr/bin/chfn': '63178af1347a62f58874640d38d605d3cb1bebe8092533787965ba317e8b553b',
     '/home/itsdrike/.ssh/authorized_keys': '674806197893dbf67d3c9ba3abf049d30e571de0c4b450fc9819d3e8b0f854cc',
+    '/boot/vmlinuz-linux': '398e3771c5a5e06eebc317cb7c622c9d3217887b92671876e5b0fae0754cab13',
+    '/boot/grub/grub.cfg': '39a57270f03a2fbd89f8e99af101ba34380a216a2cb2150268538c84480bc69c',
 }
 
 # default state of VERBOSE variable, this is controlled by flag
@@ -270,6 +272,7 @@ def analyze_args():
         elif '--add=' in arg or '-a=' in arg:
             path = arg.replace('--add=', '').replace('-a=', '')
             if os.path.exists(path):
+                path = os.path.abspath(path)
                 TO_ADD.append(path)
             else:
                 print(
