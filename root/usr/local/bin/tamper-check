@@ -1,66 +1,48 @@
 #!/bin/python3
-
-
-# Dict of file paths with their sha256 checksums
-# make sure to run with `--auto-update` flag if you're running first time on this machine
-# to automatically update all stored checksums to new values
-files = {
-    '/etc/pam.d/system-auth': '89d62406b2d623a76d53c33aca98ce8ee124ed4a450ff6c8a44cfccca78baa2f',
-    '/etc/pam.d/su': '7d8962b4a2cd10cf4bc13da8949a4a6151b572d39e87b7125be55f882b16c4da',
-    '/etc/pam.d/sudo': 'd1738818070684a5d2c9b26224906aad69a4fea77aabd960fc2675aee2df1fa2',
-    '/etc/passwd': '28d6bec52ac5b4957a2c30dfcd15008dc1a39665c27abce97408489f3dbf02c9',
-    '/etc/shadow': 'a24f72cba4cbc6b0a8433da2f4b011f31345068e3e5d6bebed6fb6a35769bd59',
-    '/etc/ssh/sshd_config': '515db2484625122b4254472f7e673649e3d89b57577eaa29395017676735907b',
-    '/bin/sudo': '0ffaf9e93a080ca1698837729641c283d24500d6cdd2cb4eb8e42427566a230e',
-    '/bin/su': '3101438405d98e71e9eb68fbc5a33536f1ad0dad5a1c8aacd6da6c95ef082194',
-    '/usr/bin/passwd': 'd4df1659159737bb4c08a430d493d257d75cdd93e18427946265ae5862a714c7',
-    '/usr/bin/chsh': '6bc0ae69620dde18f7942e2573afb4a6200b10269612151f48f54ef8423a64fe',
-    '/usr/bin/chfn': '63178af1347a62f58874640d38d605d3cb1bebe8092533787965ba317e8b553b',
-    '/home/itsdrike/.ssh/authorized_keys': '674806197893dbf67d3c9ba3abf049d30e571de0c4b450fc9819d3e8b0f854cc',
-    '/boot/vmlinuz-linux': '398e3771c5a5e06eebc317cb7c622c9d3217887b92671876e5b0fae0754cab13',
-    '/boot/grub/grub.cfg': '39a57270f03a2fbd89f8e99af101ba34380a216a2cb2150268538c84480bc69c',
-}
-
-# default state of VERBOSE variable, this is controlled by flag
-# `--verbose`, and should probably be kept as false by default
-VERBOSE = False
-# default state of ENABLE_UPDATE variable, this should be kept to false
-# to make sure this script can run as cronjob, not just manually by user
-# this variable will get set to True if the script is ran with `--update`
-ENABLE_UPDATE = False
-# default state of AUTO_UPDATE variable, this has no effect if above is
-# False, if not and this variable is True, user input is skipped entirely
-# and the checksums are updated automatically, otherwise user confirmation
-# is needed, controlled with `--no-confirm`, or `--auto-update`
-AUTO_UPDATE = False
-# default state of TO_ADD variable, this controls new files, checksums of
-# which should be added to the `files` dictionary, this is controlled
-# by flag `--add=/path/to/file`
-TO_ADD = []
-
-# -----------------------------------------------------------------------------------------------
-# -                   CODE PART, DON'T EDIT UNLESS YOU KNOW WHAT YOU'RE DOING                   -
-# -----------------------------------------------------------------------------------------------
+# TODO: Add color highlighting to help
 
 import subprocess
 import sys
 import os
-import re
 import colorama
+import json
 
 colorama.init(autoreset=True)
+
+
+# default verbosity state, controlled with `--verbose` flag
+VERBOSE = False
+# update ability is turned off by default, controlled with
+# `--update` flag. This is off to avoid need for user input
+# and only work with returned error codes, making it possible
+# to run this script easily with cronjobs or similar schedulers
+ENABLE_UPDATE = False
+# update automatically without asking the user first (will only
+# have effect if ENABLE_UPDATE is True - or turned by user), this
+# will still inform user about those files being updated, but user
+# won't be able to choose not to update
+AUTO_UPDATE = False
+# default path to the JSON file that stores known file checksums
+# this can be overrided by using `--checksum-file=path` flag
+CHECKSUM_FILE = '/usr/local/share/tamper-check/checksums.json'
+# This shouldn't be touched, entries in this list should be valid
+# path strings which are the new files that should be added to
+# CHECKSUM_FILE, controlled by flag `--add=/path/to/file`
+TO_ADD = []
 
 
 def _print_help(prepend_newline=False):
     if prepend_newline:
         print()
     print(
+        'tamper-check is a command line utility to automate checking for file edits.\n'
+        'This is achieved by storing sha256 checksums of each added file and comparing them\n\n'
         'Accepted flags:\n'
         '  `-u`/`--update`: If invalid checksum is found, ask user if it should be updated (y/n)\n'
         '  `-a=path`/`--add=path`: Add a new file to the list of check entries\n'
         '  `--no-confirm`: Used in combination with `--update`, automatically assumes `y` for all questions\n'
         '  `--auto-update`: Combines `--update` and `--no-confirm`\n'
-        '  `-e`/`--edit`: Edit this file using your $EDITOR (falls back to vi)\n'
+        '  `-f=path/--checksum-file=path: JSON file storing the file checksums, defaults to /usr/local/share/tamper-check/checksums.json\n`'
         '  `-v`/`--verbose`: Verbose mode, show checksums on failures and some more info\n'
         '  `-h`/`--help`: Show this help'
     )
@@ -77,71 +59,45 @@ def _yes_no(text, add_yn=True):
             return False
 
 
-def _add_file(file_path, checksum):
-    this = os.path.abspath(__file__)
-    pattern = re.compile(r"files = \{\n(\s+)(['\"])(.+\n)+\}")
+def _get_checksum_dict(file):
+    try:
+        with open(file, 'r') as f:
+            checksums = json.load(f)
+        return checksums
+    except FileNotFoundError:
+        print(
+            f'{colorama.Fore.YELLOW}Checksum file not found: {colorama.Fore.RESET}'
+            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}'{colorama.Fore.YELLOW} "
+            'Creating new empty checksum file...'
+        )
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        checksums = {}
+        with open(file, 'w') as f:
+            json.dump(checksums, f)
+        return checksums
 
-    if file_path in files:
+
+
+def _add_file(file_path, checksum, checksum_file, update_only=False):
+    checksums = _get_checksum_dict(checksum_file)
+
+    if file_path in checksums and not update_only:
         print(
             f"{colorama.Fore.RED}Path {colorama.Fore.RESET}"
             f"'{colorama.Fore.BLUE}{file_path}{colorama.Fore.RESET}' {colorama.Fore.RED}"
-            "is already in the 'files' dictionary perhaps you wanted `--update`?"
+            "is already in the checksum file perhaps you wanted `--update`?"
         )
         return False
 
-    with open(this, 'r') as f:
-        contents = f.read()
+    checksums[file_path] = checksum
     try:
-        match = list(pattern.finditer(contents))[0]
-    except IndexError:
-        raise RuntimeError("Unable to detect files dict with regex, changed dict structure?")
-
-    new_line = f"{match[1]}{match[2]}{file_path}{match[2]}: {match[2]}{checksum}{match[2]},\n"
-    add_position = match.end() - 1  # before bracket symbol
-    if not match[3].endswith(',\n'):
-        add_position -= 1  # before newline character on non-comma line
-        contents = contents[:add_position] + ',' + contents[add_position:]
-        add_position += 2
-
-    new_contents = contents[:add_position] + new_line + contents[add_position:]
-
-    try:
-        with open(this, 'w') as f:
-            f.write(new_contents)
+        with open(checksum_file, 'w') as f:
+            json.dump(checksums, f)
     except PermissionError:
         print(
             f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
             'To add a new rule, you must have write access to: '
-            f"'{colorama.Fore.BLUE}{this}{colorama.Fore.RESET}' (forgot sudo?)"
-        )
-        exit(2)
-
-    return True
-
-
-def _update_file(file_path, new_checksum, stored_checksum):
-    this = os.path.abspath(__file__)
-    pattern = re.compile(rf"(\s+)(['\"]){file_path}['\"]:(\s+)['\"]{stored_checksum}['\"],?")
-    with open(this, 'r') as f:
-        contents = f.read()
-
-    new_contents = re.sub(
-        pattern,
-        rf'\1\2{file_path}\2:\3\g<2>{new_checksum}\2,',
-        contents
-    )
-
-    if contents == new_contents:  # Line wasn't find, perhaps it's a new file?
-        return False
-
-    try:
-        with open(this, 'w') as f:
-            f.write(new_contents)
-    except PermissionError as e:
-        print(
-            f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
-            'To update a rule, you must have write access to: '
-            f"'{colorama.Fore.BLUE}{this}{colorama.Fore.RESET}' (forgot sudo?)"
+            f"'{colorama.Fore.BLUE}{checksum_file}{colorama.Fore.RESET}' (forgot sudo?)"
         )
         exit(2)
 
@@ -153,10 +109,9 @@ def _get_checksum(file):
     proc_stdout = proc.stdout.decode('utf-8')
     if "No such file or directory" in proc_stdout:
         print(
-            f'{colorama.Fore.RED}File {colorama.Fore.RESET}'
-            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}'{colorama.Fore.RED} not found, "
-            "can't produce sha256 checksum, check the 'files' dictionary on the top of the "
-            'program and remove this entry.'
+            f'{colorama.Fore.RED}FileNotFound: {colorama.Fore.RESET}'
+            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}' not found, can't produce "
+            "sha256 checksum, check the checksum file and remove this entry"
         )
         exit(2)
     elif "Permission denied" in proc_stdout:
@@ -169,15 +124,14 @@ def _command_exists(command):
     return proc.returncode == 0
 
 
-def ask_update(file_path):
+def ask_update(file_path, checksum_file):
     new_checksum = _get_checksum(file_path)
-    stored_checksum = files[file_path]
 
     file_line = f"'{colorama.Fore.BLUE}{file_path}{colorama.Fore.RESET}'"
     if AUTO_UPDATE or _yes_no('  - ' + file_line + ' update checksum?'):
         if AUTO_UPDATE:
             print('  - updating checksum for ' + file_line)  # path won't get printed by _yes_no(), so print here
-        result = _update_file(file_path, new_checksum, stored_checksum)
+        result = _add_file(file_path, new_checksum, checksum_file, update_only=True)
         print(f'{colorama.Fore.GREEN}  -> Updated')
         return result
 
@@ -185,53 +139,13 @@ def ask_update(file_path):
     return False
 
 
-def run_editor():
-    try:
-        editor = os.environ['EDITOR']
-    except KeyError:
-        for candidate in ('nvim', 'vim', 'vi', 'emacs', 'nano', 'ne', 'tilde'):
-            if _command_exists(candidate):
-                editor = candidate
-                break
-        else:
-            print(f'{colorama.Fore.RED}Unable to find editor software, set {colorama.Fore.YELLOW}$EDITOR')
-            exit(2)
-
-    this = os.path.abspath(__file__)
-    cmd = f'{editor} {this}'
-    if not os.access(this, os.W_OK):
-        if _command_exists('sudo'):
-            cmd = 'sudo ' + cmd
-            if VERBOSE:
-                print(
-                    f'{colorama.Fore.CYAN}'
-                    f'Running editor in escalated mode ({colorama.Fore.YELLOW}sudo{colorama.Fore.CYAN})'
-                )
-        elif _command_exists('doas'):
-            cmd = 'doas ' + cmd
-            if VERBOSE:
-                print(
-                f'{colorama.Fore.CYAN}'
-                'Running editor in escalated mode ({colorama.Fore.YELLOW}doas{colorama.Fore.CYAN})'
-            )
-        else:
-            if VERBOSE:
-                print(
-                    f'{colorama.Fore.RED}'
-                    'Running editor non-escalated, sudo/doas unaviable '
-                    f'({colorama.Fore.YELLOW}no write perms){colorama.Fore.RED}'
-                )
-    if VERBOSE:
-        print(f'Starting editor: {colorama.Fore.YELLOW}{cmd}')
-    return subprocess.run(cmd, shell=True)
-
-
 def run_check():
+    checksums = _get_checksum_dict(CHECKSUM_FILE)
     not_matched = []
-    for file, checksum in files.items():
+    for file, checksum in checksums.items():
         try:
             sha256_sum = _get_checksum(file)
-        except PermissionError as e:
+        except PermissionError:
             print(
                 f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': "
                 f'{colorama.Fore.YELLOW}SKIPPED [PermissionError - no read perms]')
@@ -254,7 +168,7 @@ def run_check():
 def analyze_args():
     # Using globals isn't usually ideal solution,
     # but it is the easiest way to handle this
-    global VERBOSE, ENABLE_UPDATE, AUTO_UPDATE, TO_ADD
+    global VERBOSE, ENABLE_UPDATE, AUTO_UPDATE, TO_ADD, CHECKSUM_FILE
 
     try:
         args = sys.argv[1:]
@@ -269,7 +183,7 @@ def analyze_args():
         elif arg == '--auto-update':
             ENABLE_UPDATE = True
             AUTO_UPDATE = True
-        elif '--add=' in arg or '-a=' in arg:
+        elif arg.startswith('--add=') or arg.startswith('-a='):
             path = arg.replace('--add=', '').replace('-a=', '')
             if os.path.exists(path):
                 path = os.path.abspath(path)
@@ -282,9 +196,16 @@ def analyze_args():
                 exit(2)
         elif arg in ('-v', '--verbose'):
             VERBOSE = True
-        elif arg in ('-e', '--edit'):
-            run_editor()
-            exit()
+        elif arg.startswith('-f=') or arg.startswith('--checksum-file='):
+            path = arg.replace('--checksum-file=', '').replace('-f=', '')
+            if os.path.exists(path):
+                path = os.path.abspath(path)
+                CHECKSUM_FILE = path
+            else:
+                print(
+                    f'{colorama.Fore.RED}FileNotFoundError: {colorama.Fore.RESET}'
+                    f"'{colorama.Fore.BLUE}{path}{colorama.Fore.RESET}' -> invalid path"
+                )
         elif arg in ('-h', '--help'):
             _print_help()
             exit()
@@ -301,7 +222,7 @@ if __name__ == '__main__':
     if len(TO_ADD) > 0:
         for file in TO_ADD:
             checksum = _get_checksum(file)
-            if _add_file(file, checksum):
+            if _add_file(file, checksum, CHECKSUM_FILE):
                 print(
                     f"Added '{colorama.Fore.YELLOW}{file}{colorama.Fore.RESET}': "
                     f"'{colorama.Fore.CYAN}{checksum}{colorama.Fore.RESET}'"
@@ -312,16 +233,17 @@ if __name__ == '__main__':
     not_matched = run_check()
 
     if len(not_matched) > 0 and ENABLE_UPDATE is True:
-        print(f'\nFiles with mismatched checksums:')
+        print('\nFiles with mismatched checksums:')
         unfixed = not_matched.copy()
         for mismatched_file in not_matched:
-            if ask_update(mismatched_file) is True:
+            if ask_update(mismatched_file, CHECKSUM_FILE) is True:
                 # User did not choose to update the checksum
                 unfixed.remove(mismatched_file)
         if len(unfixed) > 0:
-           exit(1)  # we still have some unfixed mismatched checksums, exit with 1
+            exit(1)  # we still have some unfixed mismatched checksums, exit with 1
+
     elif len(not_matched) > 0:
-        print(f'\nFiles with mismatched checksums:')
+        print('\nFiles with mismatched checksums:')
         for mismatched_file in not_matched:
             print(
                 f'{colorama.Fore.RED}  - '
