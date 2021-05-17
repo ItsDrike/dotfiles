@@ -115,12 +115,7 @@ def _get_checksum(file):
     proc = subprocess.run(['sha256sum', file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     proc_stdout = proc.stdout.decode('utf-8')
     if "No such file or directory" in proc_stdout:
-        print(
-            f'{colorama.Fore.RED}FileNotFound: {colorama.Fore.RESET}'
-            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}' not found, can't produce "
-            "sha256 checksum, check the checksum file and remove this entry"
-        )
-        exit(2)
+        raise FileNotFoundError(f"'{file}' not found, can't produce sha256 checksum")
     elif "Permission denied" in proc_stdout:
         raise PermissionError(f"PermissionError: Unable to read file '{file}'")
     return proc_stdout.replace(f'  {file}\n', '')
@@ -132,7 +127,10 @@ def _command_exists(command):
 
 
 def ask_update(file_path, checksum_file):
-    new_checksum = _get_checksum(file_path)
+    try:
+        new_checksum = _get_checksum(file_path)
+    except FileNotFoundError:
+        return False
 
     file_line = f"'{colorama.Fore.BLUE}{file_path}{colorama.Fore.RESET}'"
     if AUTO_UPDATE or _yes_no('  - ' + file_line + ' update checksum?'):
@@ -148,6 +146,7 @@ def ask_update(file_path, checksum_file):
 
 def run_check():
     checksums = _get_checksum_dict(CHECKSUM_FILE)
+
     not_matched = []
     for file, checksum in checksums.items():
         try:
@@ -156,6 +155,11 @@ def run_check():
             print(
                 f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': "
                 f'{colorama.Fore.YELLOW}SKIPPED [PermissionError - no read perms]')
+            continue
+        except FileNotFoundError:
+            print(
+                f"Checksum of '{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}': "
+                f'{colorama.Fore.YELLOW}SKIPPED [FileNotFound - fix checksum file]')
             continue
 
         if sha256_sum != checksum:
