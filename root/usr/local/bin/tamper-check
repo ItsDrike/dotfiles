@@ -81,6 +81,7 @@ def _get_checksum_dict(file):
             'to run tamper-check you must have read access to checksum file: '
             f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}' (forgot sudo?)"
         )
+        exit(2)
 
 
 
