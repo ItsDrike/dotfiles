@@ -75,6 +75,12 @@ def _get_checksum_dict(file):
         with open(file, 'w') as f:
             json.dump(checksums, f)
         return checksums
+    except PermissionError:
+        print(
+            f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
+            'to run tamper-check you must have read access to checksum file: '
+            f"'{colorama.Fore.BLUE}{file}{colorama.Fore.RESET}' (forgot sudo?)"
+        )
 
 
 
