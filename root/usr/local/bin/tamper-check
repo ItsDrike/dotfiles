@@ -73,7 +73,7 @@ def _get_checksum_dict(file):
         os.makedirs(os.path.dirname(file), exist_ok=True)
         checksums = {}
         with open(file, 'w') as f:
-            json.dump(checksums, f)
+            json.dump(checksums, f, indent=4)
         return checksums
     except PermissionError:
         print(
@@ -99,7 +99,7 @@ def _add_file(file_path, checksum, checksum_file, update_only=False):
     checksums[file_path] = checksum
     try:
         with open(checksum_file, 'w') as f:
-            json.dump(checksums, f)
+            json.dump(checksums, f, indent=4)
     except PermissionError:
         print(
             f'{colorama.Fore.RED}PermissionError: {colorama.Fore.RESET}'
