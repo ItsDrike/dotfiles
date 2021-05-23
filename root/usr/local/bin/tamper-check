@@ -1,6 +1,4 @@
 #!/bin/python3
-# TODO: Add color highlighting to help
-
 import json
 import subprocess
 import sys
