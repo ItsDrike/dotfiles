@@ -4,6 +4,7 @@
 import json
 import subprocess
 import sys
+import argparse
 from pathlib import Path
 
 import colorama
@@ -14,23 +15,6 @@ colorama.init(autoreset=True)
 # default path to the JSON file that stores known file checksums
 # this can be overridden by using `--checksum-file=path` flag
 CHECKSUM_FILE = Path('/usr/local/share/tamper-check/checksums.json')
-
-
-def _print_help(prepend_newline: bool = False) -> None:
-    if prepend_newline:
-        print()
-    print(
-        'tamper-check is a command line utility to automate checking for file edits.\n'
-        'This is achieved by storing sha256 checksums of each added file and comparing them\n\n'
-        'Accepted flags:\n'
-        '  `-u`/`--update`: If invalid checksum is found, ask user if it should be updated (y/n)\n'
-        '  `-a=path`/`--add=path`: Add a new file to the list of check entries\n'
-        '  `--no-confirm`: Used in combination with `--update`, automatically assumes `y` for all questions\n'
-        '  `--auto-update`: Combines `--update` and `--no-confirm`\n'
-        '  `-f=path/--checksum-file=path: JSON file storing the file checksums, defaults to /usr/local/share/tamper-check/checksums.json\n`'
-        '  `-v`/`--verbose`: Verbose mode, show checksums on failures and some more info\n'
-        '  `-h`/`--help`: Show this help'
-    )
 
 
 def _yes_no(text: str, add_yn: bool = True) -> bool:
@@ -89,7 +73,9 @@ def _get_checksum(file: Path) -> str:
     if "No such file or directory" in proc_stdout:
         raise FileNotFoundError(f"'{file}' not found, can't produce sha256 checksum")
     elif "Permission denied" in proc_stdout:
-        raise PermissionError(f"PermissionError: Unable to read file '{file}'")
+        raise PermissionError(f"Unable to read file '{file}'")
+    elif "Is a directory" in proc_stdout:
+        raise RuntimeError(f"{file} is a directory, can't produce sha256sum")
 
     return proc_stdout.replace(f'  {file}\n', '')
 
@@ -121,11 +107,11 @@ def _update_checksum(file_path: Path, checksum: str, checksum_file: Path, new_en
         raise SystemExit(2)
 
 
-def update(file_path: Path, checksum_file: Path, text: str, auto_update: bool = False) -> bool:
-    """Ask user if a file should be updated, or update automatically if auto_update is True"""
+def update(file_path: Path, checksum_file: Path, text: str, no_confirm: bool = False) -> bool:
+    """Ask user if a file should be updated, or update automatically if no_confirm is True"""
     new_checksum = _get_checksum(file_path)
 
-    if auto_update:
+    if no_confirm:
         print(text + ' checksum auto-updating')
     elif not _yes_no(text + ' update checksum?'):
         print(f'{colorama.Fore.RED}  -> Staying mismatched')
@@ -149,11 +135,20 @@ def run_check(checksum_file: Path, verbose: bool) -> list[Path]:
 
         try:
             real_sha256_sum = _get_checksum(file)
-        except PermissionError:
+        except PermissionError as exc:
             print(line + f'{colorama.Fore.YELLOW}SKIPPED [PermissionError - no read perms]')
+            if verbose:
+                print(f'   -> Error text: {colorama.Fore.CYAN}{exc}')
             continue
-        except FileNotFoundError:
-            print(line + f'{colorama.Fore.YELLOW}SKIPPED [FileNotFound - fix checksum file]')
+        except FileNotFoundError as exc:
+            print(line + f'{colorama.Fore.YELLOW}FAILED [FileNotFound - fix checksum file]')
+            if verbose:
+                print(f'   -> Error text: {colorama.Fore.CYAN}{exc}')
+            continue
+        except RuntimeError as exc:
+            print(line + f'{colorama.Fore.YELLOW}FAILED [{exc.__class__.__name__}: {exc} - fix checksum file]')
+            if verbose:
+                print(f'   -> Error text: {colorama.Fore.CYAN}{exc}')
             continue
 
         if real_sha256_sum == stored_checksum:
@@ -169,66 +164,65 @@ def run_check(checksum_file: Path, verbose: bool) -> list[Path]:
 
 
 def parse_args(*, checksum_file_default) -> dict:
-    run_parameters = {
-        "verbose": False,
-        "enable_update": False,
-        "auto_update": False,
-        "checksum_file": checksum_file_default,
-        "files_to_add": []
-    }
+    parser = argparse.ArgumentParser(
+        description='tamper-check is a command line utility to automate checking for file edits. '
+        'This is achieved by storing sha256 checksums of each added file and comparing them.'
+    )
+    parser.add_argument(
+        '-v', '--verbose', action='store_true',
+        help='Verbose mode, show checksums on failures and some more info'
+    )
+    parser.add_argument(
+        '-u', '--update', action='store_true',
+        help='If invalid checksum is found, ask user if it should be updated (y/n)'
+    )
+    parser.add_argument(
+        '--no-confirm', action='store_true',
+        help='Used in combination with `--update`, automatically assumes `y` for all questions'
+    )
+    parser.add_argument(
+        '--checksum-file', metavar='FILE', type=Path, default=checksum_file_default,
+        help='JSON file storing the file checksums'
+    )
+    parser.add_argument(
+        '-a', '--add', metavar='FILE', nargs='+', action='extend', type=Path, default=[],
+        dest='files_to_add', help='Add a new file to the list of check entries'
+    )
 
-    try:
-        args = sys.argv[1:]
-    except IndexError:
-        return run_parameters
+    namespace = parser.parse_args()
+    cli_args = {k: v for k, v in vars(namespace).items()}
 
-    for arg in args:
-        if arg in ('-u', '--update'):
-            run_parameters["enable_update"] = True
-        elif arg == '--no-confirm':
-            run_parameters["auto_update"] = True
-        elif arg == '--auto-update':
-            run_parameters["enable_update"] = True
-            run_parameters["auto_update"] = True
-        elif arg in ('-v', '--verbose'):
-            run_parameters["verbose"] = True
+    # Handle non-existing paths
+    for path in cli_args['files_to_add']:
+        if not path.exists():
+            raise FileNotFoundError(path)
+        if not path.is_file():
+            raise RuntimeError("Can't add a directory")
+    if not cli_args['checksum_file'].exists():
+        raise FileNotFoundError(cli_args['checksum_file'])
 
-        elif arg.startswith('--add=') or arg.startswith('-a='):
-            path = Path(arg.replace('--add=', '').replace('-a=', ''))
-            if path.exists():
-                run_parameters["files_to_add"].append(path.absolute())
-            else:
-                raise FileNotFoundError(path)
-        elif arg.startswith('-f=') or arg.startswith('--checksum-file='):
-            path = Path(arg.replace('--checksum-file=', '').replace('-f=', ''))
-            if path.exists():
-                run_parameters["checksum_file"] = path.absolute()
-            else:
-                raise FileNotFoundError(path)
-        elif arg in ('-h', '--help'):
-            _print_help()
-            raise SystemExit(0)
-        else:
-            print(f'{colorama.Fore.RED}Unrecognized flag: {colorama.Fore.YELLOW}{arg}')
-            _print_help(prepend_newline=True)
-            raise SystemExit(3)
-
-    return run_parameters
+    return cli_args
 
 
 def main() -> int:
     """Run the program as intended, return the exit code"""
     try:
         run_parameters = parse_args(checksum_file_default=CHECKSUM_FILE)
-    except FileNotFoundError as e:
-        path = e.args[0]
+    except FileNotFoundError as exc:
+        path = exc.args[0]
         print(
             f'{colorama.Fore.RED}FileNotFoundError: {colorama.Fore.RESET}'
             f"'{colorama.Fore.BLUE}{path}{colorama.Fore.RESET}' -> invalid path"
         )
         return 2
-    except SystemExit as e:
-        return e.code
+    except RuntimeError as exc:
+        print(
+            f'{colorama.Fore.RED}{exc.__class__.__name__}: {colorama.Fore.RESET}'
+            f"'{colorama.Fore.BLUE}{exc}{colorama.Fore.RESET}'"
+        )
+        return 2
+    except SystemExit as exc:
+        return exc.code
 
     if len(run_parameters["files_to_add"]) > 0:
         for file_to_add in run_parameters["files_to_add"]:
@@ -260,7 +254,7 @@ def main() -> int:
     for mismatched_file in mismatched_files:
         line = prefix + f"'{colorama.Fore.BLUE}{mismatched_file}{colorama.Fore.RESET}'"
 
-        if not run_parameters["enable_update"]:
+        if not run_parameters["update"]:
             unfixed.append(mismatched_file)
             print(line)
             continue
@@ -268,7 +262,7 @@ def main() -> int:
         if not update(
             file_path=mismatched_file,
             checksum_file=run_parameters["checksum_file"],
-            auto_update=run_parameters["auto_update"],
+            no_confirm=run_parameters["no_confirm"],
             text=line
         ):
             unfixed.append(mismatched_file)
