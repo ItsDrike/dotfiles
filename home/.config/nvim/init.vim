@@ -7,7 +7,7 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 " Vim-Plug (Plugins)
-call plug#begin('~/.local/share/vim/plugged')
+call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 Plug 'airblade/vim-gitgutter'                                   " Shows Git diff
 Plug 'preservim/nerdcommenter'                                  " Language based comment syntax
 Plug 'preservim/nerdtree'                                       " File manager (nerdtree)
@@ -16,13 +16,9 @@ Plug 'joshdick/onedark.vim'				                        " OneDark theme
 Plug 'ryanoasis/vim-devicons'                                   " Icons for nerdtree and airline
 Plug 'vim-airline/vim-airline'			                        " AirLine statusline
 Plug 'vim-airline/vim-airline-themes'	                        " AirLine statusline themes
-Plug 'jiangmiao/auto-pairs'				                        " Quote and bracket completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }   " Auto-completion [NVIM only]
 Plug 'neomake/neomake'					                        " Syntax checking
 Plug 'zchee/deoplete-jedi'                                      " Python jedi autocompletion
-Plug 'davidhalter/jedi-vim'                                     " Python implementation check
-Plug 'vim-python/python-syntax'                                 " Autodetect python syntax
-Plug 'PotatoesMaster/i3-vim-syntax'                             " Autodetect i3 config syntax
 Plug 'wakatime/vim-wakatime'                                    " Wakatime integration for coding stats
 call plug#end()
 
@@ -73,12 +69,21 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
+" Spell-check set to <leader>o, 'o' for 'orthography'
+map <leader>o :setlocal spell! spelllang=en_US<CR>
+
+" Stop search highlight (until next search)
+map <silent> <esc> :noh<CR>
+
 " System clipboard interactions
 map <C-c> "+y
 vnoremap <C-v> "+p
 
-" Spell-check set to <leader>o, 'o' for 'orthography'
-map <leader>o :setlocal spell! spelllang=en_US<CR>
+" Unmap arrow keys in normal mode to remove bad habits
+nnoremap <Down> <nop>
+nnoremap <Left> <nop>
+nnoremap <Right> <nop>
+nnoremap <Up> <nop>
 
 " User interface / Theme
 colorscheme onedark
@@ -112,10 +117,6 @@ call neomake#configure#automake('nrwi', 500)
 " Deoplete
 " Requires: pip install pynvim
 let g:deoplete#enable_at_startup = 1
-
-" Jedi-vim
-let g:jedi#completions_enabled = 0 " disable completions, since we use deoplete
-let g:jedi#use_splits_not_buffers = "right"
 
 " NERDTree
 map <C-n> :NERDTreeToggle<CR>
