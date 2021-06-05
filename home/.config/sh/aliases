@@ -34,6 +34,7 @@ alias mv='mv -iv' # Ask before overwriting, verbose
 alias rm='rm -v'  # Verbose (asking here is too annoying)
 alias wget='wget -c' # Resume wget by default
 alias df='df -H' # Show sizes as powers of 1000
+command -v bat > /dev/null && alias cat='bat' # Use colored bat instead of cat
 
 # Directory listing aliases, defaults to exa, if aviable
 if command -v exa > /dev/null; then
@@ -88,11 +89,13 @@ command -v xclip > /dev/null && alias pbpaste='xclip -selection clipboard -o'
 command -v xsel > /dev/null && alias pbcopy='xsel --clipboard --input'
 command -v xsel > /dev/null && alias pbpaste='xsel --clipboard --output'
 
-# File formats and validation
+# File validation and manipulation
 alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"' # Validate YAML
 alias jsoncheck='jq "." >/dev/null <' # Validate JSON
 alias urlencode='python2 -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"' # Encode strings as URLs (space->%20, etc.)
-alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf`
+alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf' # Usage: `mergepdf input{1,2,3}.pdf``
+alias encrypt='gpg -c --no-symkey-cache --cipher-algo AES256' # Encrypt file with AES256 symetric encryption
+alias decrypt='gpg' # For the sake of completeness, include decrypt command to the above, though it's only just gpg alias
 
 # Regular expressions
 alias reg_email='echo "[a-Z0-9._%-]+@[a-Z0-9.-]+\.[a-Z]{2,10}"'
@@ -172,6 +175,7 @@ alias cleanup='clean-trash && clean-down && clean-journal && clean-pacman'
 # Git aliases
 alias g='git'
 alias gs='git status'
+alias gd='git diff'
 alias ga='git add'
 alias gaa='git add all'
 alias gc='git commit'
@@ -234,14 +238,18 @@ alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 
-# If user is not root, pass all commands via sudo
+# If user is not root, pass all commands via sudo/doas
 if [ $UID -ne 0 ]; then
-	# Enable aliases to be sudo’ed
+	# Enable aliases to be sudoed/doased
+    # with doas having precedence over sudo if found
 
 	## Uncomment if you are using autocompletion (is ZSH)
-	#alias sudo='nocorrect sudo'
+    #command -v /usr/bin/sudo > /dev/null && alias doas='nocorrect sudo ' && alias sudo='nocorrect sudo '
+    #command -v /usr/bin/doas > /dev/null && alias doas='nocorrect doas ' && alias sudo='nocorrect doas '
+
 	## if the above is uncommented, comment this
-	alias sudo='sudo '
+    command -v /usr/bin/sudo > /dev/null && alias doas='sudo ' && alias sudo='sudo '
+	command -v /usr/bin/doas > /dev/null && alias doas='doas ' && alias sudo='doas '
 fi
 
 # enable color support

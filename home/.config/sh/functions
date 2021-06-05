@@ -20,6 +20,11 @@ function o() {
 	fi;
 }
 
+# Use bat for nicer git diffs
+function batdiff() {
+    git diff --name-only --diff-filter=d | xargs bat --diff
+}
+
 # Determine size of a file or total size of a directory
 function dir-size() {
 	if du -b /dev/null > /dev/null 2>&1; then

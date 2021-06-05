@@ -6,9 +6,12 @@ export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within
 export GPG_TTY=${tty}
 export LESS_TERMCAP_md="${yellow}" # Highlight section titles in manual pages
 export BASH_SILENCE_DEPRECATION_WARNING=1 # Hide the “default interactive shell is now zsh” warning on macOS.
+export MANPAGER="sh -c 'col -bx | bat -l man -p'" # Use bat as man page formatter for colored man pages
 
 # Add executable directories into PATH
 PATH+=":$HOME/.local/bin"
+# Add npm binaries
+PATH+=":$HOME/.local/share/npm/bin"
 
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -41,6 +44,7 @@ export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
 export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # XDG Alias overrides
 alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'
