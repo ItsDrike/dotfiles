@@ -21,6 +21,7 @@ pacman:
     - rmlint # Tool for finding and removing duplicate files quickly
     - links # Terminal text-only web browser
     - lshw # List hardware components and their attributes
+    - bat # Colored cat with tons of cool options
     #- figlet # generate ascii text banners in terminal
     # ZSH + Plugins
     - zsh # shell
