@@ -15,7 +15,7 @@ PATH+=":$HOME/.local/share/npm/bin"
 
 
 # Only run XDG configs for non-root users
-if [ $UID -ne 0]; then
+if [ $UID -ne 0 ]; then
     # XDG Standard paths
     export XDG_CONFIG_HOME="$HOME/.config"
     export XDG_CACHE_HOME="$HOME/.cache"
