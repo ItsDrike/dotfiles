@@ -6,52 +6,55 @@ export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within
 export GPG_TTY=${tty}
 export LESS_TERMCAP_md="${yellow}" # Highlight section titles in manual pages
 export BASH_SILENCE_DEPRECATION_WARNING=1 # Hide the “default interactive shell is now zsh” warning on macOS.
-export MANPAGER="sh -c 'col -bx | bat -l man -p'" # Use bat as man page formatter for colored man pages
+command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'" # Format manuals with bat (colors)
 
 # Add executable directories into PATH
 PATH+=":$HOME/.local/bin"
 # Add npm binaries
 PATH+=":$HOME/.local/share/npm/bin"
 
-# XDG Standard paths
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
 
-# Per-Application ENV setting
-export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-export LESSHISTFILE="-"
-export GTK_RC_FILES="$XDG_CONFIG_HOME/gtk-1.0/gtkrc"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export KDEHOME="$XDG_CONFIG_HOME/kde"
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export TS3_CONFIG_DIR="$XDG_CONFIG_HOME/ts3client"
-export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
-export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
-export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
-export GOPATH="$XDG_DATA_HOME/go"
-export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
-export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
-export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
-export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
-export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
-export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
-export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
-export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
-export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
-export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+# Only run XDG configs for non-root users
+if [ $UID -ne 0]; then
+    # XDG Standard paths
+    export XDG_CONFIG_HOME="$HOME/.config"
+    export XDG_CACHE_HOME="$HOME/.cache"
+    export XDG_DATA_HOME="$HOME/.local/share"
 
-# XDG Alias overrides
-alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'
-alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
-alias svn='svn --config-dir "$XDG_CONFIG_HOME"/subversion'
+    # Per-Application XDG settings
+    export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+    export LESSHISTFILE="-"
+    export GTK_RC_FILES="$XDG_CONFIG_HOME/gtk-1.0/gtkrc"
+    export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+    export KDEHOME="$XDG_CONFIG_HOME/kde"
+    export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+    export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+    export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+    export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+    export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+    export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+    export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
+    export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
+    export GOPATH="$XDG_DATA_HOME/go"
+    export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+    export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
+    export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+    export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
+    export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+    export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
+    export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
+    export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
+    export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
+    export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+    export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
-# XDG Function overrides
-function ngrok(){
-	command ngrok $1 -config=$XDG_CONFIG_HOME/ngrok2/ngrok.yml ${@:2}
-}
+    # XDG Alias overrides
+    alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'
+    alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
+    alias svn='svn --config-dir "$XDG_CONFIG_HOME"/subversion'
+
+    # XDG Function overrides
+    function ngrok(){
+    	command ngrok $1 -config=$XDG_CONFIG_HOME/ngrok2/ngrok.yml ${@:2}
+    }
+fi
