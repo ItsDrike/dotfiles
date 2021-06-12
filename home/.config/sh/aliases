@@ -26,7 +26,6 @@ alias rr='rm -r'
 alias rf='rm -f'
 alias rrf='rm -rf'
 alias vimdiff='nvim -d'
-alias ccat='highlight --out-format=ansi'
 
 # Replacements (adding flags)
 alias cp='cp -iv' # Ask before overwriting, verbose
@@ -34,7 +33,6 @@ alias mv='mv -iv' # Ask before overwriting, verbose
 alias rm='rm -v'  # Verbose (asking here is too annoying)
 alias wget='wget -c' # Resume wget by default
 alias df='df -H' # Show sizes as powers of 1000
-command -v bat > /dev/null && alias cat='bat' # Use colored bat instead of cat
 
 # Directory listing aliases, defaults to exa, if aviable
 if command -v exa > /dev/null; then
