@@ -22,6 +22,7 @@ pacman:
     - links # Terminal text-only web browser
     - lshw # List hardware components and their attributes
     - bat # Colored cat with tons of cool options
+    - httpie # Add comman for obtaining http info from webpages
     #- figlet # generate ascii text banners in terminal
     # ZSH + Plugins
     - zsh # shell
