@@ -109,7 +109,6 @@ alias grep_mac='grep -E `reg_mac`'
 alias massgrep='grep -RHIni'
 
 # Network
-alias ip-show='curl https://ipinfo.io/ip' # Show public IP address
 alias ip-info='curl https://ipinfo.io/json' # Show public IP info (IP,region,country,timezone,...)
 alias ips="ifconfig -a | grep -oE \"inet6? (addr:)?s?\`reg_ip\`\" | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 alias lan-device-scan='nmap -T5 -sP 192.168.0.0-255'
