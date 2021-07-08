@@ -15,9 +15,6 @@ setopt numericglobsort     # sort filenames numerically when it makes sense
 export ZSH_CACHE="$HOME/.cache/zsh"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION" # for auto/tab completion
 
-[ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
-[ -f ~/.sudo_as_admin_sucessful ] && rm ~/.sudo_as_admin_successful # Ubuntu makes this every with sudo usage
-
 # History configuration
 HISTFILE="$ZSH_CACHE/history"
 HISTSIZE=10000
@@ -28,6 +25,11 @@ setopt hist_verify              # show commands with history expansion to user b
 #setopt hist_ignore_dups        # ignore duplicated commands history list
 #setopt hist_expire_dups_first  # delete duplicates first when HISTFILE size exceeds HISTFILE
 #setopt share_history           # share command history data between terminals
+
+# Automatically move files to appropriate locations
+[ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
+[ -f ~/.bash_history ] && mv ~/.bash_history $HISTFILE
+[ -f ~/.sudo_as_admin_sucessful ] && rm ~/.sudo_as_admin_successful # Ubuntu makes this every with sudo usage
 
 # oh-my-zsh configuration (DISABLED by default, if you want oh-my-zsh, uncomment these)
 #export ZSH="/usr/share/oh-my-zsh"
@@ -46,7 +48,7 @@ zstyle ':completion:*' group-name '' # group results by category
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completio
 
 # Color support
-#autoload -U colors && colors
+autoload -U colors && colors
 
 # Environmental variable exports, including XDG standard definitions
 [ -f ~/.config/sh/environ ] && source ~/.config/sh/environ
@@ -57,7 +59,7 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 # Load key bindings
 [ -f ~/.config/sh/keybinds ] && source ~/.config/sh/keybinds
 # Load prompt
-[ -f ~/.config/sh/theme ] && . ~/.config/sh/theme
+[ -f ~/.config/sh/prompt ] && . ~/.config/sh/prompt
 
 # Load extensions (should be last)
 . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null	# Syntax highlighting

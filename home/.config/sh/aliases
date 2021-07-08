@@ -63,8 +63,7 @@ alias cffunctions='vim ~/.config/sh/functions'
 alias cfenviron='vim ~/.config/sh/environ'
 alias cfxdg='cfenviron'
 alias cfhandlers='vim ~/.config/sh/handlers'
-alias cftheme='vim ~/.config/sh/theme'
-alias cfprompt='cftheme'
+alias cfprompt='vim ~/.config/sh/prompt'
 alias cfkeybinds='vim ~/.config/sh/keybinds'
 
 # Python
