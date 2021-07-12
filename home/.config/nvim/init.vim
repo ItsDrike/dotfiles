@@ -48,6 +48,8 @@ set mouse=a				        " Enable mouse mode
 set encoding=utf-8				" Use UTF-8, not ASCII (May cause issues on TTY)
 set path+=**                    " Search down into subfolders with tab completion
 set wildmenu                    " Display all matching files when we tab complete
+set scrolloff=5                 " Keep 5 lines horizontal scrolloff
+set sidescrolloff=5             " Keep 5 characters vertical scrolloff
 "set termguicolors				" Use true colors (256) (May cause issues on TTY)
 
 " Disable automatic commenting on newline
