@@ -46,6 +46,8 @@ set splitbelow splitright		" Split in more natural way
 set autoread					" Reload files on change
 set mouse=a				        " Enable mouse mode
 set encoding=utf-8				" Use UTF-8, not ASCII (May cause issues on TTY)
+set path+=**                    " Search down into subfolders with tab completion
+set wildmenu                    " Display all matching files when we tab complete
 "set termguicolors				" Use true colors (256) (May cause issues on TTY)
 
 " Disable automatic commenting on newline
@@ -84,6 +86,10 @@ nnoremap <Down> <nop>
 nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 nnoremap <Up> <nop>
+
+" Use shift to move 10 lines up/down quickly
+noremap <silent> K 10k
+noremap <silent> J 10j
 
 " User interface / Theme
 colorscheme onedark
