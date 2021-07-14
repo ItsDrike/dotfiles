@@ -1,0 +1,10 @@
+# Accept binary license for linux-firmware
+sys-kernel/linux-firmware no-source-code linux-fw-redistributable
+# Accept EULA license for microsoft fonts
+media-fonts/corefonts MSttfEULA
+# Accept EULA license for spotify
+media-sound/spotify Spotify
+# Accept binary EULA license for discord
+net-im/discord-bin all-rights-reserved
+# Accept EULA license for vscode
+app-editors/vscode Microsoft-vscode

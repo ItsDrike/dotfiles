@@ -1,0 +1,42 @@
+# This directory defines keywords for packages
+# it can be used to specify particular versions of packages
+# or to pull in the newest versions. This file is purely an example
+
+# ACCEPT_KEYWORDS in make.conf defines the architecture itself (like 
+# amd64 or arm).The package manager will only accept ebuilds whose KEYWORDS 
+# variablecontains this architecture. If the user wants to be able to install 
+# and work with ebuilds that are not considered production-ready yet (still in
+# testing, they can add the same architecture, but with the `~` prefix
+
+# We can also use wildcards:
+#   *  : Package is visible if it is stable on any architecture
+#   ~* : Package is visible if it is in testing on any architecture
+#   ** : Package is always visible (KEYWORDS are ignored completely)
+
+# In certain cases package is defined with no KEYWORDS content. In this specific
+# case, Portage will suggest to use the special ** keyword value to override:
+
+# Assuming user is comfortable with installing testing ebuilds, we can use:
+# Automatic resolution:
+#   emerge --autounmask=y --autounmask-write dev-perl/Term-Screen
+#   And as with all conf files, the final update is made by running `dispatch-conf`
+#   (or alternatively `etc-update`). Examine the diff output, press q to exit
+#   the pager and u for use-new to accept alterations
+#   Now re-run emerge
+# Manual resolution:
+#   echo "=dev-perl/Term-Screen-1.30.0 ~amd64" >> /etc/portage/package.accept_keywords
+#   or we can use a directory and write to Term-Screen file instead
+# Additional notes:
+#   to also let in `-r#` revisions, which may contain immediately beneficial updates,
+#   replace `=` with `~`:
+#   ~dev-perl/Term-Screen-1.30.0 ~amd64
+#
+#   The keyword itself can usually also be omitted
+#   ~dev-perl/Term-Screen-1.30.0
+#
+#   To always install latest testing version, drop the leading = or ~ as well as 
+#   the version at the end
+#   dev-perl/Term-Screen
+#
+#   If the mask is because no KEYWORDS are defined, use the ** notation:
+#   ~sys-apps/portage-9999 **

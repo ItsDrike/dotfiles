@@ -1,0 +1,196 @@
+x11-wm/xmonad-contrib
+dev-haskell/old-time
+dev-haskell/random
+dev-haskell/x11-xft
+
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/data-default-instances-old-locale-0.0.1 ~amd64
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/hashable-1.2.7.0 ~amd64
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/data-default-0.7.1.1 ~amd64
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/extensible-exceptions-0.1.1.4 ~amd64
+# required by dev-haskell/tagged-0.8.6::gentoo
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/transformers-compat-0.6.6 ~amd64
+# required by xmonad (argument)
+=x11-wm/xmonad-0.15 ~amd64
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/data-default-instances-containers-0.0.1 ~amd64
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/data-default-instances-dlist-0.0.1 ~amd64
+# required by dev-haskell/transformers-compat-0.6.6::gentoo
+# required by dev-haskell/tagged-0.8.6::gentoo
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/transformers-0.5.6.2 ~amd64
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/utf8-string-1.0.1.1 ~amd64
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/unordered-containers-0.2.12.0 ~amd64
+# required by dev-haskell/data-default-instances-dlist-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/dlist-0.8.0.7 ~amd64
+# required by dev-haskell/nats-1.1.2::gentoo[binary]
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/binary-0.8.7.0 ~amd64
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/tagged-0.8.6 ~amd64
+# required by dev-haskell/text-1.2.4.1_rc1::gentoo
+# required by dev-haskell/hashable-1.2.7.0::gentoo
+# required by dev-haskell/nats-1.1.2::gentoo[hashable]
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-lang/ghc-8.10.4 ~amd64
+# required by dev-haskell/data-default-instances-old-locale-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/old-locale-1.0.0.7 ~amd64
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/parsec-3.1.14.0 ~amd64
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/mtl-2.2.2 ~amd64
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/x11-1.9.2 ~amd64
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/setlocale-1.0.0.9 ~amd64
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/cabal-3.2.1.0-r1 ~amd64
+# required by dev-haskell/semigroups-0.18.5::gentoo
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/nats-1.1.2 ~amd64
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/data-default-class-0.1.2.0 ~amd64
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/fail-4.9.0.0 ~amd64
+# required by dev-lang/ghc-8.10.4::gentoo[-ghcbootstrap]
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=app-admin/haskell-updater-1.3.2 ~amd64
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/text-1.2.4.1_rc1 ~amd64
+# required by dev-haskell/parsec-3.1.14.0::gentoo
+# required by dev-haskell/cabal-3.2.1.0-r1::gentoo
+# required by dev-haskell/data-default-class-0.1.2.0::gentoo
+# required by dev-haskell/data-default-instances-containers-0.0.1::gentoo
+# required by dev-haskell/data-default-0.7.1.1::gentoo
+# required by dev-haskell/x11-1.9.2::gentoo
+# required by x11-wm/xmonad-0.15::gentoo
+# required by xmonad (argument)
+=dev-haskell/semigroups-0.18.5 ~amd64

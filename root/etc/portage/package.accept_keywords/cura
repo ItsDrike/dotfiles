@@ -1,0 +1,11 @@
+media-gfx/cura
+media-gfx/curaengine
+media-gfx/fdm-materials
+dev-libs/libarcus
+dev-libs/libcharon
+dev-libs/libsavitar
+dev-python/pynest2d
+dev-python/uranium
+dev-libs/clipper
+dev-libs/stb
+dev-libs/libnest2d

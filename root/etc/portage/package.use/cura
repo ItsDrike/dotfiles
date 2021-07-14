@@ -1,0 +1,15 @@
+# required by dev-python/uranium-4.9.1::gentoo[python_single_target_python3_9]
+# required by media-gfx/cura-4.9.1::gentoo
+# required by cura (argument)
+>=dev-python/PyQt5-5.15.2 network svg declarative gui widgets
+# required by dev-python/scipy-1.6.3::gentoo[-test]
+# required by dev-python/uranium-4.9.1::gentoo[-test,python_single_target_python3_9]
+# required by media-gfx/cura-4.9.1::gentoo
+# required by cura (argument)
+>=dev-python/numpy-1.20.3-r1 lapack
+# required by virtual/fortran-0::gentoo
+# required by dev-python/scipy-1.6.3::gentoo
+# required by dev-python/uranium-4.9.1::gentoo[python_single_target_python3_9,-test]
+# required by media-gfx/cura-4.9.1::gentoo
+# required by cura (argument)
+>=sys-devel/gcc-10.3.0-r1 fortran

@@ -1,0 +1,4 @@
+# Mask source-based rust package, its compilation is tedious
+# and takes too much time, instead we can simply use the
+# binary-based dev-lang/rust-bin package
+dev-lang/rust

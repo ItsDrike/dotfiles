@@ -1,0 +1,2 @@
+# Add support for xft font usage
+x11-misc/xmobar xft

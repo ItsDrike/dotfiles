@@ -1,0 +1,25 @@
+#!/bin/bash
+
+repository_name=${1}
+sync_uri=${2}
+
+GIT_GENTOO_URI="https://github.com/gentoo/gentoo.git"
+
+# If repository name wasn't provided, we're not in post-repository hook.
+[ ! -n "${repository_name}" ] && exit 0
+
+# Gentoo generally comes with pregenerated cache, however if we're
+# using the git uri, they don't. Same goes for other repositories.
+# Only proceed if they don't come pregenerated.
+if [ "${repository_name}" == "gentoo" -a "${sync_uri}" != "${GIT_GENTOO_URI}" ]; then
+    echo "Skipping cache generation for gentoo repo"
+    exit 0
+fi
+
+echo "Updating metadata cache..."
+if ! egencache --repo="${repository_name}" --update --jobs=6; then
+    echo "!!! cache generating with egencache failed for ${repository_name}"
+    exit 1
+fi
+
+/usr/bin/eix-update

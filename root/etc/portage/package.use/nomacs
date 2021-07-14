@@ -1,0 +1,3 @@
+# required by media-gfx/nomacs-3.16.224-r2::gentoo
+# required by nomacs (argument)
+>=dev-qt/qtgui-5.15.2-r1 jpeg

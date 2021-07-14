@@ -1,0 +1,7 @@
+# required by dev-python/pyzmq-20.0.0::gentoo[-test]
+# required by dev-python/jupyter_client-6.1.12::gentoo
+# required by dev-python/ipykernel-5.5.4-r1::gentoo
+# required by dev-python/ipyparallel-6.3.0-r1::gentoo[-test]
+# required by dev-python/ipython-7.23.1::gentoo[smp]
+# required by ipython (argument)
+>=net-libs/zeromq-4.3.4-r1 drafts
