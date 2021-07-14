@@ -37,7 +37,6 @@ Config { font    = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=t
        \<fc=#666666>|</fc>   <fc=#ff6c6b> <action=`alacritty -e htop`>%memory%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#51afef> <action=`alacritty -e htop`>%disku%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#98be65> <action=`alacritty -e sudo iftop`>%wlp2s0%</action> </fc> \
-       \<fc=#666666>|</fc>   <fc=#c678dd><fn=2></fn>  <action=`alacritty -e sudo emerge -uD @world`>%portageupdate%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#46d9ff> %date% </fc>"
        }
 
