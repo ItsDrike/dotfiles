@@ -15,6 +15,8 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_RUNTIME_DIR="/run/user/$UID"
 
 # Pre-Application XDG settings
+export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export LESSHISTFILE="-"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -50,4 +52,11 @@ command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'" 
 # Other program settings
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
+
+# Start graphical session, if startx is aviable
+if [ "$(tty)" = "/dev/tty1" ]; then
+    if command -v startx > /dev/null; then
+        ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
+    fi
+fi
 
