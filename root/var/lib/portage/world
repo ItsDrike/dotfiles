@@ -39,7 +39,6 @@ media-sound/alsa-utils
 media-sound/pulseaudio
 media-sound/pulsemixer
 media-sound/spotify
-media-video/audio-recorder
 media-video/ffmpeg
 media-video/mpv
 net-dns/bind-tools
