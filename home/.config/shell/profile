@@ -56,9 +56,7 @@ export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
 # Start graphical session, if startx is aviable
-if [ "$(tty)" = "/dev/tty1" ]; then
-    if command -v startx > /dev/null; then
-        ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
-    fi
+if [ "$(tty)" = "/dev/tty1" ] && [ -x "$(command -v startx)"]; then
+    ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
 fi
 
