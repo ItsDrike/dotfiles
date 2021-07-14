@@ -1,0 +1,63 @@
+#!/bin/bash
+
+format="Screenshot_%Y%m%d_%H%M%S.png"
+destination="~/Pictures/Screenshots/"
+clipboard=0
+xmonad=0
+
+POSITIONAL=()
+while [[ $# -gt 0 ]] ;do
+    key=$1
+
+    case $key in
+        -c|--clipboard)
+            clipboard=1
+            shift
+            ;;
+        --xmonad)
+            xmonad=1
+            shift
+            ;;
+        -f|--format)
+            format=$2
+            shift
+            shift
+            ;;
+        -d|--destination)
+            destination=$2
+            shift
+            shift
+            ;;
+        -e|--exec)
+            echo "Can't use exec, already used by script"
+            exit 1
+            ;;
+        *)
+            POSITIONAL+=("$1")
+            shift
+            ;;
+    esac
+done
+
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+# Define the base command
+cmd="scrot '$format'"
+
+# Handle exec arg for img destination (clipboard/folder)
+if [ $clipboard -eq 1 ]; then
+    cmd+=" -e 'xclip -selection clipboard -t image/png -i \$f && rm \$f'"
+else
+    cmd+=" -e 'mv \$f $destination'"
+fi
+
+# For some reason, xmonad can't run this without first sleeping
+if [ $xmonad -eq 1 ]; then
+    cmd="sleep 0.2; $cmd"
+fi
+
+# Add user-defined arguments
+cmd+=" $@"
+
+# Execute the string command
+eval $cmd
