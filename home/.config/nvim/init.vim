@@ -52,6 +52,9 @@ set scrolloff=5                 " Keep 5 lines horizontal scrolloff
 set sidescrolloff=5             " Keep 5 characters vertical scrolloff
 "set termguicolors				" Use true colors (256) (May cause issues on TTY)
 
+" Move ~/.viminfo to XDG_CACHE_HOME
+"set viminfofile=$XDG_CACHE_HOME/vim/viminfo
+
 " Disable automatic commenting on newline
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 

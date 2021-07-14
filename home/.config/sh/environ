@@ -10,8 +10,7 @@ command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'" 
 
 # Add executable directories into PATH
 PATH+=":$HOME/.local/bin"
-# Add npm binaries
-PATH+=":$HOME/.local/share/npm/bin"
+PATH+=":$HOME/.local/share/npm/bin" # npm binaries
 
 
 # Only run XDG configs for non-root users
@@ -20,6 +19,7 @@ if [ $UID -ne 0 ]; then
     export XDG_CONFIG_HOME="$HOME/.config"
     export XDG_CACHE_HOME="$HOME/.cache"
     export XDG_DATA_HOME="$HOME/.local/share"
+    export XDG_RUNTIME_DIR="/run/user/$UID"
 
     # Per-Application XDG settings
     export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
