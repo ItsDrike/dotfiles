@@ -1,0 +1,63 @@
+#!/bin/sh
+
+BRIGHTNESS_FILE="/sys/class/backlight/intel_backlight/brightness"
+BRIGHTNESS_MAX=937
+
+function change_brightness() {
+    BRIGHTNESS=$(cat $BRIGHTNESS_FILE)
+
+    change_value=$2
+
+    # If we're dealing with percentages, convert to absolutes
+    if [ $3 == "%" ]; then
+        change_value=$((($BRIGHTNESS_MAX / 100) * $change_value))
+    elif [ $3 == "#" ]; then
+        change_value=$change_value
+    else
+        echo "Invalid unit, options: [% - percent, # - absolute], default: %"
+        exit 1
+    fi
+
+    # Increment or decrement based on first arg
+    if [ $1 == "+" ]; then
+        new_brightness=$(($BRIGHTNESS + $change_value))
+    elif [ $1 == "-" ]; then
+        new_brightness=$(($BRIGHTNESS - $change_value))
+    else
+        echo "Invalid operator, options: [+, -]"
+        exit 1
+    fi
+
+    # Make sure we respect min/max boundaries
+    if [ $new_brightness -lt 0 ]; then
+        new_brightness=0
+    elif [ $new_brightness -gt $BRIGHTNESS_MAX ]; then
+        new_brightness=$BRIGHTNESS_MAX
+    fi
+
+    # Write the brightness (sudo shouldn't require password here)
+    echo $new_brightness | sudo tee $BRIGHTNESS_FILE
+}
+
+if [ $# -ge 1 ] && [ "$1" == "+" ] || [ "$1" == "-" ]; then
+    if [ $# -lt 2 ]; then
+        change_value=5 # Default to 5%
+    else
+        change_value=$2
+    fi
+
+    if [ $# -lt 3 ]; then
+        unit="%"
+    else
+        unit=$3
+    fi
+    change_brightness $1 $change_value $unit > /dev/null
+fi
+
+# Display new brightness
+
+BRIGHTNESS=$(cat $BRIGHTNESS_FILE)
+BRIGHTNESS_PERCENT=$(echo "($BRIGHTNESS / $BRIGHTNESS_MAX) * 100" | bc -l)
+BRIGHTNESS_PERCENT=$(printf "%.2f" $BRIGHTNESS_PERCENT)
+
+echo "Brightness: ${BRIGHTNESS_PERCENT}% (absolute: $BRIGHTNESS)"
