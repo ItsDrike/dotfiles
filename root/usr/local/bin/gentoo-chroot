@@ -10,8 +10,8 @@ mount --make-rslave /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 
-# Chroot with bash shell
-chroot /mnt/gentoo /bin/bash
+# Chroot with zsh shell
+chroot /mnt/gentoo /bin/zsh --login
 
 # Unmount recursively mounted directories
 umount -l /mnt/gentoo/dev{/shm,/pts,}

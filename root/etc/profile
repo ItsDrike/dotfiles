@@ -3,7 +3,7 @@
 # Set umask, 027 might be too strict for some people. if that's the case
 # you can fall back to 022 (allowing others to read everything by default)
 # or even to 002 (allowing groups to write into files just like owners)
-umask 027
+umask 022
 
 # Append "$1" to $PATH when not already in.
 # This function API is accessible to scripts in /etc/profile.d
@@ -17,9 +17,12 @@ append_path () {
 }
 
 # Append our default paths
+append_path '/sbin'
+append_path '/usr/sbin'
+append_path '/bin'
+append_path '/usr/bin'
 append_path '/usr/local/sbin'
 append_path '/usr/local/bin'
-append_path '/usr/bin'
 
 # Force PATH to be environment
 export PATH
@@ -34,16 +37,6 @@ fi
 
 # Unload our profile API functions
 unset -f append_path
-
-# Source global bash config, when interactive but not posix or sh mode
-if test "$BASH" &&\
-   test "$PS1" &&\
-   test -z "$POSIXLY_CORRECT" &&\
-   test "${0#-}" != sh &&\
-   test -r /etc/bash.bashrc
-then
-	. /etc/bash.bashrc
-fi
 
 # Termcap is outdated, old, and crusty, kill it.
 unset TERMCAP
