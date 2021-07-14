@@ -55,16 +55,16 @@ else
 fi
 
 # Config access shortcuts
-alias cfzshrc='vim ~/.zshrc'
+alias cfzsh='vim ~/.config/zsh/.zshrc'
 alias cfvim='vim ~/.config/nvim/init.vim'
 alias cfnvim='cfvim'
-alias cfalias='vim ~/.config/sh/aliases'
-alias cffunctions='vim ~/.config/sh/functions'
-alias cfenviron='vim ~/.config/sh/environ'
+alias cfalias='vim ~/.config/shell/aliases'
+alias cffunctions='vim ~/.config/shell/functions'
+alias cfprofile='vim ~/.config/shell/profile'
 alias cfxdg='cfenviron'
-alias cfhandlers='vim ~/.config/sh/handlers'
-alias cfprompt='vim ~/.config/sh/prompt'
-alias cfkeybinds='vim ~/.config/sh/keybinds'
+alias cfhandlers='vim ~/.config/shell/handlers'
+alias cfprompt='vim ~/.config/shell/prompt'
+alias cfkeybinds='vim ~/.config/shell/keybinds'
 alias cfxmonad='vim ~/.config/xmonad/xmonad.hs'
 alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
 alias cftodo='vim ~/Personal/todo'
