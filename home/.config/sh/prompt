@@ -78,9 +78,8 @@ PS2="$RED\ $RESET"
 
 # Right side prompt (on error)
 if [ $TERM = "linux" ]; then
-	RPS1="%(?..$RED%? X$RESET)"
+	RPS1="%(?..${RED}%? X$RESET)"
 else
-	RPS1="%(?..$RED%? ↵$RESET)"
+	RPS1="%(?..${RED}%? ↵$RESET)"
 fi
-
 
