@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Make sure the partition is mounted according to fstab
-mount /mnt/arch
+mount /mnt/arch 2> /dev/null
 
 # Mount necessary directories for chroot to be possible
 mount --types proc /proc /mnt/arch/proc
@@ -15,8 +15,8 @@ mount --make-rslave /mnt/arch/sys
 mount --rbind /dev /mnt/arch/dev
 mount --make-rslave /mnt/arch/dev
 
-# Chroot with bash shell
-chroot /mnt/arch /bin/bash
+# Chroot with zsh shell
+chroot /mnt/arch /bin/zsh --login
 
 # Unmount recursively mounted directories
 umount -l /mnt/arch/dev{/shm,/pts,}
