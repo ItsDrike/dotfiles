@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# This file runs when a DM logs you into a graphical session
+# if you use startx/xinit this file should also be soruced.
+
+xrandr --output eDP-1 --auto --output HDMI-1 --auto --left-of eDP-1
