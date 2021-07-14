@@ -15,6 +15,10 @@ setopt numericglobsort     # sort filenames numerically when it makes sense
 export ZSH_CACHE="$HOME/.cache/zsh"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION" # for auto/tab completion
 
+[ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
+[ -f ~/.sudo_as_admin_sucessful ] && rm ~/.sudo_as_admin_successful
+[ -f ~/.bash_history ] && rm ~/.bash_history
+
 # History configuration
 HISTFILE="$ZSH_CACHE/history"
 HISTSIZE=10000
@@ -25,11 +29,6 @@ setopt hist_verify              # show commands with history expansion to user b
 #setopt hist_ignore_dups        # ignore duplicated commands history list
 #setopt hist_expire_dups_first  # delete duplicates first when HISTFILE size exceeds HISTFILE
 #setopt share_history           # share command history data between terminals
-
-# Automatically move files to appropriate locations
-[ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
-[ -f ~/.bash_history ] && mv ~/.bash_history $HISTFILE
-[ -f ~/.sudo_as_admin_sucessful ] && rm ~/.sudo_as_admin_successful # Ubuntu makes this every with sudo usage
 
 # oh-my-zsh configuration (DISABLED by default, if you want oh-my-zsh, uncomment these)
 #export ZSH="/usr/share/oh-my-zsh"
