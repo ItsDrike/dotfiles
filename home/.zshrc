@@ -1,15 +1,17 @@
 #!/usr/bin/zsh
 
+source /etc/profile
+
 # ZSH Options
-setopt auto_cd             # cd by typing directory name if it's not a command
-setopt auto_list           # automatically list choices on ambiguous completion
-setopt auto_menu           # automatically use menu completion
-setopt always_to_end       # move cursor to end if word had one match
-setopt interactivecomments # allow comments in interactive mode
-setopt magicequalsubst     # enable filename expansion for arguments of form `x=expression`
-setopt notify              # report the status of background jobs immediately
-setopt numericglobsort     # sort filenames numerically when it makes sense
-#setopt correct_all        # autocorrect commands
+setopt auto_cd              # cd by typing directory name if it's not a command
+setopt auto_list            # automatically list choices on ambiguous completion
+setopt auto_menu            # automatically use menu completion
+setopt always_to_end        # move cursor to end if word had one match
+setopt interactivecomments  # allow comments in interactive mode
+setopt magicequalsubst      # enable filename expansion for arguments of form `x=expression`
+setopt notify               # report the status of background jobs immediately
+setopt numericglobsort      # sort filenames numerically when it makes sense
+#setopt correct_all         # autocorrect commands
 
 # ZSH files cleanup
 export ZSH_CACHE="$HOME/.cache/zsh"
@@ -47,21 +49,19 @@ zstyle ':completion:*' group-name '' # group results by category
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completio
 
 # Color support
-autoload -U colors && colors
+#autoload -U colors && colors
 
-# Environmental variable exports, including XDG standard definitions
-[ -f ~/.config/sh/environ ] && source ~/.config/sh/environ
 # Setup aliases
-[ -f ~/.config/sh/aliases ] && source ~/.config/sh/aliases
+[ -f ~/.config/shell/aliases ] && source ~/.config/shell/aliases
 # Load handlers
-[ -f ~/.config/sh/handlers ] && source ~/.config/sh/handlers
+[ -f ~/.config/shell/handlers ] && source ~/.config/shell/handlers
 # Load key bindings
-[ -f ~/.config/sh/keybinds ] && source ~/.config/sh/keybinds
+[ -f ~/.config/shell/keybinds ] && source ~/.config/shell/keybinds
 # Load prompt
-[ -f ~/.config/sh/prompt ] && . ~/.config/sh/prompt
+[ -f ~/.config/shell/prompt ] && source ~/.config/shell/prompt
 
 # Load extensions (should be last)
-. /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null	# Syntax highlighting
+. /usr/share/zsh/site-functions/zsh-syntax-highlighting.zsh 2>/dev/null	                    # Syntax highlighting
 . /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null			# Auto suggestions
 . /usr/share/autojump/autojump.zsh 2>/dev/null												# Auto-Jump
 
