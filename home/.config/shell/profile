@@ -51,7 +51,7 @@ export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'" # Format manuals with bat (colors)
 
 # Other program settings
-export SUDO_ASKPASS="$HOME/.local/bin/dmenupass"
+export SUDO_ASKPASS="$HOME/.local/bin/dmenu/dmenupass"
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
