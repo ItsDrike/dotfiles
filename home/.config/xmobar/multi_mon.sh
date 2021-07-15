@@ -30,9 +30,8 @@ for ((n=0;n<MONITOR_AMOUT;n++)); do
     position_line="$(make_position_line $n)"
     contents="${xmobarhs_content/$position_line_0/$position_line}"
 
-    # Only keep trayer spacer in 1st xmobar
+    # Only use Trayer in the 1st xmobar (on single monitor)
     if [ $n -ne 0 ]; then
-        #contents="${contents/'%trayerpad%'/''}"
         contents="$(grep -v trayerpad <<< $contents)"
     fi
 
