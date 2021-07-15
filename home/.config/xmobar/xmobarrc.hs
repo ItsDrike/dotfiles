@@ -43,7 +43,7 @@ Config { font    = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=t
        \<fc=#666666>|</fc>   <fc=#51afef> <action=`alacritty -e htop`>%disku%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#98be65> <action=`alacritty -e sudo iftop`>%wlp2s0%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#46d9ff> %date% </fc> \
-       \%trayerpad%\
+       \<fc=#666666>|</fc>%trayerpad%\
        \ "
        }
 
