@@ -1,13 +1,12 @@
 #!/bin/sh
 
+# Ensure we run as root
 if [ "$EUID" -ne 0 ]; then
     echo "Must be ran as root"
-    exit
+    exit 1
 fi
 
-# Take user on the chrooted machine as 1st argument,
-# this will be the logged user after chroot,
-# default to root if none provided
+# Take chroot user as 1st argument, default to root
 if [ $# -ge 1 ]; then
     USERNAME="$1"
 else
@@ -15,7 +14,6 @@ else
 fi
 
 MOUNT_POINT="/mnt/gentoo"
-CLIENT_SCRIPT="/usr/local/bin/chroot-client"
 
 # Make sure the partition is mounted according to fstab
 mount "$MOUNT_POINT" 2> /dev/null
@@ -27,41 +25,15 @@ mount --make-rslave "$MOUNT_POINT/sys"
 mount --rbind /dev "$MOUNT_POINT/dev"
 mount --make-rslave "$MOUNT_POINT/dev"
 
-# Chroot with custom script, if aviable
-if [ -f "$MOUNT_POINT/$CLIENT_SCRIPT" ]; then
-    chroot "$MOUNT_POINT" "$CLIENT_SCRIPT" "$USERNAME"
-else
-    # If we didn't find the script in the chroot environment
-    # try to find it in this mahcine and copy it over
-    if [ -f "$CLIENT_SCRIPT" ]; then
-        echo "Client script not in chroot environment, copying"
-        mkdir -p "$MOUNT_POINT/$(dirname $CLIENT_SCRIPT)"
-        cp "$CLIENT_SCRIPT" "$MOUNT_POINT/$CLIENT_SCRIPTt"
-        chroot "$MOUNT_POINT" "$CLIENT_SCRIPT" "$USERNAME"
-    else
-        echo "Unable to run chroot client script, proceeding manually"
-        echo "You may need to run 'source /etc/profile' afterwards"
-
-        # Try to obtain chroot user's default shell from /etc/passwd
-        awkstring="BEGIN { FS=\":\" } /$USERNAME/ { print \$7 }"
-        shell="$(cat /etc/passwd | awk "$awkstring")"
-
-        if [ -n "$shell" ]; then
-            echo "Found user's shell, trying to chroot with it ($shell)"
-            chroot "$MOUNT_POINT" "$shell" --login
-        else
-            echo "Unable to find user in chroot's /etc/passwd, using root with bash shell"
-            chroot "$MOUNT_POINT" "/bin/bash" --login
-        fi
-
-    fi
-fi
+# Use /bin/su for chrooting with --login to also run
+# /etc/profile and ~/.profile or ~/.zprofile
+chroot "$MOUNT_POINT" "/bin/su" "$USERNAME" --login
 
 # Unmount recursively mounted directories
-umount -l "$MOUNT_POINT/dev{/shm,/pts,}"
+umount -l "$MOUNT_POINT/dev"
+umount -l "$MOUNT_POINT/sys"
+umount -l "$MOUNT_POINT/proc"
 umount -R "$MOUNT_POINT"
 
-# Remount partition accordingly to fstab
-# (the above umountings will unmount gentoo completely,
-# which means that remounting is necessary)
+# Remount partition according to fstab
 mount "$MOUNT_POINT"
