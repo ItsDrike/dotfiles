@@ -82,7 +82,7 @@ myFocusedBorderColor :: String
 myFocusedBorderColor = "#bc96da"
 
 -- Default workspaces. Number of workspaces is determined by the list length.
-myWorkspaces = ["dev", "www", "sys", "doc", "vbox", "chat", "mus", "vid", "etc"]
+myWorkspaces = ["dev", "www", "sys", "chat", "mus", "vid", "doc", "virt", "etc"]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
 -- Make the workspaces clickable
@@ -291,16 +291,21 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts float
 
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
+    -- Make dialog boxes floating, don't tile them
     [ className =? "notification"       --> doFloat
     , className =? "confirm"            --> doFloat
     , className =? "dialog"             --> doFloat
     , className =? "error"              --> doFloat
     , className =? "download"           --> doFloat
     , className =? "file_progress"      --> doFloat
+    , className =? "splash"             --> doFloat
+    , className =? "toolbar"            --> doFloat
     , className =? "Qalculate-gtk"      --> doFloat
-    , className =? "mpv"                --> doShift ( myWorkspaces !! 7 )
-    , title     =? "Mozilla Firefox"    --> doShift ( myWorkspaces !! 1 )
     , isFullscreen                      --> doFullFloat
+    -- auto-shift applications to their respecitve workspaces
+    , className =? "discord"            --> doShift ( myWorkspaces !! 3 )
+    , className =? "Code"               --> doShift ( myWorkspaces !! 0 )
+    , title     =? "Mozilla Firefox"    --> doShift ( myWorkspaces !! 1 )
     ]
 
 ------------------------------------------------------------------------

@@ -12,7 +12,8 @@ Config { font    = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=t
        , hideOnStart = False
        , allDesktops = True
        , persistent = True
-       --, iconRoot = "."  -- default: "."
+       -- apparently there's no way to use env var or relpaths here
+       , iconRoot = "/home/itsdrike/.config/xmobar/xpm"
        , commands = [
                     -- Time and date
                       Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
@@ -26,6 +27,10 @@ Config { font    = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=t
                     , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
                     -- Runs a standard shell command 'uname -r' to get kernel version
                     , Run Com "uname" ["-r"] "" 3600
+                    -- Add dynamic invisible XPM icon that resizes to accomodate trayer
+                    -- this needs to be an absolute string path, env vars or relpaths aren't accepted
+                    -- this should only be on 1 monitor (single file), so ignore this comment on others
+                    , Run Com "/home/itsdrike/.config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 10
                     -- Allow mouse clicking by using unsafe stdin reader
                     , Run UnsafeStdinReader
                     ]
@@ -37,7 +42,7 @@ Config { font    = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=t
        \<fc=#666666>|</fc>   <fc=#ff6c6b> <action=`alacritty -e htop`>%memory%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#51afef> <action=`alacritty -e htop`>%disku%</action> </fc> \
        \<fc=#666666>|</fc>   <fc=#98be65> <action=`alacritty -e sudo iftop`>%wlp2s0%</action> </fc> \
-       \<fc=#666666>|</fc>   <fc=#46d9ff> %date% </fc>"
+       \<fc=#666666>|</fc>   <fc=#46d9ff> %date% </fc> \
+       \%trayerpad%\
+       \ "
        }
-
-
