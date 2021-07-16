@@ -14,8 +14,8 @@ Config {
 font = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true",
 additionalFonts = [
         "xft:Font Awesome 5 Free Solid:pixelsize=12",
-        "xft:Font Awesome 5 Brands:pixelsize=12",
-        "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
+        "xft:Font Awesome 5 Brands:pixelsize=12"
+        --"xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
 ],
 bgColor = "#282c34",
 fgColor = "#ff6c6b",
@@ -74,9 +74,11 @@ commands = [
         Run Com "/home/itsdrike/.config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 10,
 
         -- This line tells xmobar to read input from stdin.
-        -- That's how it gets information that xmonad is sending
-        -- (such as workspaces) for displaying.
-        -- By using UnsafeStdinReader, it also allows mouse clicking events
+        -- That's how it gets information that xmonad is sending (such as
+        -- workspaces) to be displayed. This will get placed onto xmobar
+        -- template in the position where %UnsafeStdinReader%/%StdinReader% is
+        -- By using UnsafeStdinReader, it will also allow for action strings
+        -- to be used, which are activated upon clicking on the given element
         Run UnsafeStdinReader
 ],
 
@@ -89,14 +91,13 @@ alignSep = "}{",
 -- Template string defining the xmobar contents and overall layout.
 template = "\
     \<icon=haskell_20.xpm/>   \
-    \<fc=#666666>|</fc> %UnsafeStdinReader% }{ \
+    \<fc=#666666>|</fc>  %UnsafeStdinReader% }{ \
     \<fc=#666666>|</fc>  <fc=#b3afc2><fn=2></fn>  %uname% </fc> \
     \<fc=#666666>|</fc>  <fc=#9ce996> %battery% </fc> \
     \<fc=#666666>|</fc>  <fc=#ecbe7b> %cpu% </fc> \
     \<fc=#666666>|</fc>  <fc=#ff6c6b> %memory% </fc> \
     \<fc=#666666>|</fc>  <fc=#51afef> %disku% </fc> \
     \<fc=#666666>|</fc>  <fc=#98be65> %wlp2s0% </fc> \
-    --\<fc=#666666>|</fc>  <fc=#98be65> %eth3s0% </fc> \
     \<fc=#666666>|</fc>  <fc=#46d9ff> %date% </fc> \
     \<fc=#666666>|</fc>  %trayerpad%\
     \ "
