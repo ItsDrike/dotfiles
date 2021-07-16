@@ -12,7 +12,7 @@ WORK_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/xmobar"
 
 make_position_line(){
     xpos=$(($1 * $WIDTH))
-    line=", position = Static { xpos = $xpos, ypos = 0, width = $WIDTH, height = 24 }"
+    line="position = Static { xpos = $xpos, ypos = 0, width = $WIDTH, height = 24 },"
     echo "$line"
 }
 
