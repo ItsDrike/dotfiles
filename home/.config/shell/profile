@@ -54,7 +54,7 @@ else
 fi
 
 # Other program settings
-export SUDO_ASKPASS="$HOME/.local/bin/dmenu/dmenupass"
+export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
