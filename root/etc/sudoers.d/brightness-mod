@@ -1,0 +1,2 @@
+ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/backlight/intel_backlight/brightness
+
