@@ -122,6 +122,7 @@ myKeys =
 
     -- Script shortcuts
     , ("M-S-p",         spawn "setbg ~/Pictures/Wallpapers/Active")  -- Set random background
+    , ("M-S-d",         spawn "displayselect")
 
     -- Kill windows
     , ("M-w", kill1)        -- Kill the currently focused client
@@ -176,7 +177,6 @@ myKeys =
     , ("<XF86AudioRaiseVolume>",    spawn "amixer set Master 5%+ unmute")
     , ("<XF86AudioMute>",           spawn "amixer set Master toggle")
     , ("<XF86MonBrightnessUp>",     spawn "brightness + 10 %")
-    , ("M-S-n",     spawn "brightness + 10 %")
     , ("<XF86MonBrightnessDown>",   spawn "brightness - 10 %")
     ]
         where nonNSP            = WSIs (return (\ws -> W.tag ws /= "NSP"))
@@ -318,9 +318,9 @@ myManageHook = composeAll
 myStartupHook :: X ()
 myStartupHook = do
     spawnOnce "setbg &"
-    --spawnOnce "nm-applet &"
-    --spawnOnce "volumeicon &"
-    --spawnOnce "trayer --edge top --align right &"
+    spawnOnce "nm-applet &"
+    spawnOnce "trayer-srg --monitor 0  --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &"
+    spawnOnce "$HOME/.config/xmonad/scripts/autostart.sh"
     --spawnOnce "emacs --daemon &"
     --spawnOnce "urxvtd -q -o -f &"
 
