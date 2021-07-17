@@ -17,7 +17,7 @@ export XDG_RUNTIME_DIR="/run/user/$UID"
 # Pre-Application XDG settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
+#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export LESSHISTFILE="-"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -40,15 +40,18 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 #export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 
 # Colorful man pages
-export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
-export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
-export LESS_TERMCAP_me="$(printf '%b' '[0m')"
-export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
-export LESS_TERMCAP_se="$(printf '%b' '[0m')"
-export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
-export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
-# If we have bat installed, use it as manpager
-command -v bat > /dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'" # Format manuals with bat (colors)
+# If bat is installed, use it as manpager
+if command -v bat > /dev/null; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+else
+    export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
+    export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
+    export LESS_TERMCAP_me="$(printf '%b' '[0m')"
+    export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
+    export LESS_TERMCAP_se="$(printf '%b' '[0m')"
+    export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
+    export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
+fi
 
 # Other program settings
 export SUDO_ASKPASS="$HOME/.local/bin/dmenu/dmenupass"
@@ -56,7 +59,9 @@ export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
 # Start graphical session, if startx is aviable
-if [ "$(tty)" = "/dev/tty1" ] && [ -x "$(command -v startx)"]; then
-    ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
+if [ "$(tty)" = "/dev/tty1" ]; then
+    if command -v startx > /dev/null; then
+        ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
+    fi
 fi
 
