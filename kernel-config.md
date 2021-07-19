@@ -131,6 +131,11 @@ it simple to independently configure other machines.
     - HID support
         - Special HID drivers
             ## Configure these based on HW
+            ## For touchpads, add
+            - HID Multitouch panels
+        # This is also required for touchpads
+        - I2C HID support
+            - HID over I2C transport layer ACPI driver
     - x86 Platform Specific Device drivers
         ## These are mostly for laptop specific things (vol up/down, etc.)
 - File systems
