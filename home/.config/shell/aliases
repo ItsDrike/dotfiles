@@ -65,7 +65,7 @@ alias cfxdg='cfenviron'
 alias cfhandlers='vim ~/.config/shell/handlers'
 alias cfprompt='vim ~/.config/shell/prompt'
 alias cfkeybinds='vim ~/.config/shell/keybinds'
-alias cfxmonad='vim ~/.config/xmonad/xmonad.hs'
+alias cfxmonad='vim ~/.config/xmonad/xmonad.hs && xmonad --recompile && xmonad --restart'
 alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
 alias cftodo='vim ~/Personal/todo'
 
@@ -145,6 +145,7 @@ alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
 alias meminfo='free -m -l -t'
 alias cpuinfo='lscpu'
 alias batinfo='sudo watch -d -n 2 tlp-stat -b'
+alias battery='cat /sys/class/power_supply/BAT0/capacity'
 alias gpumeminfo='frep -i --color memory /var/log/Xorg.0.log'
 alias journalerr='sudo journalctl -p 3 -xb'
 alias distro='cat /etc/*-release'
@@ -281,11 +282,11 @@ if [ ! $(uname -s) = 'Darwin' ]; then
 fi
 
 # Functions
-if [ -f ~/.config/sh/functions ]; then
-	source ~/.config/sh/functions
+if [ -f ~/.config/shell/functions ]; then
+	source ~/.config/shell/functions
 fi
 
 # Extra
-if [ -f ~/.config/sh/extra ]; then
-	source ~/.config/sh/extra
+if [ -f ~/.config/shell/extra ]; then
+	source ~/.config/shell/extra
 fi
