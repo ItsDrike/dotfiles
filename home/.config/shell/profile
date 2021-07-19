@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# User .profile definition.
+# This file is only sourced after login, whereas .bashrc/.zshrc
+# files will run every time a new terminal is open
+#
+# NOTE: This file shouldn't be defined for root account. Sudo
+# will not source it (and neither will it source .zshrc),
+# which means the XDG definitions will be ignored anyway, and
+# defining them may break programs when root is actually logged in.
+
+
 # Default programs
 export EDITOR="nvim"
 export BROWSER="firefox"
@@ -58,7 +68,7 @@ export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
-# Start graphical session, if startx is aviable
+# Start graphical session automatically on tty1 if startx is aviable
 if [ "$(tty)" = "/dev/tty1" ]; then
     if command -v startx > /dev/null; then
         ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
