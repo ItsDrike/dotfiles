@@ -17,6 +17,11 @@ alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
+# z.lua script
+alias zz='z -c'         # restrict matches to subdirs of $PWD
+alias zb='z -b'         # restrict matches to parent directories
+alias zi='z -I'         # cd with interactive fzf selection
+alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Files/Directories utilities
 alias mkdir='mkdir -p'
