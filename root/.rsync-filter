@@ -19,3 +19,4 @@
 - /sdcard/*
 - /swapfile
 - /swap/*
+- /home/*/.cache/*
