@@ -1,3 +1,4 @@
+app-admin/rsyslog
 app-admin/sudo
 app-arch/lz4
 app-editors/neovim
@@ -6,12 +7,10 @@ app-editors/vscode
 app-eselect/eselect-repository
 app-misc/neofetch
 app-misc/ranger
-app-misc/vifm
 app-portage/cfg-update
 app-portage/eix
 app-portage/genlop
 app-portage/gentoolkit
-app-portage/pfl
 app-shells/autojump
 app-shells/zsh
 app-shells/zsh-syntax-highlighting
@@ -49,6 +48,7 @@ net-misc/httpie
 net-misc/networkmanager
 net-misc/youtube-dl
 net-p2p/qbittorrent
+net-vpn/tor
 net-wireless/wpa_supplicant
 sci-calculators/qalculate-gtk
 sys-apps/apparmor
@@ -58,8 +58,9 @@ sys-apps/exa
 sys-apps/firejail
 sys-apps/lshw
 sys-apps/pciutils
-sys-fs/fuse
-sys-fs/fuse:0
+sys-apps/usbutils
+sys-boot/grub
+sys-boot/os-prober
 sys-fs/ncdu
 sys-kernel/gentoo-kernel-bin
 sys-kernel/gentoo-sources
@@ -71,6 +72,8 @@ www-client/firefox-bin
 x11-apps/xhost
 x11-base/xorg-drivers
 x11-base/xorg-server
+x11-misc/pcmanfm
+x11-misc/trayer-srg
 x11-misc/xclip
 x11-misc/xmobar
 x11-misc/xwallpaper
