@@ -132,6 +132,11 @@ alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
 alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
 
+# Kernel actions
+alias kernel-recompile='cd /usr/src/linux && make -j7 && make -j7 modules_install && make install'
+alias kernel-oldconfig='cd /usr/src/linux && make oldconfig'
+alias kernel-configure='cd /usr/src/linux && make menuconfig'
+
 # System actions
 alias sv='systemctl'
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
