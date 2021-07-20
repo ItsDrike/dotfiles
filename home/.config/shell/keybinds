@@ -51,7 +51,7 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
 # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
-bindkey '^r' history-incremental-search-backward 
+bindkey '^r' history-incremental-search-backward
 # [PageUp] - Up a line of history
 [[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-line-or-history
 # [PageDown] - Down a line of history
