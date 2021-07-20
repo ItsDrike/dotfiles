@@ -193,3 +193,92 @@ function targz() {
 	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
 
+function anonymize {
+    # Reset the prompt on initial run to allow this script
+    # to be ran multiple times without user having to reload
+    # PS1 manually
+    source ${XDG_CONFIG_DIR:-$HOME/.config}/shell/prompt
+
+    # Regular expression to match 0-255 numbers (color)
+    color_int_re='^([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'
+
+    # Defaults
+    NAME="%n"
+    MACHINE=""
+    #NAME_COLOR="%F{047}"
+    NAME_COLOR="%F{172}"
+    #DIR_COLOR="%F{027}"
+    DIR_COLOR="%F{158}"
+    AT_COLOR="%F{027}"
+    MACHINE_COLOR="%F{070}"
+
+    while [[ $# -gt 0 ]]; do
+        key=$1
+
+        case $key in
+            -n|--name)
+                NAME=$2
+                shift
+                shift
+                ;;
+            -m|--machine)
+                MACHINE=$2
+                shift
+                shift
+                ;;
+            -nc|--name-color)
+                if [[ $2 =~ $color_int_re ]]; then
+                    NAME_COLOR="%F{$2}"
+                else
+                    NAME_COLOR=$2
+                fi
+                shift
+                shift
+                ;;
+            -dc|--dir-color)
+                if [[ $2 =~ $color_int_re ]]; then
+                    DIR_COLOR="%F{$2}"
+                else
+                    DIR_COLOR=$2
+                fi
+                shift
+                shift
+                ;;
+            -mc|--machine-color)
+                if [[ $2 =~ $color_int_re ]]; then
+                    MACHINE_COLOR="%F{$2}"
+                else
+                    MACHINE_COLOR=$2
+                fi
+                shift
+                shift
+                ;;
+            -ac|--at-color)
+                if [[ $2 =~ $color_int_re ]]; then
+                    AT_COLOR="%F{$2}"
+                else
+                    AT_COLOR=$2
+                fi
+                shift
+                shift
+                ;;
+            *)
+                echo "Unrecognized argument: $key"
+                echo "Arguments: -n|--name, -m|--machine, -nc|--name-color, -dc|--dir-color, -mc|--machine-color, -ac|--at-color"
+                return 1
+                ;;
+        esac
+    done
+
+
+    OLD_LINE="%F{047}%n%f %F{027}"
+    if [ -z "$MACHINE" ]; then
+        NEW_LINE="${NAME_COLOR}${NAME}%f ${DIR_COLOR}"
+    else
+        NEW_LINE="${NAME_COLOR}${NAME}${AT_COLOR}@${MACHINE_COLOR}${MACHINE}%f ${DIR_COLOR}"
+    fi
+
+    # Use new anonymized name, machine and colors in PS1
+    PS1=${PS1/"$OLD_LINE"/"$NEW_LINE"}
+}
+
