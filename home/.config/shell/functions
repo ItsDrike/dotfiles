@@ -272,11 +272,12 @@ function anonymize {
 
 
     OLD_LINE="%F{047}%n%f %F{027}"
-    if [ -z "$MACHINE" ]; then
-        NEW_LINE="${NAME_COLOR}${NAME}%f ${DIR_COLOR}"
-    else
-        NEW_LINE="${NAME_COLOR}${NAME}${AT_COLOR}@${MACHINE_COLOR}${MACHINE}%f ${DIR_COLOR}"
-    fi
+
+    [ -n "$NAME" ] && NEW_LINE="${NAME_COLOR}${NAME}"
+    [ -n "$NAME" ] && [ -n "$MACHINE" ] && NEW_LINE="${NEW_LINE}${AT_COLOR}@"
+    [ -n "$MACHINE" ] && NEW_LINE="${NEW_LINE}${MACHINE_COLOR}${MACHINE}"
+    [ -n "$NAME" ] || [ -n "$MACHINE" ] && NEW_LINE="${NEW_LINE}%f "
+    NEW_LINE="${NEW_LINE}${DIR_COLOR}"
 
     # Use new anonymized name, machine and colors in PS1
     PS1=${PS1/"$OLD_LINE"/"$NEW_LINE"}

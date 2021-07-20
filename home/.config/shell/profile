@@ -1,75 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # User .profile definition.
-# This file is only sourced after login, whereas .bashrc/.zshrc
-# files will run every time a new terminal is open
-#
-# NOTE: This file shouldn't be defined for root account. Sudo
-# will not source it (and neither will it source .zshrc),
-# which means the XDG definitions will be ignored anyway, and
-# defining them may break programs when root is actually logged in.
+# This file is only sourced once, after login, Unlike
+# .zshrc/.bashrc, which will run whenever a new terminal
+# is opened.
 
-
-# Default programs
-export EDITOR="nvim"
-export BROWSER="firefox"
-export TERMINAL="Alacrity"
-
-# Add all ~/.local/bin folders to PATH
-PATH+=":${$(find ~/.local/bin -type d | tr '\n' ':')%%:}"
-
-# XDG Standard paths
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_RUNTIME_DIR="/run/user/$UID"
-
-# Pre-Application XDG settings
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
-export LESSHISTFILE="-"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-# Less commonly used applications
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
-export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
-export GOPATH="$XDG_DATA_HOME/go"
-export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
-#export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
-#export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
-#export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-#export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-#export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
-#export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
-#export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
-#export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
-#export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
-#export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
-
-# Colorful man pages
-# If bat is installed, use it as manpager
-if command -v bat > /dev/null; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-else
-    export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
-    export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
-    export LESS_TERMCAP_me="$(printf '%b' '[0m')"
-    export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
-    export LESS_TERMCAP_se="$(printf '%b' '[0m')"
-    export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
-    export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
-fi
-
-# Other program settings
-export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
-export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
-#export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
 # Start graphical session automatically on tty1 if startx is aviable
-if [ "$(tty)" = "/dev/tty1" ]; then
+if [ "$(tty)" = "/dev/tty1" ] && [ "$UID" != 0 ]; then
     if command -v startx > /dev/null; then
         ! pidof -s Xorg > /dev/null 2>&1 && exec startx "$XINITRC"
     fi

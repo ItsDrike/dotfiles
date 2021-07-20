@@ -17,6 +17,11 @@ alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
+# z.lua script
+alias zz='z -c'         # restrict matches to subdirs of $PWD
+alias zb='z -b'         # restrict matches to parent directories
+alias zi='z -I'         # cd with interactive fzf selection
+alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Files/Directories utilities
 alias mkdir='mkdir -p'
@@ -56,12 +61,13 @@ fi
 
 # Config access shortcuts
 alias cfzsh='vim ~/.config/zsh/.zshrc'
-alias cfvim='vim ~/.config/nvim/init.vim'
-alias cfnvim='cfvim'
+alias cfnvim='vim ~/.config/nvim/init.vim'
+alias cfvim='cfnvim'
 alias cfalias='vim ~/.config/shell/aliases'
 alias cffunctions='vim ~/.config/shell/functions'
 alias cfprofile='vim ~/.config/shell/profile'
-alias cfxdg='cfenviron'
+alias cfenvironment='vim ~/.config/shell/environment'
+alias cfenv='cfenvironment'
 alias cfhandlers='vim ~/.config/shell/handlers'
 alias cfprompt='vim ~/.config/shell/prompt'
 alias cfkeybinds='vim ~/.config/shell/keybinds'
@@ -131,6 +137,11 @@ alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
 alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
 
+# Kernel actions
+alias kernel-recompile='cd /usr/src/linux && make -j7 && make -j7 modules_install && make install'
+alias kernel-oldconfig='cd /usr/src/linux && make oldconfig'
+alias kernel-configure='cd /usr/src/linux && make menuconfig'
+
 # System actions
 alias sv='systemctl'
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
@@ -193,36 +204,6 @@ alias glog='git log --oneline --decorate --graph'
 alias gundo='git reset HEAD~'
 alias gredo="git reset 'HEAD@{1}'"
 alias gundopush="git push -f origin HEAD^:master"
-
-# Pacman aliases (using pacman directly would be faster, but I have goldfish memory)
-alias pac-pkgs='pacman -Q' # List all packages on the system
-alias pac-installed-pkgs='pacman -Qe' # Only list explicitly installed packages
-alias pac-aur-pkgs='pacman -Qm' # Not necessarely AUR, but generally foreign (not in sync db)
-alias pac-orphan-pkgs='pacman -Qdt' # Packages without any packages that depend on them
-alias pac-rm-orphans='pacman -Rns $(pacman -Qdtq)' # Remove all orphaned packages
-alias pac-search='pacman -Ss' # Lookup package by name from sync database
-alias pac-search-local='pacman -Qs' # Lookup package by name from local database
-alias pac-info='pacman -Qi' # Show detailed info about a local package
-alias pac-info-remote='pacman -Si' # Show detailed info about a package in sync db
-alias pac-download-upgrades='pacman -Syyuw' # Download all upgradeable packages, but don't upgrade
-alias pac-extract='pacman -Syw --cachedir .' # Download given package to current directory
-alias pac-cache-clean='pacman -Sc' # Remove all old packages in pacman cache
-alias pac-file-owner='pacman -F' # Look in the sync db and check what package owns given filei
-alias pac-file-owner-regex='pacman -Fx' # Same as above, but works with partial names or regex patterns
-alias pac-file-owner-local='pacman -Qo' # Look in the local index and find which packge given file belongs to
-alias pac-owned-files='pacman -Fl' # Show all files owned by given package from sync db
-alias pac-owned-files-local='pacman -Ql' # Same as above, but for locally installed packages
-alias pac-count-files='pacman -Qk' # Print amount of owned files, with the amount of missing files
-alias pac-group-packages='pacman -Sg' # List all packages which will be installed with a group
-alias pac-group-packages-local='pacman -Qg' # Only list locally installed packages from given group
-alias vuln='arch-audit' # Show vulnerable packages that can be upgraded (Arch Linux)
-alias vuln-upgrade="pacman -Sy \"\$(arch-audit --upgradable --quiet | awk '{sub(/>=.+/, \"\"); print}' | paste -s -d ' ')\"" # Upgrade all vulnerable packages, with released fixes
-
-# Get fastest mirrors (using reflector)
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
 # Youtube-dl aliases
 alias ytv-best='youtube-dl -f bestvideo+bestaudio'
