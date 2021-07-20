@@ -56,12 +56,13 @@ fi
 
 # Config access shortcuts
 alias cfzsh='vim ~/.config/zsh/.zshrc'
-alias cfvim='vim ~/.config/nvim/init.vim'
-alias cfnvim='cfvim'
+alias cfnvim='vim ~/.config/nvim/init.vim'
+alias cfvim='cfnvim'
 alias cfalias='vim ~/.config/shell/aliases'
 alias cffunctions='vim ~/.config/shell/functions'
 alias cfprofile='vim ~/.config/shell/profile'
-alias cfxdg='cfenviron'
+alias cfenvironment='vim ~/.config/shell/environment'
+alias cfenv='cfenvironment'
 alias cfhandlers='vim ~/.config/shell/handlers'
 alias cfprompt='vim ~/.config/shell/prompt'
 alias cfkeybinds='vim ~/.config/shell/keybinds'
