@@ -61,8 +61,7 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 [ -f ~/.config/shell/prompt ] && source ~/.config/shell/prompt
 
 # Load extensions (should be last)
-. /usr/share/zsh/site-functions/zsh-syntax-highlighting.zsh 2>/dev/null	                    # Syntax highlighting
-. /usr/share/autojump/autojump.zsh 2>/dev/null												# Auto-Jump
-. /usr/share/zsh/site-functions/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null			# Auto suggestions
-eval "$(lua ~/.local/src/z.lua/z.lua --init zsh enhanced)"                                        # Auto-Jump alternative
+. /usr/share/zsh/site-functions/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+. /usr/share/zsh/site-functions/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
+eval "$(lua ~/.local/src/z.lua/z.lua --init zsh enhanced)"
 
