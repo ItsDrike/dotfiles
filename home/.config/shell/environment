@@ -14,16 +14,13 @@ export EDITOR="nvim"
 export BROWSER="firefox"
 export TERMINAL="Alacrity"
 
-# Add all ~/.local/bin folders to PATH
-PATH+=":${$(find ~/.local/bin -type d | tr '\n' ':')%%:}"
-
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_RUNTIME_DIR="/run/user/$UID"
 
-# Pre-Application XDG settings
+# Per-Application XDG settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
 #export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
