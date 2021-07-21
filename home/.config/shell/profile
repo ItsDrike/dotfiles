@@ -5,6 +5,10 @@
 # .zshrc/.bashrc, which will run whenever a new terminal
 # is opened.
 
+# Add all folders in ~/.local/bin into PATH
+# Some window managers require this line to be in profile
+# not in .zshenv
+PATH+=":${$(find ~/.local/bin -type d | tr '\n' ':')%%:}"
 
 # Start graphical session automatically on tty1 if startx is aviable
 if [ "$(tty)" = "/dev/tty1" ] && [ "$UID" != 0 ]; then
