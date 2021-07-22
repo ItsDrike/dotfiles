@@ -319,6 +319,7 @@ myStartupHook :: X ()
 myStartupHook = do
     spawnOnce "setbg &"
     spawnOnce "nm-applet &"
+    spawnOnce "dunst &"
     spawnOnce "trayer-srg --monitor 0  --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &"
     spawnOnce "$HOME/.config/xmonad/scripts/autostart.sh"
     --spawnOnce "emacs --daemon &"
