@@ -314,15 +314,16 @@ myManageHook = composeAll
 -- Perform an arbitrary action each time xmonad starts or is restarted
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
+--
+-- I don't really use this because I define these applications
+-- in ~/.config/x11/xprofile instead, that way it will apply for
+-- all WMs, not just for XMonad
 
 myStartupHook :: X ()
 myStartupHook = do
-    spawnOnce "setbg &"
-    spawnOnce "nm-applet &"
-    spawnOnce "trayer-srg --monitor 0  --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &"
-    spawnOnce "$HOME/.config/xmonad/scripts/autostart.sh"
-    --spawnOnce "emacs --daemon &"
-    --spawnOnce "urxvtd -q -o -f &"
+    -- Automatically run autostart.sh script which will start
+    -- .desktop applications defined in ~/.config/autostart
+    spawnOnce "$HOME/.config/xmonad/scripts/autostart.sh &"
 
 -------------------------------------------------------------------------------
 -- Log hook: this sends info to xmobar process(es)

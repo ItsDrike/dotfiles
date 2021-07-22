@@ -1,7 +1,5 @@
 #!/usr/bin/zsh
 
-source /etc/profile
-
 # ZSH Options
 setopt auto_cd              # cd by typing directory name if it's not a command
 setopt auto_list            # automatically list choices on ambiguous completion

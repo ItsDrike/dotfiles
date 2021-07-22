@@ -18,6 +18,7 @@ alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 # z.lua script
+alias j='z'             # for the sake of autojump old habits
 alias zz='z -c'         # restrict matches to subdirs of $PWD
 alias zb='z -b'         # restrict matches to parent directories
 alias zi='z -I'         # cd with interactive fzf selection
