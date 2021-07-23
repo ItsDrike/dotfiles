@@ -62,8 +62,6 @@ fi
 
 # Config access shortcuts
 alias cfzsh='vim ~/.config/zsh/.zshrc'
-alias cfnvim='vim ~/.config/nvim/init.vim'
-alias cfvim='cfnvim'
 alias cfalias='vim ~/.config/shell/aliases'
 alias cffunctions='vim ~/.config/shell/functions'
 alias cfprofile='vim ~/.config/shell/profile'
@@ -188,6 +186,7 @@ alias cleanup='clean-trash && clean-down && clean-journal && clean-pacman'
 alias g='git'
 alias gs='git status'
 alias gd='git diff'
+alias gdc='git diff --cached'
 alias gm='git merge'
 alias ga='git add'
 alias gaa='git add all'
