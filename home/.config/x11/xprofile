@@ -13,9 +13,7 @@ setbg &
 xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources
 
 # Start compositor manager to allow transparency
-picom -b &
-#picom -b --experimental-backends &
-#xcompmgr &
+picom -b --experimental-backends &
 
 # Dunst for notifications
 dunst &
