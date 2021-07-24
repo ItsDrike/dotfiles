@@ -9,7 +9,12 @@ xrandr --output HDMI-1 --auto --output eDP-1 --right-of HDMI-1 --auto
 # Set the background with a custom `setbg` script
 setbg &
 
-# Xcompmgr to allow transparency
+# Use xresources file in ~/.config/x11
+xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources
+
+# Start compositor manager to allow transparency
+picom -b &
+#picom -b --experimental-backends &
 #xcompmgr &
 
 # Dunst for notifications
