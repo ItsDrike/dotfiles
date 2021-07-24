@@ -1,0 +1,3 @@
+# Use newest picom version since the release
+# doesn't yet support dual_kawase blur
+=x11-misc/picom-9999 **

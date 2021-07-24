@@ -1,2 +1,3 @@
 sys-apps/apparmor
 sys-apps/apparmor-utils
+sec-policy/apparmor-profiles

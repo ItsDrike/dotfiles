@@ -3,3 +3,6 @@ sys-apps/bat
 media-sound/spotify
 net-im/discord-bin
 app-editors/vscode
+
+x11-misc/pcmanfm
+x11-libs/libfm

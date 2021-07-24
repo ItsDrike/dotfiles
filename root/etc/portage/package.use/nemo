@@ -1,0 +1,5 @@
+# required by gnome-extra/cinnamon-desktop-4.8.1::gentoo
+# required by gnome-extra/nemo-4.8.4-r1::gentoo
+# required by nemo (argument)
+>=dev-libs/glib-2.68.3-r1 dbus
+gnome-extra/nemo elif

@@ -1,2 +1,2 @@
-# Add support for xft font usage
-x11-misc/xmobar xft
+# Add support for xft fonts and xpm images
+x11-misc/xmobar xft xpm
