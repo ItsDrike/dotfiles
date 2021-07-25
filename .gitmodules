@@ -7,9 +7,9 @@
 [submodule "root/usr/share/zsh/site-functions/zsh-syntax-highlighting"]
     path = "root/usr/share/zsh/site-functions/zsh-syntax-highlighting"
     url = "https://github.com/zsh-users/zsh-syntax-highlighting"
-[submodule "root/usr/share/zsh/site-functions/zsh-you-should-use"]
-    path = "root/usr/share/zsh/site-functions/zsh-you-should-use"
-    url = "https://github.com/MichaelAquilina/zsh-you-should-use"
+#[submodule "root/usr/share/zsh/site-functions/zsh-you-should-use"]
+#    path = "root/usr/share/zsh/site-functions/zsh-you-should-use"
+#    url = "https://github.com/MichaelAquilina/zsh-you-should-use"
 [submodule "root/usr/local/src/z.lua"]
     path = "root/usr/local/src/z.lua"
     url = "https://github.com/skywind3000/z.lua"
