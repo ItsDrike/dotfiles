@@ -66,8 +66,11 @@
 ## sudoreplay and reboot.  Use sudoreplay to play back logged sessions.
 Defaults log_output
 Defaults!/usr/bin/sudoreplay !log_output
-# Defaults!/usr/local/bin/sudoreplay !log_output
+Defaults!/usr/local/bin/sudoreplay !log_output
 Defaults!REBOOT !log_output
+
+# Add some fine insults
+Defaults insults
 
 ##
 ## Runas alias specification
