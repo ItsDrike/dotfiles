@@ -67,24 +67,51 @@ draw_image() {
     exit 1
 }
 
-image_handle() {
-    # Control function for showing/cleaning image previews
+media_handle() {
+    # Handle media type files (videos, photos). These types of
+    # files are usually not stored in any form of textually readable
+    # format and they require a special way of displaying them.
+    # This mostly uses ueberzug (if available) for this.
+
     draw_script="${XDG_CONFIG_HOME:-$HOME/.config}/lf/draw_img.sh"
     file="$1"
     shift
 
-    if [ -n "$FIFO_UEBERZUG" ] && [ -f "$draw_script" ]; then
-        draw_image $draw_script $file
-    else
-        # Fallback to mediainfo preview
-        echo "@@PREVIEW FALLBACK: Using mediainfo, ueberzug isn't aviable."
-        run_cmd mediainfo "$file"
-    fi
+    # Set ENABLED=1 if ueberzug is enabled
+    [ -n "$FIFO_UEBERZUG" ] && [ -f "$draw_script" ] && ENABLED=1
+
+    case "$file" in
+        *.bmp|*.jpg|*.jpeg|*.png|*.xpm)
+            if [ -n "$ENABLED" ]; then
+                draw_image $draw_script "$file"
+            else
+                echo "@@PREVIEW FALLBACK: Using mediainfo, ueberzug isn't aviable."
+                run_cmd mediainfo "$file"
+            fi
+            ;;
+        *.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|\
+        *.mov|*.webm|*.ts|*.mts|*.m4v|*.r[am]|*.qt|*.divx)
+            if [ -n "$ENABLED" ]; then
+                cache="$(mktemp /tmp/thumbcache.XXXXX)"
+                ffmpegthumbnailer -i "$file" -o "$cache" -s 0
+                draw_image $draw_script "$cache"
+            else
+                echo "@@PREVIEW FALLBACK: Using exiftool, ueberzug isn't aviable."
+                run_cmd exiftool "$file"
+            fi
+            ;;
+        *.wav|*.mp3|*.flac|*.m4a|*.wma|*.ape|*.ac3|*.og[agx]|*.spx|*.opus|*.as[fx]|*.flac)
+            # These types can't make use of ueberzug easily, so simply use eixftool
+            run_cmd exiftool "$file"
+            ;;
+        *)
+            echo "@@PREVIEW FALLBACK: Unrecognized media file, falling back to text handle."
+            text_handle "$file"
+            ;;
+    esac
 }
 
 text_handle() {
-    width="$(tput cols)"
-    echo "Limiting to $width"
     # Handle all other formats as text and cat them
     # if highlighting tools are aviable, try to use them
     if command -v bat > /dev/null; then
@@ -117,13 +144,10 @@ elif [ -f "$1" ]; then
         *.docx) run_cmd docx2txt "$1" - ;;
         *.torrent) run_cmd transmission-show "$1";;
         *.pdf) run_cmd pdftotext "$1";;
-        *.bmp|*.jpg|*.jpeg|*.png|*.xpm) image_handle "$1" ;;
-        *.wav|*.mp3|*.flac|*.m4a|*.wma|*.ape|*.ac3|*.og[agx]|*.spx|*.opus|*.as[fx]|*.flac) run_cmd exiftool "$1";;
-        *.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|*.mov|*.webm|*.ts|*.mts|*.m4v|*.r[am]|*.qt|*.divx)
-            cache="$(mktemp /tmp/thumbcache.XXXXX)"
-            ffmpegthumbnailer -i "$1" -o "$cache" -s 0
-            image_handle "$cache"
-            ;;
+        *.wav|*.mp3|*.flac|*.m4a|*.wma|*.ape|*.ac3|*.og[agx]|*.spx|*.opus|*.as[fx]|*.flac|\
+        *.avi|*.mp4|*.wmv|*.dat|*.3gp|*.ogv|*.mkv|*.mpg|*.mpeg|*.vob|*.fl[icv]|*.m2v|*.mov|\
+        *.webm|*.ts|*.mts|*.m4v|*.r[am]|*.qt|*.divx|\
+        *.bmp|*.jpg|*.jpeg|*.png|*.xpm) media_handle "$1" ;;
         *) text_handle "$1" ;;
     esac
 fi
