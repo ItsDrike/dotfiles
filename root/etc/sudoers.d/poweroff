@@ -1,0 +1,4 @@
+ALL ALL=(ALL) NOPASSWD: /sbin/poweroff
+ALL ALL=(ALL) NOPASSWD: /sbin/shutdown
+ALL ALL=(ALL) NOPASSWD: /sbin/reboot
+
