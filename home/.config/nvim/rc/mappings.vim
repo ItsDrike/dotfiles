@@ -45,3 +45,7 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
+" Don't leave visual mode after indenting
+vmap < <gv
+vmap > >gv
+
