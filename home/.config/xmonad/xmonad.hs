@@ -115,10 +115,11 @@ myKeys =
     , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
 
     -- Screenshots
-    , ("<Print>",       spawn "screenshot --xmonad")        -- Full screenshot, file
-    , ("M-<Print>",     spawn "screenshot --xmonad -c")     -- Full screenshot, clipboard
-    , ("S-<Print>",     spawn "screenshot --xmonad -s")     -- Selection screenshot, file
-    , ("M-S-<Print>",   spawn "screenshot --xmonad -s -c")  -- Selection screenshot, clipboard
+    , ("<Print>",       spawn "flameshot gui")
+    , ("M-<Print>",     spawn "flameshot screen -p ~/Pictures/Screenshots")
+    , ("M-S-<Print>",   spawn "flameshot screen -c")
+    , ("C-<Print>",     spawn "flameshot full -p ~/Pictures/Screenshots")
+    , ("C-S-<Print>",   spawn "flameshot full -c")
 
     -- Script shortcuts
     , ("M-S-p",         spawn "setbg ~/Pictures/Wallpapers/Active")  -- Set random background
