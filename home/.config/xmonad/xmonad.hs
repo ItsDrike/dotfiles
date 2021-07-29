@@ -129,6 +129,10 @@ myKeys =
     , ("M-w", kill1)        -- Kill the currently focused client
     , ("M-S-w", killAll)    -- Kill all windows on current workspace
 
+    -- Compositor
+    , ("M-C-x",     spawn "picom -b")       -- Run picom compositor
+    , ("M-S-x",     spawn "killall picom")  -- Kill picom compositor
+
     -- Workspaces
     , ("M-.", nextScreen)   -- Switch focus to next monitor
     , ("M-,", prevScreen)   -- Switch focus to prev monitor
