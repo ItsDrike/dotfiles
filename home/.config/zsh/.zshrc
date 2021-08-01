@@ -59,6 +59,10 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 # Load prompt
 [ -f ~/.config/shell/prompt ] && source ~/.config/shell/prompt
 
+# Define TMOUT timeout for TTY and root
+[ -z "$DISPLAY" ] && export TMOUT=800
+[ $UID -eq 0 ] && export TMOUT=600
+
 # Load extensions (should be last)
 . /usr/share/zsh/site-functions/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 . /usr/share/zsh/site-functions/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
