@@ -102,19 +102,20 @@ scrolling:
   #multiplier: 3
 
 # Font configuration
-#font:
+font:
   # Normal (roman) font face
-  #normal:
+  normal:
     # Font family
     #
     # Default:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    #family: monospace
+    family: monospace
+    #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    style: Regular
 
   # Bold font face
   #bold:
@@ -123,6 +124,7 @@ scrolling:
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
     #family: monospace
+    #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
     #style: Bold
@@ -133,7 +135,8 @@ scrolling:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    #family: monospace
+    family: monospace
+    #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
     #style: Italic
@@ -179,8 +182,10 @@ draw_bold_text_with_bright_colors: false
 colors:
   # Default colors
   primary:
-    background: '#1d1f21'
-    foreground: '#c5c8c6'
+    background: '#191919'
+    foreground: '#d8dee9'
+    #background: '#1d1f21'
+    #foreground: '#c5c8c6'
 
     # Bright and dim foreground colors
     #
@@ -250,40 +255,37 @@ colors:
 
   # Normal colors
   normal:
-    #black:   '#1d1f21'
-    black:   '#666666'
-    red:     '#cc6666'
-    green:   '#b5bd68'
-    yellow:  '#f0c674'
-    blue:    '#81a2be'
-    magenta: '#b294bb'
-    cyan:    '#8abeb7'
-    white:   '#c5c8c6'
+    #black:   '#191919'
+    black:   '#46494d'
+    red:     '#b02626'
+    green:   '#40a62f'
+    yellow:  '#f2e635'
+    blue:    '#314ad0'
+    magenta: '#b30ad0'
+    cyan:    '#32d0fc'
+    white:   '#acadb1'
 
   # Bright colors
   bright:
     black:   '#666666'
-    red:     '#d54e53'
-    green:   '#b9ca4a'
-    yellow:  '#e7c547'
-    blue:    '#7aa6da'
-    magenta: '#c397d8'
-    cyan:    '#70c0b1'
-    white:   '#eaeaea'
+    red:     '#ce2727'
+    green:   '#47c930'
+    yellow:  '#fff138'
+    blue:    '#2e4bea'
+    magenta: '#cc15ed'
+    cyan:    '#54d9ff'
+    white:   '#dbdbdb'
 
   # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  #dim:
-  #  black:   '#131415'
-  #  red:     '#864343'
-  #  green:   '#777c44'
-  #  yellow:  '#9e824c'
-  #  blue:    '#556a7d'
-  #  magenta: '#75617b'
-  #  cyan:    '#5b7d78'
-  #  white:   '#828482'
+  dim:
+    black:   '#676f78'
+    red:     '#b55454'
+    green:   '#78a670'
+    yellow:  '#faf380'
+    blue:    '#707fd0'
+    magenta: '#c583d0'
+    cyan:    '#8adaf1'
+    white:   '#e0e3e7'
 
   # Indexed Colors
   #
