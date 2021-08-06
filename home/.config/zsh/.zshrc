@@ -9,6 +9,7 @@ setopt interactivecomments  # allow comments in interactive mode
 setopt magicequalsubst      # enable filename expansion for arguments of form `x=expression`
 setopt notify               # report the status of background jobs immediately
 setopt numericglobsort      # sort filenames numerically when it makes sense
+setopt auto_pushd           # Make cd act as pushd
 #setopt correct_all         # autocorrect commands
 
 # oh-my-zsh configuration (DISABLED by default, if you want oh-my-zsh, uncomment these)
