@@ -63,12 +63,14 @@ pacman:
     # WM/Xorg
     - xorg-server
     - xorg-xinit
+    - xorg-xrandr
     - xmonad
     - xmonad-contrib
     - xmobar
     #- lightdm
 
     # GUI
+    - trayer # System tray
     - mpv # Video player, alternatively there's kde default dragon
     - nomacs # Photo viewer, alternatively there's kde default gwenview
     - ffmpegthumbs # FFmpeg based thumbnail creator for videos
@@ -83,6 +85,7 @@ pacman:
     - firefox # Browser
     - krita # Image editing software (gimp alternative)
     - ueberzug # Tool for displaying images within a terminal
+    - network-manager-applet # NetworkManager trayer icon
     #- code # Open sourced version of vscode (doesn't support many extensions)
 
     # Fonts
