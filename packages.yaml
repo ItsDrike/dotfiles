@@ -71,6 +71,7 @@ pacman:
 
     # GUI
     - trayer # System tray
+    - alsa-utils # Utilities for alsa audio
     - mpv # Video player, alternatively there's kde default dragon
     - nomacs # Photo viewer, alternatively there's kde default gwenview
     - ffmpegthumbs # FFmpeg based thumbnail creator for videos
@@ -114,6 +115,7 @@ aur:
     - opensnitch # Application level firewall, with full traffic monitoring, slower than kernel level iptables, but the advantages are worth it, alternatively there's also portmaster, but it's currently in early development stages, but it may be worth looking into later: `https://github.com/safing/portmaster`
 
     # GUI
+    - picom-git # Git version of picom compositor
     - spotify # Online music player
     - onlyoffice-bin # Full office suite (MS Office alternative)
     - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
