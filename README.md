@@ -5,33 +5,49 @@ Source code for this automated script is in `src` directory, and the dotfiles ar
 
 You are highly adviced to first go through these dotfiles yourself and adjust them to your liking.
 
+
 ## Sample images
 
-- Prompt (Fully adjustable, either manually [here](home/.config/sh/theme), or using other oh-my-zsh themes and removing the custom theme from `.zshrc`) ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
-- Neovim configuration (Fully adjustable, simply edit [`init.vim`](home/.config/nvim/init.vim)) ![image](https://user-images.githubusercontent.com/20902250/117841865-ea2d9500-b26c-11eb-8320-defc6d897dd5.png)
+- Custom prompt (defined [here](home/.config/shell/theme).
+  - Colorscheme showcase: ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
+  - Command timing showcase: ![image](https://user-images.githubusercontent.com/20902250/129356038-f1373183-ee50-4cc9-a602-a1215b5d1e5f.png)
+- Neovim configuration (defined [`here`](home/.config/nvim/)) ![image](https://user-images.githubusercontent.com/20902250/129356722-9eb1e813-62c4-4ad1-ad49-114f69700f80.png)
 - Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
+- `lf` file manager previews with ueberzug ![image](https://user-images.githubusercontent.com/20902250/129359042-b0594788-bc14-4294-bba2-8cba8e30cd94.png)
 
-## What does it do
+## Features
 
-- Automated arch installation script
 - Full fledged ZSH configuration without the need to rely on oh-my-zsh
-  - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.zshrc) to enable it
+  - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.config/zsh/.zshrc) to enable it
   - Even though enabling it is an option, it is not a necessary thing to do, oh-my-zsh has a lot of code that is mostly irrelevant and unused, these dotfiles give you the ability to completely avoid it, if you desire to do so
-- Custom [prompt](home/.config/sh/theme), both for oh-my-zsh configuration or for standalone usage
-- Custom [VIM configuration](home/.config/nvim/init.vim) (designed for nvim, but will work for vim with some adjustments). This config will automatically install addons first time it's used, and it will detect if it's running in TTY and use default fonts only, to avoid errors.
-- Many handy [aliases](home/.config/sh/aliases) and [functions](home/.config/sh/functions) (likely too many, you should adjust that to your needs)
-- [XDG configuration](home/.config/sh/environ) to avoid too much cluttering in home directory
-- [Automatic handlers](home/.config/sh/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
+- Custom [prompt](home/.config/shell/theme), both for oh-my-zsh configuration or for standalone usage
+- Custom [VIM configuration](home/.config/nvim) 
+  - When you open nvim for the first time, it will automatically try to install addons using VimPlug
+  - It is complatible with TTY usage, in which case the color support is downgraded and use of special fonts is disabled.
+  - There isn't a single huge configuration file, but rather multiple config files that are being sourced by the main init.vim, this is done to avoid clutter with comments in the main file and it also provides a very easy way to disable parts of configuration, by simply not sourcing that file.
+  - NOTE: This configuration is mostly designed for neovim, not regular vim, however it should work with some adjustments
+- Many handy [aliases](home/.config/shell/aliases) and [functions](home/.config/shell/functions) (likely too many, you should adjust that to your needs)
+- [Many pre-defined environmental variables](home/.config/shell/environ), these include
+  - XDG paths configuration to avoid too much cluttering in home directory
+  - Colorful man pages using LESS_TERMCAP, or if `bat` is installed, using it as MANPAGER
+- [Automatic handlers](home/.config/shell/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
 - Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
-- Extensive [vscode settings](home/.config/Code/User/settings.json), note that these are the settings which I like, you will probably want to adjust them to your personal needs, or perhaps even replace them
 - [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads.
 - Automatic logout for TTY sessions or for root logins after 10 minutes of inactivity
 - NetworkManager configuration which assigns new mac for each network
+- `lf` file manager configuration with support for ueberzug image previews within the terminal
+- Tons of handy scripts for automating common tasks
+  - [`incremental-backup`](root/usr/local/bin/incremental-backup): Easy way to utilize rsync for all backups, without the need for external software
+  - [`auto-chroot`](root/usr/local/bin/auto-chroot): Quick way to chroot into any other linux system, without typing the very repetetive mount and umount commands
+  - [`tamper-check`](root/usr/local/bin/tamper-check): Script that uses checksums to verify that given files weren't adjusted in any way.
+  - [`brightness`](home/.local/bin/scripts/brightness): Script to quickly change screen brightness, you may need to adjust the BRIGHTNESS_FILE, this can be different from machine to machine
+  - [`setbg`](home/.local/bin/scripts/setbg): Quick way to set desktop background to specific image, or random image, or previously used image
+  - Many smaller dmenu scripts to make life easier
+ 
 
 ## Requirements
 
 `curl` and `tar`, or `git` to clone the repository itself.
-Installation uses `python` and `pip` with some python packages in `requirements.txt` but these will get installed automatically by the `install.sh` script.
 
 ## Installation
 
@@ -42,15 +58,3 @@ If you don't want to install git (running straight from newly installed os), you
 `$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master` <br>
 And extract from `.tar.gz` archive:
 `$ tar xvf [archive name]`
-
-## Running the script
-
-**Before you run, you should take a look at the files included and adjust them however you like.** <br>
-Make sure you only run the script after you've adjusted everything to your liking, there are many things which aren't needed and might not be desired, make sure to really check every file this will add and remove/adjust those you don't want
-
-- All config files which will be added are in [`home/`](home) and [`root/`](root) directory. Make sure to remove the undesired ones.
-- All packages are located in [`packages.yaml`](packages.yaml), Make sure to remove all packages which you don't want to be installed.
-
-When you are prepared, you can run the installer  (assuming you're in the clonned directory):
-`$ chmod +x install.sh` (Make installation script executable)
-`$ sh install.sh` (run the installation script, which will begin the instalaltion)
