@@ -178,11 +178,16 @@ myKeys =
     , ("M-M1-k",    sendMessage MirrorExpand)   -- Expand vert window width
 
     -- Multimedia keys
+    , ("<XF86AudioMute>",           spawn "amixer set Master toggle")
     , ("<XF86AudioLowerVolume>",    spawn "amixer set Master 5%- unmute")
     , ("<XF86AudioRaiseVolume>",    spawn "amixer set Master 5%+ unmute")
-    , ("<XF86AudioMute>",           spawn "amixer set Master toggle")
     , ("<XF86MonBrightnessUp>",     spawn "brightness + 10 %")
     , ("<XF86MonBrightnessDown>",   spawn "brightness - 10 %")
+    -- Map media keys to meta + arrows for keyboards without special keys
+    , ("M-<Down>",                  spawn "amixer set Master 5%- unmute")
+    , ("M-<Up>",                    spawn "amixer set Master 5%+ unmute")
+    , ("M-<Right>",                 spawn "brightness + 10 %")
+    , ("M-<Left>",                  spawn "brightness - 10 %")
     ]
         where nonNSP            = WSIs (return (\ws -> W.tag ws /= "NSP"))
               nonEmptyNonNSP    = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
