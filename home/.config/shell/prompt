@@ -121,16 +121,29 @@ add-zsh-hook precmd exec_time_precmd_hook
 PS1+="$(foreign_prompt)"
 PS1+="$(working_directory)"
 PS1+="\$(git_prompt)"
-#PS1+="\$(display_cmd_time)"
+PS1+="\$(display_cmd_time)"
 PS1+=" $PURPLE%(!.#.$)$RESET " # Final symbol (# or $/»)
 
 # Next line prompt
 PS2="$RED\ $RESET"
 
-# Right side prompt (on error)
+# Right side prompt
+RPS1=""
 if [ $TERM = "linux" ]; then
-    RPS1="\$(display_cmd_time)%(?..${RED}%? X$RESET)"
+    # Displaying cmd time here works, but often causes issues when we
+    # resize the terminal, since right prompts can be annoying to deal
+    # with when resizing. This would run relatively often so it makes
+    # more sense to only use it in PS1 (left prompt), but if desired,
+    # this can be uncommented
+    #RPS1+="\$(display_cmd_time)"
+
+    # If we find a non-zero return code, print it in the right prompt,
+    # use X here, to avoid issues with TTY not having support for
+    # a nicer unicode character that we use otherwise ("↵")
+    RPS1+="%(?..${RED}%? X$RESET)"
 else
-    RPS1="\$(display_cmd_time)%(?..${RED}%? ↵$RESET)"
+    # Read comments for the section above.
+    #RPS+="\$(display_cmd_time)"
+    RPS1="%(?..${RED}%? ↵$RESET)"
 fi
 
