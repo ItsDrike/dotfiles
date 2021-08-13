@@ -12,7 +12,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - Colorscheme showcase: ![image](https://user-images.githubusercontent.com/20902250/117699472-69ab5d80-b1b4-11eb-85a8-2b039bc1599a.png)
   - Command timing showcase: ![image](https://user-images.githubusercontent.com/20902250/129356038-f1373183-ee50-4cc9-a602-a1215b5d1e5f.png)
 - Neovim configuration (defined [`here`](home/.config/nvim/)) ![image](https://user-images.githubusercontent.com/20902250/129356722-9eb1e813-62c4-4ad1-ad49-114f69700f80.png)
-- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/117700151-2998aa80-b1b5-11eb-8076-619be69eec55.png)
+- Automatic unknown command package handler ![image](https://user-images.githubusercontent.com/20902250/129359888-629a4f28-64bd-4c90-8e87-de75a9b8997d.png)
 - `lf` file manager previews with ueberzug ![image](https://user-images.githubusercontent.com/20902250/129359042-b0594788-bc14-4294-bba2-8cba8e30cd94.png)
 
 ## Features
