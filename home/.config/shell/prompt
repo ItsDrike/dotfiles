@@ -8,8 +8,20 @@
 USE_SHORTENED_WORKDIR=1
 
 # Show how much time it took to run a command
-SHOW_CMD_TIME=1
-
+CMD_TIME_SHOW=1
+# Minimum units to show the time precision, if
+# we use "s" (seconds), and the output took 0s,
+# we don't print the output at all to avoid clutter.
+# Same goes for any other units, however with "ms"
+# (miliseconds), this is very unlikely
+# Valid options: ms/s/m/h/d
+CMD_TIME_PRECISION="s"
+# Minimum time in miliseconds, to print the time took,
+# if the command takes less than this amount of miliseconds,
+# don't bother printing the time took, this is nice if you
+# don't need to see how long commands like 'echo' took
+# Setting this to 0 will always print the time taken
+CMD_TIME_MINIMUM=100
 
 # hide EOL sign ('%')
 export PROMPT_EOL_MARK=""
@@ -79,34 +91,51 @@ working_directory() {
 # This will only be enabled if SHOW_CMD_TIME is 1.
 exec_time_preexec_hook() {
     [[ $SHOW_CMD_TIME == 0 ]] && return
-    PROMPT_EXEC_TIME_START=$(date +%s)
+    PROMPT_EXEC_TIME_START=$(date +%s.%N)
 }
 exec_time_precmd_hook() {
     [[ $SHOW_CMD_TIME == 0 ]] && return
     [[ -z $PROMPT_EXEC_TIME_START ]] && return
-    local PROMPT_EXEC_TIME_STOP=$(date +%s)
-    PROMPT_EXEC_TIME_DURATION=$(( $PROMPT_EXEC_TIME_STOP - $PROMPT_EXEC_TIME_START ))
+    local PROMPT_EXEC_TIME_STOP=$(date +%s.%N)
+    PROMPT_EXEC_TIME_DURATION=$(echo "($PROMPT_EXEC_TIME_STOP - $PROMPT_EXEC_TIME_START) * 1000" | bc -l)
     unset PROMPT_EXEC_TIME_START
 }
 format_time() {
-    # Do some formatting to get nice time (e.g. 2m 12s)
-    # from seconds only
+    # Do some formatting to get nice time (e.g. 2m 12s) from miliseconds
+    # $1 is the milisecond amount (int or float)
+    # $2 is the precision (ms/s/m/h/d)
     local T=$1
-    local D=$((T/60/60/24))
-    local H=$((T/60/60%24))
-    local M=$((T/60%60))
-    local S=$((T%60))
-    [[ $D > 0 ]] && printf '%dd ' $D
-    [[ $H > 0 ]] && printf '%dh ' $H
-    [[ $M > 0 ]] && printf '%dm ' $M
-    printf '%ds' $S
+    local D=$(echo "scale=0;$T/1000/60/60/24" | bc -l)
+    local H=$(echo "scale=0;$T/1000/60/60%24" | bc -l)
+    local M=$(echo "scale=0;$T/1000/60%60" | bc -l)
+    local S=$(echo "scale=0;$T/1000%60" | bc -l)
+    local MS=$(echo "scale=0;$T%1000" | bc -l)
+
+    local precision=$2
+    local out=""
+    case "$precision" in
+        "ms") [[ $MS > 0 ]] && out="$(printf "%dms" $MS) ${out}"; precision="s" ;&
+        "s") [[ $S > 0 ]] && out="$(printf "%ds" $S) ${out}"; precision="m" ;&
+        "m") [[ $M > 0 ]] && out="$(printf "%dm" $M) ${out}"; precision="h" ;&
+        "h") [[ $H > 0 ]] && out="$(printf "%dh" $H) ${out}"; precision="d" ;&
+        "d") [[ $D > 0 ]] && out="$(printf "%dd" $D) ${out}" ;;
+        *) out="$T" ;; # Return $1 ($T) if precision wasn't specified/valid
+    esac
+    printf "$out"
 }
 display_cmd_time() {
-    [[ $SHOW_CMD_TIME == 0 ]] && return
+    [[ $CMD_TIME_SHOW == 0 ]] && return
     [[ -z $PROMPT_EXEC_TIME_DURATION ]] && return
-    # Don't display the time, if it's 0 seconds
-    [[ $PROMPT_EXEC_TIME_DURATION == 0 ]] && return
-    echo -n " ${LBLUE}took $(format_time $PROMPT_EXEC_TIME_DURATION)"
+    # If the time duration is less than minimum time,
+    # don't print the time taken
+    [[ $PROMPT_EXEC_TIME_DURATION -lt $CMD_TIME_MINIMUM ]] && return
+    local time_took="$(format_time "$PROMPT_EXEC_TIME_DURATION" "$CMD_TIME_PRECISION")"
+    # Don't display if the time didn't give us output
+    # this happens when all fields (seconds/minutes/...) are 0,
+    # if we use milisecond precision, this will likely never happen
+    # but with other precisions, it could
+    [[ "$(expr length "$time_took")" == 0 ]] && return
+    echo -n " ${LBLUE}took ${time_took}"
 }
 
 setopt promptsubst  # enable command substitution in prompt
