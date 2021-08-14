@@ -12,7 +12,7 @@
 # Default programs
 export EDITOR="nvim"
 export BROWSER="firefox"
-export TERMINAL="Alacritty"
+export TERMINAL="alacritty"
 
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
