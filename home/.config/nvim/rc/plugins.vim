@@ -20,11 +20,13 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
 " Python
 Plug 'neomake/neomake'
 Plug 'zchee/deoplete-jedi'
 " Misc
-Plug 'airblade/vim-gitgutter'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'vimwiki/vimwiki'
 Plug 'wakatime/vim-wakatime'
 Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
@@ -37,4 +39,5 @@ call plug#end()
 let plugins_rc_dir = rc_dir."/plugins.d"
 execute "source ".plugins_rc_dir."/airline.vim"
 execute "source ".plugins_rc_dir."/nerdtree.vim"
+execute "source ".plugins_rc_dir."/vimwiki.vim"
 execute "source ".plugins_rc_dir."/python.vim"
