@@ -14,7 +14,7 @@ else
     source "$HOME/.xprofile"
 fi
 
-#exec xmonad
+exec xmonad
 # Launch xmonad with dbus
-exec dbus-launch --sh-syntax --exit-with-session xmonad
+#exec dbus-launch --sh-syntax --exit-with-session xmonad
 
