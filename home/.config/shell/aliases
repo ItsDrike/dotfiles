@@ -45,7 +45,7 @@ if command -v exa > /dev/null; then
 	alias ls='exa'
 	alias l='exa -glah --classify'
 	alias ll='exa -glah --classify -s=size --group-directories-first -r'
-	alias ld='exa -glahD'
+	alias ldir='exa -glahD'
 	alias tree='exa -Tlagh'
 	alias dotall='exa -hulad .[a-z]*' # Show both dotdirs and dotfiles
 	alias dotfiles='dotall | grep -v ^d' # Show all dotfiles
@@ -54,7 +54,7 @@ else
 	alias ls='ls --color=auto'
 	alias l='ls -lahX --classify'
 	alias ll='ls -lahX --classify --group-directories-first'
-	alias ld='ls -lahX --classify | grep --color=never ^d'
+	alias ldir='ls -lahX --classify | grep --color=never ^d'
 	alias dotall='ls -lahXd .[a-z]*'
 	alias dotfiles='dotall | grep -v ^d'
 	alias dotdirs='dotall | grep --color=never ^d'
