@@ -22,8 +22,11 @@ dunst &
 nm-applet &
 
 # Run trayer-srg for systemtray bar
-# if installed normally, use `trayer`, not `trayer-srg` command
+# if installed normally, command will be `trayer`, not `trayer-srg` command
 trayer --monitor 0 --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &
+
+# Start flameshot in background
+flameshot &
 
 # AppArmor notifications
 aa-notify -p &
