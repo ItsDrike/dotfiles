@@ -69,6 +69,7 @@ pacman:
     - xmonad
     - xmonad-contrib
     - xmobar
+    - numlockx
     #- lightdm
 
     # GUI
@@ -109,6 +110,7 @@ git:
     - https://aur.archlinux.org/yay-git.git # Yay tool, for AUR installation
 
 aur:
+    - mkinitcpio-numlock # Enable numlock in initramfs (before asking for encryption key)
     # CLI/TUI
     - lf # Terminal ranger-like file manager
     - ngrok # Forward your localhost without ip recovery

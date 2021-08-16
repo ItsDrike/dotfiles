@@ -23,10 +23,13 @@ nm-applet &
 
 # Run trayer-srg for systemtray bar
 # if installed normally, use `trayer`, not `trayer-srg` command
-trayer-srg --monitor 0 --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &
+trayer --monitor 0 --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 23 &
 
 # AppArmor notifications
 aa-notify -p &
+
+# Enable numlock with numlockx
+numlockx &
 
 # Run emacs daemon
 #emacs --daemon &
