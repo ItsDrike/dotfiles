@@ -14,7 +14,11 @@ set guioptions-=T           " Remove toolbar
 set guioptions-=r           " Remove right-hand scrollbar
 set guioptions-=L           " Remove left-hand scrollbar
 
-if empty($DISPLAY) " Don't use true colors (256) in TTY
+" Use more noticable cursor line color
+highlight CursorLine guibg=#2b2b2b
+
+" Don't use true colors in TTY
+if empty($DISPLAY)
     set notermguicolors
 else
     set termguicolors
