@@ -120,6 +120,7 @@ myKeys =
     , ("M-S-<Print>",   spawn "flameshot screen -c")
     , ("C-<Print>",     spawn "flameshot full -p ~/Pictures/Screenshots")
     , ("C-S-<Print>",   spawn "flameshot full -c")
+    , ("C-M-<Print>",   spawn "flameshot launcher")
 
     -- Script shortcuts
     , ("M-S-p",         spawn "setbg ~/Pictures/Wallpapers/Active")  -- Set random background
@@ -178,16 +179,16 @@ myKeys =
     , ("M-M1-k",    sendMessage MirrorExpand)   -- Expand vert window width
 
     -- Multimedia keys
-    , ("<XF86AudioMute>",           spawn "amixer set Master toggle")
-    , ("<XF86AudioLowerVolume>",    spawn "amixer set Master 5%- unmute")
-    , ("<XF86AudioRaiseVolume>",    spawn "amixer set Master 5%+ unmute")
-    , ("<XF86MonBrightnessUp>",     spawn "brightness + 10 %")
-    , ("<XF86MonBrightnessDown>",   spawn "brightness - 10 %")
+    , ("<XF86AudioMute>",           spawn "pulsemixer --toggle-mute")
+    , ("<XF86AudioLowerVolume>",    spawn "pulsemixer --change-volume -5")
+    , ("<XF86AudioRaiseVolume>",    spawn "pulsemixer --change-volume +5")
+    , ("<XF86MonBrightnessUp>",     spawn "brightness + 5 %")
+    , ("<XF86MonBrightnessDown>",   spawn "brightness - 5 %")
     -- Map media keys to meta + arrows for keyboards without special keys
-    , ("M-<Down>",                  spawn "amixer set Master 5%- unmute")
-    , ("M-<Up>",                    spawn "amixer set Master 5%+ unmute")
-    , ("M-<Right>",                 spawn "brightness + 10 %")
-    , ("M-<Left>",                  spawn "brightness - 10 %")
+    , ("M-<Down>",                  spawn "pulsemixer --change-volume -5")
+    , ("M-<Up>",                    spawn "pulsemixer --change-volume +5")
+    , ("M-<Right>",                 spawn "brightness + 5 %")
+    , ("M-<Left>",                  spawn "brightness - 5 %")
     ]
         where nonNSP            = WSIs (return (\ws -> W.tag ws /= "NSP"))
               nonEmptyNonNSP    = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
@@ -315,6 +316,7 @@ myManageHook = composeAll
     -- auto-shift applications to their respecitve workspaces
     , className =? "discord"            --> doShift ( myWorkspaces !! 3 )
     , className =? "Code"               --> doShift ( myWorkspaces !! 0 )
+    , className =? "Stremio"		--> doShift ( myWorkspaces !! 5 )
     , title     =? "Mozilla Firefox"    --> doShift ( myWorkspaces !! 1 )
     ]
 
