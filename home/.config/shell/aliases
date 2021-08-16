@@ -217,7 +217,6 @@ alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
 alias unsudo='sudo -k' # Reset sudo timeout (sudo will require password)
 alias vimwiki='vim -c VimwikiIndex' # Open vimwiki index
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias colors-256='curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash' # Show color table
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 
