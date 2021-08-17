@@ -23,6 +23,7 @@ pacman:
     - links # Terminal text-only web browser
     - lshw # List hardware components and their attributes
     - bat # Colored cat with tons of cool options
+    - mlocate # A tool for quick system file searching by building an index
     - httpie # Add comman for obtaining http info from webpages
     - calcurse # Terminal calendar and event planner
     #- figlet # generate ascii text banners in terminal
