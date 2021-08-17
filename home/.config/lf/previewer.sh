@@ -1,9 +1,15 @@
 #!/bin/sh
 # This script handles showing file-previews within lf.
+
 # It can also show image previews using ueberzug, however
-# that requires lf to be start with a script that also starts
+# that requires lf to be started with a script that also starts
 # ueberzug alongside of it.
 # (In my dotfiles, this script is in '~/.local/bin/scripts/lfu')
+# Alternatively, we could also handle ANSI previews with pixterms
+# this will be in a pretty low quiality, but it will work without
+# ueberzug. To enable this, change PIXTERM_ENABLED to 1.
+# if both ueberzug and pixterm are enabled, ueberzug takes precedence.
+PIXTERM_ENABLED=1
 
 run_cmd() {
     # Try to run given command, if it is installed.
@@ -77,7 +83,8 @@ media_handle() {
     file="$1"
     shift
 
-    # Set ENABLED=1 if ueberzug is enabled
+    # Set ENABLED=1 if ueberzug or pixterm is enabled
+    command -v pixterm > /dev/null && [ "$PIXTERM_ENABLED" = 1 ] && ENABLED=1
     [ -n "$FIFO_UEBERZUG" ] && [ -f "$draw_script" ] && ENABLED=1
 
     case "$file" in
@@ -85,7 +92,7 @@ media_handle() {
             if [ -n "$ENABLED" ]; then
                 draw_image $draw_script "$file"
             else
-                echo "@@PREVIEW FALLBACK: Using mediainfo, ueberzug isn't aviable."
+                echo "@@PREVIEW FALLBACK: Using mediainfo, ueberzug isn't available."
                 run_cmd mediainfo "$file"
             fi
             ;;
