@@ -70,6 +70,7 @@ alias cfenv='cfenvironment'
 alias cfhandlers='vim ~/.config/shell/handlers'
 alias cfprompt='vim ~/.config/shell/prompt'
 alias cfkeybinds='vim ~/.config/shell/keybinds'
+alias cfxprofile='vim ~/.config/x11/xprofile'
 alias cfxmonad='vim ~/.config/xmonad/xmonad.hs && xmonad --recompile && xmonad --restart'
 alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
 alias cftodo='vim ~/Personal/todo'
@@ -150,6 +151,7 @@ alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/nu
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
+alias screenlock='xset s activate' # Use DPMS to trigger xss-lock and handle screen locking
 
 # System info
 alias meminfo='free -m -l -t'
