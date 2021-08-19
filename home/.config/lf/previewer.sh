@@ -122,7 +122,9 @@ text_handle() {
     # Handle all other formats as text and cat them
     # if highlighting tools are aviable, try to use them
     if command -v bat > /dev/null; then
-        bat -pp --color=always "$1"
+        num=$(printf "%0.f\n" "`echo "$(tput cols) / 2" | bc`")
+        numb=$(printf "%d\n" "`echo "$(tput cols) - $num - 3" | bc`")
+        bat -pp --color=always --wrap=character --terminal-width="$numb" "$1"
     elif command -v highlight > /dev/null; then
         highlight "$1" --out-format ansi --force
     else
