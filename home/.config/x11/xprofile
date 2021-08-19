@@ -4,14 +4,14 @@
 # if you use startx/xinit this file should also be soruced.
 
 # Set monitor order
-xrandr --output HDMI-1 --auto --output eDP-1 --right-of HDMI-1 --auto
+xrandr --output HDMI-1 --auto --output eDP-1 --right-of HDMI-1 --auto &
 
 # Set X11 lockscreen delays (DPMS)
-xset s on
-xset s 600 5 # 10 minutes, 5s for dimmer
+xset s on &
+xset s 600 5 & # 10 minutes, 5s for dimmer
 
 # XSS lock with xsecurelock
-xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
+xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
 
 # Set the background with a custom `setbg` script
 setbg &
