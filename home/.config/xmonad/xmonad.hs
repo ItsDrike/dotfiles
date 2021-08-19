@@ -104,6 +104,9 @@ myKeys =
     [ ("M-S-r", spawn "xmonad --recompile; xmonad --restart")   -- Recompiles xmonad
     , ("M-S-q", io exitSuccess)                                 -- Quits xmonad
 
+    -- Lock screen
+    , ("C-M-l", spawn "xset s activate") -- Send DPMS trigger for lockscreen
+
     -- Programs
     , ("M-b",           spawn (myBrowser))
     , ("M-<Return>",    spawn (myTerminal))
