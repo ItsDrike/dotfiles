@@ -96,7 +96,7 @@ pacman:
     - krita # Image editing software (gimp alternative)
     - ueberzug # Tool for displaying images within a terminal
     - network-manager-applet # NetworkManager trayer icon
-    #- code # Open sourced version of vscode (doesn't support many extensions)
+    - code # Open sourced version of vscode (code-oss)
 
     # Fonts
     - libxft
@@ -128,7 +128,7 @@ aur:
     - picom-git # Git version of picom compositor
     - spotify # Online music player
     - onlyoffice-bin # Full office suite (MS Office alternative)
-    - visual-studio-code-bin # Official vVsual Studio Code text editor for programmers
+    - code-marketplace # Enable the offical MS vscode marketplace for 'code' (code-oss)
     - exodus # Software cryptocurrency wallet
     - notion-app # Online text manipulation tool with databases and very rich interface
     #- mailspring-libre # Beautiful and fast mail client, without tracking of default mailspring
