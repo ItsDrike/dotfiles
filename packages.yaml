@@ -82,6 +82,7 @@ pacman:
     - mpv # Video player, alternatively there's kde default dragon
     - nomacs # Photo viewer, alternatively there's kde default gwenview
     - ffmpegthumbs # FFmpeg based thumbnail creator for videos
+    - ffmpegthumbnailer # Ffmpeg based thumbnail creator for file mgrs
     - alacritty # very fast terminal emulator
     - pcmanfm # File manager
     - discord # Popular chat app
