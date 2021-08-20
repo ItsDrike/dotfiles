@@ -12,6 +12,7 @@ pacman:
     # CLI/TUI
     - pacman-contrib # Contains many useful scripts for pacman, such as paccache
     - exa # Modern ls replacement
+    - hyperfine # Speed benchmark for given commands
     - ncdu # Show folder sizes in a neat CLI graphical way
     - cron # Scheduling program
     - pkgfile # Pacman metadata explorer
