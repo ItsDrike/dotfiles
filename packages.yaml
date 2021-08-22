@@ -27,6 +27,8 @@ pacman:
     - mlocate # A tool for quick system file searching by building an index
     - httpie # Add comman for obtaining http info from webpages
     - calcurse # Terminal calendar and event planner
+    - imagemagick # Terminal image manipulation
+    - mediainfo # Show info about media files (videos/photos)
     - abduco # Terminal session manager
     #- figlet # generate ascii text banners in terminal
     # ZSH + Plugins
@@ -72,9 +74,11 @@ pacman:
     - xmonad
     - xmonad-contrib
     - xmobar
+    - xwallpaper
     - xss-lock
     - xsecurelock
     - numlockx
+    - papirus-icon-theme # Breeze inspired icon theme
 
     # GUI
     - trayer # System tray
@@ -105,6 +109,7 @@ pacman:
     - noto-fonts
     - noto-fonts-cjk
     - noto-fonts-emoji
+    - ttf-font-awesome
 
     # Printer
     - cups # Daemon for printing
@@ -119,6 +124,7 @@ aur:
     # CLI/TUI
     - lf # Terminal ranger-like file manager
     - ngrok # Forward your localhost without ip recovery
+    - pixterm # A tool for converting images to ANSI colored blocks
     # ZSH Extensions
     - z.lua # Quick jump tool (z [directory])
     # Security
