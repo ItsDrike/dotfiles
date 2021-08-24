@@ -1,102 +1,92 @@
 pacman:
     # Common
-    - base-devel # Necessary for building AUR and yay install
-    - git
-    - neovim
-    - sudo
-    - networkmanager
-    - net-tools
-    - man-db
-    - rsync
+    - base-devel        # A set of tools needed for building pkgs
+    - git               # Version control system
+    - neovim            # Text editor (modern version of VIM)
+    - sudo              # Execute commands as root from unprivilledged user
+    - networkmanager    # Easy way to manage network connections, especially for WiFi
+    - man-db            # A utility for reading manpages
+    - rsync             # Fast tool for copying/syncing files
+    - cronie            # Run programs at specified time
+    - zsh               # Modern system shell
 
-    # CLI/TUI
-    - pacman-contrib # Contains many useful scripts for pacman, such as paccache
-    - exa # Modern ls replacement
-    - hyperfine # Speed benchmark for given commands
-    - ncdu # Show folder sizes in a neat CLI graphical way
-    - cron # Scheduling program
-    - pkgfile # Pacman metadata explorer
-    - xsel # CLI tool for get/set contents of X11 clipboard (alternatively there's xclip)
-    - trash-cli # CLI tool to interract with trash (for example trash-put instead of rm will mv file to trash)
-    - youtube-dl # Tool for easy downloading of youtube videos
-    - ranger # Simple, vim-like file manager
-    - rmlint # Tool for finding and removing duplicate files quickly
-    - links # Terminal text-only web browser
-    - lshw # List hardware components and their attributes
-    - bat # Colored cat with tons of cool options
-    - mlocate # A tool for quick system file searching by building an index
-    - httpie # Add comman for obtaining http info from webpages
-    - calcurse # Terminal calendar and event planner
-    - abduco # Terminal session manager
-    #- figlet # generate ascii text banners in terminal
-    # ZSH + Plugins
-    - zsh # shell
-    - zsh-syntax-highlighting # colored zsh
-    - zsh-autosuggestions # Suggestions from previous commands
-    # KVM Virtualization
-      # For installation, you'll also have to enable service `libvirtd` and make a new bridge interface
-      # You'll also want to create a new bridge. Use a config file `br10.xml`
-      # This file is already located in `home/.config/network-bridge/br10.xml` if you use dotfiles installation
-      # Then you can define bridge with `virsh net-def br10.xml` and start it `virsh net-start br10`
-      # We will also want to autostart this interface with `virsh net-autostart br10`
-      # If further instructions are necessary, check `https://youtu.be/itZf5FpDcV0` for video tutorial
-    #- virt-manager # Frontend GUI for KVM
-    #- qemu # Base emulator and virtualizer
-    #- qemu-arch-extra # Virtualization for foregin architectures
-    #- ovmf # UEFI virtual machines (without it, only BIOS is possible)
-    #- vde2 # Networking tool
-    #- ebtables # Ethernet bridge filtering utilities
-    #- dnsmasq # Easy to configure DNS forwarder and DHCP server
-    #- bridge-utils # Ethernet bridge configuration (VMs should be using this bridge, not real interface)
-    #- openbsd-netcat # OpenBSD variant of netcat
-    #- virt-viewer # A viewer for virtualized machines, virt-manager alone doesn't support copy-paste
+    # CLI
+    - exa             # Colored LS
+    - bat             # Colored cat with tons of cool options
+    - hyperfine       # Command benchmark
+    - abduco          # Terminal session manager
+    - mlocate         # System indexing and quick file searching
+    - pkgfile         # Pacman metadata explorer
+    - pacman-contrib  # Includes multiple additional tools related to pacman
+    - lshw            # List hardware components and their attributes
+    - trash-cli       # Trash interraction (rather than permanent removal)
+    #- figlet          # generate ascii text banners in terminal
+
+    # TUI
+    - ncdu      # Find largest folders (size)
+    - calcurse  # Terminal calendar with todo
+    - bpytop    # Modern system resource monitor
+    - links     # Terminal text-only web browser
+
+    # Networking/Internet
+    - httpie          # Obtaining http info from webpages
+    - dnsutils        # Tools for managing DNS
+    - net-tools       # Configuration tools for linux networking
+
+    # Media
+    - imagemagick       # Terminal image manipulation
+    - mediainfo         # Show info about media files (videos/photos)
+    - youtube-dl        # Tool for easy downloading of youtube videos
+    - ffmpegthumbs      # FFmpeg based thumbnail creator for videos
+    - ffmpegthumbnailer # Ffmpeg based thumbnail creator for file mgrs
+
     # Security
-    - macchanger # Tool for changing MAC address
-    - dnsutils # Tools for managing DNS
-    - arch-audit # Similar to pkg-audit (AUR), based on Arch CVE Monitoring Team data
-    - apparmor # Mandantoy Access Control using Linux Security Module
-      # You'll want to also enable apparmor on boot with grub:
-      # Go to `/etc/default/grub` and append `apparmor=1 security=apparmor` to `GRUB_CMDLINE_LINUX_DEFAULT` variable, then run `grub-mkconfig -o /boot/grub/grub.cfg`
-    - audit # Framework for CAPP-compliant (Controlled Access Protection Profile) auditing system, that collects info about any relevant event on system, needed for apparmor profile generation (`auditd` service has to be enabled, and a boot param of audit=1 should be added - same process as above)
-    - lynis # Security and System auditing tool
-    - firejail # Sandboxing isolation tool
-    - clamav # Anti-virus toolkit
-    - rkhunter # Check for the presence of rootkits and other unwanted tools.
-    - step-cli
-    #- ufw # Uncomplicated firewall, a simple way of defining firewall (disabled, because opensnitch FW is more detailed and better)
+    - arch-audit    # Find installed packgaes with vulnerabilities (Similar to pkg-audit)
+    - firejail      # Sandboxing isolation tool
+    - lynis         # Security and System auditing tool
+    - rkhunter      # Check for the presence of rootkits and other unwanted tools.
+    - apparmor      # Mandantoy Access Control using Linux Security Module
+    - audit         # Collect system info about given events (requires audit=1 boot param)
+    #- ufw          # Uncomplicated firewall (I prefer application level FW like opensnitch)
+    #- clamav       # Anti-virus for Linux (usually only needed for servers)
 
     # WM/Xorg
-    - xorg-server
-    - xorg-xinit
-    - xorg-xrandr
-    - xmonad
-    - xmonad-contrib
-    - xmobar
-    - xss-lock
-    - xsecurelock
-    - numlockx
+    - xorg-server         # Xorg server implementation
+    - xorg-xinit          # Simple way to start X
+    - xorg-xrandr         # Manage multiple monitors in X
+    - xmonad              # Window Manager written in haskell
+    - xmonad-contrib      # Additional tools for xmonad
+    - xmobar              # Panel built for xmonad
+    - trayer              # System tray standalone panel
+    - xsel                # X11 clipboard manager (alternatively there's xclip)
+    - xsecurelock         # Secure lockscreen
+    - xss-lock            # Using external locker as X screensaver
+    - xwallpaper          # Setting wallpaper in X
+    - numlockx            # Enabling numlock from terminal (used in xprofile)
+    - dunst               # Notification daemon
+    - papirus-icon-theme  # Breeze inspired icon theme
+
+    # Audio
+    - alsa-lib          # Implementation of Linux sound support
+    - alsa-utils        # Utilities for alsa audio
+    - pulseaudio        # General purpose sound server
+    - pulseaudio-alsa   # ALSA configuration for PulseAudio
+    - pulsemixer        # CLI and curses mixer for PulseAudio
 
     # GUI
-    - trayer # System tray
-    - alsa-utils # Utilities for alsa audio
-    - lxappearance # GTK theme config app
-    - mpv # Video player, alternatively there's kde default dragon
-    - nomacs # Photo viewer, alternatively there's kde default gwenview
-    - ffmpegthumbs # FFmpeg based thumbnail creator for videos
-    - ffmpegthumbnailer # Ffmpeg based thumbnail creator for file mgrs
-    - alacritty # very fast terminal emulator
-    - pcmanfm # File manager
-    - discord # Popular chat app
-    - flameshot # Screenshot taking tool
-    - dunst # Notification daemon
-    - peek # Gif/mp3 screen recording tool
-    - qalculate-gtk-nognome # Calculator with thousands of features, there's also less powerful kde default's kcalc
-    - filelight # Disk usage monitoring
-    - firefox # Browser
-    - krita # Image editing software (gimp alternative)
-    - ueberzug # Tool for displaying images within a terminal
-    - network-manager-applet # NetworkManager trayer icon
-    - code # Open sourced version of vscode (code-oss)
+    - alacritty         # Terminal Emulator
+    - mpv               # Video player
+    - nomacs            # Photo viewer
+    - pcmanfm           # File manager
+    - firefox           # Browser
+    - flameshot         # Screenshot taking tool
+    - obs-studio        # Advanced video recording tool
+    - lxappearance      # GTK configuration
+    - ueberzug          # Embed images within a terminal
+    - krita             # Image editor (gimp alternative)
+    - discord           # Popular chat app
+    - network-manager-applet  # NetworkManager trayer icon
+    #- code             # Open sourced version of vscode (doesn't support many extensions)
 
     # Fonts
     - libxft
@@ -105,32 +95,41 @@ pacman:
     - noto-fonts
     - noto-fonts-cjk
     - noto-fonts-emoji
+    - ttf-font-awesome
 
     # Printer
-    - cups # Daemon for printing
-    - hplip # Tool to set-up HP printers
-    - print-manager # KDE utility for managing printers
-
-git:
-    - https://aur.archlinux.org/yay-git.git # Yay tool, for AUR installation
-
+    - cups          # Daemon for printing
+    - hplip         # Tool to set-up HP printers
+    - xsane         # Scanning
 aur:
-    - mkinitcpio-numlock # Enable numlock in initramfs (before asking for encryption key)
-    # CLI/TUI
-    - lf # Terminal ranger-like file manager
-    - ngrok # Forward your localhost without ip recovery
-    # ZSH Extensions
-    - z.lua # Quick jump tool (z [directory])
+    # System
+    - mkinitcpio-numlock  # Enable numlock in initramfs (before asking for encryption key)
+
+    # CLI
+    - pixterm     # Convert images to ANSI colored blocks
+
+    # TUI
+    - lf          # Terminal file manager (ranger-like)
+
+    # Networking/Internet
+    - ngrok       # Forward your localhost without ip recovery
+
     # Security
-    - opensnitch # Application level firewall, with full traffic monitoring, slower than kernel level iptables, but the advantages are worth it, alternatively there's also portmaster, but it's currently in early development stages, but it may be worth looking into later: `https://github.com/safing/portmaster`
+    - opensnitch  # Application level firewall with traffic monitoring (Alternatively, there's portmaster)
+
+    # WM/Xorg
+    - picom-git   # Git version of picom compositor
 
     # GUI
-    - picom-git # Git version of picom compositor
-    - spotify # Online music player
-    - onlyoffice-bin # Full office suite (MS Office alternative)
-    - code-marketplace # Enable the offical MS vscode marketplace for 'code' (code-oss)
-    - exodus # Software cryptocurrency wallet
-    - notion-app # Online text manipulation tool with databases and very rich interface
-    #- mailspring-libre # Beautiful and fast mail client, without tracking of default mailspring
+    - spotify                 # Online music player
+    - visual-studio-code-bin  # Official vVsual Studio Code text editor for programmers
+    - exodus                  # Software cryptocurrency wallet
+    - qalculate-gtk-nognome   # Calculator with thousands of features, there's also less powerful kde default's kcalc
+    #- mailspring-libre        # Beautiful and fast mail client without tracking
+    #- code-marketplace # Enable the offical MS vscode marketplace for 'code' (code-oss)
+
     # Fonts
     - nerd-fonts-complete
+git:
+    - https://aur.archlinux.org/yay-git.git # Pacman wrapper and AUR helper
+
