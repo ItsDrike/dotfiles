@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BTC_DATA=$(curl https://api.coindesk.com/v1/bpi/currentprice.json 2>/dev/null)
+BTC_PRICE=$(echo $BTC_DATA | jq -r ".bpi.USD.rate_float")
+BTC_PRICE=$(printf "%.2f" "$BTC_PRICE")
+
+echo \$"$BTC_PRICE"
