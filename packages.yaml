@@ -13,6 +13,7 @@ pacman:
     # CLI
     - exa             # Colored LS
     - bat             # Colored cat with tons of cool options
+    - dust            # User readable du to find biggest dirs/files
     - hyperfine       # Command benchmark
     - abduco          # Terminal session manager
     - mlocate         # System indexing and quick file searching
