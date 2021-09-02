@@ -27,7 +27,7 @@ pacman:
     - ncdu      # Find largest folders (size)
     - calcurse  # Terminal calendar with todo
     - bpytop    # Modern system resource monitor
-    - links     # Terminal text-only web browser
+    - w3m       # Terminal text-only web browser
     - newsboat  # Terminal RSS feed reader
 
     # Networking/Internet
