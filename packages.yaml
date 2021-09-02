@@ -28,6 +28,7 @@ pacman:
     - calcurse  # Terminal calendar with todo
     - bpytop    # Modern system resource monitor
     - links     # Terminal text-only web browser
+    - newsboat  # Terminal RSS feed reader
 
     # Networking/Internet
     - httpie          # Obtaining http info from webpages
