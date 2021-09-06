@@ -90,6 +90,10 @@ pacman:
     - network-manager-applet  # NetworkManager trayer icon
     #- code             # Open sourced version of vscode (doesn't support many extensions)
 
+    # Device mounting
+    - udisks2
+    - udiskie
+
     # Fonts
     - libxft
     - ttf-hack

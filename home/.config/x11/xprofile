@@ -6,12 +6,12 @@
 # Set monitor order
 xrandr --output HDMI-1 --auto --output eDP-1 --right-of HDMI-1 --auto &
 
-# Set X11 lockscreen delays (DPMS)
-xset s on &
-xset s 600 5 & # 10 minutes, 5s for dimmer
-
 # XSS lock with xsecurelock
 xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
+
+# Set X11 lockscreen delays (DPMS)
+xset s on &
+xset s 600 10 & # 10 minutes, 5s for dimmer
 
 # Set the background with a custom `setbg` script
 setbg &
@@ -40,6 +40,9 @@ aa-notify -p &
 
 # Enable numlock with numlockx
 numlockx &
+
+# Udiskie for simple mounting and notifications, no automount for security reasons
+udiskie -A -s
 
 # Run emacs daemon
 #emacs --daemon &
