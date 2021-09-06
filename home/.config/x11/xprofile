@@ -42,7 +42,7 @@ aa-notify -p &
 numlockx &
 
 # Udiskie for simple mounting and notifications, no automount for security reasons
-udiskie -A -s
+udiskie -A -s &
 
 # Run emacs daemon
 #emacs --daemon &
