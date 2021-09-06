@@ -25,7 +25,7 @@
     # positive x is measured from the left, negative from right
     # Y is measured from the top and bottom respectively.
     # width can be negative, making it the screen width - width
-    geometry = "300x5-30+30"
+    geometry = "300x0-30+30"
 
     # Show how many messages are currently hidden (because of geometry)
     indicate_hidden = yes
@@ -153,7 +153,7 @@
     max_icon_size = 32
 
     # Paths to default icons
-    icon_path = /usr/share/icons/hicolor/16x16/status/:/usr/share/icons/hicolor/16x16/devices/:/usr/share/icons/hicolor/16x16/apps/:/usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/:/usr/share/icons/Adwaita/16x16/apps/
+    icon_path = /usr/share/icons/hicolor/16x16/status/:/usr/share/icons/hicolor/16x16/devices/:/usr/share/icons/hicolor/16x16/apps/
 
     ### History ###
 
@@ -218,7 +218,7 @@
     # Close all notifications.
     close_all = ctrl+shift+space
     # Redisplay last message(s)
-    history = ctrl+grave
+    history = ctrl+shift+grave
     # Context menu
     context = ctrl+shift+period
 
@@ -226,7 +226,7 @@
     background = "#35383b"
     foreground = "#fcf7e2"
     frame_color = "#27292c"
-    timeout = 3
+    timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
     #icon = /path/to/icon
 
