@@ -93,7 +93,7 @@ pacman:
     # Device mounting
     - udisks2       # Allows users to mount devices without root
     - udiskie       # Auto-mounter using udisks2
-    - gvfm          # Allows using sftp:// in file managers like PcManFM
+    - gvfs          # Allows using sftp:// in file managers like PcManFM
 
     # Fonts
     - libxft
