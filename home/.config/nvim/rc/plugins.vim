@@ -14,16 +14,13 @@ endif
 call plug#begin(config_dir."/plugged")
 
 " Code completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Themes
 Plug 'tomasiser/vim-code-dark'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
-" Python
-Plug 'neomake/neomake'
-Plug 'zchee/deoplete-jedi'
 " Misc
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'vimwiki/vimwiki'
@@ -40,4 +37,5 @@ let plugins_rc_dir = rc_dir."/plugins.d"
 execute "source ".plugins_rc_dir."/airline.vim"
 execute "source ".plugins_rc_dir."/nerdtree.vim"
 execute "source ".plugins_rc_dir."/vimwiki.vim"
-execute "source ".plugins_rc_dir."/python.vim"
+execute "source ".plugins_rc_dir."/coc.vim"
+"execute "source ".plugins_rc_dir."/python.vim"
