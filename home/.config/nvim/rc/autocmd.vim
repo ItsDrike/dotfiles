@@ -13,3 +13,5 @@ autocmd BufWritePre * %s/\s\+$//e
 " Enable spellcheck for certain file types
 autocmd FileType tex,latex,markdown,gitcommit setlocal spell spelllang=en_us
 
+" Use automatic text wrapping at 119 characters for certain file types
+autocmd FileType markdown setlocal textwidth=119
