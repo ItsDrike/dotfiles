@@ -34,6 +34,7 @@ pacman:
     - httpie          # Obtaining http info from webpages
     - dnsutils        # Tools for managing DNS
     - net-tools       # Configuration tools for linux networking
+    #- sshuttle        # Transparent proxy server that forwards all TCP packets over SSH
 
     # Media
     - imagemagick       # Terminal image manipulation
