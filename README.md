@@ -1,7 +1,6 @@
 # Dotfiles
 
-These are my personal dotfiles. This also include an automated installer for certain packages (Arch Linux specific) and for putting the dotfiles in place.
-Source code for this automated script is in `src` directory, and the dotfiles are located in `home` and `root` directories respectively.
+These are my personal dotfiles. They're split into `home/` and `root/` folders where the home folder holds all files that should be put directly into your `$HOME` directory, while all of the files in the root folder can be put directly into `/`
 
 You are highly adviced to first go through these dotfiles yourself and adjust them to your liking.
 
@@ -31,7 +30,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - XDG paths configuration to avoid too much cluttering in home directory
   - Colorful man pages using LESS_TERMCAP, or if `bat` is installed, using it as MANPAGER
 - [Automatic handlers](home/.config/shell/handlers) which override default command not found behavior to show the package to which given command belongs (requires pkgfile on Arch Linux)
-- Automated package installation for Arch Linux, which includes many handy packages. You should certainly take a look at which packages will be installed and adjust [`packages.yaml`](packages.yaml) before you run it.
+- List of useful packages that I often install on most of my systems. (These are the package names for arch linux, but you should be able to find these for any distro, perhaps with a bit different name) located in [`packages.yaml`](packages.yaml)
 - [Opensnitch firewall rules](root/etc/opensnitchd/rules), which block most unauthorized traffic and only allow needed things. This also blocks spotify ads.
 - Automatic logout for TTY sessions or for root logins after 10 minutes of inactivity
 - NetworkManager configuration which assigns new mac for each network
