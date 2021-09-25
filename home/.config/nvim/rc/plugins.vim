@@ -4,10 +4,10 @@
 
 " Install plugins automatically
 if ! filereadable(config_dir."/autoload/plug.vim")
-	echo "Downloading junegunn/vim-plug to manage plugins..."
+    echo "Downloading junegunn/vim-plug to manage plugins..."
     let x = system('mkdir -p '.config_dir.'/autoload')
     let x = system('curl https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim > '.config_dir.'/autoload/plug.vim')
-	autocmd VimEnter * PlugInstall
+    autocmd VimEnter * PlugInstall
 endif
 
 " Plug.vim plugin list
@@ -21,13 +21,14 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Misc
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'vimwiki/vimwiki'
 Plug 'wakatime/vim-wakatime'
 Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
 
