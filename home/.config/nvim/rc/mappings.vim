@@ -14,6 +14,10 @@ vnoremap <C-v> "+p
 " Start spell-check
 map <leader>s :setlocal spell! spelllang=en_us<CR>
 
+" Use space for folding/unfolding sections
+nnoremap <space> za
+vnoremap <space> zf
+
 " Use shift to move 10 lines up/down quickly
 noremap <silent> K 10k
 noremap <silent> J 10j
@@ -58,3 +62,4 @@ nnoremap <A-c> :w \| !comp <c-r>%<CR>
 
 " Shell check
 nnoremap <leader>p :!shellcheck %<CR>
+

@@ -17,6 +17,13 @@ set path+=**                    " Search down into subfolders with tab completio
 set wildmode=longest,list,full	" Enable autocompletion
 set wildmenu                    " Display all matching files when we tab complete
 
+" Folding
+set foldmethod=indent           " Use indent to determine the fold levels
+set foldnestmax=8               " Only fold up to given amount of levels
+set foldlevel=2                 " Set initial fold level
+set nofoldenable                " Hide all folds by default
+
+
 " Misc
 set autoindent					" Enable autoindent
 set autoread					" Reload files on change
