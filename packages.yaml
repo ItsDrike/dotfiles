@@ -109,6 +109,12 @@ pacman:
     - cups          # Daemon for printing
     - hplip         # Tool to set-up HP printers
     - xsane         # Scanning
+
+    # Bluetooth
+    - bluez                 # Daemon for bluetooth protocol
+    - bluz-utils            # CLI utility for managing bluetooth connections
+    - blueman               # Graphical utility for managing bluetooth connections
+    - pulseaudio-bluetooth  # Bluetooth speaker/headphone support for PulseAudio
 aur:
     # System
     - mkinitcpio-numlock  # Enable numlock in initramfs (before asking for encryption key)
