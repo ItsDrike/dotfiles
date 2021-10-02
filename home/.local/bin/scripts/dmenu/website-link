@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+import feedparser
+import subprocess
+
+
+URL = "https://itsdrike.com/posts/index.xml"
+
+
+def main():
+    feed = feedparser.parse(URL)
+    titles = {entry['title']: entry['link'] for entry in feed['entries']}
+
+    selected_page = subprocess.check_output(
+        ["dmenu", "-i", "-p", "Post"],
+        input="\n".join(titles.keys()), universal_newlines=True
+    )
+    link = titles[selected_page.strip()]
+
+    subprocess.check_output(["xsel", "-bi"], input=link, universal_newlines=True)
+
+
+if __name__ == '__main__':
+    main()
