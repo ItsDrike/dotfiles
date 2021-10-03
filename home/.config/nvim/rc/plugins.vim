@@ -13,22 +13,22 @@ endif
 " Plug.vim plugin list
 call plug#begin(config_dir."/plugged")
 
-" Code completion
+" Code helpers
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'preservim/nerdcommenter'
+Plug 'tmhedberg/SimpylFold'
 " Themes
 Plug 'tomasiser/vim-code-dark'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
-Plug 'airblade/vim-gitgutter'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Misc
-Plug 'dhruvasagar/vim-table-mode'
 Plug 'vimwiki/vimwiki'
 Plug 'wakatime/vim-wakatime'
-Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
-Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
 
