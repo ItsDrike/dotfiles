@@ -35,6 +35,7 @@ export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
 export GOPATH="$XDG_DATA_HOME/go"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export ABDUCO_SOCKET_DIR="$XDG_RUNTIME_DIR"
 export NERDTREE_BOOKMARKS="$XDG_CONFIG_HOME/NERDTreeBookmarks"
 #export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 #export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
@@ -60,5 +61,6 @@ export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
 export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
 export XSECURELOCK_SHOW_HOSTNAME=0 # Don't show hostname in xsecurelock
 export XSECURELOCK_SHOW_DATETIME=1 # Show current date and time in xsecurelock
+export QT_QPA_PLATFORMTHEME=qt5ct # Have QT use the theme from qt5ct
 #export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
 
