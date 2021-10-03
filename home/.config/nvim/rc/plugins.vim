@@ -29,6 +29,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'vimwiki/vimwiki'
 Plug 'wakatime/vim-wakatime'
 Plug 'preservim/nerdtree'
+Plug 'mhinz/vim-startify'
 
 call plug#end()
 
