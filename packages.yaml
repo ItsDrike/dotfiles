@@ -60,6 +60,7 @@ pacman:
     - xmonad              # Window Manager written in haskell
     - xmonad-contrib      # Additional tools for xmonad
     - xmobar              # Panel built for xmonad
+    - xdotool             # X11 automation tool
     - trayer              # System tray standalone panel
     - xsel                # X11 clipboard manager (alternatively there's xclip)
     - xsecurelock         # Secure lockscreen
@@ -141,6 +142,9 @@ aur:
     - qalculate-gtk-nognome   # Calculator with thousands of features, there's also less powerful kde default's kcalc
     #- mailspring-libre        # Beautiful and fast mail client without tracking
     #- code-marketplace # Enable the offical MS vscode marketplace for 'code' (code-oss)
+
+    # Misc
+    #- scrcpy                  # A way of seeing and controlling phone through a pc
 
     # Fonts
     - nerd-fonts-complete
