@@ -4,8 +4,8 @@ nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 nnoremap <Up> <nop>
 
-" Stop search highlight on Ctrl+l (until next search)
-map <silent> <C-l> :noh<CR>
+" Stop search highlight with Esc in normal mode (until next search)
+nnoremap <silent> <esc> :noh<CR>
 
 " System clipboard interactions
 map <C-c> "+y
@@ -62,4 +62,11 @@ nnoremap <A-c> :w \| !comp <c-r>%<CR>
 
 " Shell check
 nnoremap <leader>p :!shellcheck %<CR>
+
+" Redefine the incredibely annoying mappings that trigger
+" dynamic SQL completion with dbext and keeps on freezing
+" vim whenever pressed with a message saying that
+" dbext plugin isn't installed...
+" See :h ft-sql.txt
+let g:omni_sql_no_default_maps = 1
 
