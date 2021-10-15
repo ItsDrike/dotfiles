@@ -105,7 +105,8 @@ myKeys =
     , ("M-S-q", io exitSuccess)                                 -- Quits xmonad
 
     -- Lock screen
-    , ("C-M-l", spawn "xset s activate") -- Send DPMS trigger for lockscreen
+    , ("C-M-l", spawn "xsecurelock") -- XSecureLock lockscreen
+    --, ("C-M-l", spawn "xset s activate") -- Send DPMS trigger for lockscreen
 
     -- Programs
     , ("M-b",           spawn (myBrowser))
