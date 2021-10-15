@@ -317,9 +317,11 @@ myManageHook = composeAll
     , className =? "splash"             --> doFloat
     , className =? "toolbar"            --> doFloat
     , className =? "Qalculate-gtk"      --> doFloat
+    , className =? "udiskie"            --> doFloat
     , isFullscreen                      --> doFullFloat
     -- auto-shift applications to their respecitve workspaces
     , className =? "discord"            --> doShift ( myWorkspaces !! 3 )
+    , className =? "Element"            --> doShift ( myWorkspaces !! 3 )
     , className =? "Code"               --> doShift ( myWorkspaces !! 0 )
     , className =? "Stremio"		--> doShift ( myWorkspaces !! 5 )
     , title     =? "Mozilla Firefox"    --> doShift ( myWorkspaces !! 1 )
