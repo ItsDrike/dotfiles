@@ -82,7 +82,7 @@ myFocusedBorderColor :: String
 myFocusedBorderColor = "#bc96da"
 
 -- Default workspaces. Number of workspaces is determined by the list length.
-myWorkspaces = ["dev", "www", "sys", "chat", "mus", "vid", "doc", "virt", "etc"]
+myWorkspaces = [" dev ", " www ", " sys ", " chat ", " mus ", " vid ", " doc ", " virt ", " etc "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
 -- Make the workspaces clickable
@@ -347,15 +347,18 @@ myLogHook :: Handle -> Handle -> X ()
 myLogHook xmproc0 xmproc1 = dynamicLogWithPP $ xmobarPP
     { ppOutput = \x -> hPutStrLn xmproc0 x      -- xmobar on monitor 1
                     >> hPutStrLn xmproc1 x      -- xmobar on monitor 2
-    , ppCurrent = xmobarColor "#98be65" "" . wrap " [" "] "               -- Current workspace
-    , ppVisible = xmobarColor "#98be65" "" . wrap " " " " . clickable     -- Visible but not current workspace
-    , ppHidden  = xmobarColor "#82AAFF" "" . wrap " *" " " . clickable    -- Hidden workspaces
-    , ppHiddenNoWindows = xmobarColor "#c792ea" "" . wrap " " " " . clickable -- Hidden workspaces (no windows)
-    , ppTitle  = xmobarColor "#b3afc2" "" . shorten 60                    -- Title of active window
-    , ppSep    = "<fc=#666666> | </fc>"                                   -- Separator character
-    , ppUrgent = xmobarColor "#C45500" "" . wrap " !" "! "                -- Urgent workspace
-    , ppExtras = [windowCount]                                            -- # of windows current workspace
-    , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                          -- order of things in xmobar
+
+    , ppCurrent = xmobarColor "#98be65" ""                      -- Current workspace
+        . wrap "<box type=Bottom width=2 mb=2 color=#98be65>" "</box>" . clickable
+    , ppVisible = xmobarColor "#98be65" "" .clickable           -- Visible but not current workspace
+    , ppHidden  = xmobarColor "#82aaff" "" . clickable          -- Hidden workspaces
+    , ppHiddenNoWindows = xmobarColor "#c792ea" "" . clickable  -- Hidden workspaces (no windows)
+
+    , ppTitle  = xmobarColor "#b3afc2" "" . shorten 60          -- Title of active window
+    , ppSep    = "<fc=#666666> | </fc>"                         -- Separator character
+    , ppUrgent = xmobarColor "#c45500" "" . wrap "!" "!"      -- Urgent workspace
+    , ppExtras = [windowCount]                                  -- # of windows current workspace
+    , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                -- order of things in xmobar
     }
 
 
