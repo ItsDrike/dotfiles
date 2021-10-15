@@ -141,12 +141,13 @@ myKeys =
     , ("M-.", nextScreen)   -- Switch focus to next monitor
     , ("M-,", prevScreen)   -- Switch focus to prev monitor
     , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-    , ("M-S-<KP-Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
     -- Floating windows
-    , ("M-f",   sendMessage (T.Toggle "floats"))    -- Toggles 'floats' layout
+    , ("M-f",   withFocused $ float)                -- Make window float
     , ("M-t",   withFocused $ windows . W.sink)     -- Push floating window back to tile
     , ("M-S-t", sinkAll)                            -- Push all floating windows to tile
+    , ("M-S-f", sendMessage (T.Toggle "floats"))    -- Toggles 'floats' layout
 
     -- Increase/decrease spacing (gaps)
     , ("C-M1-j", decWindowSpacing 4)    -- Decrease window spacing
