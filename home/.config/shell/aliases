@@ -117,7 +117,7 @@ alias grep_mac='grep -E `reg_mac`'
 alias massgrep='grep -RHIni'
 
 # Network
-alias ip-show='curl https://api.ipify.org' # Get global IP address
+alias ip-show='curl https://ifconfig.co' # Get global IP address
 alias ips="ifconfig -a | grep -oE \"inet6? (addr:)?s?\`reg_ip\`\" | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 alias lan-device-scan='nmap -T5 -sP 192.168.0.0-255'
 alias lan-vuln-scan='nmap -sT -O --script vuln 192.168.0.0-255'
