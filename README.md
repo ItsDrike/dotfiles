@@ -20,7 +20,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - oh-my-zsh configuration is also supported, but it is off by default, adjust [`.zshrc`](home/.config/zsh/.zshrc) to enable it
   - Even though enabling it is an option, it is not a necessary thing to do, oh-my-zsh has a lot of code that is mostly irrelevant and unused, these dotfiles give you the ability to completely avoid it, if you desire to do so
 - Custom [prompt](home/.config/shell/theme), both for oh-my-zsh configuration or for standalone usage
-- Custom [VIM configuration](home/.config/nvim) 
+- Custom [VIM configuration](home/.config/nvim)
   - When you open nvim for the first time, it will automatically try to install addons using VimPlug
   - It is complatible with TTY usage, in which case the color support is downgraded and use of special fonts is disabled.
   - There isn't a single huge configuration file, but rather multiple config files that are being sourced by the main init.vim, this is done to avoid clutter with comments in the main file and it also provides a very easy way to disable parts of configuration, by simply not sourcing that file.
@@ -42,7 +42,7 @@ You are highly adviced to first go through these dotfiles yourself and adjust th
   - [`brightness`](home/.local/bin/scripts/brightness): Script to quickly change screen brightness, you may need to adjust the BRIGHTNESS_FILE, this can be different from machine to machine
   - [`setbg`](home/.local/bin/scripts/setbg): Quick way to set desktop background to specific image, or random image, or previously used image
   - Many smaller dmenu scripts to make life easier
- 
+
 
 ## Requirements
 
@@ -57,3 +57,18 @@ If you don't want to install git (running straight from newly installed os), you
 `$ curl -LJO https://github.com/ItsDrike/dotfiles/tarball/master` <br>
 And extract from `.tar.gz` archive:
 `$ tar xvf [archive name]`
+
+## Attribution
+
+The open-source community has an incredible amount of resources that people have offered to others free of charge and
+we all depend on many of these sources. This project is no different and there were many open-source projects that were
+utilized in some parts of this project. For that reason, I'd like tho thank all of these projects and their
+contributors for keeping their content open and available to everyone. This is the list of projects that helped me
+build this repository to the stage it's in now. Many of the aliases, config files and other resources aren't my
+original creations, but rather just small improvements and adjustments to get everything set in the way I like. Below
+is the list of all projects which helped the existence of this repository:
+- [Lukesmith's dotfiles/voidrice](https://github.com/LukeSmithxyz/voidrice)
+- [BrodieRobertson's dotfiles](https://github.com/BrodieRobertson/dotfiles)
+- [BrodieRobertson's scripts](https://github.com/BrodieRobertson/scripts)
+- [Derek Taylor's dotfiles](https://gitlab.com/dwt1/dotfiles)
+
