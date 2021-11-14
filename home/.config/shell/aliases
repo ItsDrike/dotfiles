@@ -8,6 +8,14 @@ alias souce='source'
 alias suod='sudo '
 alias sduo='sudo '
 
+# Replacements (adding flags)
+alias cp='cp -iv' # Ask before overwriting, verbose
+alias mv='mv -iv' # Ask before overwriting, verbose
+alias rm='trash-put' # Use trash-cli instead of true removal
+alias rmr='\rm -v' # True rm, verbose (asking here is too annoying)
+alias wget='wget -c' # Resume wget by default
+alias df='df -H' # Show sizes as powers of 1000
+
 # Directory changing
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -17,28 +25,15 @@ alias .2='cd ../../'
 alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
-# z.lua script
-alias j='z'             # for the sake of autojump old habits
-alias zz='z -c'         # restrict matches to subdirs of $PWD
-alias zb='z -b'         # restrict matches to parent directories
-alias zi='z -I'         # cd with interactive fzf selection
-alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Files/Directories utilities
 alias mkdir='mkdir -p'
 alias md='mkdir'
 alias fhere='find . -name'
-alias rr='rm -r'
-alias rf='rm -f'
-alias rrf='rm -rf'
+alias rr='rmr -r'
+alias rf='rmr -f'
+alias rrf='rmr -rf'
 alias vimdiff='nvim -d'
-
-# Replacements (adding flags)
-alias cp='cp -iv' # Ask before overwriting, verbose
-alias mv='mv -iv' # Ask before overwriting, verbose
-alias rm='rm -v'  # Verbose (asking here is too annoying)
-alias wget='wget -c' # Resume wget by default
-alias df='df -H' # Show sizes as powers of 1000
 
 # Directory listing aliases, defaults to exa, if aviable
 if command -v exa > /dev/null; then
@@ -74,6 +69,13 @@ alias cfxprofile='vim ~/.config/x11/xprofile'
 alias cfxmonad='vim ~/.config/xmonad/xmonad.hs && xmonad --recompile && xmonad --restart'
 alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
 alias cftodo='vim ~/Personal/vimwiki/todo.md'
+
+# z.lua shortcuts
+alias j='z'             # for the sake of autojump old habits
+alias zz='z -c'         # restrict matches to subdirs of $PWD
+alias zb='z -b'         # restrict matches to parent directories
+alias zi='z -I'         # cd with interactive fzf selection
+alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Python
 alias py3='python3'
