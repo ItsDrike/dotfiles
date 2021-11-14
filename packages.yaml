@@ -134,6 +134,7 @@ aur:
 
     # WM/Xorg
     - picom-git   # Git version of picom compositor
+    - devour      # WM agnostic window swallowing for terminals
 
     # GUI
     - spotify                 # Online music player

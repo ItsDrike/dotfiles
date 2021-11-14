@@ -12,7 +12,7 @@ set scrolloff 5
 cmd open ${{
     case $(file --mime-type "$f" -bL) in
         text/*|application/json) $EDITOR "$f";;
-        *) xdg-open "$f" ;;
+        *) devour xdg-open "$f" ;;
     esac
 }}
 

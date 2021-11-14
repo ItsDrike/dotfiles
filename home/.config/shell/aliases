@@ -103,6 +103,13 @@ alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.p
 alias encrypt='gpg -c --no-symkey-cache --cipher-algo AES256' # Encrypt file with AES256 symetric encryption
 alias decrypt='gpg' # For the sake of completeness, include decrypt command to the above, though it's only just gpg alias
 
+# Terminal window swallowing for blocking programs (devour)
+alias xdg-open='devour xdg-open'
+alias mpv='devour mpv'
+alias nomacs='devour nomacs'
+alias pcmanfm='devour pcmanfm'
+alias spotify='devour spotify'
+
 # Regular expressions
 alias reg_email='echo "[a-Z0-9._%-]+@[a-Z0-9.-]+\.[a-Z]{2,10}"'
 alias reg_mac='echo "([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}"'
