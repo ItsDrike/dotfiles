@@ -73,7 +73,7 @@ alias cfkeybinds='vim ~/.config/shell/keybinds'
 alias cfxprofile='vim ~/.config/x11/xprofile'
 alias cfxmonad='vim ~/.config/xmonad/xmonad.hs && xmonad --recompile && xmonad --restart'
 alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
-alias cftodo='vim ~/Personal/todo'
+alias cftodo='vim ~/Personal/vimwiki/todo.md'
 
 # Python
 alias py3='python3'
