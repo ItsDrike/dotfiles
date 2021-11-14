@@ -220,6 +220,12 @@ alias yta-best='youtube-dl --extract-audio --audio-format best'
 alias yta-mp3='youtube-dl --extract-audio --audio-format mp3'
 alias yta-wav='youtube-dl --extract-audio --audio-format wav'
 
+# Terminal vim-like exits, in case I think the terminal is vim
+alias :q='exit'
+alias :q!='exit'
+alias :wq='exit'
+alias :wq!='exit'
+
 # Shell aliases
 alias reload="exec \$SHELL" # Reload the shell (i.e. invoke as a login shell)
 alias path='echo -e ${PATH//:/\\n}' # Print each PATH entry on a separate line
