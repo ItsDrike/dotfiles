@@ -104,10 +104,6 @@ myKeys =
     [ ("M-S-r", spawn "xmonad --recompile; xmonad --restart")   -- Recompiles xmonad
     , ("M-S-q", io exitSuccess)                                 -- Quits xmonad
 
-    -- Lock screen
-    , ("C-M-l", spawn "xsecurelock") -- XSecureLock lockscreen
-    --, ("C-M-l", spawn "xset s activate") -- Send DPMS trigger for lockscreen
-
     -- Programs
     , ("M-b",           spawn (myBrowser))
     , ("M-<Return>",    spawn (myTerminal))
@@ -128,7 +124,9 @@ myKeys =
 
     -- Script shortcuts
     , ("M-S-p",         spawn "setbg ~/Pictures/Wallpapers/Active")  -- Set random background
-    , ("M-S-d",         spawn "displayselect")
+    , ("M-S-d",         spawn "displayselect")      -- Set display configurations
+    , ("M-C-l",         spawn "lockscreen lock")    -- Lock the screen
+    , ("M-C-S-l",       spawn "lockscreen toggle")  -- Toggle automatic locking
 
     -- Kill windows
     , ("M-w", kill1)        -- Kill the currently focused client
