@@ -10,6 +10,9 @@ pacman:
     - cronie            # Run programs at specified time
     - zsh               # Modern system shell
 
+    # System
+    #- kexec-tools       # Kexec allows directly booting into a new kernel
+
     # CLI
     - exa             # Colored LS
     - bat             # Colored cat with tons of cool options
