@@ -35,6 +35,7 @@ pacman:
     - dnsutils        # Tools for managing DNS
     - net-tools       # Configuration tools for linux networking
     #- sshuttle        # Transparent proxy server that forwards all TCP packets over SSH
+    #- vnstat          # Tool for monitoring network traffic (speed and total data transfered)
 
     # Media
     - imagemagick       # Terminal image manipulation
