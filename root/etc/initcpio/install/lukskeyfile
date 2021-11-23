@@ -1,0 +1,27 @@
+#!/bin/bash
+
+build() {
+    add_dir "/mnt"
+    add_module loop
+    add_module dm-crypt
+    add_runscript
+}
+
+help() {
+    cat <<EOF
+Open root partition with LUKS root key present on internal
+or external accessible non-encrypted partition.
+To use this hook, specify lukskeyfile in kernel parameters.
+This hook is designed to copy over the specified key file into
+initramfs internal path designated as cryptkey by encrypt hook.
+
+lukskeyfile=rootKeyDev:rootKey[:cryptkeyLoc]
+
+rootKeyDev = /path/to/rootKeyDev, UUID=uuid-of-rootKeyDev
+rootKey = /path/to/rootKey in rootKeyDev
+cryptkeyLoc = /path/to/cryptkey in initramfs.
+
+Default values
+cryptkeyLoc=/crypto_keyfile.bin
+EOF
+}
