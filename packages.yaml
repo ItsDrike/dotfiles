@@ -61,6 +61,7 @@ pacman:
     - xorg-server         # Xorg server implementation
     - xorg-xinit          # Simple way to start X
     - xorg-xrandr         # Manage multiple monitors in X
+    - xorg-xsetroot       # Customize appearance of X root
     - xmonad              # Window Manager written in haskell
     - xmonad-contrib      # Additional tools for xmonad
     - xmobar              # Panel built for xmonad
