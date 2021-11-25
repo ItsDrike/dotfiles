@@ -43,3 +43,6 @@ udiskie -A -s &
 # Enable running applications from chroot
 xhost +local:
 
+# Change x shaped default cursor (fonts are located in /usr/include/X11/cursorfont.h)
+xsetroot -cursor_name left_ptr
+
