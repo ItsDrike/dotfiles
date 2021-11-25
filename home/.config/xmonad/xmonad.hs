@@ -64,6 +64,8 @@ myModMask = mod4Mask
 -- Preferred programs
 myTerminal = "alacritty"
 myBrowser = "firefox"
+myFileManager = "pcmanfm"
+myCliFileManager = "lf"
 
 -- Preferred font
 myFont :: String
@@ -105,8 +107,10 @@ myKeys =
     , ("M-S-q", io exitSuccess)                                 -- Quits xmonad
 
     -- Programs
-    , ("M-b",           spawn (myBrowser))
     , ("M-<Return>",    spawn (myTerminal))
+    , ("M-b",           spawn (myBrowser))
+    , ("M-v",           spawn (myFileManager))
+    , ("M-M1-v",        spawn (myTerminal ++ " -e " ++ myCliFileManager))
     , ("M-M1-h",        spawn (myTerminal ++ " -e htop"))
     , ("M-M1-b",        spawn (myTerminal ++ " -e bpytop"))
     , ("M-M1-p",        spawn (myTerminal ++ " -e ipython"))
