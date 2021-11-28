@@ -138,8 +138,9 @@ aur:
     - opensnitch  # Application level firewall with traffic monitoring (Alternatively, there's portmaster)
 
     # WM/Xorg
-    - picom-git   # Git version of picom compositor
-    - devour      # WM agnostic window swallowing for terminals
+    - picom-git                   # Git version of picom compositor
+    - devour                      # WM agnostic window swallowing for terminals
+    - xcursor-simp1e-breeze-snow  # Breeze cursor theme
 
     # GUI
     - spotify                 # Online music player
