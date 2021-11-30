@@ -1,7 +1,18 @@
+" Converting these settings into lua isn't easy since we utilize
+" <SID> which needs to be in a vim script context, making it impossible
+" to replicate with simple vim.cmd call. It also contains a lot of function
+" definitions taken from the coc github page without provided lua alternatives
+" this makes it quite complicated to replicate this in pure lua,
+" however if anyone knows how to completely reproduce everything here in lua,
+" this is open to pull requests
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 let g:coc_global_extensions = [
-    \ 'coc-python', 'coc-json', 'coc-git', 'coc-html', 'coc-css',
+    \ 'coc-pyright', 'coc-json', 'coc-git', 'coc-html', 'coc-css',
     \ 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-sh', 'coc-toml',
-    \ 'coc-yaml', 'coc-omnisharp', 'coc-markdownlint', 'coc-pairs'
+    \ 'coc-yaml', 'coc-omnisharp', 'coc-markdownlint', 'coc-pairs',
+    \ 'coc-lua'
     \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -46,7 +57,7 @@ function! s:show_documentation()
 endfunction
 
 " Remap for rename current word
-nmap <rn> <Plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
