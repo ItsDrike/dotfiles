@@ -95,7 +95,6 @@ pacman:
     - krita             # Image editor (gimp alternative)
     - discord           # Popular chat app
     - network-manager-applet  # NetworkManager trayer icon
-    #- code             # Open sourced version of vscode (doesn't support many extensions)
 
     # Device mounting
     - udisks2       # Allows users to mount devices without root
@@ -121,6 +120,11 @@ pacman:
     - bluz-utils            # CLI utility for managing bluetooth connections
     - blueman               # Graphical utility for managing bluetooth connections
     - pulseaudio-bluetooth  # Bluetooth speaker/headphone support for PulseAudio
+
+    # Development
+    - git-delta         # Neat tool for showing git diffs and resolving merges
+    #- code              # Open sourced version of vscode (doesn't have good extensions support)
+
 aur:
     # System
     - mkinitcpio-numlock  # Enable numlock in initramfs (before asking for encryption key)
@@ -144,17 +148,19 @@ aur:
 
     # GUI
     - spotify                 # Online music player
-    - visual-studio-code-bin  # Official vVsual Studio Code text editor for programmers
     - exodus                  # Software cryptocurrency wallet
     - qalculate-gtk-nognome   # Calculator with thousands of features, there's also less powerful kde default's kcalc
     #- mailspring-libre        # Beautiful and fast mail client without tracking
-    #- code-marketplace # Enable the offical MS vscode marketplace for 'code' (code-oss)
 
     # Misc
     #- scrcpy                  # A way of seeing and controlling phone through a pc
 
     # Fonts
     - nerd-fonts-complete
+
+    # Development
+    - visual-studio-code-bin  # Official vVsual Studio Code text editor for programmers
+    #- code-marketplace        # Enable the offical MS vscode marketplace for 'code' (code-oss)
 git:
     - https://aur.archlinux.org/yay-git.git # Pacman wrapper and AUR helper
 
