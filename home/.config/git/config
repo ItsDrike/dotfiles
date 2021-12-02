@@ -3,6 +3,8 @@
     email = itsdrike@protonmail.com
     signingkey = FB8CA11A2CF3A843
 [alias]
+    quickclone = "clone --single-branch --depth=1"
+
     m = "merge"
     p = "push"
     pl = "pull"
