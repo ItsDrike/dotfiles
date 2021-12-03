@@ -156,6 +156,7 @@ alias sv='systemctl'
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
 alias upload='curl -F "f:1=<-" ix.io'
 alias upload-journal='sudo journalctl -b -1 | upload' # Upload journalctl from last boot to ix.io
+alias auth-log='journalctl SYSLOG_FACILITY=10 -r'
 alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done' # Run `yes > /dev/null` on all cores as stress test
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
 alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
