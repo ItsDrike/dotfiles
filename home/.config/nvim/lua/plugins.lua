@@ -16,6 +16,7 @@ if fn.empty(fn.glob(plug_install_path)) > 0 then
     fn.system({"mkdir", "-p", autoload_dir})
     fn.system("curl " .. plug_download_url .. " > " .. plug_install_path)
     cmd[[autocmd VimEnter * PlugInstall]]
+    cmd[[autocmd VimEnter * UpdateRemotePlugins]]
 end
 
 -- Load an arbitrary .vim or .lua file
