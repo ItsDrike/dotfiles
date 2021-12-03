@@ -62,6 +62,7 @@ nmap("<C-Down>", ":resize -3<CR>")
 
 -- Define some common shortcuts
 nmap("<C-s>", ":w<CR>")
+imap("<C-s>", "<Esc>:w<CR>i")
 nmap("<C-z>", ":undo<CR>")
 nmap("<C-y>", ":redo<CR>")
 
