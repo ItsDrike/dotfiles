@@ -56,7 +56,7 @@
     helper = store --file ~/.config/git/git-credentials
 [core]
     excludefile = ~/.config/git/global_gitignore
-    editor = vim
+    editor = nvim
     pager = delta
 [interactive]
     diffFilter = delta --color-only
