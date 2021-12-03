@@ -38,6 +38,7 @@ local function load_plugin(plugin)
     cmd("Plug '" .. plugin .. "'")
 end
 
+
 -- Begin Plug.vim loading process
 cmd("call plug#begin('" .. plugvim_plugins_dir .. "')")
 
