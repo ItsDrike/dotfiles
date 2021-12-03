@@ -29,6 +29,10 @@ function tmap(shortcut, command, options)
     keymap("t", shortcut, command, options)
 end
 
+function xmap(shortcut, command, options)
+    keymap("x", shortcut, command, options)
+end
+
 -- Unmap arrow keys in normal mode to remove bad habits
 nmap("<Down>", "<nop>")
 nmap("<Left>", "<nop>")
@@ -109,4 +113,3 @@ nmap("<leader>Q", ":bufdo bdelete<CR>")
 -- a message saying that dbext plugin isn't installed
 -- See :h ft-sql.txt
 vim.g.omni_sql_no_default_maps = 1
-
