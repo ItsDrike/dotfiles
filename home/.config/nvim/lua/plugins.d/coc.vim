@@ -7,6 +7,7 @@
 " this is open to pull requests
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf'
 
 let g:coc_global_extensions = [
     \ 'coc-pyright', 'coc-json', 'coc-git', 'coc-html', 'coc-css',
@@ -14,6 +15,8 @@ let g:coc_global_extensions = [
     \ 'coc-yaml', 'coc-omnisharp', 'coc-markdownlint', 'coc-pairs',
     \ 'coc-lua'
     \ ]
+
+nmap <leader>l :CocFzfList<cr>
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -63,7 +66,7 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-augroup mygroup
+augroup CocGroup
     autocmd!
     " Setup formatexpr specified filetype(s).
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
