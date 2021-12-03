@@ -62,7 +62,7 @@ nmap("<C-z>", ":undo<CR>")
 nmap("<C-y>", ":redo<CR>")
 
 -- Terminal
-nmap("<C-t>", ":split term://zsh<CR>i")
+nmap("<C-t>", ":split term://zsh<CR>:resize -7<CR>i")
 nmap("<C-A-t>", ":vnew term://zsh<CR>i")
 nmap("<A-T>", ":tabnew term://zsh<CR>i")
 tmap("<Esc>", "<C-\\><C-n>")
