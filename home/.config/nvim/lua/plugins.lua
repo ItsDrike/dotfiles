@@ -18,13 +18,18 @@ if fn.empty(fn.glob(plug_install_path)) > 0 then
     cmd[[autocmd VimEnter * PlugInstall]]
 end
 
--- Load a .vim or .lua file containing Plug call(s) and plugin settings
-local function load_plugin_file(plugin_file)
-    local extension = plugin_file:match("^.+(%..+)$")
-    local plugin_path = plugin_files_dir .. "/" .. plugin_file
+-- Load an arbitrary .vim or .lua file
+local function load_file(file_path)
+    local extension = file_path:match("^.+(%..+)$")
     local run_cmd
     if (extension == ".vim") then run_cmd = "source" else run_cmd = "luafile" end
-    fn.execute(run_cmd .. " " .. plugin_path)
+    fn.execute(run_cmd .. " " .. file_path)
+end
+
+-- Load a file containing Plug call(s) and plugin settings
+local function load_plugin_file(plugin_file)
+    local plugin_path = plugin_files_dir .. "/" .. plugin_file
+    load_file(plugin_path)
 end
 
 -- Load a single given plugin using a Plug call
