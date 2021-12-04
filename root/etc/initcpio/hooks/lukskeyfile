@@ -1,8 +1,8 @@
 #!/bin/ash
 
 run_hook() {
+    # This is a needed kernel parameter for this hook
     if [ -n "$lukskeyfile" ]; then
-        # This is a needed kernel parameter for this hook
         modprobe -a -q loop dm-crypt >/dev/null 2>&1
         # Refer to help from `mkinitcpio -H lukskeyfile`.
         IFS=: read rootKeyDev rootKey cryptkeyLoc <<EOF
@@ -13,8 +13,33 @@ EOF
             cryptkeyLoc=/crypto_keyfile.bin
         fi
 
+        # Ask user whether to detect the device (detecting may
+        # take up a while and asking is faster)
+        while true; do
+            read -t5 -p "Use external key file? (default: yes, waiting 5s): " yn
+            if [ $? -gt 0 ]; then
+                echo "Timed out, assuming yes"
+                break
+            fi
+            case $yn in
+                [Yy]*)
+                    break
+                    ;;
+                [Nn]*) return 0;;
+                "")
+                    echo "Default (yes)"
+                    break
+                    ;;
+                *) echo "Please answer yes or no.";;
+            esac
+        done
+
+        # Resolve and mount the device, in case we can't mount, show error
+        echo "Mounting device..."
         if resoleved=$(resolve_device "${rootKeyDev}" $rootdelay); then
             if mount -o noatime "${rootKeyDev}" /mnt>/dev/null 2>&1; then
+                # Copy the keyfile present in the device into the
+                # ramfs filesystem to be read by dm-crypt
                 cat "/mnt/${rootKey}" > "${cryptkeyLoc}"
             else
                 echo "Failed to mount ${rootKeyDev} on /mnt"
