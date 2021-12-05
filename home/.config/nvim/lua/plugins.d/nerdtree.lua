@@ -11,7 +11,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 -- Implement manual NERDTreeToggle, but use NERDTreeFind for openning.
 -- This makes NERDTree open with the current file pre-selected
-nmap("<C-n>", "g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'", {expr=true})
+Keymap("n", "<C-n>", "g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'", {expr=true})
 
 g.NERDTreeShowHidden = 1
 g.NERDTreeMinimalUI = 1

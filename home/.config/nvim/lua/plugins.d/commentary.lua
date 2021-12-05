@@ -3,7 +3,7 @@ local cmd = vim.cmd
 
 cmd[[Plug 'tpope/vim-commentary']]
 
-nmap("<A-/>", ":Commentary<CR>")
-vmap("<A-/>", ":Commentary<CR>")
+Keymap("n", "<A-/>", ":Commentary<CR>")
+Keymap("v", "<A-/>", ":Commentary<CR>")
 
 cmd[[autocmd FileType apache setlocal commentstring=#\ %s]]
