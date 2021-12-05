@@ -20,8 +20,15 @@ set guioptions-=r       " Remove right-hand scrollbar
 set guioptions-=L       " Remove left-hand scrollbar
 ]]
 
--- Use more noticable cursor line color
-cmd[[highlight CursorLine guibg=#2b2b2b]]
+-- Override some colorscheme colors
+--  * Use more noticable cursor line color
+cmd[[
+augroup coloroverride
+    autocmd!
+    autocmd ColorScheme * highlight CursorLine guibg=#2b2b2b
+    autocmd ColorScheme * highlight CursorLineNr guifg=#1F85DE ctermfg=LightBlue
+augroup END
+]]
 
 -- Don't use true colors in TTY
 o.termguicolors = os.getenv("DISPLAY") and true or false
