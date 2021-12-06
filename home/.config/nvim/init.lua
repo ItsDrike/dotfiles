@@ -23,7 +23,7 @@ end
 
 -- Require additional scripts which contain individual configurations
 
-require "base"
+require "options"
 require "theme"
 require "mappings"
 require "abbreviations"
