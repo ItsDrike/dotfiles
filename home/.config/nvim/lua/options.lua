@@ -37,10 +37,12 @@ o.wildmode = {"longest", "list", "full"}    -- Enable autocompletion
 o.wildmenu = true                           -- Display all matching files when we tab complete
 table.insert(o.path, "**")                  -- Search down into subfolders with tab completion
 
--- Misc
-o.mouse = "a"               -- Enable mouse mode
+-- Files
 o.encoding = "utf-8"        -- Use UTF-8 encoding
 o.autoread = true           -- Automatically reload files on change
+
+-- Misc
+o.mouse = "a"               -- Enable mouse mode
 o.undolevels = 999          -- Lots of these
 o.history = 1000            -- More history
 o.showmode = false          -- Don't display mode (it's on status line anyway)
