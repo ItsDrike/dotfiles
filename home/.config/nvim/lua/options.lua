@@ -43,3 +43,4 @@ o.autoindent = true         -- Enable autoindent
 o.autoread = true           -- Automatically reload files on change
 o.undolevels = 999          -- Lots of these
 o.history = 1000            -- More history
+o.showmode = false          -- Don't display mode (it's on status line anyway)
