@@ -1,7 +1,6 @@
 local vim = require("vim")
 local cmd = vim.cmd
 local o = vim.opt
-local g = vim.g
 
 cmd[[filetype plugin on]]
 
