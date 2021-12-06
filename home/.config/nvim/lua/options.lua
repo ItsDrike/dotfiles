@@ -46,4 +46,3 @@ o.autoread = true           -- Automatically reload files on change
 o.mouse = "a"               -- Enable mouse mode
 o.undolevels = 999          -- Lots of these
 o.history = 1000            -- More history
-o.showmode = false          -- Don't display mode (it's on status line anyway)

@@ -11,6 +11,7 @@ o.relativenumber = true         -- Use relative line numbers
 o.showmatch = true              -- Show matching bracket
 o.scrolloff = 5                 -- Keep 5 lines horizontal scrolloff
 o.sidescrolloff = 5             -- Keep 5 chars vertical scrolloff
+o.showmode = false              -- Don't display mode (it's on status line anyway)
 
 -- I wasn't able to find a way to set guioptions directly in lua
 cmd[[
