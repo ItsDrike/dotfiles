@@ -75,7 +75,7 @@ And extract from `.tar.gz` archive:
 
 The open-source community has an incredible amount of resources that people have offered to others free of charge and
 we all depend on many of these sources. This project is no different and there were many open-source projects that were
-utilized in some parts of this project. For that reason, I'd like tho thank all of these projects and their
+utilized in some parts of this project. For that reason, I'd like to thank all of these projects and their
 contributors for keeping their content open and available to everyone. This is the list of projects that helped me
 build this repository to the stage it's in now. Many of the aliases, config files and other resources aren't my
 original creations, but rather just small improvements and adjustments to get everything set in the way I like. Below
