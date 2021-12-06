@@ -6,6 +6,7 @@ local g = vim.g
 cmd[[filetype plugin on]]
 
 -- Tab/Indent settings
+o.autoindent = true         -- Enable autoindent
 o.expandtab = true          -- Expand tabs to spaces
 o.tabstop = 4               -- Tab size in spaces
 o.shiftwidth = 4            -- Indentation size
@@ -39,7 +40,6 @@ table.insert(o.path, "**")                  -- Search down into subfolders with 
 -- Misc
 o.mouse = "a"               -- Enable mouse mode
 o.encoding = "utf-8"        -- Use UTF-8 encoding
-o.autoindent = true         -- Enable autoindent
 o.autoread = true           -- Automatically reload files on change
 o.undolevels = 999          -- Lots of these
 o.history = 1000            -- More history
