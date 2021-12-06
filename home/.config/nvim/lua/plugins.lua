@@ -1,21 +1,7 @@
+local plugins = require("utility.plugins")
 local vim = require("vim")
 local cmd = vim.cmd
-local api = vim.api
 local fn = vim.fn
-
--- Automatically download (bootstrap) packer plugin manager
--- if it's not already installed
-local packer_install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-local packer_bootstrap
-if fn.empty(fn.glob(packer_install_path)) > 0 then
-  print("Installing packer plugin manager, please wait...")
-  packer_bootstrap = fn.system({
-      'git', 'clone', '--depth', '1',
-      'https://github.com/wbthomason/packer.nvim',
-      packer_install_path
-  })
-  print("Packer installed, reload vim to install plugins")
-end
 
 -- Automatically run :PackerCompile if plugins.lua is updated
 cmd[[
@@ -25,100 +11,59 @@ augroup packer_user_config
 augroup end
 ]]
 
--- Returns the line to be executed after plugin is loaded, this
--- is useful for the `config` parameter of packer's use to
--- source `.vim` files or require `.lua` files
--- Expects a file path from pluginconf/ folder
-local function get_plugin_file(pluginconf_file)
-    local filename, extension = pluginconf_file:match("^(.+)(%..+)$")
-    if (extension == ".vim") then
-        -- Source wants absolute path
-        local pluginconf_path = fn.stdpath("config") .. "lua/pluginconf"
-        local source_line = string.format('source "%s/%s"', pluginconf_path, pluginconf_file)
-        return string.format("vim.fn.execute('%s')", source_line)
-    else
-        -- Require wants relative path from lua/
-        local pluginconf_path = "pluginconf"
-        return string.format('require("%s/%s")', pluginconf_path, filename)
-    end
+
+-- Extend plugins.get_plugin_file function and automatically pass a plugin_directory
+-- into it. Expects a relative path to the plugin file settings from this directory
+local function plug_cfg(plugin_file)
+    local plugin_directory = fn.stdpath("config") .. "lua/pluginconf"
+    plugins.get_plugin_file(plugin_file, plugin_directory)
 end
 
--- Make sure to add packer here, even if it's opt
-api.nvim_command("packadd packer.nvim")
 
 -- Define packer plugins
-return require("packer").startup({
-    function(use)
-        use("wbthomason/packer.nvim")
-        use('airblade/vim-gitgutter')
-        use('dhruvasagar/vim-table-mode')
-        use('tmhedberg/SimpylFold')
-        use('wakatime/vim-wakatime')
-        use('mhinz/vim-startify')
-        use('ryanoasis/vim-devicons')
-        use({
-            "tomasiser/vim-code-dark",
-            config = get_plugin_file("vim-code-dark.lua"),
-        })
-        use({
-            "vim-airline/vim-airline",
-            config = get_plugin_file("airline.lua"),
-            requires = { "vim-airline/vim-airline-themes", opt = true },
-        })
-        use({
-            "preservim/nerdtree",
-            config = get_plugin_file("nerdtree.lua"),
-            requires = {
-                { "Xuyuanp/nerdtree-git-plugin", opt = true },
-                { "tiagofumo/vim-nerdtree-syntax-highlight", opt = true },
-            },
-        })
-        use({
-            "vimwiki/vimwiki",
-            config = get_plugin_file("vimwiki.lua")
-        })
-        use({
-            "sheerun/vim-polyglot",
-            setup = get_plugin_file("polyglot.lua")
-        })
-        use({
-            "tpope/vim-commentary",
-            config = get_plugin_file("commentary.lua")
-        })
-        use({
-            "mfussenegger/nvim-dap",
-            config = get_plugin_file("nvim-dap.lua"),
-            requires = { "mfussenegger/nvim-dap-python", opt = true },
-        })
-        use({
-            "junegunn/fzf",
-            run = function() fn['fzf#install']() end,
-        })
-        use({
-            "junegunn/fzf.vim",
-            config = get_plugin_file("fzf.lua"),
-            after = "fzf",
-            requires = { "stsewd/fzf-checkout.vim", opt = true },
-        })
-        use({
-            "neoclide/coc.nvim",
-            branch = "release",
-            config = get_plugin_file("coc.vim"),
-            requires = { "antoinemadec/coc-fzf", opt = true },
-        })
+local plugin_configs = {
+    { "airblade/vim-gitgutter" },
+    { "dhruvasagar/vim-table-mode" },
+    { "tmhedberg/SimpylFold" },
+    { "wakatime/vim-wakatime" },
+    { "mhinz/vim-startify" },
+    { "ryanoasis/vim-devicons" },
+    { "vimwiki/vimwiki", config = plug_cfg("vimwiki.lua") },
+    { "sheerun/vim-polyglot", setup = plug_cfg("polyglot.lua") },
+    { "tpope/vim-commentary", config = plug_cfg("commentary.lua") },
+    { "junegunn/fzf", run = function() fn['fzf#install']() end },
+    { "tomasiser/vim-code-dark", config = plug_cfg("vim-code-dark.lua") },
+    {
+        "vim-airline/vim-airline",
+        config = plug_cfg("airline.lua"),
+        requires = { "vim-airline/vim-airline-themes", opt = true },
+    },
+    {
+        "preservim/nerdtree",
+        config = plug_cfg("nerdtree.lua"),
+        requires = {
+            { "Xuyuanp/nerdtree-git-plugin", opt = true },
+            { "tiagofumo/vim-nerdtree-syntax-highlight", opt = true },
+        },
+    },
+    {
+        "mfussenegger/nvim-dap",
+        config = plug_cfg("nvim-dap.lua"),
+        requires = { "mfussenegger/nvim-dap-python", opt = true },
+    },
+    {
+        "junegunn/fzf.vim",
+        config = plug_cfg("fzf.lua"),
+        after = "fzf",
+        requires = { "stsewd/fzf-checkout.vim", opt = true },
+    },
+    {
+        "neoclide/coc.nvim",
+        branch = "release",
+        config = plug_cfg("coc.vim"),
+        requires = { "antoinemadec/coc-fzf", opt = true },
+    },
+}
 
-        -- Run sync if we've just bootstrapped packer
-        if packer_bootstrap then
-            require("packer").sync()
-        end
-    end,
-    config = {
-        display = {
-            open_fn = require('packer.util').float,
-        },
-        profile = {
-            enable = true,
-            threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
-        },
-    }
-})
+-- Set up packer and use given plugins
+plugins.packer_setup(plugin_configs)
