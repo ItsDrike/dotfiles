@@ -12,6 +12,7 @@ o.tabstop = 4               -- Tab size in spaces
 o.shiftwidth = 4            -- Indentation size
 o.softtabstop = 4           -- Tabs/Spaces interlop
 o.tabpagemax = 50           -- More tabs
+o.shiftround = true         -- Always round indent to multiple of shiftwidth
 
 -- Folding
 o.foldmethod = "indent"     -- Use indent to determine the fold levels
