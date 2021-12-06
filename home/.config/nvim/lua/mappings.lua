@@ -19,6 +19,12 @@ Keymap("n", "<A-2>", ":tabmove +<CR>")
 Keymap("n", "<A-1>", ":tabmove -<CR>")
 Keymap("n", "<A-p>", ":tabp<CR>")
 Keymap("n", "<A-n>", ":tabn<CR>")
+Keymap("n", "<A-c>", ":tabc<CR>")
+
+-- Buffer navigation
+Keymap("n", "<A-N>", ":bn<CR>")
+Keymap("n", "<A-P>", ":bp<CR>")
+Keymap("n", "<A-d>", ":bd<CR>")
 
 -- Set splits navigation to just ALT + hjkl
 Keymap("n", "<C-h>", "<C-w>h")
