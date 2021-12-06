@@ -2,9 +2,9 @@ local vim = require("vim")
 local cmd = vim.cmd
 local fn = vim.fn
 
-local config_dir = fn.stdpath("config")                 -- Config directory (usually: ~/.config/nvim)
-local plugvim_plugins_dir = config_dir .. "/plugged"    -- Dir with all plugins installed by Plug.vim
-local plugin_files_dir = config_dir .. "/lua/plugins.d" -- Dir with plugin config files including Plug call(s)
+local config_dir = fn.stdpath("config")                     -- Config directory (usually: ~/.config/nvim)
+local plugvim_plugins_dir = config_dir .. "/plugged"        -- Dir with all plugins installed by Plug.vim
+local plugin_files_dir = config_dir .. "/lua/pluginconf"    -- Dir with plugin config files including Plug call(s)
 
 -- Automatically download vimplug and run PlugInstall
 local autoload_dir = config_dir .. "/autoload"
