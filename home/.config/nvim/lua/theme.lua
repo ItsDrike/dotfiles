@@ -1,5 +1,6 @@
 local vim = require("vim")
 local cmd = vim.cmd
+local g = vim.g
 local o = vim.opt
 
 cmd[[syntax on]]                -- Turn on syntax highlighting
@@ -33,3 +34,6 @@ augroup END
 
 -- Don't use true colors in TTY
 o.termguicolors = os.getenv("DISPLAY") and true or false
+
+-- Use proper syntax highlighting in fenced codeblocks
+g.markdown_fenced_languages = {"html", "javascript", "typescript", "css", "scss", "lua", "vim", "python"}
