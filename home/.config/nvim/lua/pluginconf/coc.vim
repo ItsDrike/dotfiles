@@ -6,9 +6,6 @@
 " however if anyone knows how to completely reproduce everything here in lua,
 " this is open to pull requests
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'antoinemadec/coc-fzf'
-
 let g:coc_global_extensions = [
     \ 'coc-pyright', 'coc-json', 'coc-git', 'coc-html', 'coc-css',
     \ 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-sh', 'coc-toml',

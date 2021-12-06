@@ -2,8 +2,6 @@ local vim = require("vim")
 local cmd = vim.cmd
 local g = vim.g
 
-cmd[[Plug 'vimwiki/vimwiki']]
-
 local wiki_conf = {}
 wiki_conf["path"] = "~/Personal/vimwiki"
 wiki_conf["path_html"] = "~/Personal/vimwiki-html"

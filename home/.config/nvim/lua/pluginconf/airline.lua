@@ -2,15 +2,9 @@ local vim = require("vim")
 local g = vim.g
 local cmd = vim.cmd
 
-cmd[[
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-]]
-
--- Airline specific theming settings
-g.airline_theme = 'codedark'            -- Use codedark theme from vim-airline-themes
-g.airline_right_sep = ""                -- Don't use special separators (<)
-g.airline_left_sep = ""                 -- Don't use special separators (>)
+-- Don't use special separators
+g.airline_right_sep = ""    -- (default: <)
+g.airline_left_sep = ""     -- (default: >)
 
 -- Tabline setup
 -- TODO: Figure out how to set # separated variables in lua (open for PRs)

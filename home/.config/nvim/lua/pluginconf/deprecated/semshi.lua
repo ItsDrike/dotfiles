@@ -11,7 +11,7 @@ local fn = vim.fn
 -- when I access something as an attribute, but it would be neat to see what that
 -- attribute actually holds, is it a class or a fucntion. But from my searching,
 -- I wasn't able to find anything like this. This is open to pull requests.
-cmd[[Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }]]
+-- Plugin: numirias/semshi
 
 if (fn.has("python3")) then
     fn.system({"pip", "install", "nvim", "--upgrade"})

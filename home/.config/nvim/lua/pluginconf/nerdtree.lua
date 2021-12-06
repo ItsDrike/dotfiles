@@ -3,12 +3,6 @@ local g = vim.g
 local fn = vim.fn
 local cmd = vim.cmd
 
-cmd[[
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-]]
-
 -- Implement manual NERDTreeToggle, but use NERDTreeFind for openning.
 -- This makes NERDTree open with the current file pre-selected
 Keymap("n", "<C-n>", "g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'", {expr=true})

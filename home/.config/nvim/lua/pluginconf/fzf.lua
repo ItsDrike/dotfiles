@@ -2,10 +2,6 @@ local vim = require("vim")
 local cmd = vim.cmd
 local g = vim.g
 
-cmd[[Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }]]
-cmd[[Plug 'junegunn/fzf.vim']]
-cmd[[Plug 'stsewd/fzf-checkout.vim']]
-
 g.fzf_layout = {
     up = '~90%',
     window = {
