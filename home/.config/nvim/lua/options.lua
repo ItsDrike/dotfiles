@@ -1,12 +1,13 @@
 local vim = require("vim")
 local cmd = vim.cmd
 local o = vim.opt
+local g = vim.g
 
 cmd[[filetype plugin on]]
 
--- Tab settings
+-- Tab/Indent settings
 o.expandtab = true          -- Expand tabs to spaces
-o.tabstop = 4               -- Tab size
+o.tabstop = 4               -- Tab size in spaces
 o.shiftwidth = 4            -- Indentation size
 o.softtabstop = 4           -- Tabs/Spaces interlop
 o.tabpagemax = 50           -- More tabs
@@ -23,7 +24,7 @@ o.splitright = true         -- Put new vertical splits to right
 
 -- In-file search (/)
 o.ignorecase = true         -- Use case insensitive matching
-o.incsearch = true          -- Show partial matches for search phrase
+o.incsearch = true          -- Show partial matches while typing
 o.hlsearch = true           -- Highlight search matches
 
 -- Show trailing whitespace
