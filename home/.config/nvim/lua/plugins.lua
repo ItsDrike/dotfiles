@@ -47,7 +47,7 @@ load_plugin_file("coc.vim")
 load_plugin_file("vimwiki.lua")
 load_plugin_file("nerdtree.lua")
 load_plugin_file("airline.lua")
-load_plugin_file("fzf.vim")
+load_plugin_file("fzf.lua")
 
 -- End Plug.vim loading process
 cmd[[call plug#end()]]
