@@ -27,9 +27,9 @@ o.ignorecase = true         -- Use case insensitive matching
 o.incsearch = true          -- Show partial matches while typing
 o.hlsearch = true           -- Highlight search matches
 
--- Show trailing whitespace
-o.list = true               -- Enable showing characters like <Tab>, <EOL>, ...
-o.listchars = "trail:·"     -- Only show trailing whitespaces
+-- Show whitespace
+o.list = true                               -- Enable showing characters like <Tab>, <EOL>, ...
+o.listchars = {tab = " ", trail = "·"}     -- Specify which characters to show
 
 -- Command-mode search
 o.wildmode = {"longest", "list", "full"}    -- Enable autocompletion
