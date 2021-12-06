@@ -86,6 +86,11 @@ return require("packer").startup({
             config = get_plugin_file("commentary.lua")
         })
         use({
+            "mfussenegger/nvim-dap",
+            config = get_plugin_file("nvim-dap.lua"),
+            requires = { "mfussenegger/nvim-dap-python", opt = true },
+        })
+        use({
             "junegunn/fzf",
             run = function() fn['fzf#install']() end,
         })
