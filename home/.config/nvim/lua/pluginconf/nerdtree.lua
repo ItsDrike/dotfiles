@@ -1,3 +1,4 @@
+local m = require("utility.mappings")
 local vim = require("vim")
 local g = vim.g
 local fn = vim.fn
@@ -5,7 +6,7 @@ local cmd = vim.cmd
 
 -- Implement manual NERDTreeToggle, but use NERDTreeFind for openning.
 -- This makes NERDTree open with the current file pre-selected
-Keymap("n", "<C-n>", "g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'", {expr=true})
+m.keymap("n", "<C-n>", "g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'", {expr=true})
 
 g.NERDTreeShowHidden = 1
 g.NERDTreeMinimalUI = 1
@@ -31,6 +32,8 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in
 ]]
 
 -- Exit Vim if NERDTree is the only window left.
+-- WARNING: This causes issues when closing buffers
+--[[
 cmd[[
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif

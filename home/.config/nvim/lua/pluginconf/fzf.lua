@@ -1,3 +1,4 @@
+local m = require("utility.mappings")
 local vim = require("vim")
 local cmd = vim.cmd
 local g = vim.g
@@ -26,10 +27,10 @@ command! -bang -nargs=? -complete=dir AllFiles
     \ call fzf#run(fzf#wrap('allfiles', fzf#vim#with_preview({ 'dir': <q-args>, 'sink': 'e', 'source': 'rg --files --hidden --no-ignore' }), <bang>0))
 ]]
 
-Keymap("n", "<leader>f", ":Files<CR>")
-Keymap("n", "<leader>F", ":AllFiles<CR>")
-Keymap("n", "<leader>b", ":Buffers<CR>")
-Keymap("n", "<leader>h", ":History<CR>")
-Keymap("n", "<leader>r", ":Rg<CR>")
-Keymap("n", "<leader>R", ":Rg<space>", { silent = false })
-Keymap("n", "<leader>gb", ":GBranches<CR>")
+m.keymap("n", "<leader>f", ":Files<CR>")
+m.keymap("n", "<leader>F", ":AllFiles<CR>")
+m.keymap("n", "<leader>b", ":Buffers<CR>")
+m.keymap("n", "<leader>h", ":History<CR>")
+m.keymap("n", "<leader>r", ":Rg<CR>")
+m.keymap("n", "<leader>R", ":Rg<space>", { silent = false })
+m.keymap("n", "<leader>gb", ":GBranches<CR>")
