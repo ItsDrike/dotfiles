@@ -84,4 +84,5 @@ is the list of all projects which helped the existence of this repository:
 - [BrodieRobertson's dotfiles](https://github.com/BrodieRobertson/dotfiles)
 - [BrodieRobertson's scripts](https://github.com/BrodieRobertson/scripts)
 - [Derek Taylor's dotfiles](https://gitlab.com/dwt1/dotfiles)
+- [CosmicVim source](https://github.com/CosmicNvim/CosmicNvim)
 
