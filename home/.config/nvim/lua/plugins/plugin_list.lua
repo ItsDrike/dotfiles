@@ -1,7 +1,7 @@
 local vim = require("vim")
 local fn = vim.fn
 
-local plugin_directory = fn.stdpath("config") .. "/lua/pluginconf"
+local plugin_directory = fn.stdpath("config") .. "/lua/plugins/settings"
 
 -- Return the line (string) to be executed with lua that loads in given plugin file.
 -- This is useful for the `config` or `setup` parameters of packer's use to source
@@ -51,6 +51,21 @@ local plugin_list = {
         after = "fzf",
         requires = { "stsewd/fzf-checkout.vim", opt = true },
     },
+    -- {
+    --     "neovim/nvim-lspconfig",
+    --     "williamboman/nvim-lsp-installer",
+    --     config = get_plugin_file("lspconfig.lua")
+    -- },
+    --{
+    --    "nvim-telescope/telescope.nvim",
+    --    --config = get_plugin_file("telescope.lua")
+    --    module = "telescope",
+    --    cmd = "Telescope",
+    --    requires = {
+    --        { "nvim-lua/popup.nvim" },
+    --        { "nvim-lua/plenary.nvim" },
+    --    }
+    --},
     {
         "neoclide/coc.nvim",
         branch = "release",
