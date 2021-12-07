@@ -32,6 +32,10 @@ augroup coloroverride
 augroup END
 ]]
 
+-- Set the colorscheme to default to trigger the above autocmds
+-- This can be overridden from plugin definitions as this file is ran before those
+cmd[[colorscheme default]]
+
 -- Don't use true colors in TTY
 o.termguicolors = os.getenv("DISPLAY") and true or false
 
