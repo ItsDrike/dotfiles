@@ -11,8 +11,5 @@
     "coc.preferences.formatOnSaveFiletypes": [
         "json"
     ],
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Args": [
-        "--ignore=ANN204,ANN101,ANN102,ANN002,ANN003"
-    ]
+    "python.linting.flake8Enabled": true
 }
