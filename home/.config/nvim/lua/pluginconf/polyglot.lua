@@ -1,5 +1,4 @@
 local vim = require("vim")
-local cmd = vim.cmd
 local g = vim.g
 
 -- Disable polyglot's "sensible" settings, while there are some nice things it
