@@ -62,11 +62,11 @@ local plugin_list = {
         config = get_plugin_file("firenvim.lua"),
         run = function() vim.fn['firenvim#install'](0) end
     },
-    -- {
-    --     "neovim/nvim-lspconfig",
-    --     "williamboman/nvim-lsp-installer",
-    --     config = get_plugin_file("lspconfig.lua")
-    -- },
+    {
+        "williamboman/nvim-lsp-installer",
+        config = get_plugin_file("lsp.lua"),
+        requires = { "neovim/nvim-lspconfig" },
+    },
     --{
     --    "nvim-telescope/telescope.nvim",
     --    --config = get_plugin_file("telescope.lua")
@@ -77,12 +77,12 @@ local plugin_list = {
     --        { "nvim-lua/plenary.nvim" },
     --    }
     --},
-    {
-        "neoclide/coc.nvim",
-        branch = "release",
-        config = get_plugin_file("coc.vim"),
-        requires = { "antoinemadec/coc-fzf", opt = true },
-    },
+    -- {
+    --     "neoclide/coc.nvim",
+    --     branch = "release",
+    --     config = get_plugin_file("coc.vim"),
+    --     requires = { "antoinemadec/coc-fzf", opt = true },
+    -- },
 }
 
 return plugin_list

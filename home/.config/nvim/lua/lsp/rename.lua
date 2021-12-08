@@ -1,0 +1,3 @@
+-- Nvim's LSP lacks rename-all functionality which plugins like Coc provide
+-- this is a manual implementation of this feature
+-- TODO: Actually implement this
