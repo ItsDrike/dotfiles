@@ -22,11 +22,16 @@ local plugin_list = {
     { "wakatime/vim-wakatime" },
     { "mhinz/vim-startify" },
     { "ryanoasis/vim-devicons" },
-    { "sheerun/vim-polyglot", setup = get_plugin_file("polyglot.lua") },
     { "vimwiki/vimwiki", config = get_plugin_file("vimwiki.lua") },
     { "tpope/vim-commentary", config = get_plugin_file("commentary.lua") },
     { "junegunn/fzf", run = function() fn['fzf#install']() end },
     { "tomasiser/vim-code-dark", config = get_plugin_file("vim-code-dark.lua") },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        config = get_plugin_file("treesitter.lua"),
+        run = ':TSUpdate',
+        requires = { "nvim-treesitter/playground", opt = true }
+    },
     {
         "vim-airline/vim-airline",
         config = get_plugin_file("airline.lua"),
