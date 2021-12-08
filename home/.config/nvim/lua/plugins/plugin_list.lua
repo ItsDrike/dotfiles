@@ -57,6 +57,11 @@ local plugin_list = {
         after = "fzf",
         requires = { "stsewd/fzf-checkout.vim", opt = true },
     },
+    {
+        'glacambre/firenvim',
+        config = get_plugin_file("firenvim.lua"),
+        run = function() vim.fn['firenvim#install'](0) end
+    },
     -- {
     --     "neovim/nvim-lspconfig",
     --     "williamboman/nvim-lsp-installer",
