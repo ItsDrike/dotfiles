@@ -22,6 +22,7 @@ local plugin_list = {
     { "wakatime/vim-wakatime" },
     { "mhinz/vim-startify" },
     { "ryanoasis/vim-devicons" },
+    { "dbeniamine/cheat.sh-vim" },
     { "vimwiki/vimwiki", config = get_plugin_file("vimwiki.lua") },
     { "tpope/vim-commentary", config = get_plugin_file("commentary.lua") },
     { "junegunn/fzf", run = function() fn['fzf#install']() end },
