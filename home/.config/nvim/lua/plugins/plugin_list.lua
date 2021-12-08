@@ -18,7 +18,6 @@ end
 local plugin_list = {
     { "airblade/vim-gitgutter" },
     { "dhruvasagar/vim-table-mode" },
-    { "tmhedberg/SimpylFold" },
     { "wakatime/vim-wakatime" },
     { "mhinz/vim-startify" },
     { "ryanoasis/vim-devicons" },
