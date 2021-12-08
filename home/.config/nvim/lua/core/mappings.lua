@@ -59,6 +59,18 @@ m.keymap("v", "<space>", "zf")
 m.keymap("n", "K", "10k")
 m.keymap("n", "J", "10j")
 
+-- Moving lines around
+m.keymap("v", "<A-j>", ":m '>+1<CR>gv=gv")
+m.keymap("v", "<A-k>", ":m '<-2<CR>gv=gv")
+m.keymap("i", "<A-j>", "<esc>:m .+1<CR>==i")
+m.keymap("i", "<A-k>", "<esc>:m .-2<CR>==i")
+m.keymap("n", "<leader>j", ":m .+1<CR>==")
+m.keymap("n", "<leader>k", ":m .-2<CR>==")
+
+-- Quick word replacing (use . for next word)
+m.keymap("n", "cn", "*``cgn")
+m.keymap("n", "cN", "*``cgN")
+
 -- Enable/Disable auto commenting
 m.keymap("n", "<leader>c", ":setlocal formatoptions-=cro<CR>")
 m.keymap("n", "<leader>C", ":setlocal formatoptions+=cro<CR>")
@@ -66,6 +78,10 @@ m.keymap("n", "<leader>C", ":setlocal formatoptions+=cro<CR>")
 -- Don't leave visual mode after indenting
 m.keymap("v", "<", "<gv")
 m.keymap("v", ">", ">gv")
+
+-- Center (and unfold) after going to next/prev search item
+m.keymap("n", "n", "nzzzv")
+m.keymap("n", "N", "Nzzzv")
 
 -- System clipboard copying
 m.keymap("v", "<C-c>", '"+y')
