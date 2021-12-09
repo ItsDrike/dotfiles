@@ -16,53 +16,67 @@ end
 -- Define packer plugins
 -- The individual tables will get passed into the packer's use function
 local plugin_list = {
-    { "airblade/vim-gitgutter" },
-    { "dhruvasagar/vim-table-mode" },
-    { "wakatime/vim-wakatime" },
-    { "mhinz/vim-startify" },
-    { "ryanoasis/vim-devicons" },
-    { "dbeniamine/cheat.sh-vim" },
-    { "vimwiki/vimwiki", config = get_plugin_file("vimwiki.lua") },
-    { "tpope/vim-commentary", config = get_plugin_file("commentary.lua") },
-    { "junegunn/fzf", run = function() fn['fzf#install']() end },
-    { "tomasiser/vim-code-dark", config = get_plugin_file("vim-code-dark.lua") },
+    { "airblade/vim-gitgutter" },           -- Git status in files
+    { "dhruvasagar/vim-table-mode" },       -- Easy way to construct markdown tables
+    { "wakatime/vim-wakatime" },            -- Track time spent coding
+    { "mhinz/vim-startify" },               -- Nice startup screen for vim when started withotu file/dir
+    { "dbeniamine/cheat.sh-vim" },          -- Quick interaction with cheat.sh cheatsheets
     {
-        "nvim-treesitter/nvim-treesitter",
+        "vimwiki/vimwiki",                  -- Wiki pages for vim
+        config = get_plugin_file("vimwiki.lua"),
+    },
+    {
+        "tpope/vim-commentary",             -- Adds ability to comment out sections of files
+        config = get_plugin_file("commentary.lua")
+    },
+    {
+        "tomasiser/vim-code-dark",          -- Vim theme inspired by vscode's Dark+
+        config = get_plugin_file("vim-code-dark.lua")
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",  -- AST language analysis providing semantic highlighting
         config = get_plugin_file("treesitter.lua"),
         run = ':TSUpdate',
         requires = { "nvim-treesitter/playground", opt = true }
     },
     {
-        "vim-airline/vim-airline",
+        "vim-airline/vim-airline",          -- Status line
         config = get_plugin_file("airline.lua"),
-        requires = { "vim-airline/vim-airline-themes", opt = true },
+        requires = {
+            { "vim-airline/vim-airline-themes", opt = true },
+            { "ryanoasis/vim-devicons", opt = true },
+        },
     },
     {
-        "preservim/nerdtree",
+        "preservim/nerdtree",               -- File tree
         config = get_plugin_file("nerdtree.lua"),
         requires = {
             { "Xuyuanp/nerdtree-git-plugin", opt = true },
             { "tiagofumo/vim-nerdtree-syntax-highlight", opt = true },
+            { "ryanoasis/vim-devicons", opt = true },
         },
     },
     {
-        "mfussenegger/nvim-dap",
+        "mfussenegger/nvim-dap",            -- Support for the debugging within vim
         config = get_plugin_file("nvim-dap.lua"),
         requires = { "mfussenegger/nvim-dap-python", opt = true },
     },
     {
-        "junegunn/fzf.vim",
+        "junegunn/fzf.vim",                 -- Fuzzy finder (TODO: consider replacing with telescope)
+        run = function() fn['fzf#install']() end,
         config = get_plugin_file("fzf.lua"),
-        after = "fzf",
-        requires = { "stsewd/fzf-checkout.vim", opt = true },
+        requires = {
+            { "junegunn/fzf", opt = false },
+            { "stsewd/fzf-checkout.vim", opt = true },
+        }
     },
     {
-        'glacambre/firenvim',
+        'glacambre/firenvim',               -- Integrates neovim into the browser
         config = get_plugin_file("firenvim.lua"),
         run = function() vim.fn['firenvim#install'](0) end
     },
     {
-        "williamboman/nvim-lsp-installer",
+        "williamboman/nvim-lsp-installer",  -- LSP protocol configurations, autocomplete, autoinstaller
         config = get_plugin_file("lsp.lua"),
         requires = {
             "neovim/nvim-lspconfig",
@@ -73,6 +87,10 @@ local plugin_list = {
             "hrsh7th/cmp-cmdline",
         },
     },
+
+    -- TODO: Consider testing out telescope as an alternative to FZF, I've heard a lot of
+    -- positive feedback about it, but I haven't yet got the chance to meaningfully test
+    -- it and configure it.
     --{
     --    "nvim-telescope/telescope.nvim",
     --    --config = get_plugin_file("telescope.lua")
@@ -83,6 +101,11 @@ local plugin_list = {
     --        { "nvim-lua/plenary.nvim" },
     --    }
     --},
+
+    -- Coc is disabled because we're using LSP. It implements support from language servers from
+    -- scratch, which is slower than neovim's built-in LSP and since this configuration won't work
+    -- with pure vim, we can rely on nvim-only thigns. I left it here because LSP can sometimes
+    -- cause issues and Coc is a lot more friendly to setup.
     -- {
     --     "neoclide/coc.nvim",
     --     branch = "release",
