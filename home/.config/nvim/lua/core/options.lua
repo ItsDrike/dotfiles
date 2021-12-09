@@ -36,6 +36,14 @@ o.listchars = {tab = " ", trail = "·"}     -- Specify which characters to sh
 o.wildmode = {"longest", "list", "full"}    -- Enable autocompletion
 o.wildmenu = true                           -- Display all matching files when we tab complete
 table.insert(o.path, "**")                  -- Search down into subfolders with tab completion
+o.wildignore = vim.tbl_extend(              -- Ignore certain files/folders in wildmenu
+    "force", o.wildignore, {
+        "*.pyc", "*_build/*",
+        "**/coverage/*", "**/node_modules/*",
+        "**/android/*", "**/ios/*",
+        "**/.git/*",
+    }
+)
 
 -- Files
 o.encoding = "utf-8"        -- Use UTF-8 encoding
