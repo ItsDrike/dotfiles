@@ -16,7 +16,7 @@ o.shiftround = true         -- Always round indent to multiple of shiftwidth
 -- Folding
 o.foldmethod = "indent"     -- Use indent to determine the fold levels
 o.foldnestmax = 8           -- Only fold up to given amount of levels
-o.foldlevel = 2             -- Set initial fold level
+o.foldlevel = 2             -- Set initial fold level (don't fold first 2 levels)
 o.foldenable = false        -- Hide all folds by default
 
 -- Split order
