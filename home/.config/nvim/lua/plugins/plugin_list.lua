@@ -47,31 +47,31 @@ local plugin_list = {
         "vim-airline/vim-airline",          -- Status line
         config = get_plugin_file("airline.lua"),
         requires = {
-            { "vim-airline/vim-airline-themes", opt = true },
-            { "ryanoasis/vim-devicons", opt = true },
+            { "vim-airline/vim-airline-themes" },
+            { "ryanoasis/vim-devicons" },
         },
     },
     {
         "preservim/nerdtree",               -- File tree
         config = get_plugin_file("nerdtree.lua"),
         requires = {
-            { "Xuyuanp/nerdtree-git-plugin", opt = true },
-            { "tiagofumo/vim-nerdtree-syntax-highlight", opt = true },
-            { "ryanoasis/vim-devicons", opt = true },
+            { "Xuyuanp/nerdtree-git-plugin" },
+            { "tiagofumo/vim-nerdtree-syntax-highlight" },
+            { "ryanoasis/vim-devicons" },
         },
     },
     {
         "mfussenegger/nvim-dap",            -- Support for the debugging within vim
         config = get_plugin_file("nvim-dap.lua"),
-        requires = { "mfussenegger/nvim-dap-python", opt = true },
+        requires = { "mfussenegger/nvim-dap-python" },
     },
     {
         "junegunn/fzf.vim",                 -- Fuzzy finder (TODO: consider replacing with telescope)
         run = function() fn['fzf#install']() end,
         config = get_plugin_file("fzf.lua"),
         requires = {
-            { "junegunn/fzf", opt = false },
-            { "stsewd/fzf-checkout.vim", opt = true },
+            { "junegunn/fzf" },
+            { "stsewd/fzf-checkout.vim" },
         }
     },
     {
