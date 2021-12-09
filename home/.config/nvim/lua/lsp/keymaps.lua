@@ -54,4 +54,4 @@ if telescope_installed then
 end
 
 -- Use custom implementation for renaming all references
-m.keymap('n', 'gn', '<cmd>lua require("lsp/rename").rename()<cr>')
+m.keymap('n', 'gn', '<cmd>lua require("lsp.rename").rename()<cr>')
