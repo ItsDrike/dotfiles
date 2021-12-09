@@ -22,6 +22,10 @@ local plugin_list = {
     { "mhinz/vim-startify" },               -- Nice startup screen for vim when started withotu file/dir
     { "dbeniamine/cheat.sh-vim" },          -- Quick interaction with cheat.sh cheatsheets
     {
+        "tveskag/nvim-blame-line",          -- Show commit affecting cursor line
+        config = get_plugin_file("blame_line.lua")
+    },
+    {
         "vimwiki/vimwiki",                  -- Wiki pages for vim
         config = get_plugin_file("vimwiki.lua"),
     },
