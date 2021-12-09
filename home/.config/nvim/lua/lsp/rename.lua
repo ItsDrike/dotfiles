@@ -78,6 +78,7 @@ function M.do_rename()
             return
         end
 
+        -- Collect amounts of affected files and total renames.
         local total_files = 0
         local total_renames = 0
         for _, renames in pairs(result.changes) do
