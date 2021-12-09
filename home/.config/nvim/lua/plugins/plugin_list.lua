@@ -51,6 +51,7 @@ local plugin_list = {
             { "ryanoasis/vim-devicons" },
         },
     },
+    -- TODO: Consider changing this to nvim-tree
     {
         "preservim/nerdtree",               -- File tree
         config = get_plugin_file("nerdtree.lua"),
@@ -80,10 +81,12 @@ local plugin_list = {
         run = function() vim.fn['firenvim#install'](0) end
     },
     {
-        "williamboman/nvim-lsp-installer",  -- LSP protocol configurations, autocomplete, autoinstaller
+        "williamboman/nvim-lsp-installer",  -- LSP auto-installer
         config = get_plugin_file("lsp.lua"),
         requires = {
+            -- Predefined LSP server configurations
             "neovim/nvim-lspconfig",
+            -- Support for autocompletion
             "hrsh7th/nvim-cmp",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
