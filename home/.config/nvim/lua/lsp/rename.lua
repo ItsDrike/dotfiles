@@ -52,20 +52,6 @@ function M.close_rename_win()
     end
 end
 
-local function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
-
 -- Trigger renaming
 function M.do_rename()
     local new_name = vim.trim(fn.getline('.'))
