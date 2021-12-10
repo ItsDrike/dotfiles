@@ -13,3 +13,6 @@
 [submodule "root/usr/local/src/z.lua"]
     path = "root/usr/local/src/z.lua"
     url = "https://github.com/skywind3000/z.lua"
+[submodule "home/.config/nvim"]
+    path = home/.config/nvim
+    url = https://github.com/ItsDrike/neovim
