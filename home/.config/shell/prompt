@@ -52,7 +52,7 @@ git_prompt() {
     ref=$(command git symbolic-ref HEAD 2> /dev/null) || ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
     echo -n " $ORANGE${ref#refs/heads/}"
 
-    if [ ! -z "$(git status --short)" ]; then
+    if [ ! -z "$(git status --short 2>/dev/null)" ]; then
         echo "$RED+"
     fi
 }
