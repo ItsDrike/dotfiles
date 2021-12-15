@@ -172,7 +172,15 @@ if [ $TERM = "linux" ]; then
     RPS1+="%(?..${RED}%? X$RESET)"
 else
     # Read comments for the section above.
-    #RPS+="\$(display_cmd_time)"
+    #RPS1+="\$(display_cmd_time)"
+
+    # NOTE: "↵" symbol could cause issues with on some terminals/machines that
+    # don't handle unicode well, this issue could be very confusing to debug,
+    # and it would not be apparent what's wrong since the symbol itself will
+    # be drawn, however when it is drawn, it will also move the cursor line
+    # 2 places back since this symbol is made up of 3 bytes (in unicode) and
+    # regular ASCII characters only take up 1 byte, this means that whenever
+    # the right-side prompt appears (on error), the prompt would have this issue.
     RPS1="%(?..${RED}%? ↵$RESET)"
 fi
 
