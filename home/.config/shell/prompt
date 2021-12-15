@@ -148,10 +148,10 @@ add-zsh-hook precmd exec_time_precmd_hook
 # Primary Prompt
 [ "$EUID" -eq 0 ] && PS1="$RED%n$RESET" || PS1="$GREEN%n$RESET" # user
 PS1+="$(foreign_prompt)"
-PS1+="$(working_directory)"
+PS1+="\$(working_directory)"
 PS1+="\$(git_prompt)"
 PS1+="\$(display_cmd_time)"
-PS1+=" $PURPLE%(!.#.$)$RESET " # Final symbol (# or $/»)
+PS1+=" $PURPLE%(!.#.$)$RESET " # Final symbol (# or $)
 
 # Next line prompt
 PS2="$RED\ $RESET"
