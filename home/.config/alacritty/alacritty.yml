@@ -111,11 +111,10 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: monospace
-    #family: Source Code Pro
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
-    style: Regular
+    style: Medium
 
   # Bold font face
   #bold:
@@ -135,7 +134,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: monospace
+    #family: monospace
     #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.

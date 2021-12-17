@@ -110,6 +110,7 @@ pacman:
     - noto-fonts-cjk
     - noto-fonts-emoji
     - ttf-font-awesome
+    - ttf-jetbrains-mono
 
     # Printer
     - cups          # Daemon for printing
