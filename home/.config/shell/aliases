@@ -79,23 +79,19 @@ alias zb='z -b'         # restrict matches to parent directories
 alias zi='z -I'         # cd with interactive fzf selection
 alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
-# Python
-alias ppy='python'
-alias ipy='ipython'
-alias bpy='bpython'
-command -v ipython > /dev/null && alias py='ipython' || alias py='python'
-for version in 2 3 3.6 3.7 3.8 3.9 3.10; do  # Make aliases for py3.6,py3.7,...
-    if ! command -v "python$version" > /dev/null; then
-        continue
-    fi
-    if command -v "ipython$version" > /dev/null; then
-        alias "py$version"="ipython$version"
-        alias "ipy$version"="ipython$version"
-        alias "ppy$version"="python$version"
-    else
-        alias "py$version"="python$version"
-        alias "ppy$version"="python$version"
-    fi
+## Make aliases for individual cpython/pypy versions
+py_versions="\n2\n3\n3.6\n3.7\n3.8\n3.9\n3.10"
+echo "$py_versions" | while read version; do
+    for python in python pypy; do
+        [ "$python" = "python" ] && prefix="py" || prefix="pypy"
+
+        if command -v "$python$version" >/dev/null; then
+            alias "pip$version=$python$version -m pip"
+            alias "$prefix$version=$python$version"
+            alias "i$prefix$version=$python$version -c 'import IPython;IPython.start_ipython()'"
+            alias "b$prefix$version=$python$version -c 'from bpython.curtsies import main;import sys;sys.exit(main())'"
+        fi
+    done
 done
 
 # Fallbacks
