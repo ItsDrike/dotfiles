@@ -61,11 +61,11 @@ fi
 
 # Other program settings
 export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
-export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
-export XSECURELOCK_SHOW_HOSTNAME=0 # Don't show hostname in xsecurelock
-export XSECURELOCK_SHOW_DATETIME=1 # Show current date and time in xsecurelock
-export QT_QPA_PLATFORMTHEME=qt5ct # Have QT use the theme from qt5ct
-#export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
+export PIPENV_VENV_IN_PROJECT=1         # Force pipenv to create new environments within projects ./.venv
+export XSECURELOCK_SHOW_HOSTNAME=0      # Don't show hostname in xsecurelock
+export XSECURELOCK_SHOW_DATETIME=1      # Show current date and time in xsecurelock
+export QT_QPA_PLATFORMTHEME="qt5ct"     # Have QT use theme from qt5ct.
+#export QT_STYLE_OVERRIDE="gtk2"        # Have QT use the gtk2 theme (needs aur/qt5-styleplugins)
 
 # Remove irrelevant variables added for posix compatibility
 unset posix
