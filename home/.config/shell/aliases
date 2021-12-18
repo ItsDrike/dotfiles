@@ -100,6 +100,7 @@ command -v md5sum > /dev/null || alias md5sum='md5' # Fallback from `md5sum` to 
 command -v sha1sum > /dev/null || alias sha1sum='shasum' # Fallback from `sha1sum` to `shasum`
 command -v vim > /dev/null && alias vi='vim' # Let vim take precedence over vi
 command -v nvim > /dev/null && alias vi='nvim' && alias vim='nvim' # Let nvim take precedence over vi/vim
+command -v vimtutor > /dev/null || alias vimtutor='nvim -c Tutor'  # Let vimtutor fallback to nvim's tutor
 
 # X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
 command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
