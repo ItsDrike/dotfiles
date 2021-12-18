@@ -78,11 +78,19 @@ alias zi='z -I'         # cd with interactive fzf selection
 alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Python
-alias py3='python3'
-alias py2='python2'
 alias ipy='ipython'
 alias bpy='bpython'
 command -v ipython > /dev/null && alias py='ipython' || alias py='python'
+for version in "2 3 3.6 3.7 3.8 3.9 3.10"; do  # Make aliases for py3.6,py3.7,...
+    if ! command -v "python$version" > /dev/null; then
+        continue
+    fi
+    if command -v "ipython$version" > /dev/null; then
+        alias "py$version"="ipython$version"
+    else
+        alias "py$version"="python$version"
+    fi
+done
 
 # Fallbacks
 command -v hd > /dev/null || alias hd='hexdump -C' # Cannonical hex dump; some systems have this symlinked
