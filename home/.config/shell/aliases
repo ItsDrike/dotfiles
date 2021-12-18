@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 
 # I'm not the greatest typist
 alias sl='ls'
