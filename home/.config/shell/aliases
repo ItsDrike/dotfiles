@@ -86,7 +86,12 @@ echo "$py_versions" | while read version; do
         [ "$python" = "python" ] && prefix="py" || prefix="pypy"
 
         if command -v "$python$version" >/dev/null; then
-            alias "pip$version=$python$version -m pip"
+            if [ "$python" = "python" ]; then
+                alias "pip$version=$python$version -m pip"
+            else
+                alias "ppip$version=$python$version -m pip"
+            fi
+            alias "$prefix${version}pip=$python$version -m pip"
             alias "$prefix$version=$python$version"
             alias "i$prefix$version=$python$version -c 'import IPython;IPython.start_ipython()'"
             alias "b$prefix$version=$python$version -c 'from bpython.curtsies import main;import sys;sys.exit(main())'"
