@@ -1,6 +1,0 @@
-#!/usr/bin/python3.10
-
-if __name__ == '__main__':
-    from IPython import start_ipython
-    start_ipython()
-
