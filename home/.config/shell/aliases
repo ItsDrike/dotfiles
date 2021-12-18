@@ -80,6 +80,7 @@ alias zi='z -I'         # cd with interactive fzf selection
 alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 # Python
+alias ppy='python'
 alias ipy='ipython'
 alias bpy='bpython'
 command -v ipython > /dev/null && alias py='ipython' || alias py='python'
