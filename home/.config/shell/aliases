@@ -81,7 +81,8 @@ alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
 ## Make aliases for individual cpython/pypy versions
 py_versions="\n2\n3\n3.6\n3.7\n3.8\n3.9\n3.10"
-echo "$py_versions" | while read version; do
+# shellcheck disable=SC2139
+echo "$py_versions" | while read -r version; do
     for python in python pypy; do
         [ "$python" = "python" ] && prefix="py" || prefix="pypy"
 
@@ -251,7 +252,7 @@ alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 
 # If user is not root, pass all commands via sudo/doas
-if [ $UID -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
     # Enable aliases to be sudoed/doased
     # with doas having precedence over sudo if found
 
@@ -266,7 +267,7 @@ fi
 
 # enable color support
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    (test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)") || eval "$(dircolors -b)"
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
 
@@ -284,7 +285,7 @@ fi
 
 # Normalize `open` across Linux, macOS, and Windows.
 # This is needed to make `open` function (see below) cross-platform
-if [ ! $(uname -s) = 'Darwin' ]; then
+if [ ! "$(uname -s)" = 'Darwin' ]; then
     if grep -q Microsoft /proc/version; then
         # Ubuntu on Windows using the Linux subsystem
         alias open='explorer.exe'
@@ -295,10 +296,12 @@ fi
 
 # Functions
 if [ -f ~/.config/shell/functions ]; then
-    source ~/.config/shell/functions
+    # shellcheck source=/home/itsdrike/.config/shell/functions
+    . "$HOME/.config/shell/functions"
 fi
 
 # Extra
 if [ -f ~/.config/shell/extra ]; then
-    source ~/.config/shell/extra
+    # shellcheck source=/home/itsdrike/.config/shell/extra
+    . "$HOME/.config/shell/extra"
 fi
