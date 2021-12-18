@@ -89,8 +89,11 @@ for version in 2 3 3.6 3.7 3.8 3.9 3.10; do  # Make aliases for py3.6,py3.7,...
     fi
     if command -v "ipython$version" > /dev/null; then
         alias "py$version"="ipython$version"
+        alias "ipy$version"="ipython$version"
+        alias "ppy$version"="python$version"
     else
         alias "py$version"="python$version"
+        alias "ppy$version"="python$version"
     fi
 done
 
