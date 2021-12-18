@@ -2,22 +2,22 @@
 
 # Show application listening on given port
 function port() {
-	sudo netstat -pln | grep $1 | awk '{print $NF}'
+    sudo netstat -pln | grep $1 | awk '{print $NF}'
 }
 
 # Create a new directory and enter it
 function mkd() {
-	mkdir -p "$@" && cd "$_";
+    mkdir -p "$@" && cd "$_";
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
 function o() {
-	if [ $# -eq 0 ]; then
-		open .;
-	else
-		open "$@";
-	fi;
+    if [ $# -eq 0 ]; then
+        open .;
+    else
+        open "$@";
+    fi;
 }
 
 # Use bat for nicer git diffs
@@ -26,30 +26,28 @@ function batdiff() {
 }
 
 # Determine size of a file or total size of a directory
-function dir-size() {
-	if du -b /dev/null > /dev/null 2>&1; then
-		local arg=-sbh;
-	else
-		local arg=-sh;
-	fi
-	if [[ -n "$@" ]]; then
-		\du $arg -- "$@";
-	else
-		\du $arg .[^.]* ./*;
-	fi;
+function dirsize() {
+    if du -b /dev/null > /dev/null 2>&1; then
+        local arg=-sbh;
+    else
+        local arg=-sh;
+    fi
+    if [[ -n "$*" ]]; then
+        \du $arg -- "$@";
+    else
+        \du $arg .[^.]* ./*;
+    fi;
 }
 
 function randmac() {
-	sudo ip link set dev $1 down
-	sudo macchanger -A $1
-	sudo ip link set dev $1 up
+    sudo ip link set dev $1 down
+    sudo macchanger -A $1
+    sudo ip link set dev $1 up
 }
 
 # Go to the root of a git tree
 cdgit () {
-	git rev-parse --is-inside-work-tree > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        TEMP_PWD=`pwd`
+    if [ "$(git rev-parse --is-inside-work-tree > /dev/null 2>&1)" -eq 0 ]; then
         while ! [ -d .git ]; do
             cd ..
         done
@@ -161,36 +159,37 @@ fi
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
-	local tmpFile="${@%/}.tar";
-	tar -cvf "${tmpFile}" "${@}" || return 1;
+    # Combine given names spearated with spaces as the filename
+    local tmpFile="${@%/}.tar";
+    tar -cvf "${tmpFile}" "${@}" || return 1;
 
-	size=$(
-		stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
-	);
+    size=$(
+        stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
+        stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
+    );
 
-	local cmd="";
-	if (( size < 52428800 )) && hash zopfli 2> /dev/null; then
-		# the .tar file is smaller than 50 MB and Zopfli is available; use it
-		cmd="zopfli";
-	else
-		if hash pigz 2> /dev/null; then
-			cmd="pigz";
-		else
-			cmd="gzip";
-		fi;
-	fi;
+    local cmd="";
+    if (( size < 52428800 )) && hash zopfli 2> /dev/null; then
+        # the .tar file is smaller than 50 MB and Zopfli is available; use it
+        cmd="zopfli";
+    else
+        if hash pigz 2> /dev/null; then
+            cmd="pigz";
+        else
+            cmd="gzip";
+        fi;
+    fi;
 
-	echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
-	"${cmd}" -v "${tmpFile}" || return 1;
-	[ -f "${tmpFile}" ] && rm "${tmpFile}";
+    echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
+    "${cmd}" -v "${tmpFile}" || return 1;
+    [ -f "${tmpFile}" ] && rm "${tmpFile}";
 
-	zippedSize=$(
-		stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
-	);
+    zippedSize=$(
+        stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
+        stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
+    );
 
-	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
+    echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
 
 function anonymize {
