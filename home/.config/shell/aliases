@@ -83,7 +83,7 @@ alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 alias ipy='ipython'
 alias bpy='bpython'
 command -v ipython > /dev/null && alias py='ipython' || alias py='python'
-for version in "2 3 3.6 3.7 3.8 3.9 3.10"; do  # Make aliases for py3.6,py3.7,...
+for version in 2 3 3.6 3.7 3.8 3.9 3.10; do  # Make aliases for py3.6,py3.7,...
     if ! command -v "python$version" > /dev/null; then
         continue
     fi
