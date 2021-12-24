@@ -15,13 +15,18 @@ else
 fi
 
 # If the cheatsheet doesn't already include a query, select a query
-if echo "$selected" | grep -q "/"; then
+if echo "$selected" | grep -qe "[/:]"; then
     query=""
 elif [ -n "$2" ]; then
     query="$2"
 else
     options=$(curl -s "cheat.sh/$selected/:list")
-    query=$(printf "\n$options" | fzf --bind=enter:print-query --prompt="cheat.sh query (can be empty): ")
+    query="$(printf "\n$options" | \
+        fzf --bind=alt-enter:print-query \
+        --prompt="cheat.sh query>" \
+        --header="use alt-enter to enter non-listed query"\
+        )"
+    query=$(echo "$query" | tail -1)
 fi
 query="$(echo "$query" | tr ' ' '+')"
 
