@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# shellcheck disable=SC2030,SC2031
+# shellcheck disable=SC2030,SC2031,SC2015
 # Set default keybindings (mostly from oh-my-zsh)
 
 # Make sure that the terminal is in application mode when zle is active, since
@@ -32,9 +32,9 @@ if [ -n "${terminfo[kcud1]}" ]; then
 fi
 
 # [Home] - Go to beginning of line
-([ -n "${terminfo[khome]}" ] && bindkey "${terminfo[khome]}" beginning-of-line) || bindkey "^[[H" beginning-of-line
+[ -n "${terminfo[khome]}" ] && bindkey "${terminfo[khome]}" beginning-of-line || bindkey "^[[H" beginning-of-line
 # [End] - Go to end of line
-([ -n "${terminfo[kend]}" ] && bindkey "${terminfo[kend]}"  end-of-line) || bindkey "^[[F"  end-of-line
+[ -n "${terminfo[kend]}" ] && bindkey "${terminfo[kend]}"  end-of-line || bindkey "^[[F"  end-of-line
 
 # [Shift-Tab] - move through the completion menu backwards
 [ -n "${terminfo[kcbt]}" ] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
@@ -42,7 +42,7 @@ fi
 # [Backspace] - delete backward
 bindkey '^?' backward-delete-char
 # [Delete] - delete forward
-([ -n "${terminfo[kdch1]}" ] && bindkey "${terminfo[kdch1]}" delete-char) || bindkey "^[[3~" delete-char
+[ -n "${terminfo[kdch1]}" ] && bindkey "${terminfo[kdch1]}" delete-char || bindkey "^[[3~" delete-char
 # [Ctrl-Delete] - delete whole forward-word
 bindkey '^[[3;5~' kill-word
 
