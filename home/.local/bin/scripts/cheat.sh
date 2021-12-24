@@ -11,6 +11,10 @@ if [ -n "$1" ]; then
     fi
 else
     selected=$(printf "$SELECTABLE" | fzf)
+    if [ $? -ne 0 ]; then
+        echo "Invalid selection: '$selected'"
+        exit 1
+    fi
     selected=$(printf "$selected" | tail -1)
 fi
 
