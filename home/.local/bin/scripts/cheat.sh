@@ -29,7 +29,7 @@ else
         fzf --bind=alt-enter:print-query \
         --print-query \
         --prompt="cheat.sh query>" \
-        --header="use alt-enter to enter non-listed query"\
+        --header="Use alt-enter to enter non-listed query. Empty queries are allowed."\
         )"
     query=$(echo "$query" | tail -1)
 fi
