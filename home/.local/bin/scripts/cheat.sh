@@ -27,6 +27,7 @@ else
     options=$(curl -s "cheat.sh/$selected/:list")
     query="$(printf "\n$options" | \
         fzf --bind=alt-enter:print-query \
+        --print-query \
         --prompt="cheat.sh query>" \
         --header="use alt-enter to enter non-listed query"\
         )"
