@@ -170,6 +170,7 @@ alias kernel-configure='cd /usr/src/linux && make menuconfig'
 
 # System actions
 alias sv='systemctl'
+alias pacnew="find / -name '*.pacnew' 2>/dev/null" # Search for all new configurations after pacman update
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
 alias upload='curl -F "f:1=<-" ix.io'
 alias upload-journal='sudo journalctl -b -1 | upload' # Upload journalctl from last boot to ix.io
