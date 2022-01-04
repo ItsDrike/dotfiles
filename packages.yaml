@@ -130,6 +130,7 @@ pacman:
 aur:
     # System
     - mkinitcpio-numlock  # Enable numlock in initramfs (before asking for encryption key)
+    - topgrade            # A tool to update entire system (pacman, yay, pip, npm, git, neovim, ...)
 
     # CLI
     - pixterm     # Convert images to ANSI colored blocks
