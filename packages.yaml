@@ -125,6 +125,7 @@ pacman:
 
     # Development
     - git-delta         # Neat tool for showing git diffs and resolving merges
+    - codespell         # Spell checker for code files
     #- code              # Open sourced version of vscode (doesn't have good extensions support)
 
 aur:
