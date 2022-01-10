@@ -141,6 +141,7 @@ aur:
 
     # Networking/Internet
     - ngrok       # Forward your localhost without ip recovery
+    - ipinfo-cli  # Official cli tool for ipinfo (provides geolocation and other info about given IP)
 
     # Security
     - opensnitch  # Application level firewall with traffic monitoring (Alternatively, there's portmaster)
