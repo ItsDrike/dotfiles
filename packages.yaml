@@ -126,6 +126,7 @@ pacman:
     # Development
     - git-delta         # Neat tool for showing git diffs and resolving merges
     - codespell         # Spell checker for code files
+    - github-cli        # Manage multiple GitHub features from terminal
     #- code              # Open sourced version of vscode (doesn't have good extensions support)
 
 aur:
@@ -169,4 +170,5 @@ aur:
     #- code-marketplace        # Enable the offical MS vscode marketplace for 'code' (code-oss)
 git:
     - https://aur.archlinux.org/yay-git.git # Pacman wrapper and AUR helper
-
+github-cli:
+  - meiji163/gh-notify
