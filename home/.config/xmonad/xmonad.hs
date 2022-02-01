@@ -64,6 +64,8 @@ myModMask = mod4Mask
 -- Preferred programs
 myTerminal = "alacritty"
 myBrowser = "firefox"
+myFileManager = "pcmanfm"
+myCliFileManager = "lf"
 
 -- Preferred font
 myFont :: String
@@ -82,7 +84,7 @@ myFocusedBorderColor :: String
 myFocusedBorderColor = "#bc96da"
 
 -- Default workspaces. Number of workspaces is determined by the list length.
-myWorkspaces = ["dev", "www", "sys", "chat", "mus", "vid", "doc", "virt", "etc"]
+myWorkspaces = [" dev ", " www ", " sys ", " chat ", " mus ", " vid ", " doc ", " virt ", " etc "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
 -- Make the workspaces clickable
@@ -104,12 +106,11 @@ myKeys =
     [ ("M-S-r", spawn "xmonad --recompile; xmonad --restart")   -- Recompiles xmonad
     , ("M-S-q", io exitSuccess)                                 -- Quits xmonad
 
-    -- Lock screen
-    , ("C-M-l", spawn "xset s activate") -- Send DPMS trigger for lockscreen
-
     -- Programs
-    , ("M-b",           spawn (myBrowser))
     , ("M-<Return>",    spawn (myTerminal))
+    , ("M-b",           spawn (myBrowser))
+    , ("M-v",           spawn (myFileManager))
+    , ("M-M1-v",        spawn (myTerminal ++ " -e " ++ myCliFileManager))
     , ("M-M1-h",        spawn (myTerminal ++ " -e htop"))
     , ("M-M1-b",        spawn (myTerminal ++ " -e bpytop"))
     , ("M-M1-p",        spawn (myTerminal ++ " -e ipython"))
@@ -127,7 +128,9 @@ myKeys =
 
     -- Script shortcuts
     , ("M-S-p",         spawn "setbg ~/Pictures/Wallpapers/Active")  -- Set random background
-    , ("M-S-d",         spawn "displayselect")
+    , ("M-S-d",         spawn "displayselect")      -- Set display configurations
+    , ("M-C-l",         spawn "lockscreen lock")    -- Lock the screen
+    , ("M-C-S-l",       spawn "lockscreen toggle")  -- Toggle automatic locking
 
     -- Kill windows
     , ("M-w", kill1)        -- Kill the currently focused client
@@ -141,12 +144,13 @@ myKeys =
     , ("M-.", nextScreen)   -- Switch focus to next monitor
     , ("M-,", prevScreen)   -- Switch focus to prev monitor
     , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-    , ("M-S-<KP-Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+    , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
     -- Floating windows
-    , ("M-f",   sendMessage (T.Toggle "floats"))    -- Toggles 'floats' layout
+    , ("M-f",   withFocused $ float)                -- Make window float
     , ("M-t",   withFocused $ windows . W.sink)     -- Push floating window back to tile
     , ("M-S-t", sinkAll)                            -- Push all floating windows to tile
+    , ("M-S-f", sendMessage (T.Toggle "floats"))    -- Toggles 'floats' layout
 
     -- Increase/decrease spacing (gaps)
     , ("C-M1-j", decWindowSpacing 4)    -- Decrease window spacing
@@ -315,9 +319,11 @@ myManageHook = composeAll
     , className =? "splash"             --> doFloat
     , className =? "toolbar"            --> doFloat
     , className =? "Qalculate-gtk"      --> doFloat
+    , className =? "udiskie"            --> doFloat
     , isFullscreen                      --> doFullFloat
     -- auto-shift applications to their respecitve workspaces
     , className =? "discord"            --> doShift ( myWorkspaces !! 3 )
+    , className =? "Element"            --> doShift ( myWorkspaces !! 3 )
     , className =? "Code"               --> doShift ( myWorkspaces !! 0 )
     , className =? "Stremio"		--> doShift ( myWorkspaces !! 5 )
     , title     =? "Mozilla Firefox"    --> doShift ( myWorkspaces !! 1 )
@@ -347,15 +353,18 @@ myLogHook :: Handle -> Handle -> X ()
 myLogHook xmproc0 xmproc1 = dynamicLogWithPP $ xmobarPP
     { ppOutput = \x -> hPutStrLn xmproc0 x      -- xmobar on monitor 1
                     >> hPutStrLn xmproc1 x      -- xmobar on monitor 2
-    , ppCurrent = xmobarColor "#98be65" "" . wrap " [" "] "               -- Current workspace
-    , ppVisible = xmobarColor "#98be65" "" . wrap " " " " . clickable     -- Visible but not current workspace
-    , ppHidden  = xmobarColor "#82AAFF" "" . wrap " *" " " . clickable    -- Hidden workspaces
-    , ppHiddenNoWindows = xmobarColor "#c792ea" "" . wrap " " " " . clickable -- Hidden workspaces (no windows)
-    , ppTitle  = xmobarColor "#b3afc2" "" . shorten 60                    -- Title of active window
-    , ppSep    = "<fc=#666666> | </fc>"                                   -- Separator character
-    , ppUrgent = xmobarColor "#C45500" "" . wrap " !" "! "                -- Urgent workspace
-    , ppExtras = [windowCount]                                            -- # of windows current workspace
-    , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                          -- order of things in xmobar
+
+    , ppCurrent = xmobarColor "#98be65" ""                      -- Current workspace
+        . wrap "<box type=Bottom width=2 mb=2 color=#98be65>" "</box>" . clickable
+    , ppVisible = xmobarColor "#98be65" "" .clickable           -- Visible but not current workspace
+    , ppHidden  = xmobarColor "#82aaff" "" . clickable          -- Hidden workspaces
+    , ppHiddenNoWindows = xmobarColor "#c792ea" "" . clickable  -- Hidden workspaces (no windows)
+
+    , ppTitle  = xmobarColor "#b3afc2" "" . shorten 60          -- Title of active window
+    , ppSep    = "<fc=#666666> | </fc>"                         -- Separator character
+    , ppUrgent = xmobarColor "#c45500" "" . wrap "!" "!"      -- Urgent workspace
+    , ppExtras = [windowCount]                                  -- # of windows current workspace
+    , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                -- order of things in xmobar
     }
 
 

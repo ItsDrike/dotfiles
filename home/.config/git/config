@@ -1,22 +1,77 @@
-# This is Git's per-user configuration file.
 [user]
-	name = ItsDrike
-	email = itsdrikeofficial@gmail.com
-	signingkey = B5F6B41F708C3ADD
-[credential]
-	helper = store --file ~/.config/git/git-credentials
+    name = ItsDrike
+    email = itsdrike@protonmail.com
+    signingkey = FB8CA11A2CF3A843
 [alias]
-	l = log --oneline --decorate --all --graph
-	lol = log --pretty=oneline --abbrev-commit --graph
-	lg = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+    quickclone = "clone --single-branch --depth=1"
+    bareclone = "!sh -c 'git clone --bare \"$0\" \"$1\"/.bare; echo \"gitdir: ./.bare\" > \"$1/.git\"'"
+
+    m = "merge"
+    p = "push"
+    pl = "pull"
+    f = "fetch"
+
+    s = "status --short --branch"
+    ss = "status"
+
+    ch = "checkout"
+    chb = "checkout -b"
+
+    undo = "reset --soft HEAD~"
+    redo = "reset HEAD@{1}"
+    unstage = "restore --staged"
+
+    c = "commit"
+    ca = "commit --ammend"
+    ci = "commit --interactive"
+    cm = "commit --message"
+    cv = "commit --verbose"
+
+    a = "add"
+    aa = "add --all"
+    ap = "add --patch"
+    au = "add --update"
+
+    d = "diff"
+    dc = "diff --cached"
+    ds = "diff --staged"
+    dw = "diff --word-diff"
+
+    b = "branch"
+    ba = "branch --all"
+    bd = "branch --delete"
+    bD = "branch --delete --force"
+    bm = "branch --move"
+    bM = "branch --move --force"
+
+    l = "log --oneline --decorate --all --graph"
+    lp = "log --patch"
+    lo = "log --pretty=oneline --abbrev-commit --graph"
+    lg = "log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+
+    set-upstream = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
+
+    stash-staged = "!sh -c 'git stash --keep-index; git stash push -m \"staged\" --keep-index; git stash pop stash@{1}'"
+
+    find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+    show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+[credential]
+    helper = store --file ~/.config/git/git-credentials
+[core]
+    excludefile = ~/.config/git/global_gitignore
+    editor = nvim
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    line-numbers = true
 [merge]
-	tool = meld
-[mergetool]
-	keepbackup = false
-	keeptemporaries = false
+    conflictstyle = diff3
 [diff]
-	tool = meld
+    tool = vimdiff
+[fetch]
+    prune = true
 [commit]
-	gpgsign = true
-[gpg]
-	program = /usr/bin/gpg
+    gpgsign = true
+[init]
+    defaultBranch = main

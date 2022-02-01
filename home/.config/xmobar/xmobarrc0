@@ -33,40 +33,49 @@ commands = [
         -- Gather and format CPU usage information
         -- if it's above 50%, we consider it high and make it red
         Run Cpu [
-        "-t", "<fn=1>\xf108</fn>  cpu: <total>%",
+        "-t", "<fn=1>\xf2db</fn>  <total>%",
         "-H","50",
         "--high","red"
         ] 20,
 
         -- Ram used number and percent
-        Run Memory ["-t", "<fn=1>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20,
+        Run Memory ["-t", "<fn=1>\xf538</fn>  <used>M (<usedratio>%)"] 20,
 
         -- Battery information. This is likely to require some customization
         -- based upon your specific hardware. Or, for a desktop you may want
         -- to just remove this section entirely.
-        Run Battery [
-        "-t", "<fn=1>\xf240</fn> <acstatus> <left>% - <timeleft>",
-        "--",
-        "-i", "<fc=#75c44c>AC</fc>",
-        "-O", "<fc=#75c44c>AC</fc>",
-        "-o", "<fc=#ff0000>AUX</fc>",
-        "-L", "12",
-        "-h", "green",
-        "-l", "red"
-        ] 10,
+        --Run Battery [
+        --"-t", "<fn=1>\xf240</fn> <acstatus> <left>% - <timeleft>",
+        --"--",
+        --"-i", "<fc=#75c44c>AC</fc>",
+        --"-O", "<fc=#75c44c>AC</fc>",
+        --"-o", "<fc=#ff0000>AUX</fc>",
+        --"-L", "12",
+        --"-h", "green",
+        --"-l", "red"
+        --] 10,
 
         -- Time and date
         Run Date "<fn=1>\xf017</fn>  %H:%M %b %d %Y" "date" 50,
 
         -- Network up and down
-        Run Network "wlp2s0" ["-t", "<fn=1>\xf0ab</fn>  <rx>kb  <fn=1>\xf0aa</fn>  <tx>kb"] 20,
+        --Run Network "wlp4s0" ["-t", "<fn=1>\xf0ab</fn>  <rx>kb  <fn=1>\xf0aa</fn>  <tx>kb"] 20,
         --Run Network "enp3s0" ["-t", "<fn=1>\xf0ab</fn>  <rx>kb  <fn=1>\xf0aa</fn>  <tx>kb"] 20,
 
+        -- Uptime
+        Run Uptime ["-t", "<fn=1>\xf011</fn>  <days>d <hours>h"] 360,
+
         -- Show free disk space on /
-        Run DiskU [("/", "<fn=1>\xf0c7</fn>  hdd: <free>")] [] 60,
+        Run DiskU [("/", "<fn=1>\xf0c7</fn>  <free>")] [] 60,
 
         -- Get kernel version from uname -r
         Run Com "uname" ["-r"] "" 3600,
+
+        -- Volume info
+        Run Volume "default" "Master" ["-t", "<fn=1>\xf028</fn>  <volume>%"] 5,
+
+        -- Get bitcoin price from a custom script
+        Run Com "/home/itsdrike/.local/bin/scripts/bitcoin" [] "bitcoin" 300,
 
         -- Add dynamic invisible XPM icon that resizes to accomodate trayer
         -- this needs to be an absolute string path, env vars or relpaths aren't accepted
@@ -93,12 +102,21 @@ template = "\
     \<icon=haskell_20.xpm/>   \
     \<fc=#666666>|</fc>  %UnsafeStdinReader% }{ \
     \<fc=#666666>|</fc>  <fc=#b3afc2><fn=2></fn>  %uname% </fc> \
-    \<fc=#666666>|</fc>  <fc=#9ce996> %battery% </fc> \
-    \<fc=#666666>|</fc>  <fc=#ecbe7b> %cpu% </fc> \
     \<fc=#666666>|</fc>  <fc=#ff6c6b> %memory% </fc> \
     \<fc=#666666>|</fc>  <fc=#51afef> %disku% </fc> \
-    \<fc=#666666>|</fc>  <fc=#98be65> %wlp2s0% </fc> \
+    \<fc=#666666>|</fc>  <fc=#78db32> %cpu% </fc> \
+    \<fc=#666666>|</fc>  <fc=#ecbe7b> %default:Master% </fc> \
+    \<fc=#666666>|</fc>  <fc=#98be65> %uptime% </fc> \
+    \<fc=#666666>|</fc>  <fc=#efcb10><fn=2></fn>  %bitcoin% </fc> \
     \<fc=#666666>|</fc>  <fc=#46d9ff> %date% </fc> \
     \<fc=#666666>|</fc>  %trayerpad%\
     \ "
 }
+
+-- Abandoned template strings
+-- Network Wifi:
+-- \<fc=#666666>|</fc>  <fc=#98be65> %wlp4s0% </fc> \
+-- Network Ethernet:
+-- \<fc=#666666>|</fc>  <fc=#98be65> %enp3s0% </fc> \
+-- Battery:
+-- \<fc=#666666>|</fc>  <fc=#9ce996> %battery% </fc> \

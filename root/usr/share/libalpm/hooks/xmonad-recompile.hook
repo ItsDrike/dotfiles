@@ -1,0 +1,15 @@
+# Pacman hook to automatically recompile xmonad if it or any of it's dependencies were updated
+
+[Trigger]
+Operation = Upgrade
+Operation = Install
+Type = Package
+Target = xmonad*
+Target = haskell*
+
+[Action]
+Description = Recompiling Xmonad after package update...
+When = PostTransaction
+Depends = coreutils
+Depends = xmonad
+Exec = /usr/bin/bash -euc "command -v xmonad > /dev/null || exit 0; find /home -mindepth 1 -maxdepth 1 -type d -printf '%P\0' | xargs -0I'{}' su '{}' -c 'xmonad --recompile || true'"

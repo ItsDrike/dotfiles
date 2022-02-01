@@ -1,55 +1,58 @@
-#!/usr/bin/env zsh
+#!/bin/sh
+# TODO: Currently, this file isn't entirely POSIX compatible,
+# it will run fine with bash or zsh, however some functions may cause
+# issues with pure POSIX. The fill will however run fine, the errors
+# would only occur if the incompatible functions would be started.
 
 # Show application listening on given port
-function port() {
-	sudo netstat -pln | grep $1 | awk '{print $NF}'
+port() {
+    sudo netstat -pln | grep "$1" | awk '{print $NF}'
 }
 
 # Create a new directory and enter it
-function mkd() {
-	mkdir -p "$@" && cd "$_";
+mkd() {
+    # shellcheck disable=SC2164
+    mkdir -p "$1" && cd "$1";
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
-function o() {
-	if [ $# -eq 0 ]; then
-		open .;
-	else
-		open "$@";
-	fi;
+o() {
+    if [ $# -eq 0 ]; then
+        open .;
+    else
+        open "$@";
+    fi;
 }
 
 # Use bat for nicer git diffs
-function batdiff() {
+batdiff() {
     git diff --name-only --diff-filter=d | xargs bat --diff
 }
 
 # Determine size of a file or total size of a directory
-function dir-size() {
-	if du -b /dev/null > /dev/null 2>&1; then
-		local arg=-sbh;
-	else
-		local arg=-sh;
-	fi
-	if [[ -n "$@" ]]; then
-		\du $arg -- "$@";
-	else
-		\du $arg .[^.]* ./*;
-	fi;
+dirsize() {
+    if du -b /dev/null > /dev/null 2>&1; then
+        arg=-sbh;
+    else
+        arg=-sh;
+    fi
+    if [[ -n "$*" ]]; then
+        \du $arg -- "$@";
+    else
+        \du $arg .[^.]* ./*;
+    fi;
 }
 
-function randmac() {
-	sudo ip link set dev $1 down
-	sudo macchanger -A $1
-	sudo ip link set dev $1 up
+randmac() {
+    sudo ip link set dev "$1" down
+    sudo macchanger -A "$1"
+    sudo ip link set dev "$1" up
 }
 
 # Go to the root of a git tree
 cdgit () {
-	git rev-parse --is-inside-work-tree > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        TEMP_PWD=`pwd`
+    if [ "$(git rev-parse --is-inside-work-tree > /dev/null 2>&1)" -eq 0 ]; then
         while ! [ -d .git ]; do
             cd ..
         done
@@ -61,76 +64,76 @@ cdgit () {
 }
 
 # Create a data URL from a file
-function dataurl() {
-	local mimeType=$(file -b --mime-type "$1");
-	if [[ $mimeType == text/* ]]; then
-		mimeType="${mimeType};charset=utf-8";
-	fi
-	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+dataurl() {
+    mimeType="$(file -b --mime-type "$1")"
+    if echo "$mimeType" | grep -e "^text/.*$" >/dev/null; then
+        mimeType="${mimeType};charset=utf-8"
+    fi
+    echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
 
 # `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
-function tre() {
-	tree -I '.git|node_modules|bower_components' --group-directories-first "$@" | less -FRNX;
+tre() {
+    tree -I '.git|node_modules|bower_components' --group-directories-first "$@" | less -FRNX;
 }
 
 
 
 # Show all the names (CNs and SANs) listed in the SSL certificate
 # for a given domain
-function getcertnames() {
-	if [ -z "${1}" ]; then
-		echo "ERROR: No domain specified.";
-		return 1;
-	fi;
+getcertnames() {
+    if [ -z "${1}" ]; then
+        echo "ERROR: No domain specified.";
+        return 1;
+    fi;
 
-	local domain="${1}";
-	echo "Testing ${domain}…";
-	echo ""; # newline
+    domain="${1}";
+    echo "Testing ${domain}…";
+    echo ""; # newline
 
-	local tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
-		| openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1);
+    tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
+        | openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1);
 
-	if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
-		local certText=$(echo "${tmp}" \
-			| openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
-			no_serial, no_sigdump, no_signame, no_validity, no_version");
-		echo "Common Name:";
-		echo ""; # newline
-		echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//";
-		echo ""; # newline
-		echo "Subject Alternative Name(s):";
-		echo ""; # newline
-		echo "${certText}" | grep -A 1 "Subject Alternative Name:" \
-			| sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2;
-		return 0;
-	else
-		echo "ERROR: Certificate not found.";
-		return 1;
-	fi;
+    if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
+        certText=$(echo "${tmp}" \
+            | openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
+            no_serial, no_sigdump, no_signame, no_validity, no_version");
+        echo "Common Name:";
+        echo ""; # newline
+        echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//";
+        echo ""; # newline
+        echo "Subject Alternative Name(s):";
+        echo ""; # newline
+        echo "${certText}" | grep -A 1 "Subject Alternative Name:" \
+            | sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2;
+        return 0;
+    else
+        echo "ERROR: Certificate not found.";
+        return 1;
+    fi;
 }
 
 # Compare original and gzipped file size
-function gz-compare() {
-	local origsize=$(wc -c < "$1");
-	local gzipsize=$(gzip -c "$1" | wc -c);
-	local ratio=$(echo "$gzipsize * 100 / $origsize" | bc -l);
-	printf "orig: %d bytes\n" "$origsize";
-	printf "gzip: %d bytes (%2.2f%%)\n" "$gzipsize" "$ratio";
+gz_compare() {
+    origsize=$(wc -c < "$1");
+    gzipsize=$(gzip -c "$1" | wc -c);
+    ratio=$(echo "$gzipsize * 100 / $origsize" | bc -l);
+    printf "orig: %d bytes\n" "$origsize";
+    printf "gzip: %d bytes (%2.2f%%)\n" "$gzipsize" "$ratio";
 }
 
 # Extract almost any archive
-function extract {
+extract() {
  if [ -z "$1" ]; then
     # display usage if no parameters given
     echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
     echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
     return 1
  else
-    for n in $@
+    for n in "$@"
     do
       if [ -f "$n" ] ; then
           case "${n%,}" in
@@ -160,44 +163,47 @@ fi
 }
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
-function targz() {
-	local tmpFile="${@%/}.tar";
-	tar -cvf "${tmpFile}" "${@}" || return 1;
+targz() {
+    # Combine given names spearated with spaces as the filename
+    tmpFile="${*%/}.tar"
 
-	size=$(
-		stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
-	);
+    tar -cvf "${tmpFile}" "${@}" || return 1
 
-	local cmd="";
-	if (( size < 52428800 )) && hash zopfli 2> /dev/null; then
-		# the .tar file is smaller than 50 MB and Zopfli is available; use it
-		cmd="zopfli";
-	else
-		if hash pigz 2> /dev/null; then
-			cmd="pigz";
-		else
-			cmd="gzip";
-		fi;
-	fi;
+    size=$(
+        stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
+        stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
+    );
 
-	echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
-	"${cmd}" -v "${tmpFile}" || return 1;
-	[ -f "${tmpFile}" ] && rm "${tmpFile}";
+    cmd="";
+    if (( size < 52428800 )) && hash zopfli 2> /dev/null; then
+        # the .tar file is smaller than 50 MB and Zopfli is available; use it
+        cmd="zopfli";
+    else
+        if hash pigz 2> /dev/null; then
+            cmd="pigz";
+        else
+            cmd="gzip";
+        fi;
+    fi;
 
-	zippedSize=$(
-		stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
-	);
+    echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
+    "${cmd}" -v "${tmpFile}" || return 1;
+    [ -f "${tmpFile}" ] && rm "${tmpFile}";
 
-	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
+    zippedSize=$(
+        stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
+        stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
+    );
+
+    echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
 
-function anonymize {
+anonymize() {
     # Reset the prompt on initial run to allow this script
     # to be ran multiple times without user having to reload
     # PS1 manually
-    source ${XDG_CONFIG_DIR:-$HOME/.config}/shell/prompt
+    # shellcheck source=/home/itsdrike/.config/shell/prompt
+    . "${XDG_CONFIG_DIR:-$HOME/.config}/shell/prompt"
 
     # Regular expression to match 0-255 numbers (color)
     color_int_re='^(0+)?([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'
@@ -212,7 +218,7 @@ function anonymize {
     AT_COLOR="%F{004}"
     MACHINE_COLOR="%F{070}"
 
-    while [[ $# -gt 0 ]]; do
+    while [ $# -gt 0 ]; do
         key=$1
 
         case $key in

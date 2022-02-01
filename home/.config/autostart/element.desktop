@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Element
+StartupWMClass=element
+Comment=Chat client for matrix protocl
+GenericName=Internet Messenger
+Exec=/usr/bin/element-desktop --hidden
+Icon=element
+Type=Application
+Categories=Network;InstantMessaging;
+Path=/usr/bin

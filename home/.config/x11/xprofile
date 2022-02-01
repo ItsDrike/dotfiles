@@ -6,18 +6,14 @@
 # Set monitor order
 xrandr --output HDMI-1 --auto --output eDP-1 --right-of HDMI-1 --auto &
 
-# Set X11 lockscreen delays (DPMS)
-xset s on &
-xset s 600 5 & # 10 minutes, 5s for dimmer
-
-# XSS lock with xsecurelock
-xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
+# Start xsecurelock lockscreen with xss-lock
+~/.local/bin/scripts/lockscreen start &
 
 # Set the background with a custom `setbg` script
 setbg &
 
 # Use xresources file in ~/.config/x11
-xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources
+xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources &
 
 # Start compositor manager to allow transparency
 picom -b --experimental-backends &
@@ -41,12 +37,11 @@ aa-notify -p &
 # Enable numlock with numlockx
 numlockx &
 
-# Run emacs daemon
-#emacs --daemon &
-
-# Run urxvt daemon
-#urxvtd -q -o -f &
+# Udiskie for simple mounting and notifications, no automount for security reasons
+udiskie -A -s &
 
 # Enable running applications from chroot
 xhost +local:
 
+# Change x shaped default cursor (fonts are located in /usr/include/X11/cursorfont.h)
+xsetroot -cursor_name left_ptr

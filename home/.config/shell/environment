@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Environmental variable definitions.
 # This file is only sourced once after login, unlike .zshrc/.bashrc
@@ -8,6 +8,8 @@
 # which means the XDG definitions will be ignored anyway, and
 # defining them may break programs when root is actually logged in.
 
+# Define some variables for POSIX compatibility
+uid="$(id -u)"
 
 # Default programs
 export EDITOR="nvim"
@@ -18,7 +20,7 @@ export TERMINAL="alacritty"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_RUNTIME_DIR="/run/user/$UID"
+export XDG_RUNTIME_DIR="/run/user/$uid"
 
 # Per-Application XDG settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
@@ -42,6 +44,7 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 
 # Colorful man pages
 # If bat is installed, use it as manpager
+# shellcheck disable=SC2155
 if command -v bat > /dev/null; then
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 else
@@ -56,7 +59,12 @@ fi
 
 # Other program settings
 export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
-export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
-export XSECURELOCK_SHOW_HOSTNAME=0 # Don't show hostname in xsecurelock
-#export QT_QPA_PLATFORMTHEME="gtk2"	# Have QT use gtk2 theme.
+export PIPENV_VENV_IN_PROJECT=1         # Force pipenv to create new environments within projects ./.venv
+export XSECURELOCK_SHOW_HOSTNAME=0      # Don't show hostname in xsecurelock
+export XSECURELOCK_SHOW_DATETIME=1      # Show current date and time in xsecurelock
+export QT_QPA_PLATFORMTHEME="qt5ct"     # Have QT use theme from qt5ct.
+#export QT_STYLE_OVERRIDE="gtk2"        # Have QT use the gtk2 theme (needs aur/qt5-styleplugins)
+
+# Remove irrelevant variables added for posix compatibility
+unset posix
 

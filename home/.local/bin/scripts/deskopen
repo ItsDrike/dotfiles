@@ -7,5 +7,5 @@ exec_line=$(grep '^Exec' "$1" | tail -1)
 cmd=$(echo $exec_line | sed 's/^Exec=//' | sed 's/%.//')
 # Remove "" around command (if present)
 cmd=$(echo $cmd | sed 's/^"//g' | sed 's/" *$//g')
-# Run the exec line of the application in the background
-$($cmd) &
+# Run the exec line of the application using /bin/sh
+/bin/sh -c "$cmd"
