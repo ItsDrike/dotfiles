@@ -13,8 +13,8 @@ Config {
 -- Additional fonts can be defined for emoji support
 font = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true",
 additionalFonts = [
-        "xft:Font Awesome 5 Free Solid:pixelsize=12",
-        "xft:Font Awesome 5 Brands:pixelsize=12"
+        "xft:Font Awesome 6 Free Solid:pixelsize=12",
+        "xft:Font Awesome 6 Brands:pixelsize=12"
         --"xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
 ],
 bgColor = "#282c34",
