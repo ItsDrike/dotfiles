@@ -25,6 +25,7 @@ pacman:
     - pacman-contrib  # Includes multiple additional tools related to pacman
     - lshw            # List hardware components and their attributes
     - trash-cli       # Trash interraction (rather than permanent removal)
+    #- libfaketime     # Simulate different time for single command
     #- figlet          # generate ascii text banners in terminal
 
     # TUI
