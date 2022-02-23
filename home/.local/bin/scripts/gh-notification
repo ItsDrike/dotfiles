@@ -26,7 +26,7 @@ Options:
 -v | --verbose: Shows info about what's happening.
 -vv | --very-verbose: Implies --verbose, shows some more info about what's happening
 -vvv | --very-very-verbose: Implies --very-verbose and --temp-files, shows even more details, usually just for debugging
--d | --dry-run: Run without sending any notificatinos, when ran with -r, this will also prevent any actual cache file removal
+-d | --dry-run: Run without sending any notificatinos, when ran with -r, this will also prevent any actual cache file removals
 -nc | --no-cache: Ignore the cache and send all found notifications, even if they were already sent before.
 -nd | --no-display: When the script is ran from headless mode (such as by crontab), this will still attempt to set the DISPLAY and send the desktop notification
 -r | --reset: Resets notification cache (storing which notifications were already sent), skips notification sending, WARNING: removes the whole cache, regardless of '--all')
@@ -86,13 +86,13 @@ if [ $RESET -eq 1 ]; then
         exit 1
     fi
     out="$(find /tmp -maxdepth 1 -name 'gh-notification-*' 2>/dev/null)"
-    total="$(printf "$out\n" | wc -l)"
+    total="$(printf "%s\n" "$out" | wc -l)"
     # Since we always end with a newline (to count the last entry as a line), we always get
     # at least 1 as a total here, even if $out is empty. If we didn't use the \n, we'd always
     # get 0, even if there was a single line, since it wasn't ended with a newline. To figure
     # out whether there really is a line or not when we get a total of 1, we run character
     # amount check as well
-    [ $total -eq 1 ] && [ "$(printf "$out" | wc -c)" -eq 0 ] && total=0
+    [ "$total" -eq 1 ] && [ "$(printf "%s" "$out" | wc -c)" -eq 0 ] && total=0
 
     if [ $total -gt 0 ]; then
         # Since the loop is running in a pipe, it can't modify variables, but we need to know
@@ -100,15 +100,15 @@ if [ $RESET -eq 1 ]; then
         # teporary file
         fail_files_file="$(mktemp)"
 
-        printf "$out\n" | while read -r file_name; do
+        printf "%s\n" "$out" | while read -r file_name; do
             # If desired, let user know about the found notification cache file
             if [ $VERY_VERBOSE -eq 1 ] || [ $TEMP_SHOW -eq 1 ]; then
                 contents="$(cat "$file_name")"
-                title="$(printf "$contents" | awk -F '~@~' '{ print $1 }')"
+                title="$(printf "%s" "$contents" | awk -F '~@~' '{ print $1 }')"
 
                 echo "Found cache tempfile: '$file_name' - $title"
                 if [ $VERY_VERY_VERBOSE -eq 1 ]; then 
-                    description="$(printf "$contents" | awk -F '~@~' '{ print $2 }')"
+                    description="$(printf "%s" "$contents" | awk -F '~@~' '{ print $2 }')"
                     echo "Notification description: $description"
                 fi
             fi
@@ -116,7 +116,7 @@ if [ $RESET -eq 1 ]; then
             if [ $DRY_RUN -ne 1 ]; then
                 # In case `rm` fails, keep track of which files it failed on
                 if ! rm "$file_name" 2>/dev/null; then
-                    printf "$file_name\n" >> "$fail_files_file"
+                    printf "%s\n" "$file_name" >> "$fail_files_file"
                 fi
             else
                 [ $VERY_VERY_VERBOSE -eq 1 ] && echo "Tempfile removal skipped (dry-run)"
@@ -128,12 +128,12 @@ if [ $RESET -eq 1 ]; then
 
         # Recover failed files from the temporary file
         failed_files="$(cat "$fail_files_file")"
-        failed="$(printf "$fail_files_file" | wc -l)"
+        failed="$(printf "%s" "$fail_files_file" | wc -l)"
         rm "$fail_files_file"
 
         if [ $VERBOSE -eq 1 ]; then
             echo "Notification cache was reset."
-            removed_count="$(($total-$failed))"
+            removed_count="$(("$total"-"$failed"))"
             if [ $DRY_RUN -eq 1 ]; then
                 echo "Removed $removed_count files (dry-run: no files were actually removed)"
             else
@@ -143,7 +143,7 @@ if [ $RESET -eq 1 ]; then
 
         # If some cache files were'nt removed successfully, inform the user about it
         # regardless of verbosity, this shouldn't go silent, even though it may be fine
-        if [ $failed -gt 0 ]; then
+        if [ "$failed" -gt 0 ]; then
             echo "WARNING: Failed to remove $failed files."
             echo "You probably don't have permission to remove these."
             echo "Perhaps these were made by someone else? If so, you can ignore this warning."
@@ -151,7 +151,7 @@ if [ $RESET -eq 1 ]; then
                 echo "Run with --verbose to show exactly which files weren't removed."
             else
                 echo "These are:"
-                echo "$fail_files"
+                echo "$failed_files"
             fi
         fi
     else
@@ -165,13 +165,16 @@ fi
 # ------------------------------------------------------------------------------------
 # This runs notify-send, and if NO_DISPLAY is set and we're running in headless
 # mode, this will still try to send the notification by manually setting DISPLAY
+# This also has a special handle that checks if dunst is the notification daemon
+# in which case instead of using notify-send, we use dunstify to send the 
+# notification, with which we can also specify some more values.
 send_notify() {
     if [ $NO_DISPLAY -eq 1 ]; then
         XDG_RUNTIME_DIR="/run/user/$(id -u)" \
         DISPLAY=:0 \
-        notify-send --urgency="$URGENCY" "$1" "$2"
+        notify-send --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
     else
-        notify-send --urgency="$URGENCY" "$1" "$2"
+        notify-send --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
     fi
 }
 
@@ -179,17 +182,17 @@ send_notify() {
 # Obtain notifications and show them, if they weren't showed (aren't in cache) already
 # ------------------------------------------------------------------------------------
 # Request unread notifications with gh-notify extension for github-cli
-[ $ALL -eq 1 ] && out="$(gh notify -s -a)" || out="$(gh notify -s)"
-total="$(printf "$out\n" | wc -l)"
+[ "$ALL" -eq 1 ] && out="$(gh notify -s -a)" || out="$(gh notify -s)"
+total="$(printf "%s\n" "$out" | wc -l)"
 # Since we always end with a newline (to count the last entry as a line), we always get
 # at least 1 as a total here, even if $out is empty. If we didn't use the \n, we'd always
 # get 0, even if there was a single line, since it wasn't ended with a newline. To figure
 # out whether there really is a line or not when we get a total of 1, we run character
 # amount check as well
-[ $total -eq 1 ] && [ "$(printf "$out" | wc -c)" -eq 0 ] && total=0
+[ "$total" -eq 1 ] && [ "$(printf "%s" "$out" | wc -c)" -eq 0 ] && total=0
 
 # Only run if we actually found some notifications
-if [ $total -gt 0 ]; then
+if [ "$total" -gt 0 ]; then
     # Since the loop is running in a pipe, it can't modify variables, but we need to know
     # how many notifications were sent, so to ge that information, we store it in a
     # temporary file
@@ -197,16 +200,33 @@ if [ $total -gt 0 ]; then
     printf "0" > "$sent_count_file"
 
     # Go through each notification, one by one
-    printf "$out\n" | while read -r line; do
-        # Parse out the name and the description from the output
-        name="$(echo "$line" | awk '{print $3 " (" $4 ")"}' | sed 's/\x1b\[[0-9;]*m//g')"
-        description="$(echo "$line" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+    printf "%s\n" "$out" | while read -r line; do
+        # Parse out the data from given output lines
+        issue_type="$(echo "$line" | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g')"
+        repo_id="$(echo "$line" | awk '{print $3}' | sed 's/\x1b\[[0-9;]*m//g')"
+        issue_id="$(echo "$line" | awk '{print $5}' | sed 's/\x1b\[[0-9;]*m//g' | cut -c2-)"
+        description="$(echo "$line" | awk '{for (i=6; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+
+        name="$repo_id ($issue_type #$issue_id)"
+        if [ "$issue_type" == "PullRequest" ]; then
+            url="https://github.com/$repo_id/pull/$issue_id"
+        else
+            url="https://github.com/$repo_id/issues/$issue_id"
+        fi
+
         [ $VERY_VERBOSE -eq 1 ] && echo "Found notification $name"
         [ $VERY_VERY_VERBOSE -eq 1 ] && echo "Description: $description"
+        [ $VERY_VERY_VERBOSE -eq 1 ] && echo "Constructed url: $url"
 
         # Create hash from the name and description and use it to construct
         # a path to a temporary file
-        hashsum="$(sum <<< "$name$description" | cut -f 1 -d ' ')"
+        # To keep this POSIX compliant, we can't use <<< to feed a string to the
+        # sum function, so we're using a temporary file
+        temp_file="$(mktemp)"
+        printf "$name$description" > "$temp_file"
+        hashsum="$(sum < "$temp_file" | cut -f 1 -d ' ')"
+        rm "$temp_file"
+
         tmpname="/tmp/gh-notification-$hashsum"
         [ $TEMP_SHOW -eq 1 ] && echo "Tempfile: $tmpname"
 
@@ -220,16 +240,16 @@ if [ $total -gt 0 ]; then
                 [ $VERY_VERBOSE -eq 1 ] && echo "Sending notification (dry-run, no actual notification was sent)"
             else
                 [ $VERY_VERBOSE -eq 1 ] && echo "Sending notification"
-                send_notify "$name" "$description"
+                send_notify "$name" "$description <$url>"
                 # Create the tempfile so that in the next run, we won't resend this notification again
                 # NOTE: We're storing the name and description into this file to make it easier
                 # to figure out what notification the tempfile belongs to, with ~@~ separator
-                printf "$name~@~$description" > "$tmpname"
+                printf "%s~@~%s" "$name" "$description" > "$tmpname"
             fi
             # Keep track of how many notifications were sent (didn't have a cache file)
             sent="$(cat "$sent_count_file")"
-            sent="$(($sent+1))"
-            printf "$sent" > "$sent_count_file"
+            sent="$(("$sent"+1))"
+            printf "%s" "$sent" > "$sent_count_file"
         else
             [ $VERY_VERBOSE -eq 1 ] && echo "Skipping (cached) - notification already sent"
         fi
@@ -243,10 +263,10 @@ if [ $total -gt 0 ]; then
     rm "$sent_count_file"
 
     if [ $VERBOSE -eq 1 ]; then
-        unsent="$(($total-$sent))"
-        if [ $sent -eq $total ]; then
+        unsent="$(("$total"-"$sent"))"
+        if [ "$sent" -eq "$total" ]; then
             echo "Found and sent $total new notifications"
-        elif [ $unsent -eq $total ]; then
+        elif [ "$unsent" -eq "$total" ]; then
             echo "Found $total notifications, all of which were already sent (no new notifications to send)"
         else
             echo "Found $total notifications, of which $sent were new and sent ($unsent were skipped - cached/already sent)"
