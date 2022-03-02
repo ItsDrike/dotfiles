@@ -27,6 +27,9 @@ pacman:
     - trash-cli       # Trash interraction (rather than permanent removal)
     #- libfaketime     # Simulate different time for single command
     #- figlet          # generate ascii text banners in terminal
+    #- neofetch        # Show information about system in a terminal
+    #- onefetch        # Show information about git repo in a terminal
+    #- asciinema       # Record terminal with copy-able playback
 
     # TUI
     - ncdu      # Find largest folders (size)
