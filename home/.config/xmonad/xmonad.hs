@@ -109,14 +109,15 @@ myKeys =
     -- Programs
     , ("M-<Return>",    spawn (myTerminal))
     , ("M-b",           spawn (myBrowser))
-    , ("M-v",           spawn (myFileManager))
+    , ("M-x",           spawn (myFileManager))
     , ("M-M1-v",        spawn (myTerminal ++ " -e " ++ myCliFileManager))
     , ("M-M1-h",        spawn (myTerminal ++ " -e htop"))
     , ("M-M1-b",        spawn (myTerminal ++ " -e bpytop"))
     , ("M-M1-p",        spawn (myTerminal ++ " -e ipython"))
 
     -- Dmenu
-    , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")
+    , ("M-S-<Return>",  spawn "dmenu_run -i -p \"Run: \"")      -- Launch dmenu to execute command
+    , ("M-v",           spawn "clipmenu")                       -- Clipboard manager with dmenu
 
     -- Screenshots
     , ("<Print>",       spawn "flameshot gui")
@@ -131,14 +132,21 @@ myKeys =
     , ("M-S-d",         spawn "displayselect")      -- Set display configurations
     , ("M-C-l",         spawn "lockscreen lock")    -- Lock the screen
     , ("M-C-S-l",       spawn "lockscreen toggle")  -- Toggle automatic locking
+    , ("M-S-l",         spawn "swap-kblayout")      -- Swap keyboard layout
 
     -- Kill windows
     , ("M-w", kill1)        -- Kill the currently focused client
     , ("M-S-w", killAll)    -- Kill all windows on current workspace
 
     -- Compositor
-    , ("M-C-x",     spawn "picom -b")       -- Run picom compositor
-    , ("M-S-x",     spawn "killall picom")  -- Kill picom compositor
+    , ("M-C-x",     spawn "picom -b --experimental-backends")   -- Run picom compositor
+    , ("M-S-x",     spawn "killall picom")                      -- Kill picom compositor
+
+    -- Dunst notifications
+    , ("C-A-<Space>",   spawn "dunstctl context")       -- Show context menu with multiple actions
+    , ("C-<Space>",     spawn "dunstctl close")         -- Close topmost notification
+    , ("C-S-<Space>",   spawn "dunstctl close-all")     -- Close all notifications
+    , ("C-S-`",         spawn "dunstctl history-pop")   -- Show last notification
 
     -- Workspaces
     , ("M-.", nextScreen)   -- Switch focus to next monitor
@@ -383,7 +391,8 @@ main = do
         , startupHook           = myStartupHook
         , manageHook            = myManageHook <+> manageDocks
         , handleEventHook       = docksEventHook
-        , layoutHook            = showWName' myShowWNameTheme $ myLayoutHook
+        --, layoutHook            = showWName' myShowWNameTheme $ myLayoutHook
+        , layoutHook            = myLayoutHook
         , borderWidth           = myBorderWidth
         , normalBorderColor     = myNormalBorderColor
         , focusedBorderColor    = myFocusedBorderColor
