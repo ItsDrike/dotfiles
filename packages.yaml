@@ -73,6 +73,7 @@ pacman:
     - xdotool             # X11 automation tool
     - trayer              # System tray standalone panel
     - xsel                # X11 clipboard manager (alternatively there's xclip)
+    - clipmenu            # A simple clipboard manager using dmenu and xsel
     - xsecurelock         # Secure lockscreen
     - xss-lock            # Using external locker as X screensaver
     - xwallpaper          # Setting wallpaper in X
