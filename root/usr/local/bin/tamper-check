@@ -5,7 +5,13 @@ import sys
 import argparse
 from pathlib import Path
 
-import colorama
+try:
+    import colorama
+except ImportError:
+    from unittest.mock import Mock
+    class NoReprMock(Mock):
+        __repr__ = lambda self: ""
+    colorama = NoReprMock()
 
 colorama.init(autoreset=True)
 
