@@ -243,7 +243,7 @@ if [ "$total" -gt 0 ]; then
         # Create hash from the name and description and use it to construct
         # a path to a temporary file
         # To keep this POSIX compliant, we can't use <<< to feed a string to the
-        # sum function, so we're using a temporary file
+        # sum function, so we're using another temporary file which is then removed
         temp_file="$(mktemp)"
         printf "$name$description" > "$temp_file"
         hashsum="$(sum < "$temp_file" | cut -f 1 -d ' ')"
