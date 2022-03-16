@@ -204,14 +204,36 @@ if [ "$total" -gt 0 ]; then
         # Parse out the data from given output lines
         issue_type="$(echo "$line" | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g')"
         repo_id="$(echo "$line" | awk '{print $3}' | sed 's/\x1b\[[0-9;]*m//g')"
-        issue_id="$(echo "$line" | awk '{print $5}' | sed 's/\x1b\[[0-9;]*m//g' | cut -c2-)"
-        description="$(echo "$line" | awk '{for (i=6; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
 
-        name="$repo_id ($issue_type #$issue_id)"
+
         if [ "$issue_type" == "PullRequest" ]; then
+            issue_id="$(echo "$line" | awk '{print $5}' | sed 's/\x1b\[[0-9;]*m//g' | cut -c2-)"
+            description="$(echo "$line" | awk '{for (i=6; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type #$issue_id)"
+
             url="https://github.com/$repo_id/pull/$issue_id"
-        else
+        elif [ "$issue_type" == "Issue" ]; then
+            issue_id="$(echo "$line" | awk '{print $5}' | sed 's/\x1b\[[0-9;]*m//g' | cut -c2-)"
+            description="$(echo "$line" | awk '{for (i=6; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type #$issue_id)"
+
             url="https://github.com/$repo_id/issues/$issue_id"
+        elif [ "$issue_type" == "Release" ]; then
+            # There's no issue ID with github releases, they just have a title
+            # this means if the name is the same, they will be treated as the same release
+            # and they could end up being ignored, this could be fixed by using github API and
+            # searching for that release's commit, but that's too much work here for little benefit
+            description="$(echo "$line" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type)"
+
+            # Because we don't know the tag or commit ID, best we can do is use the page for all releases
+            # the new release will be the first one there anyway
+            url="https://github.com/$repo_id/releases"
+        else
+            echo "Unknown issue type: '$issue_type'!"
+            echo "Can't construct URL, falling back to just repository URL."
+            echo "Please report this issue to ItsDrike/dotfiles repository."
+            url="https://github.com/$repo_id"
         fi
 
         [ $VERY_VERBOSE -eq 1 ] && echo "Found notification $name"
