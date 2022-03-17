@@ -28,14 +28,13 @@
 #
 
 # IPv4 and IPv6 localhost aliases
-127.0.0.1   localhost
-::1         localhost
+127.0.0.1	localhost ip4-localhost
+::1		ip6-localhost
 # Current system definition
-127.0.1.1   primary.localdomain primary
+127.0.1.1	pc.localdomain pc
 
 # Extra systems on the network
-192.168.0.107	localserver.localdomain localserver
-192.168.0.10    pihole.localdomain  pihole
+10.1.0.1	localserver.localdomain localserver
 
 # DNS servers
 45.90.30.0	nextcloud-dns
