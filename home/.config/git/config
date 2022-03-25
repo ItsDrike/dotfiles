@@ -6,6 +6,7 @@
     quickclone = "clone --single-branch --depth=1"
     bareclone = "!sh -c 'git clone --bare \"$0\" \"$1\"/.bare; echo \"gitdir: ./.bare\" > \"$1/.git\"'"
     bareinit = "!sh -c 'git init --bare \"$0\"/.bare; echo \"gitdir: ./.bare\" > \"$0/.git\"'"
+    cleanup = "!default_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}'); git remote prune origin && git checkout -q $default_branch && git for-each-ref refs/heads/ '--format=%(refname:short)' | while read branch; do mergeBase=$(git merge-base $default_branch $branch) && [[ $(git cherry $default_branch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == '-'* ]] && git branch -D $branch; done"
 
     m = "merge"
     p = "push"
