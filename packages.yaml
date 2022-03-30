@@ -132,6 +132,7 @@ pacman:
     - git-delta         # Neat tool for showing git diffs and resolving merges
     - codespell         # Spell checker for code files
     - github-cli        # Manage multiple GitHub features from terminal
+    - pyenv             # Tool for easily managing python environments
     #- code              # Open sourced version of vscode (doesn't have good extensions support)
 
 aur:
