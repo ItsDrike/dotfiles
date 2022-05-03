@@ -42,6 +42,7 @@ pacman:
     - httpie          # Obtaining http info from webpages
     - dnsutils        # Tools for managing DNS
     - net-tools       # Configuration tools for linux networking
+    - whois           # CLI for the WHOIS directory service (RFC 3912) protocol
     #- sshuttle        # Transparent proxy server that forwards all TCP packets over SSH
     #- vnstat          # Tool for monitoring network traffic (speed and total data transfered)
 
