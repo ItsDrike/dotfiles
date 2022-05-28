@@ -79,27 +79,6 @@ alias zb='z -b'         # restrict matches to parent directories
 alias zi='z -I'         # cd with interactive fzf selection
 alias zbi='z -b -I'     # pick parent directory to cd into with fzf
 
-## Make aliases for individual cpython/pypy versions
-py_versions="\n2\n3\n3.6\n3.7\n3.8\n3.9\n3.10"
-# shellcheck disable=SC2139
-echo "$py_versions" | while read -r version; do
-    for python in python pypy; do
-        [ "$python" = "python" ] && prefix="py" || prefix="pypy"
-
-        if command -v "$python$version" >/dev/null; then
-            if [ "$python" = "python" ]; then
-                alias "pip$version=$python$version -m pip"
-            else
-                alias "ppip$version=$python$version -m pip"
-            fi
-            alias "$prefix${version}pip=$python$version -m pip"
-            alias "$prefix$version=$python$version"
-            alias "i$prefix$version=$python$version -c 'import IPython;IPython.start_ipython()'"
-            alias "b$prefix$version=$python$version -c 'from bpython.curtsies import main;import sys;sys.exit(main())'"
-        fi
-    done
-done
-
 # Fallbacks
 command -v hd > /dev/null || alias hd='hexdump -C' # Cannonical hex dump; some systems have this symlinked
 command -v md5sum > /dev/null || alias md5sum='md5' # Fallback from `md5sum` to `md5`
@@ -293,6 +272,12 @@ if [ ! "$(uname -s)" = 'Darwin' ]; then
     else
         alias open='xdg-open'
     fi
+fi
+
+# Autogenerate python aliases
+if [ -f ~/.config/shell/py-alias ]; then
+    # shellcheck source=/home/itsdrike/.config/shell/py-alias
+    . "$HOME/.config/shell/py-alias"
 fi
 
 # Functions
