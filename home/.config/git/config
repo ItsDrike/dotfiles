@@ -38,6 +38,7 @@
     dc = "diff --cached"
     ds = "diff --staged"
     dw = "diff --word-diff"
+    dcm = "!sh -c 'git diff $0~ $0'"
 
     b = "branch"
     ba = "branch --all"
