@@ -68,4 +68,6 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 . /usr/share/zsh/site-functions/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 . /usr/share/zsh/site-functions/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 eval "$(lua /usr/local/src/z.lua/z.lua --init zsh enhanced)"
-
+if command -v pyenv >/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
