@@ -15,6 +15,7 @@ uid="$(id -u)"
 export EDITOR="nvim"
 export BROWSER="firefox"
 export TERMINAL="alacritty"
+export DIFFPROG="nvim -d"
 
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
