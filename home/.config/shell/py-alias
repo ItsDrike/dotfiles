@@ -64,8 +64,8 @@ version_compare() {
     version_1="$1"
     version_2="$2"
     # ZSH Only:
-    version_1=(${(@s:.:)version_1})
-    version_2=(${(@s:.:)version_2})
+    version_1=("${(@s:.:)version_1}")
+    version_2=("${(@s:.:)version_2}")
     major_1=$version_1[1]
     major_2=$version_2[1]
     minor_1=$version_1[2]
@@ -146,9 +146,9 @@ define_version_aliases() {
 
 
     # ZSH only:
-    version_data=(${(@s:.:)version})
-    major_version=$version_data[0]
-    minor_version=$version_data[1]
+    version_data=("${(@s:.:)version}")
+    major_version=$version_data[1]
+    minor_version=$version_data[2]
     # POSIX, but slow:
     # major_version="$(echo "$version" | cut -d. -f1)"
     # minor_version="$(echo "$version" | cut -d. -f2)"
@@ -174,10 +174,10 @@ for python_dir in "$PYENV_ROOT"/versions/*/ ; do
     fi
 
     # ZSH only:
-    version_data=(${(@s:;:)version_info})
-    prefix=$version_data[0]
-    version=$version_data[1]
-    suffix=$version_data[2]
+    version_data=("${(@s:;:)version_info}")
+    prefix=$version_data[1]
+    version=$version_data[2]
+    suffix=$version_data[3]
     # POSIX, but slow:
     # prefix="$(echo "$version_info" | cut -d';' -f1)"
     # version="$(echo "$version_info" | cut -d';' -f2)"
