@@ -24,6 +24,7 @@ define_aliases() {
     alias "bpy$alias_version=$cmd_prefix bpython"
     alias "pydoc$alias_version=$cmd_prefix pydoc"
     alias "pytest$alias_version=$cmd_prefix pytest"
+    alias -g "PY$alias_version=$cmd_prefix"
 }
 
 # Handle splitting full version into prefix, version number and suffix
