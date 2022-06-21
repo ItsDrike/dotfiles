@@ -8,5 +8,4 @@
 
 XDG_RUNTIME_DIR="/run/user/$(id -u)" \
 DISPLAY=:0 \
-notify-send "Cron Notification" $@
-
+notify-send "$@"
