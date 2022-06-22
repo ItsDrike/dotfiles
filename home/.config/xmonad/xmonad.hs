@@ -197,13 +197,13 @@ myKeys =
     , ("<XF86AudioMute>",           spawn "pulsemixer --toggle-mute")
     , ("<XF86AudioLowerVolume>",    spawn "pulsemixer --change-volume -5")
     , ("<XF86AudioRaiseVolume>",    spawn "pulsemixer --change-volume +5")
-    , ("<XF86MonBrightnessUp>",     spawn "brightness -i 5%")
-    , ("<XF86MonBrightnessDown>",   spawn "brightness -d 5%")
+    , ("<XF86MonBrightnessUp>",     spawn "brightness -i 5% -n")
+    , ("<XF86MonBrightnessDown>",   spawn "brightness -d 5% -n")
     -- Map media keys to meta + arrows for keyboards without special keys
     , ("M-<Down>",                  spawn "pulsemixer --change-volume -5")
     , ("M-<Up>",                    spawn "pulsemixer --change-volume +5")
-    , ("M-<Right>",                 spawn "brightness -i 5%")
-    , ("M-<Left>",                  spawn "brightness -d 5%")
+    , ("M-<Right>",                 spawn "brightness -i 5% -n")
+    , ("M-<Left>",                  spawn "brightness -d 5% -n")
     ]
         where nonNSP            = WSIs (return (\ws -> W.tag ws /= "NSP"))
               nonEmptyNonNSP    = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
