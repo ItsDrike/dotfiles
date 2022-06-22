@@ -143,10 +143,10 @@ myKeys =
     , ("M-S-x",     spawn "killall picom")                      -- Kill picom compositor
 
     -- Dunst notifications
-    , ("C-A-<Space>",   spawn "dunstctl context")       -- Show context menu with multiple actions
-    , ("C-<Space>",     spawn "dunstctl close")         -- Close topmost notification
-    , ("C-S-<Space>",   spawn "dunstctl close-all")     -- Close all notifications
-    , ("C-S-`",         spawn "dunstctl history-pop")   -- Show last notification
+    , ("C-,",       spawn "dunstctl close")         -- Close topmost notification
+    , ("C-S-,",     spawn "dunstctl close-all")     -- Close all notifications
+    , ("C-.",       spawn "dunstctl history-pop")   -- Show last notification
+    , ("C-S-.",     spawn "dunstctl context")       -- Show context menu with multiple actions
 
     -- Workspaces
     , ("M-.", nextScreen)   -- Switch focus to next monitor
