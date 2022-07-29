@@ -49,6 +49,12 @@ window:
     x: 6
     y: 6
 
+  # Background opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 0.9
+
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
 
@@ -112,6 +118,8 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     family: JetBrains Mono
+    #family: Comic Mono
+    #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
     style: Medium
@@ -336,12 +344,6 @@ colors:
   #     args: ["Hello, World!"]
   #
   #command: None
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.9
 
 #selection:
   # This string contains all characters that are used as separators for
