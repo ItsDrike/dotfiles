@@ -6,8 +6,9 @@
 Description=Clean-up old pacman pkg
 
 [Timer]
-OnCalendar=monthly
+OnCalendar=weekly
+AccuracySec=1h
 Persistent=true
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=timers.target
