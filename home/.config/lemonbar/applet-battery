@@ -1,0 +1,33 @@
+#!/bin/bash
+
+PANEL_FIFO="$1"
+PREFIX="$2"
+DELAY="$3"
+readarray -td";" ICONS <<< "$4"; declare -p ICONS >/dev/null
+BATTERY_NAME="${5-BAT0}"
+
+exec 5>"$PANEL_FIFO"
+
+main() {
+    local capacity="$(cat /sys/class/power_supply/$BATTERY_NAME/capacity)"
+    local icon=""
+    if [ "$capacity" -lt 20 ]; then
+        icon="${ICONS[0]}"
+    elif [ "$capacity" -lt 40 ]; then
+        icon="${ICONS[1]}"
+    elif [ "$capacity" -lt 60 ]; then
+        icon="${ICONS[2]}"
+    elif [ "$capacity" -lt 80 ]; then
+        icon="${ICONS[3]}"
+    else
+        icon="${ICONS[4]}"
+    fi
+
+    REPLY="$icon $capacity%"
+}
+
+while :; do
+    main
+    echo "$PREFIX $REPLY" >&5
+    sleep "$DELAY"
+done

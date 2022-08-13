@@ -1,0 +1,229 @@
+#!/usr/bin/env zsh
+
+# ---- PASSED ARGUMENTS ----
+
+MONITOR="$1"
+
+
+# ---- CONFIGURATION VARIABLES ----
+
+# Geometry
+BAR_HEIGHT=28
+BAR_TOP_PADDING=3
+BAR_BOTTOM_PADDING=0
+BAR_LEFT_PADDING=3
+BAR_RIGHT_PADDING=3
+
+# Fonts
+FONT_NAMES=("JetBrainsMonoMedium:pixelsize=6" "Hack Nerd Font:size=10")
+FONT_OFFSETS=(4 4 2)
+
+# Colors (#AARRGGBB)
+BACKGROUND_COLOR="#FF222222"
+FOREGROUND_COLOR="#FFFFFFFF"
+UNDERLINE_COLOR="#FF268BD2"
+
+# Modules
+SEPARATOR=("%{F#50FFFFFF} | %{F-}")
+
+LEFT_MODULES=("title" "workspaces" "windowname")
+CENTER_MODULES=()
+RIGHT_MODULES=("kernel" "battery" "memory" "storage" "cpu" "volume" "uptime" "bitcoin" "time")
+
+typeset -A CMDS
+CMDS[volup]="pulsemixer --change-volume +3"
+CMDS[voldown]="pulsemixer --change-volume -3"
+
+typeset -A PREFIX
+typeset -A SUFFIX
+PREFIX[bitcoin]="%{F#EFCB10}ﴑ "
+SUFFIX[bitcoin]="%{F-}"
+PREFIX[time]="%{F#46D9FF} "
+SUFFIX[time]="%{F-}"
+PREFIX[uptime]="%{F#98be65} "
+SUFFIX[uptime]="%{F-}"
+PREFIX[volume]="%{A4:volup:}%{A5:voldown:}%{F#ECBE7B}"
+SUFFIX[volume]="%{F-}%{A}%{A}"
+PREFIX[cpu]="%{F#78DB32} "
+SUFFIX[cpu]="%{F-}"
+PREFIX[storage]="%{F#51AFEF}"
+SUFFIX[storage]="%{F-}"
+PREFIX[memory]="%{F#FF6C6B} "
+SUFFIX[memory]="%{F-}"
+PREFIX[battery]="%{F#9CE996}"
+SUFFIX[battery]="%{F-}"
+PREFIX[kernel]="%{F#B3AFC2} "
+SUFFIX[kernel]="%{F-}"
+PREFIX[windowname]="%{F#B3AFC2}"
+SUFFIX[windowname]="%{F-}"
+#PREFIX[title]="%{F#FF7080}"
+#SUFFIX[title]="%{F-}"
+
+# Don't escape % signs in these modules (they define their own colors)
+NO_ESCAPE=("workspaces")
+
+
+# Unique WM_NAME of the panel
+PANEL_NAME="lemonbar-${DISPLAY[2,-1]}-$MONITOR"
+
+# Path to FIFO pipe file over which applets send their results
+PANEL_FIFO="${XDG_RUNTIME_DIR}/${PANEL_NAME}"
+
+
+# ---- MODULES ----
+
+# --- FILEDESCRIPTOR ---
+
+# Make the FIFO pipe file, to which the defined applets below will be
+# sending their outputs, which will then be read in the event handler
+[[ -p "$PANEL_FIFO" ]] && rm "$PANEL_FIFO"
+mkfifo -m 600 "$PANEL_FIFO"
+exec 5<>"$PANEL_FIFO"
+
+# --- APPLETS ---
+
+run_applet() {
+    TYPE="$1"
+    shift;
+
+    $HOME/.config/lemonbar/"applet-$TYPE" "$PANEL_FIFO" $@ &
+}
+
+typeset -A mods
+mods[title]=""
+
+_uptime_cmd="uptime -p | sed -e 's/^up //' -e 's/ years\\?,\\?/y/' -e 's/ months\\?,\\?/m/' -e 's/ weeks\\?,\\?/w/' -e 's/ days\\?,\\?/d/' -e 's/ hours\\?,\\?/h/' -e 's/ minutes\\?,\\?/m/' -e 's/ seconds\\?,\\?/s/' | cut -d' ' -f-2"
+_cpu_cmd="awk '{u=\$2+\$4; t=\$2+\$4+\$5; if (NR==1){u1=u; t1=t;} else printf \"%.0f%%\\n\", (\$2+\$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)"
+_mem_cmd="free -h --si | grep 'Mem' | awk '{printf \"%s \", \$3}' && free | grep 'Mem' | awk '{printf \"(%.0f%%)\\n\", (\$3 / \$2) * 100 }'"
+
+run_applet "cmd" "time" 1 "date +'%H:%M %b %d %Y'"
+run_applet "cmd" "bitcoin" 600 "bitcoin"
+run_applet "cmd" "kernel" infinity "uname -r"
+run_applet "cmd" "uptime" 60 "$_uptime_cmd"
+run_applet "cmd" "cpu" 5 "$_cpu_cmd"
+run_applet "cmd" "memory" 5 "$_mem_cmd"
+run_applet "pulse" "volume" "婢;ﱝ;;;墳;"
+run_applet "storage" "storage" 60 "/;/home" ";"
+run_applet "battery" "battery" 5 ";;;;"
+run_applet "window" "windowname" 5 65
+run_applet "workspaces" "workspaces"
+
+# ---- DYNAMIC CONFIGURATION ----
+
+# Kill all pannels that already exist with this name 
+xdo kill -a "$PANEL_NAME" >/dev/null 2>&1
+
+# This variable will hold all of the arguments to lemonbar
+# which will get set later as the config is parsed
+LEMONBAR_ARGS=()
+
+# --- PANEL NAME ---
+
+# Set the pannel's WM_NAME to the generated unique name
+LEMONBAR_ARGS+=("-n" "$PANEL_NAME")
+
+# --- GEOMETRY ---
+
+geometry_keys=(x y width height)
+geometry_values=($(bspc query -T -m "$MONITOR" | jq '.rectangle[]'))
+typeset -A geometry=(${geometry_keys:^geometry_values})
+
+((geometry[x] += BAR_LEFT_PADDING))
+((geometry[y] += BAR_TOP_PADDING))
+((geometry[width] -= BAR_LEFT_PADDING + BAR_RIGHT_PADDING))
+((geometry[x] += BAR_LEFT_PADDING))
+((geometry[height] = BAR_HEIGHT))
+
+# Configure BSPWM monitor to use a top_padding that ignores our bar
+total_top_padding=$((geometry[height] + bar_bottom_padding + bar_top_padding))
+bspc config -m "$MONITOR" top_padding "$total_top_padding"
+
+# Force docking - don't set EWMH bindings, we control BSPWM's padding manually,
+# so that it respects our bottom padding too
+LEMONBAR_ARGS+=("-d")
+
+# Pass the computed rectangle geometry
+LEMONBAR_ARGS+=("-g" "${geometry[width]}x${geometry[height]}+${geometry[x]}x${geometry[y]}")
+
+# --- FONTS ---
+
+typeset -A fonts=(${FONT_NAMES:^FONT_OFFSETS})
+for key val in "${(@kv)fonts}"; do
+    LEMONBAR_ARGS+=("-o" "$val" "-f" "$key")
+done
+
+# --- COLORS ---
+
+LEMONBAR_ARGS+=("-F" "$FOREGROUND_COLOR")
+LEMONBAR_ARGS+=("-B" "$BACKGROUND_COLOR")
+LEMONBAR_ARGS+=("-U" "$UNDERLINE_COLOR")
+
+
+# ---- EVENT HANDLER ----
+
+get_module_output() {
+    module="$1"
+    txt="$(echo "${mods[$module]}")"
+
+    if (($NO_ESCAPE[(I)$module])); then
+        :
+    else
+        txt="$(echo "$txt" | sed -r 's/%/%%/g')"
+    fi
+
+    txt="${PREFIX[$module]}$txt${SUFFIX[$module]}"
+    echo "$txt"
+}
+
+while read -r cmd <&5; do
+    # Get the key (prefix) and the actual text (output) from the received cmd
+    prefix="$(echo $cmd | cut -d " " -f1)"
+    output="$(echo $cmd | cut -d " " -f2-)"
+
+    if [[ "$prefix" == "cmd" ]]; then
+        cmd="${CMDS[$output]}"
+        >&2 echo "CMD: $output ($cmd)"
+        eval $cmd
+        continue
+    fi
+
+    # Update mods dict to hold the received output under this prefix
+    >&2 echo "$prefix -> $output"
+    mods[$prefix]="$output"
+
+    # Generate the output string with separators that gets passed
+    # into lemonbar
+    OUTPUT=("%{l}")
+    for module in $LEFT_MODULES; do
+        txt="$(get_module_output "$module")"
+        OUTPUT+=("$txt" "$SEPARATOR")
+    done
+    unset 'OUTPUT[-1]'
+
+    OUTPUT+=("%{c}")
+    for module in $CENTER_MODULES; do
+        txt="$(get_module_output "$module")"
+        OUTPUT+=("$txt" "$SEPARATOR")
+    done
+    unset 'OUTPUT[-1]'
+
+    OUTPUT+=("%{r}")
+    for module in $RIGHT_MODULES; do
+        txt="$(get_module_output "$module")"
+        OUTPUT+=("$txt" "$SEPARATOR")
+    done
+    unset 'OUTPUT[-1]'
+
+    # Print out the final output text
+    printf "%s" "${OUTPUT[@]}"
+done | lemonbar "${LEMONBAR_ARGS[@]}" | xargs -I_ echo cmd _ >&5 &
+
+# Wait until lemonbar starts (we run it detached)
+until _=$(xdo id -a "$PANEL_NAME"); do
+    sleep 0.1
+done
+
+# Keep the panel abve bspwm root window, but below everything else
+xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" "$(xdo id -a $PANEL_NAME)"
+
+wait $!

@@ -1,0 +1,84 @@
+#!/usr/bin/env zsh
+
+PANEL_FIFO="$1"
+PREFIX="$2"
+
+ACTIVE_PREFIX="%{F#98BE65}%{U#98BE65}%{+u}"
+ACTIVE_SUFFIX="%{F-}%{U-}%{-u}"
+VISIBLE_PREFIX="%{F#98BE65}"
+VISIBLE_SUFFIX="%{F-}"
+URGENT_PREFIX="%{F#C45500}!"
+URGENT_SUFFIX="!%{F-}"
+EMPTY_PREFIX="%{F#C792EA}"
+EMPTY_SUFFIX="%{F-}"
+OCCUPIED_PREFIX="%{F#82AAFF}"
+OCCUPIED_SUFFIX="%{F-}"
+WS_SEPARATOR=" "
+typeset -A MAP
+MAP[1]="dev"
+MAP[2]="www"
+MAP[3]="sys"
+MAP[4]="chat"
+MAP[5]="mus"
+MAP[6]="vid"
+MAP[7]="doc"
+MAP[8]="virt"
+MAP[9]="etc"
+MAP[10]="scr"
+
+exec 5>"$PANEL_FIFO"
+
+main() {
+    REPORT="$1"
+
+    local -a desktops
+    local prefix suffix name
+
+    for item in ${(s.:.)REPORT}; do
+        name=${item[2,-1]}
+        case $item in
+            f* ) # free|empty unfocused
+                prefix="${EMPTY_PREFIX}"
+                suffix="${EMPTY_SUFFIX}"
+                ;;
+            o* ) # occupied unfocused
+                >&2 echo "unfocused occupied! $name"
+                prefix="${OCCUPIED_PREFIX}"
+                suffix="${OCCUPIED_SUFFIX}"
+                ;;
+            u* ) # urgent unfocused
+                prefix="${URGENT_PREFIX}"
+                suffix="${URGENT_SUFFIX}"
+                ;;
+            [FOU]* ) # visible maybe focused, maybe occupied, maybe urgent
+                if bspc query -D -d "$name".focused >/dev/null 2>&1; then
+                    prefix="${ACTIVE_PREFIX}"
+                    suffix="${ACTIVE_SUFFIX}"
+                else
+                    prefix="${VISIBLE_PREFIX}"
+                    suffix="${VISIBLE_SUFFIX}"
+                fi
+                ;;
+            * ) continue ;;
+        esac
+
+        if [[ "$name" == "0" ]]; then
+            name=10
+        fi
+
+        desktops[$name]="${prefix}${MAP[$name]}${suffix}"
+    done
+
+    OUTPUT=()
+    for wstxt in $desktops; do
+        OUTPUT+=("$wstxt" "$WS_SEPARATOR")
+    done
+
+
+    RESULT="$(printf "%s" "${OUTPUT[@]}")"
+}
+
+bspc subscribe report | while read -r line; do
+    main "$line"
+    print "$PREFIX $RESULT" >&5
+done

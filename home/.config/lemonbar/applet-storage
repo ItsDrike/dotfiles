@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+PANEL_FIFO="$1"
+PREFIX="$2"
+DELAY="$3"
+MOUNTPOINTS=($(echo "$4" | tr ";" "\n"))
+ICONS=($(echo "$5" | tr ";" "\n"))
+typeset -A ICON_MAP=(${MOUNTPOINTS:^ICONS})
+
+exec 5>"$PANEL_FIFO"
+
+main() {
+    local data=$(df -H)
+
+    RESULT=()
+    for mountpoint in $MOUNTPOINTS; do
+        local icon="${ICON_MAP[$mountpoint]}"
+        local size="$(echo "$data" | awk "\$6 == \"$mountpoint\" {print \$4}")"
+        RESULT+=("$icon $size")
+    done
+
+    REPLY="$(printf "%s " "${RESULT[@]}")"
+}
+
+while :; do
+    main
+    echo "$PREFIX $REPLY" >&5
+    sleep "$DELAY"
+done

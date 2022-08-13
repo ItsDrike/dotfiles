@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+PANEL_FIFO="$1"
+PREFIX="$2"
+DELAY="$3"
+CMD="$4"
+
+exec 5>"$PANEL_FIFO"
+
+main() {
+    REPLY="$($SHELL -c "$CMD")"
+}
+
+while :; do
+    main
+    echo "$PREFIX $REPLY" >&5
+    sleep "$DELAY"
+done
