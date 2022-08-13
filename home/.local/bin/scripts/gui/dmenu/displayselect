@@ -68,15 +68,18 @@ allposs=$(xrandr -q | grep "connected")
 screens=$(echo "$allposs" | awk '/ connected/ {print $1}')
 
 # If there's only one screen
-[ "$(echo "$screens" | wc -l)" -lt 2 ] &&
-	{ onescreen "$screens"; postrun; notify-send "💻 Only one screen detected." "Using it in its optimal settings...";  exit ;}
+if [ "$(echo "$screens" | wc -l)" -lt 2 ]; then
+	onescreen "$screens"
+	notify-send "💻 Only one screen detected." "Using it in its optimal settings..."
+else
+	# Get user choice including multi-monitor and manual selection:
+	chosen=$(printf "%s\\nmulti-monitor\\nmanual selection" "$screens" | dmenu -i -p "Select display arangement:") &&
+	case "$chosen" in
+		"manual selection") arandr ; exit ;;
+		"multi-monitor") multimon ;;
+		*) onescreen "$chosen" ;;
+	esac
+fi
 
-# Get user choice including multi-monitor and manual selection:
-chosen=$(printf "%s\\nmulti-monitor\\nmanual selection" "$screens" | dmenu -i -p "Select display arangement:") &&
-case "$chosen" in
-	"manual selection") arandr ; exit ;;
-	"multi-monitor") multimon ;;
-	*) onescreen "$chosen" ;;
-esac
 
 postrun
