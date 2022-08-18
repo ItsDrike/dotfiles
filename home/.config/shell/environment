@@ -16,6 +16,7 @@ export EDITOR="nvim"
 export BROWSER="firefox"
 export TERMINAL="alacritty"
 export DIFFPROG="nvim -d"
+export FILEMANAGER="pcmanfm"
 
 # XDG Standard paths
 export XDG_CONFIG_HOME="$HOME/.config"
