@@ -3,4 +3,9 @@
 # Dmenu prompt to easily search for a man page to open
 
 page="$(apropos --long "$1" | dmenu -i -l 10 | awk '{print $2, $1}' | tr -d '()')"
-man $page
+
+if tty -s; then
+    man $page
+else
+    $TERMINAL -e man $page
+fi
