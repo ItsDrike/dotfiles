@@ -1,0 +1,14 @@
+
+[Default Applications]
+inode/directory=pcmanfm.desktop
+image/jpeg=org.nomacs.ImageLounge.desktop
+image/png=org.nomacs.ImageLounge.desktop
+image/gif=org.nomacs.ImageLounge.desktop
+application/pdf=firefox.desktop
+text/html=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/about=firefox.desktop
+x-scheme-handler-unknown=firefox.desktop
+application/json=nvim.desktop
+video/mp4=mpv.desktop
