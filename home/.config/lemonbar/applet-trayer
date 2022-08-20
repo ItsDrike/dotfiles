@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+# Generates whitespace in the bar based on the width
+
+PANEL_FIFO="$1"
+PREFIX="$2"
+MONITOR="$3"
+
+exec 5>"$PANEL_FIFO"
+
+main() {
+    size="$1"
+    # Trayer should always be on primary monitor
+    # TODO: If possible, it would be better to get the monitor trayer lives on dynamically
+    trayer_mon="$(bspc query -M -m primary --names)"
+
+    if [[ "$trayer_mon" != "$MONITOR" ]]; then
+        RESULT="%{O0}"
+    else
+        RESULT="%{O$size}"
+    fi
+}
+
+{print init; stdbuf -oL xprop -name panel -f WM_SIZE_HINTS 32i ' $5\n' -spy WM_NORMAL_HINTS} | while read line; do
+    case ${line} in
+        init)
+            size="$(xprop -name panel -f WM_SIZE_HINTS 32i ' $5\n' WM_NORMAL_HINTS | cut -d' ' -f 2)"
+            main "$size"
+            print "$PREFIX $RESULT" >&5
+            ;;
+        *)
+            size="$(echo "$line" | cut -d' ' -f 2)"
+            main "$size"
+            print "$PREFIX $RESULT" >&5
+            ;;
+    esac
+done

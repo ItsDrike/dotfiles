@@ -28,7 +28,7 @@ SEPARATOR=("%{F#50FFFFFF} | %{F-}")
 
 LEFT_MODULES=("title" "workspaces" "windowname")
 CENTER_MODULES=()
-RIGHT_MODULES=("kernel" "battery" "memory" "storage" "cpu" "volume" "uptime" "bitcoin" "time")
+RIGHT_MODULES=("kernel" "battery" "memory" "storage" "cpu" "volume" "uptime" "bitcoin" "time" "trayer")
 
 typeset -A CMDS
 CMDS[volup]="pulsemixer --change-volume +3"
@@ -60,7 +60,7 @@ SUFFIX[windowname]="%{F-}"
 #SUFFIX[title]="%{F-}"
 
 # Don't escape % signs in these modules (they define their own colors)
-NO_ESCAPE=("workspaces")
+NO_ESCAPE=("workspaces" "trayer")
 
 
 # Unique WM_NAME of the panel
@@ -107,6 +107,7 @@ run_applet "storage" "storage" 60 "/;/home" ";"
 run_applet "battery" "battery" 5 ";;;;"
 run_applet "window" "windowname" 5 65
 run_applet "workspaces" "workspaces"
+run_applet "trayer" "trayer" "$MONITOR"
 
 # ---- DYNAMIC CONFIGURATION ----
 
