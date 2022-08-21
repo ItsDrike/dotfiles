@@ -188,9 +188,11 @@ while read -r cmd <&5; do
     output="$(echo $cmd | cut -d " " -f2-)"
 
     if [[ "$prefix" == "cmd" ]]; then
-        cmd="${CMDS[$output]}"
-        >&2 echo "CMD: $output ($cmd)"
-        eval $cmd
+        key="$(echo $output | cut -d " " -f1)"
+        args="$(echo $output | cut -d " " -f2-)"
+        run_str="${CMDS[$key]} $args"
+        >&2 echo "CMD: $run_str ($key)"
+        eval $run_str
         continue
     fi
 
