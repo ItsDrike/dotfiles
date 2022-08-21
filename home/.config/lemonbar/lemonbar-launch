@@ -34,6 +34,7 @@ RIGHT_MODULES=("kernel" "battery" "memory" "storage" "cpu" "volume" "uptime" "bi
 typeset -A CMDS
 CMDS[volup]="pulsemixer --change-volume +3"
 CMDS[voldown]="pulsemixer --change-volume -3"
+CMDS[focusws]="bspc desktop -f"
 
 typeset -A PREFIX
 typeset -A SUFFIX
