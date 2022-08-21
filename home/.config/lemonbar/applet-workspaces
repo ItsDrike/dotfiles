@@ -42,7 +42,6 @@ main() {
                 suffix="${EMPTY_SUFFIX}"
                 ;;
             o* ) # occupied unfocused
-                >&2 echo "unfocused occupied! $name"
                 prefix="${OCCUPIED_PREFIX}"
                 suffix="${OCCUPIED_SUFFIX}"
                 ;;
