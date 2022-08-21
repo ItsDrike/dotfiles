@@ -25,6 +25,7 @@ UNDERLINE_COLOR="#FF268BD2"
 
 # Modules
 SEPARATOR=("%{F#50FFFFFF} | %{F-}")
+CLICKABLE_AREAS=30
 
 LEFT_MODULES=("title" "workspaces" "windowname")
 CENTER_MODULES=()
@@ -122,6 +123,11 @@ LEMONBAR_ARGS=()
 
 # Set the pannel's WM_NAME to the generated unique name
 LEMONBAR_ARGS+=("-n" "$PANEL_NAME")
+
+# --- CLICKABLE AREAS ---
+
+# Set the maximum amount of supported clickable areas
+LEMONBAR_ARGS+=("-a" "$CLICKABLE_AREAS")
 
 # --- GEOMETRY ---
 
