@@ -19,7 +19,7 @@ setopt auto_pushd           # Make cd act as pushd
 #ENABLE_CORRECTION="false"
 #source $ZSH/oh-my-zsh.sh # Run oh-my-zsh
 
-# ZSH files cleanup
+# ZSH files setup (don't clutter home)
 export ZSH_CACHE="$HOME/.cache/zsh"
 HISTFILE="$ZSH_CACHE/history"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
