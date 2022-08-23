@@ -33,7 +33,7 @@ mkdir -p "$ZSH_CACHE"
 # History configuration
 export HISTSIZE=10000
 export SAVEHIST=10000
--setopt appendhistory			# save history entries as soon as they are entered
+setopt appendhistory            # save history entries as soon as they are entered
 setopt hist_ignore_space        # ignore commands that start with space
 setopt hist_verify              # show commands with history expansion to user before running it
 setopt extended_history         # record command start time
