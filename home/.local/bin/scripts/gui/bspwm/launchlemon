@@ -1,0 +1,8 @@
+#!/bin/sh
+# Runs lemonbar-launch for every connected monitor
+
+MONITORS="$(bspc query -M --names)"
+
+for monitor in $(echo "$MONITORS") ; do
+    $HOME/.config/lemonbar/lemonbar-launch "$monitor" & disown
+done
