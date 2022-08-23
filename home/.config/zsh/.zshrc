@@ -21,7 +21,7 @@ setopt auto_pushd           # Make cd act as pushd
 
 # ZSH files setup (don't clutter home)
 export ZSH_CACHE="$HOME/.cache/zsh"
-HISTFILE="$ZSH_CACHE/history"
+export HISTFILE="$ZSH_CACHE/history"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
 
 # Auto-remove home clutter
@@ -30,9 +30,9 @@ export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
 [ -f ~/.bash_history ] && rm ~/.bash_history
 
 # History configuration
-HISTSIZE=10000
-SAVEHIST=10000
-setopt appendhistory			# save history entries as soon as they are entered
+export HISTSIZE=10000
+export SAVEHIST=10000
+-setopt appendhistory			# save history entries as soon as they are entered
 setopt hist_ignore_space        # ignore commands that start with space
 setopt hist_verify              # show commands with history expansion to user before running it
 setopt extended_history         # record command start time
