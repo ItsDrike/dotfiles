@@ -186,11 +186,11 @@ get_module_output() {
 while read -r cmd <&5; do
     # Get the key (prefix) and the actual text (output) from the received cmd
     prefix="$(echo $cmd | cut -d " " -f1)"
-    output="$(echo $cmd | cut -d " " -f2-)"
+    output="$(echo $cmd | cut -d " " -s -f2-)"
 
     if [[ "$prefix" == "cmd" ]]; then
         key="$(echo $output | cut -d " " -f1)"
-        args="$(echo $output | cut -d " " -f2-)"
+        args="$(echo $output | cut -d " " -s -f2-)"
         run_str="${CMDS[$key]} $args"
         >&2 echo "CMD: $run_str ($key)"
         eval $run_str
