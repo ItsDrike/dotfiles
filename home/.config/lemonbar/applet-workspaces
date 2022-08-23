@@ -31,7 +31,7 @@ exec 5>"$PANEL_FIFO"
 main() {
     REPORT="$1"
 
-    local -a desktops
+    local -A desktops
     local prefix suffix name
 
     for item in ${(s.:.)REPORT}; do
@@ -71,9 +71,14 @@ main() {
         desktops[$name]="${prefix}${MAP[$name]}${suffix}"
     done
 
+    # Collect workspaces into OUTPUT array, but add them in a sorted order
+    # This is done due to weird behavior bspwm has with workspaces on multiple
+    # monitors, which I'm fixing with my swapdesktop script, which however
+    # doesn't order the workspaces afterwards, so we do that here.
     OUTPUT=()
-    for wstxt in $desktops; do
-        OUTPUT+=("$wstxt" "$WS_SEPARATOR")
+    for wsname in $(echo ${(k)desktops} | xargs -n1 | sort -g | xargs); do
+        wstext="${desktops[$wsname]}"
+        OUTPUT+=("$wstext" "$WS_SEPARATOR")
     done
 
 
