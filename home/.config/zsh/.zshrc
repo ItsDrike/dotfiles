@@ -23,6 +23,7 @@ setopt auto_pushd           # Make cd act as pushd
 export ZSH_CACHE="$HOME/.cache/zsh"
 export HISTFILE="$ZSH_CACHE/history"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
+mkdir -p "$ZSH_CACHE"
 
 # Auto-remove home clutter
 [ -f ~/.zsh-update ] && mv ~/.zsh-update $ZSH_CACHE/.zsh-update
