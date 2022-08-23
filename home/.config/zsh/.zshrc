@@ -35,6 +35,7 @@ SAVEHIST=10000
 setopt appendhistory			# save history entries as soon as they are entered
 setopt hist_ignore_space        # ignore commands that start with space
 setopt hist_verify              # show commands with history expansion to user before running it
+setopt extended_history         # record command start time
 #setopt hist_ignore_dups        # ignore duplicated commands history list
 #setopt hist_expire_dups_first  # delete duplicates first when HISTFILE size exceeds HISTFILE
 #setopt share_history           # share command history data between terminals

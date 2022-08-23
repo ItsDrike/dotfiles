@@ -230,6 +230,7 @@ alias vimwiki='vim -c VimwikiIndex' # Open vimwiki index
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
+alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 
 # If user is not root, pass all commands via sudo/doas
 if [ "$(id -u)" -ne 0 ]; then
