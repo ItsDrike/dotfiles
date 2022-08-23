@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# This is a simple way of switching between multiple BSPWM desktops, even if they're
+# present on a different monitor. Instead of the default BSPWM behavior where when
+# we switch to a desktop that belongs to another monitor, it brings it into focus 
+# on that monitor, this script will instead move that desktop on the focused monitor,
+# and bring it into focus here.
+#
+# This is similar to how different window managers with unified workspaces/desktops
+# across all monitors work (such as qtile or xmonad).
+
+SELECTED_DESKTOP="$(bspc query -D -d "$1")"
+SELECTED_MONITOR="$(bspc query -M -d "$1")"  # Monitor the selected workspace is on
+FOCUSED_DESKTOP="$(bspc query -D -d focused)"
+FOCUSED_MONITOR="$(bspc query -M -d focused)"
+
+if [ "$SELECTED_MONITOR" == "$FOCUSED_MONITOR" ]; then
+  # If the desktop we're switching to lives on the same monitor as the desktop 
+  # we have focused, simply switch to that desktop without worrying about other
+  # monitor(s).
+  bspc desktop "$SELECTED_DESKTOP" -f
+else
+  # Otherwise, if the desktops are on different monitors, we need some more logic.
+  # In this case, we'll want to move this selected desktop onto the focused monitor
+  # so that we can then bring the desktop into focus on this focused monitor.
+
+  # Since we will be moving desktops around, we should store the currently active
+  # one on the monitor that owns the selected desktop, so that after the moving is
+  # done, we can make sure the same desktop stays active on that other monitor.
+  ACTIVE_OTHER="$(bspc query -D -m "$SELECTED_MONITOR" -d .active)"
+
+  # In case the active desktop on the other monitor is the desktop we will be moving
+  # away into this monitor, we will want to focus the current desktop on the other
+  # monitor instead. Essentially, we simply swap them in this case.
+  [ "$ACTIVE_OTHER" == "$SELECTED_DESKTOP" ] && ACTIVE_OTHER="$CURRENT_DESKTOP"
+
+  # Move currently focused desktop into the monitor where the other desktop is.
+  # This is necessary, because BSPWM require each monitor to have at least 1 desktop,
+  # so since we're moving a desktop away, we should first move one in, to avoid failures.
+  # It also allows us to later bring the current desktop into focus on the other monitor.
+  bspc desktop "$CURRENT_DESKTOP" --to-monitor "$SELECTED_MONITOR"
+
+  # Now we can move the selected desktop from the other monitor onto this one.
+  bspc desktop "$SELECTED_DESKTOP" --to-monitor "$CURRENT_MONITOR"
+
+  # Ensure the previoulsy active desktop on the other monitor is active by bringing it
+  # into focus now. If this was the desktop we moved, this will instead be the desktop
+  # whcih we had focused originally.
+  bspc desktop "$ACTIVE_OTHER" -f
+
+  # Bring the selected desktop (that's now on this monitor) into focus here.
+  bspc desktop "$SELECTED_DESKTOP" -f
+fi
