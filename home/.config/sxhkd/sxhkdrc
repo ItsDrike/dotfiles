@@ -1,0 +1,140 @@
+## -- System/WM control
+
+# Quit bspwm
+super + shift + q
+    dmenuprompt "Quit BSPWM?" && bspc quit
+# Restart bspwm
+super + shift + r
+    notify-send "Reload" "BSPWM reloading" & bspc wm -r
+# Restart sxhkd
+super + shift + x
+    notify-send "Reload" "SXHKD reloading" & killall sxhkd && sxhkd &
+super + shift + d
+    # displayselect
+    xdisplayselect -n
+# Set random background
+super + shift + p
+    setbg ~/Pictures/Wallpapers/Active
+# Lock the screen
+super + control + l
+    lockscreen lock
+# Toggle automatic locking
+super + control + shift + l
+    lockscreen toggle
+# Swap keyboard layout
+super + shift + l
+    swap-kblayout
+
+## - Window navigation
+
+# Focus on window in direction
+super + {h,j,k,l}  
+    bspc node -f {west,south,north,east}
+# Swap window with direction
+super + shift + {h,j,k,l}
+  bspc node -s {west,south,north,east}
+# Focus on specific desktop
+super + {0-9}
+  swapdesktop {0-9}
+# Send window to specific desktop
+super + shift + {0-9}
+  bspc node -d {0-9}
+# Send window to desktop and focus on it
+super + control + {0-9}
+  bspc node -d {0-9} && swapdesktop {0-9}
+# Focus on monitor in direction
+super + ctrl + {h,j,k,l}
+  bspc monitor -f {prev,next,prev,next}
+
+## - Window manipulation
+
+# Expand a window by moving one of it's sides outwards
+ctrl + alt + {h,j,k,l}
+  bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+# Shrink a window by moving one of it's sides inwards
+ctrl + shift + alt + {h,j,k,l}
+  bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+# Move a floating window
+ctrl + alt + {Left,Right,Up,Down}
+  xdo move {-x -20, -x +20, -y -20, -y +20}
+
+## - Window controls
+
+# Kill currently focused window
+super + w
+  bspc node -c
+# Toggle fullscreen
+super + space
+  bspc node focused.fullscreen -t tiled || bspc node focused.tiled -t fullscreen  
+# Toggle float
+super + f
+  bspc node focused.tiled -t floating || bspc node focused.fullscreen -t floating || bspc node focused.floating -t tiled
+
+## - Multimedia controls
+
+# Special keys
+XF86AudioMute
+  pulsemixer --toggle-mute
+XF86AudioLowerVolume
+  pulsemixer --change-volume -5
+XF86AudioRaiseVolume
+  pulsemixer --change-volume +5
+XF86MonBrightnessUp
+  brightness -i 5% -n
+XF86MonBrightnessDown
+  brightness -d 5% -n
+# Regular keys (for keyboards without special ones)
+super + Down
+  pulsemixer --change-volume -5
+super + Up
+  pulsemixer --change-volume +5
+super + Right
+  brightness -i 5% -n
+super + Left
+  brightness -d 5% -n
+
+## - Dunst notifications
+
+# Close topmost notification
+control + grave
+  dunstctl close
+# Close all notifications
+control + shift + grave
+  dunstctl close-all
+# Show last notification
+control + period
+  dunstctl history-pop
+# Show context menu for notification actions
+control + shift + period
+  dunstctl context
+
+## -- Run applications
+
+super + Return
+  $TERMINAL
+super + b
+  $BROWSER
+super + x
+  $FILEMANAGER
+super + s
+  spotify
+super + shift + Return
+  dmenu_run -i -p "Run: "
+
+## -- Screenshots
+
+# Selection screenshot into clipboard
+Print
+  flameshot gui --accept-on-select -c
+# Selection screenshot into clipboard after delay
+ctrl + Print
+    echo "" | dmenu -p "Set delay (ms):" | xargs -I _ flameshot gui -d '_' --accept-on-select -c
+# Selection screenshot adjustable
+super + Print
+    flameshot gui
+# Selection screenshot adjustable after delay
+super + ctrl + Print
+    echo "" | dmenu -p "Set delay (ms):" | xargs -I _ flameshot gui -d '_'
+# Launcher for other screenshot options
+super + shift + Print
+  flameshot launcher
