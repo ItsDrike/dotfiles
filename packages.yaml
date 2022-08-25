@@ -85,6 +85,7 @@ pacman:
     - dunst               # Notification daemon
     - papirus-icon-theme  # Breeze inspired icon theme
     - gnome-themes-extra  # Gnome GTK themes (mainly Adwaita)
+    - autorandr           # Tool capable of saving and restoring xrandr configurations
     #- redshift           # Adjust the color temperature of your system based on location
 
     # Audio
