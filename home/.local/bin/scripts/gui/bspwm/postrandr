@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Script handling monitor connecting/disconnecting with BSPWM
+# This is generally meant to be ran after xrandr call, or as a postswitch hook
+# in autorandr tool.  
+
+DISPLAYS="1 2 3 4 5 6 7 8 9 0"
+DISPLAYS_AMT="$(echo "$DISPLAYS" | tr " " "\n" | wc -l)"
+MONITORS="$(bspc query -M --names)"
+MONITOR_AMT="$(echo "$MONITORS" | wc -l)"
+DISPLAYS_PER_MONITOR="$((DISPLAYS_AMT / MONITOR_AMT))"
+
+# TODO: Run xrandr query too, to check which displays are actually connected
+# if this isn't in sync with monitors tracked by BSPWM, move all displays from
+# the disconnected monitor into the still connected monitors, and leave a temporary
+# display on the disconnected monitor, since BSPWM require at least 1 display per mon
+
+# Split displays evenly across all monitors
+i=1
+for monitor in $(echo "$MONITORS" | tr "\n" " ") ; do
+  start="$((1 + DISPLAYS_PER_MONITOR * (i - 1)))"
+  end="$((start + DISPLAYS_PER_MONITOR - 1))"
+  monitor_displays="$(echo "$DISPLAYS" | cut -d' ' -f$start-$end)"
+  bspc monitor $monitor -d $monitor_displays
+  ((i++))
+done
+
+# In case some displays were left out due to integer division error
+((end++))
+for display in $(echo "$DISPLAYS" | cut -d' ' -f$end-); do
+  bspc monitor "$monitor" -a "$display"
+done
+
+# (Re)start trayer
+killall trayer
+until ! pgrep trayer; do sleep 0.1; done
+trayer --monitor primary --edge top --align right --widthtype request --padding 0 --transparent true --tint 0x282c34 --alpha 0 --height 28 --SetDockType true & disown
+xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" "$(xdo id -N trayer)" # Keep trayer above bspwm root window, but below everything else
+
+# Start lemonbar
+launchlemon
