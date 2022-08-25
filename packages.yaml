@@ -71,9 +71,12 @@ pacman:
     - xorg-xrandr         # Manage multiple monitors in X
     - xorg-xsetroot       # Customize appearance of X root
     - xorg-xev            # Debug tool for printing contents of X events
-    - xmonad              # Window Manager written in haskell
-    - xmonad-contrib      # Additional tools for xmonad
-    - xmobar              # Panel built for xmonad
+    #- xmonad              # Window Manager written in haskell
+    #- xmonad-contrib      # Additional tools for xmonad
+    #- xmobar              # Panel built for xmonad
+    #- lemonbar            # Minimal panel configured through scripting (for font support aur/lemonbar-xft-git)
+    - bspwm               # Window Manager controlled with a cli tool
+    - sxhkd               # Simple
     - xdotool             # X11 automation tool
     - trayer              # System tray standalone panel (alternatively there's stalonetray)
     - xsel                # X11 clipboard manager (alternatively there's xclip)
@@ -166,6 +169,7 @@ aur:
     - picom-ibhagwan-git          # Forked picom version with support for both rounded corner and dual_kawase blur
     - devour                      # WM agnostic window swallowing for terminals
     - xcursor-simp1e-breeze-snow  # Breeze cursor theme
+    - lemonbar-xft-git            # Lemonbar with custom font support
 
     # GUI
     - spotify                 # Online music player
