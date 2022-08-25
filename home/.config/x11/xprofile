@@ -3,6 +3,7 @@
 # This file runs when a DM logs you into a graphical session
 # if you use startx/xinit this file should also be soruced.
 
+sxhkd &
 
 # Start xsecurelock lockscreen with xss-lock
 ~/.local/bin/scripts/lockscreen start &
