@@ -36,10 +36,10 @@ numlockx &
 udiskie -A -s &
 
 # Enable running applications from chroot
-xhost +local:
+xhost +local: &
 
 # Change x shaped default cursor (fonts are located in /usr/include/X11/cursorfont.h)
-xsetroot -cursor_name left_ptr
+xsetroot -cursor_name left_ptr &
 
 # import DISPLAY environment variable for systemd user services
-systemctl --user import-environment DISPLAY
+systemctl --user import-environment DISPLAY &
