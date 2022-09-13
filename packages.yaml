@@ -102,6 +102,7 @@ pacman:
     - flameshot         # Screenshot taking tool
     - obs-studio        # Advanced video recording tool
     - lxappearance      # GTK configuration
+    - file-roller       # Archive manipulator (allows opening .zip/.rar/.tar/... easily)
     - ueberzug          # Embed images within a terminal
     - krita             # Image editor (gimp alternative)
     - discord           # Popular chat app
