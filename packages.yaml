@@ -85,6 +85,7 @@ pacman:
     - dunst               # Notification daemon
     - papirus-icon-theme  # Breeze inspired icon theme
     - gnome-themes-extra  # Gnome GTK themes (mainly Adwaita)
+    #- redshift           # Adjust the color temperature of your system based on location
 
     # Audio
     - alsa-lib          # Implementation of Linux sound support
