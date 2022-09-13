@@ -25,6 +25,7 @@ pacman:
     - pacman-contrib  # Includes multiple additional tools related to pacman
     - reflector       # Tool to manage pacman mirror list
     - lshw            # List hardware components and their attributes
+    - lsof            # List open files for running Unix process
     - trash-cli       # Trash interraction (rather than permanent removal)
     #- libfaketime     # Simulate different time for single command
     #- figlet          # generate ascii text banners in terminal
