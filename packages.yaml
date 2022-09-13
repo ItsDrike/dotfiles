@@ -84,6 +84,7 @@ pacman:
     - numlockx            # Enabling numlock from terminal (used in xprofile)
     - dunst               # Notification daemon
     - papirus-icon-theme  # Breeze inspired icon theme
+    - gnome-themes-extra  # Gnome GTK themes (mainly Adwaita)
 
     # Audio
     - alsa-lib          # Implementation of Linux sound support
