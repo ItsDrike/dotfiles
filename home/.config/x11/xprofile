@@ -6,7 +6,7 @@
 sxhkd &
 
 # Start xsecurelock lockscreen with xss-lock
-~/.local/bin/scripts/lockscreen start &
+~/.local/bin/scripts/gui/lockscreen start &
 
 # Set the background with a custom `setbg` script
 setbg &
