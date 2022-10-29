@@ -178,7 +178,7 @@ def exclude_fun(diff: FileDiff) -> bool:
         lambda d: Path("home/.config/topgrade.toml") == d.rel_dot_file,
         lambda d: Path("home/.config/newsboat") in d.rel_dot_file.parents,
         lambda d: Path("home/.cache/zsh/history") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
-        lambda d: Path("home/.local/scripts") in d.rel_dot_file.parents,  # Temporary
+        lambda d: Path("home/.local/scripts") in d.rel_dot_file.parents,
         lambda d: Path("root") in d.rel_dot_file.parents,  # Temporary
     ]
 
