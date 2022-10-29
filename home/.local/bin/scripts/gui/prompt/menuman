@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Menu prompt to easily search for a man page to open
+
+page="$(apropos --long "$1" | menuprompt --choose -p "Pick man page" | awk '{print $2, $1}' | tr -d '()')"
+
+if tty -s; then
+    man "$page"
+else
+    $TERMINAL -e man "$page"
+fi

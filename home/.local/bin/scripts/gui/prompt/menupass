@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# This script is the a wrapper around menuprompt automatically passing options
+# to prompt for a password. This is necessary for SUDO_ASKPASS variable, as it
+# expects a path to a single executable.
+#
+# SUDO_ASKPASS is an environment variable that can be set to a path of an executable,
+# which will run if sudo can't obtain password from terminal (stdin), i.e. running in
+# a graphical application. This script will use menuprompt to obtain the plaintext
+# password and which sudo will then read and verify.
+#
+# This is as safe as any other SUDO_ASKPASS program, and it needs to return the final
+# password in plaintext for sudo to read it, however pipes retain the same filesystem user
+# permissions and shouldn't be accessible to other non-priviledged users, so it's not
+# a huge security issue, but know that it will deal with plaintext passwords.
+#
+# You can test whether this worked by running sudo -A echo "test", making sudo use the
+# SUDO_ASKPASS program to obtain the password.
+
+menuprompt -P -p "$1" 2>/dev/null

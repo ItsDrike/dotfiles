@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# Compatibility executable script for applications running dmenu, which
-# runs wofi in dmenu mode instead. Note: In many cases the arguments won't
-# be compatible and this will fail, however the primary way scripts use
-# dmenu is just for simple prompts, using the `-p` flag. and wofi does fully
-# support this usage.
-
-cat | wofi --dmenu $@

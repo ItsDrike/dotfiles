@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# export SDL_VIDEODRIVER=wayland
+# export _JAVA_AWT_WM_NONREPARENTING=1
+# export QT_QPA_PLATFORM=wayland
+# export XDG_CURRENT_DESKTOP=sway
+# export XDG_SESSION_DESKTOP=sway
+
+echo "---------- NEW RUN $(date) ----------" >> ~/.hyprlog.txt
+Hyprland 2>&1 | awk '{ print strftime("%s: "), $0, fflush(); }' | tee -a "${XDG_CACHE_HOME:-$HOME/.cache}/.hyprlog.txt"
+echo "---------- ENDED $(date) ----------" >> ~/.hyprlog.txt

@@ -1,0 +1,338 @@
+#!/bin/bash
+
+# Compatibility executable script for applications running dmenu, which
+# runs wofi in dmenu mode instead. Note: In many cases the arguments won't
+# be compatible and this will fail, however the primary way scripts use
+# dmenu is just for simple prompts, using the `-p` flag. and wofi does fully
+# support this usage.
+
+# Wrapper script for menu application independent prompts. This script will pick 
+# the appropriate installed prompt tool (dmenu/rofi/wofi) and use run it accordingly
+# to picked usage option(s).
+
+help() {
+  cat << EOF
+usage: menuprompt
+Menuprompt is a wrapper script for menu application independent prompt (dmenu/rofi/wofi)
+
+options:
+  -h, --help                show this help message and exit
+  -p, --prompt [MESSAGE]    Prompt to be displayed in the menu
+  -a, --app [MENU_APP]      Overrides the app picked by default, must be one of supported apps
+  -v, --verbose             Show debug information (printed to stderr to retain pipeable stdout output)
+  -vv, --very-verbose       Show even more debug information
+  --dry-run                 Don't actually run the final menu command (only useful with --verbose)
+
+actions:
+  -c, --choose
+      Basic pick prompt, picking from piped newline separated options
+      The picked option will be printed to stdout.
+      usage: printf 'No\nYes' | menuprompt -c -p 'Pick one: '
+  -yn, --yesno
+      Essentially an alias for printf 'No\nYes' | menuprompt -p "\$1", however instead of printing the result
+      to stdout, this instead exits with code 0 on success, 1 on failure, or 2 on getting other input. This
+      allows for easily combining it with other applications through chaining.
+      example: menuprompt --yesno && poweroff or menuprompt -yn -p "Do you really want to quit?" && killall Hyprland
+  -P, --password
+      Password prompt - hides the input characters
+      example: menuprompt -P -p "Enter password:" | xargs -I {} echo "Hah, got your password: {}"
+
+supported menu applications and their actions:
+  dmenu:
+    - choose: supported
+    - yesno: supported
+    - password: supported, but requires password patch for -P argument
+  wofi:
+    - choose: supported
+    - yesno: supported
+    - password: supported, however setting --prompt won't have any effect
+  rofi:
+    - choose: supported
+    - yesno: supported
+    - password: not supported - no option for hidden input
+
+
+passing custom arguments to menu app:
+    Note that when passing extra arguments, you should always explicity specify the menu application to use
+    as it's not guaranteed that all supported args will support given extra argument(s), nor that if they do
+    their support is consistent and the same argument does the same thing.
+
+    examples:
+        Make dmenu run on the bottom of the screen:
+        printf "A\nB\nC" menuprompt --app dmenu --choose -- -b
+
+        Run wofi with 20% width on the yesno prompt:
+        menuprompt --yesno -p "Do you really want to quit?" --app wofi -- --width=20%
+
+
+exit codes:
+  0:    Menu app ran successfully, action completed
+  1-2:  Action specific
+  3:    User error - invalid usage
+  4:    Unable to pick menu app (no usable menu app installed?)
+  5:    Internal menuprompt error, report this!
+EOF
+}
+
+pick_menu_app() {
+  if [ -n "$MENU_APP" ]; then
+    if command -v "$MENU_APP" >/dev/null; then
+      echo "$MENU_APP"
+      return 0
+    else
+      >&2 echo "Specified menu app by (set by \$MENU_APP) isn't a valid command \`$MENU_APP\`"
+      exit 3
+    fi
+  fi
+
+  if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+    if command -v dmenu >/dev/null; then
+      echo "dmenu"
+    elif command -v rofi >/dev/null; then
+      echo "rofi"
+    else
+      >&2 echo "Menu application for x11 not found, neither dmenu nor rofi available."
+      exit 3
+    fi
+
+  elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    if command -v wofi >/dev/null; then
+      echo "wofi"
+    else
+      >&2 echo "Menu application for wayland not found, wofi not available."
+      exit 3
+    fi
+
+  else
+    >&2 echo "Unknown session type, expected \$XDG_SESSION_TYPE to be \`wayland\` or \`x11\`, got \`$XDG_SESSION_TYPE\`."
+    exit 3
+  fi
+}
+
+# Runs picked menu application with 
+# $1    pipe STDIN if set to "1", runs normally if "0"
+# $2    app to use (result of pick_menu_app)
+# $3    prompt to be shown (can be empty)
+# $4-   extra args to pass to given menu app
+runmenu() {
+  pipe_stdin="$1"
+  app="$2"
+  prompt="$3"
+  shift 3
+
+  if [ "$VERBOSITY" -ge 2 ]; then
+    if [ $# -gt 0 ]; then
+      >&2 echo "Making menu command for app: \`$app\`, with prompt: \`$prompt\` and extra args: \`$*\`"
+    else
+      >&2 echo "Making menu command for app: \`$app\`, with prompt: \`$prompt\` (no extra args)"
+    fi
+  fi
+
+  if [ "$app" = "dmenu" ] && [ "$pipe_stdin" -eq 0 ]; then
+    >&2 echo "Dmenu can only be used with piped STDIN (forgot --choose?)"
+    exit 3
+  fi
+
+  args=()
+  case "$app" in
+    dmenu)
+      args+=("-i")
+      ;;
+    wofi)
+      args+=("--dmenu")
+      ;;
+    rofi)
+      args+=("-dmenu")
+      ;;
+    *)
+      >&2 echo "Unsupported menu app: $app"
+      exit 4
+      ;;
+  esac
+
+  if [ -n "$prompt" ]; then
+    if [ "$app" = "wofi" ] && [ "$pipe_stdin" -eq 0 ]; then
+      >&2 echo "WARNING: wofi prompt can only be displayed with piped STDIN (forgot --choose?)"
+    fi
+    args+=("-p" "$prompt")
+  fi
+
+  if [ "$VERBOSITY" -ge 1 ]; then
+    >&2 echo "Generated command: \`$app ${args[*]} $*\`"
+  fi
+
+  if [ "$DRY_RUN" -ne 1 ]; then
+    if [ "$pipe_stdin" -eq 1 ]; then
+      cat | $app "${args[@]}" "$@"
+    elif [ "$pipe_stdin" -eq 0 ]; then
+      $app "${args[@]}" "$@"
+      return $?
+    else
+      >&2 echo "Internal error, pipe_stdin set to invalid value: \`$pipe_stdin\`"
+      exit 5
+    fi
+  else
+    return 0
+  fi
+}
+
+# $1    app to use (result of pick_menu_app)
+# $2    prompt to be shown (can be empty)
+# $2-   extra arguments to pass to given menu app
+password() {
+  app="$1"
+  prompt="$2"
+  shift 2
+
+  if [ "$VERBOSITY" -ge 2 ]; then
+    >&2 echo "Prompting for password..."
+  fi
+
+  if [ "$app" = "dmenu" ]; then
+    if ! runmenu "0" "$app" "$prompt" -P "$@"; then
+      >&2 echo "To use dmenu for passwords, you need to apply the password patch."
+      exit 3
+    fi
+  elif [ "$app" = "wofi" ]; then
+    runmenu "0" "$app" "$prompt" -P "$@"
+  elif [ "$app" = "rofi" ]; then
+    >&2 echo "Rofi doesn't support password/hidden input."
+    exit 3
+  else
+    >&2 echo "Unsupported menu application picked: \`$app\`"
+    exit 4
+  fi
+}
+
+# $1    app to use (result of pick_menu_app)
+# $2    prompt to be shown (can be empty)
+# $3-   extra arguments to pass to the menu app
+yesno() {
+  app="$1"
+  prompt="$2"
+  shift 2
+
+  if [ "$VERBOSITY" -ge 2 ]; then
+    >&2 echo "Prompting for yesno..."
+  fi
+
+  temp="$(printf "No\nYes" | runmenu "1" "$app" "$prompt" "$@")"
+
+  if [ "$VERBOSITY" -ge 2 ]; then
+    >&2 echo "Yesno prompt answer: \`$temp\`"
+  fi
+
+  if [ "$temp" = "Yes" ]; then
+    return 0
+  elif [ "$temp" = "No" ]; then
+    return 1
+  else
+    return 2
+  fi
+}
+
+#@  - extra args to pass to picked menu app
+run() {
+  app="$(pick_menu_app)"
+
+  if [ "$VERBOSITY" -ge 2 ]; then
+    >&2 echo "ACTION: \`$ACTION\`"
+    >&2 echo "PROMPT_ARG: \`$PROMPT_ARG\`"
+    >&2 echo "picekd app: \`$app\`"
+    >&2 echo "Extra args: \`$*\`"
+  fi
+
+  if [ -z "$ACTION" ]; then
+    runmenu "0" "$app" "$PROMPT_ARG" "$@"
+    return $?
+  elif [ "$ACTION" = "choose" ]; then
+    runmenu "1" "$app" "$PROMPT_ARG" "$@"
+    return $?
+  elif [ "$ACTION" = "yesno" ]; then
+    yesno "$app" "$PROMPT_ARG" "$@"
+    return $?
+  elif [ "$ACTION" = "password" ]; then
+    password "$app" "$PROMPT_ARG" "$@"
+    return $?
+  fi
+
+  >&2 echo "Huh? How did you get here?"
+  >&2 echo "Rerun this command with the --verbose flag and submit a report with the captured output."
+  exit 5
+}
+
+
+ACTION=""
+PROMPT_ARG=""
+MENU_APP="${MENU_APP-""}"
+VERBOSITY=0
+DRY_RUN=0
+while [ "$1" ]; do
+  case "$1" in
+    # options
+    -h|--help)
+      help
+      exit 0
+      ;;
+    -a|--app)
+      MENU_APP="$2"
+      shift 2
+      ;;
+    -p|--prompt)
+      PROMPT_ARG="$2"
+      shift 2
+      ;;
+    -v|--verbose)
+      VERBOSITY=1
+      shift
+      ;;
+    -vv|--very-verbose)
+      VERBOSITY=2
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+
+    # actions
+    -c|--choose)
+      if [ -n "$ACTION" ]; then
+        >&2 echo "Action already set, can't specify multiple actions"
+        exit 3
+      fi
+      ACTION="choose"
+      shift
+      ;;
+    -yn|--yesno)
+      if [ -n "$ACTION" ]; then
+        >&2 echo "Action already set, can't specify multiple actions"
+        exit 3
+      fi
+      ACTION="yesno"
+      shift
+      ;;
+    -P|--password)
+      if [ -n "$ACTION" ]; then
+        >&2 echo "Action already set, can't specify multiple actions"
+        exit 3
+      fi
+      ACTION="password"
+      shift
+      ;;
+    --)
+      shift
+      run "$@"
+      exit $?
+      ;;
+
+    # err
+    *) 
+      >&2 echo "Unrecognized argument: $1"
+      >&2 echo "use -h or --help for help"
+      exit 4
+      ;;
+  esac
+done
+
+run
