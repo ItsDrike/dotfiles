@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# $1:  Current number
+# $2:  Range minimum
+# $3:  Range maximum
+# $4-: Icons as individual arguments
+pick_icon() {
+  cur="$1"
+  min="$2"
+  max="$3"
+  shift 3
+  icons=( "$@" )
+
+  index="$(echo "($cur-$min)/(($max-$min)/${#icons[@]})" | bc)"
+
+  # Print the picked icon, handling overflows/underflows, i.e. if our index is <0 or >len(icons)
+  if [ "$index" -ge "${#icons[@]}" ]; then
+    index=-1
+  elif [ "$index" -lt 0 ]; then
+    index=0
+  fi
+
+  echo "${icons[index]}"
+}
+
+# Will block and listen to the hyprland socket messages and output them
+# Generally used like: hyprland_ipc | while read line; do handle $line; done
+# Read <https://wiki.hyprland.org/IPC/> for output format and available events
+# Note: requires openbsd version of netcat.
+# $1 - Optional event to listen for (no event filtering will be done if not provided)
+hyprland_ipc() {
+  if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    >&2 echo "Hyprland is not running, IPC not available"
+    exit 1
+  fi
+
+  SOCKET_PATH="/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+
+  if [ -z "$1" ]; then
+    nc -U "$SOCKET_PATH" | while read -r test; do
+      echo "$test"
+    done
+  else
+    nc -U "$SOCKET_PATH" | while read -r test; do
+      # shellcheck disable=SC2016
+      echo "$test" | grep --line-buffered -E "^$1>>" | stdbuf -oL awk -F '>>' '{print $2}'
+    done
+  fi
+}

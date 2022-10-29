@@ -1,0 +1,71 @@
+@import 'css/colors';
+
+@mixin rounding {
+  border-radius: 16px;
+}
+
+@mixin window {
+  border: 1px solid $border;
+  box-shadow: 0 2px 3px $shadow;
+  margin: 5px 5px 10px;
+  @include rounding;
+}
+
+* {
+  all: unset;
+  transition: 200ms ease;
+}
+
+@import "css/windows/calendar";
+@import "css/modules/clock";
+@import "css/modules/volume";
+@import "css/modules/bitcoin";
+@import "css/modules/cpu";
+@import "css/modules/memory";
+@import "css/modules/uptime";
+@import "css/modules/kernel";
+@import "css/modules/battery";
+@import "css/modules/workspaces";
+
+.bar {
+  background-color: $bg-a;
+  color: $fg;
+
+  font-family: "JetBrains Mono", "Font Awesome 6 Free";
+  // margin-right: 10px;
+
+  label {
+    font-size: 14px;
+  }
+
+  // TODO: Use ercentages (for some reason it fails now)
+  min-width: 1920px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+tooltip {
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: 8px;
+
+  label {
+    font-size: 1rem;
+  }
+}
+
+.module { margin: 0 5px; }
+
+.separ {
+  color: $surface0;
+  font-size: 1.5rem;
+  padding-bottom: 2px;
+}
+
+scale trough {
+  background-color: $bg1-a;
+  border-radius: 24px;
+  margin: 0 1rem;
+  min-height: 10px;
+  min-width: 70px;
+}

@@ -1,0 +1,29 @@
+(defpoll battery 
+  :interval "2s"
+  :initial '{"percent":"0","plugged":"false","status":"N/A","capacity_icon":"","extra_icon":"","manufacturer":"N/A","model_name":"N/A","technology":"N/A","energy_now":"0","enerfy_full":"0","enerfy_full_design":"0","cycle_count":"0","critical":"false","full":"false"}'
+  `scripts/battery`)
+
+(defwidget battery_module []
+  (eventbox
+    :class "module battery"
+
+    (box
+      :class {battery.critical ? "critical" : battery.full ? "full" : "normal"}
+      (box
+        :space-evenly false
+        :class {battery.plugged ? "plugged" : "unplugged" }
+
+        (box
+          :class "icon"
+          :space-evenly false
+
+          (label
+            :class "extra"
+            :text {battery.extra_icon})
+          (label
+            :text {battery.capacity_icon}))
+        (label
+          :class "value"
+          :text "${battery.percent}%"
+        )
+  ))))

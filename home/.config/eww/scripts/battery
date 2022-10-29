@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# shellcheck source=include
+source "./scripts/include"
+
+# $BATTERY and $ADAPTER env vars can be set manually, being the names of the
+# devices (in /sys/class/power_supply/) i.e. BATTERY=BAT0 ADAPTER=ADP0
+# or, if left unset, they will be automatically picked.
+
+CAPACITY_ICONS=("" "" "" "" "")
+CHARGING_ICON=""
+DISCHARGING_ICON=""
+FULL_ICON=""  # Plugged in, but no longer charging (fully charged)
+CRITICAL_ICON=""
+CRITICAL_PERCENTAGE=15
+
+
+if [ -z "$BATTERY" ]; then
+  # shellcheck disable=SC2010
+  BATTERY="$(ls -t /sys/class/power_supply | grep "BAT" | head -n 1)"
+fi
+
+if [ -z "$ADAPTER" ]; then
+  # shellcheck disable=SC2010
+  ADAPTER="$(ls -t /sys/class/power_supply | grep "ADP" | head -n 1)"
+fi
+
+get_bat_info() {
+  cat /sys/class/power_supply/"$BATTERY"/"$1"
+}
+
+get_adp_info() {
+  cat /sys/class/power_supply/"$ADAPTER"/"$1"
+}
+
+manufacturer="$(get_bat_info manufacturer)"
+model_name="$(get_bat_info model_name)"
+technology="$(get_bat_info technology)"
+energy_now="$(get_bat_info energy_now)"
+energy_full="$(get_bat_info energy_full)"
+energy_full_design="$(get_bat_info energy_full_design)"
+cycle_count="$(get_bat_info cycle_count)"
+
+capacity="$(get_bat_info capacity)"
+status="$(get_bat_info status)"
+[ "$(get_adp_info online)" -eq 1 ] && adp_connected="true" || adp_connected="false"
+
+full="false"
+capacity_icon="$(pick_icon "$capacity" 0 100 "${CAPACITY_ICONS[@]}")"
+
+if [ "$status" = "Not charging" ] || [ "$status" = "Full" ] && [ "$adp_connected" = "true" ]; then
+  extra_icon="$FULL_ICON"
+  full="true"
+elif [ "$status" = "Discharging" ] && [ "$capacity" -le "$CRITICAL_PERCENTAGE" ]; then
+  extra_icon="$CRITICAL_ICON"
+elif [ "$status" = "Discharging" ]; then
+  extra_icon="$DISCHARGING_ICON"
+elif [ "$status" = "Charging" ]; then
+  extra_icon="$CHARGING_ICON"
+fi
+
+[ "$capacity" -le "$CRITICAL_PERCENTAGE" ] && critical="true" || critical="false"
+
+jq -n -c --monochrome-output \
+  --arg percent "$capacity" \
+  --arg plugged "$adp_connected" \
+  --arg status "$status" \
+  --arg capacity_icon "$capacity_icon" \
+  --arg extra_icon "$extra_icon" \
+  --arg manufacturer "$manufacturer" \
+  --arg model_name "$model_name" \
+  --arg technology "$technology" \
+  --arg energy_now "$energy_now" \
+  --arg energy_full "$energy_full" \
+  --arg energy_full_design "$energy_full_design" \
+  --arg cycle_count "$cycle_count" \
+  --arg critical "$critical" \
+  --arg full "$full" \
+  '$ARGS.named'

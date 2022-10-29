@@ -1,0 +1,19 @@
+(defpoll bitcoin
+  :interval "5m"
+  :initial "$N/A"
+  `~/.local/bin/scripts/cli/bitcoin`)
+
+(defwidget bitcoin_module []
+  (eventbox
+    :onclick "~/.local/bin/scripts/cli/bitcoin | xargs -I_ ${EWW_CMD} update bitcoin=_"
+    :class "module bitcoin"
+
+    (box
+      :space-evenly false
+
+      (label 
+        :class "icon"
+        :text "ﴑ")
+      (label :text {bitcoin}))
+  )
+)

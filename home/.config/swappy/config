@@ -1,0 +1,9 @@
+[Default]
+save_dir=$HOME/Pictures/Screenshots
+save_filename_format=Screenshot_%Y-%M-%D_%H-%M-%S.png
+show_panel=false
+line_size=5
+text_size=20
+text_font=JetBrains Mono
+early_exit=true
+paint_mode=rectangle

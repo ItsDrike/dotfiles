@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# This script does the following:
+#   Run by itself, set the wallpaper
+#   If given a file, set that as the new wallpaper
+#   If given a directory, recursively choose a random file in it.
+
+# Location of the symlink to wallpaper image
+bgloc="${XDG_DATA_HOME:-$HOME/.local/share}/background"
+
+trueloc="$(readlink -f "$1")" &&
+case "$(file --mime-type -b "$trueloc")" in
+	image/* )
+        ln -sf "$(readlink -f "$1")" "$bgloc"
+        notify-send -i "$bgloc" "Changing wallpaper..."
+        ;;
+	inode/directory )
+        randimg="$(find -L $trueloc -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)"
+        echo $randimg
+        ln -sf "$randimg" "$bgloc"
+        notify-send -i "$bgloc" "Random Wallpaper chosen."
+        ;;
+	*)
+        notify-send "Error" "Not a valid image."
+        exit 1
+        ;;
+esac
+
+# Use xwallpaper to set the background
+if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+    killall swaybg 2>/dev/null
+    swaybg --image "$bgloc" & disown
+else
+    xwallpaper --zoom "$bgloc"
+fi

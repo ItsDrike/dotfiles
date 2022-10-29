@@ -1,0 +1,153 @@
+#!/bin/sh
+
+
+# Parse arguments
+# ------------------------------------------------------------------------------------
+BRIGHTNESS_DIR="/sys/class/backlight/*"
+SEND_NOTIFICATION=0
+URGENCY="normal"
+INCREASE=0
+DECREASE=0
+SET=0
+BRIGHTNESS=0
+
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help)
+            cat << EOF
+brightness is a cli tool that for displaying or modifying screen brightness.
+
+Options:
+-h | --help: Display this message
+-n | --notification: Produce a desktop notification with brightness info
+-N | --no-notification: Don't produce a desktop notification with brightness info
+-u | --urgency [URGENCY]: Pass over notify-send urgency attribute (default: normal)
+-i | --increase [BRIGHTNESS]: Increase the brightness by given amount
+-d | --decrease [BRIGHTNESS]: Decrease the brightness by given amount
+-s | --set [BRIGHTNESS]: Set new brightness level
+-p | --path [DIR_PATH]: Path to brightness directory (default: /sys/class/backlight/*)
+
+Valid values:
+    URGENCY: low, normal, critical
+    DIR_PATH: Valid path to a directory
+    BRIGHTNESS:
+        specific value - Example: 10
+        percentage value - Example: 10%
+EOF
+            exit 0
+            ;;
+        -n | --notification)
+            SEND_NOTIFICATION=1
+            ;;
+        -N | --no-notification)
+            SEND_NOTIFICATION=0
+            ;;
+        -u | --urgency)
+            URGENCY="$2"
+            shift
+            ;;
+        -i | --increase)
+            INCREASE=1
+            BRIGHTNESS="$2"
+            shift
+            ;;
+        -d | --decrease)
+            DECREASE=1
+            BRIGHTNESS="$2"
+            shift
+            ;;
+        -s | --set)
+            SET=1
+            BRIGHTNESS="$2"
+            shift
+            ;;
+        -p | --path)
+            BRIGHTNESS_DIR="$2"
+            shift
+            ;;
+        * ) 
+            echo "Unknown argument '$1', use -h or --help for help" 
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# Define constants based on parsed arguments
+# ------------------------------------------------------------------------------------
+BRIGHTNESS_FILE="$BRIGHTNESS_DIR/brightness"
+BRIGHTNESS_MAX="$(cat $BRIGHTNESS_DIR/max_brightness)"
+
+
+# Helper functins
+# ------------------------------------------------------------------------------------
+
+# Send brightness level desktop notification, showing the given brightness level
+# as progress bar, along with given message.
+# $1 - brightness level (number 0-100)
+# $2 - message (notification body)
+send_brightness_notify() {
+    percent_brightness="$1"
+    msg="$2"
+
+    notify-send \
+        --app-name=brightness \
+        --urgency="$URGENCY" \
+        -h int:value:$percent_brightness \
+        -h string:synchronous:brightness \
+        "brightness" "$msg"
+}
+
+
+# Set brightness to given absolute value
+# $1 - brightness absolute value
+set_brightness() {
+    # there should be sudo config allowing this command without password
+    echo "$1" | sudo tee $BRIGHTNESS_FILE >/dev/null
+}
+
+
+# Main Logic
+# ------------------------------------------------------------------------------------
+
+# Determine the absolute new brightness level
+if [ $INCREASE -eq 1 ] || [ $DECREASE -eq 1 ] || [ $SET -eq 1 ]; then
+    # If we're dealing with percentages, change to absolutes
+    if echo "$BRIGHTNESS" | grep -qE '%$'; then
+        numeric=$(echo "$BRIGHTNESS" | sed 's/.$//')
+        absolute=$(echo "($BRIGHTNESS_MAX / 100) * $numeric" | bc -l)
+        BRIGHTNESS=$(printf "%.0f" $absolute)
+    fi
+
+    # Get the new requested absolute brightness
+    if [ $SET -eq 1 ]; then
+        new_brightness=$BRIGHTNESS
+    elif [ $DECREASE -eq 1 ]; then
+        cur_brightness=$(cat $BRIGHTNESS_FILE)
+        new_brightness=$(($cur_brightness - $BRIGHTNESS))
+    else
+        cur_brightness=$(cat $BRIGHTNESS_FILE)
+        new_brightness=$(($cur_brightness + $BRIGHTNESS))
+    fi
+
+    # Ensure we respect max/min boundaries
+    if [ $new_brightness -lt 0 ]; then
+        new_brightness=0
+    elif [ $new_brightness -gt $BRIGHTNESS_MAX ]; then
+        new_brightness=$BRIGHTNESS_MAX
+    fi
+
+    # Update the brightness
+    set_brightness $new_brightness
+fi
+
+cur_brightness=$(cat $BRIGHTNESS_FILE)
+percent_brightness=$(echo "($cur_brightness / $BRIGHTNESS_MAX) * 100" | bc -l)
+percent_brightness_2f=$(printf "%.2f" $percent_brightness)
+percent_brightness_rounded=$(printf "%.0f" $percent_brightness)
+
+if [ $SEND_NOTIFICATION -eq 1 ]; then
+    send_brightness_notify "$percent_brightness_rounded" "Level: $percent_brightness_rounded"
+fi
+
+echo "Brightness: ${percent_brightness_2f}% (absolute: $cur_brightness)"

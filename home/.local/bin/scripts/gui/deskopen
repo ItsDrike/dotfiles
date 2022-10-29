@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Find the line with exec, if there's multiple lines
+# use the last one
+exec_line=$(grep '^Exec' "$1" | tail -1)
+# Remove 'Exec' and arguments (%u, %f, ...)
+cmd=$(echo $exec_line | sed 's/^Exec=//' | sed 's/%.//')
+# Remove "" around command (if present)
+cmd=$(echo $cmd | sed 's/^"//g' | sed 's/" *$//g')
+# Run the exec line of the application using /bin/sh
+/bin/sh -c "$cmd"

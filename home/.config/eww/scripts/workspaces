@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# shellcheck source=include
+source "./scripts/include"
+
+if [ "$1" = "--switch" ]; then
+  hyprctl dispatch workspace "$2" >/dev/null
+elif [ "$1" = "--loop" ]; then
+  hyprland_ipc "workspace|createworkspace|destroyworkspace" | ./scripts/workspaces.py "$@"
+else
+  ./scripts/workspaces.py "$@"
+fi

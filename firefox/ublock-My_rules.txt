@@ -1,0 +1,158 @@
+!! This is not a comment, this is a invalid line which gets silently dropped
+!! by uB if you paste into your dynamic filter rules
+
+!! Blocking mode: hard mode with click2load 3p-frames
+* * * noop
+* * 1p-script noop
+* * 3p block
+* * 3p-frame noop
+* * 3p-script block
+* * image noop
+* * inline-script noop
+behind-the-scene * * block
+
+!! Global CDN noops for common CDNs (mostly via CNAME)
+* akamai.net * noop
+* akamaiedge.net * noop
+* akamaihd.net * noop
+* akamaized.net * noop
+* b-cdn.net * noop
+* cdn.cloudflare.net * noop
+* cloudfront.net * noop
+* discourse-cdn.com * noop
+* edgecastcdn.net * noop
+* global.fastly.net * noop
+* hwcdn.net * noop
+* kxcdn.com * noop
+* bootstrapcdn.com * noop
+* map.fastly.net * noop
+* netdna-ssl.com * noop
+* wp.com * noop
+* ajax.googleapis.com * noop
+* jsdelivr.net * noop
+* unsplash.com * noop
+* cdn.embedly.com * noop
+* wixmp.com * noop
+
+!! Website building/caching tools
+* cloudflare.com * noop
+* prismic.io * noop
+* googlehosted.com * noop
+
+!! Website 3rd party utilities (trusted or simply necessary things)
+* maps.googleapis.com * noop
+* recaptcha.net * noop
+* imgur.com * noop
+* shields.io * noop
+* gravatar.com * noop
+
+!! Explicit blocks (even though we block all 3rd parties, explicitly block these to signify that they're evil)
+* fonts.googleapis.com * block
+* doubleclick.net * block
+* sentry.io * block
+* servedby-buysellads.com * block
+* facebook.com * block
+* facebook.net * block
+
+!! Per-site (mostly noop) settings
+
+! GitHub
+github.com avatars.githubusercontent.com * noop
+github.com githubassets.com * noop
+
+! Google
+accounts.google.com googleusercontent.com * noop
+accounts.google.com gstatic.com * noop
+accounts.google.com signaler-pa.googleapis.com * noop
+accounts.google.com youtube.com * noop
+
+developers.google.com gstatic.com * noop
+developers.google.com googleusercontent.com * noop
+
+drive.google.com googleusercontent.com * noop
+drive.google.com gstatic.com * noop
+
+docs.google.com googleusercontent.com * noop
+docs.google.com gstatic.com * noop
+
+mail.google.com googleusercontent.com * noop
+mail.google.com gstatic.com * noop
+
+translate.google.com googleusercontent.com * noop
+translate.google.com gstatic.com * noop
+
+www.youtube.com ggpht.com * noop
+www.youtube.com google.com * noop
+www.youtube.com googleusercontent.com * noop
+www.youtube.com googlevideo.com * noop
+www.youtube.com gstatic.com * noop
+www.youtube.com jnn-pa.googleapis.com * noop
+www.youtube.com ytimg.com * noop
+
+! Microsoft crap
+login.live.com * 3p noop
+login.live.com * 3p-frame noop
+login.live.com * 3p-script noop
+
+login.microsoftonline.com * 3p noop
+login.microsoftonline.com * 3p-frame noop
+login.microsoftonline.com * 3p-script noop
+
+outlook.live.com * 3p noop
+outlook.live.com * 3p-frame noop
+outlook.live.com * 3p-script noop
+
+outlook.office365.com * 3p noop
+outlook.office365.com * 3p-frame noop
+outlook.office365.com * 3p-script noop
+
+! Protonmail
+mail.proton.me * 3p noop
+mail.proton.me * 3p-frame noop
+mail.proton.me * 3p-script noop
+
+! Reddit
+www.reddit.com redditmedia.com * noop
+www.reddit.com redditstatic.com * noop
+www.reddit.com redd.it * noop
+
+! StackExchange
+stackexchange.com sstatic.net * noop
+stackexchange.com stackoverflow.com * noop
+
+stackoverflow.com sstatic.net * noop
+stackoverflow.com stackexchange.com * noop
+
+askubuntu.com sstatic.net * noop
+askubuntu.com stackexchange.com * noop
+askubuntu.com stackoverflow.com * noop
+
+superuser.com sstatic.net * noop
+superuser.com stackexchange.com * noop
+superuser.com stackoverflow.com * noop
+
+serverfault.com sstatic.net * noop
+serverfault.com stackexchange.com * noop
+serverfault.com stackoverflow.com * noop
+
+! Simplelogin
+app.simplelogin.io simplelogin.co * noop
+
+! Privacyguides
+www.privacyguides.org github.com * noop
+www.privacyguides.org privacyguides.github.io * noop
+www.privacyguides.org privacyguides.net * noop
+
+! Fontawesome
+fontawesome.com algolia.net * noop
+fontawesome.com algolianet.com * noop
+fontawesome.com fortawesome.com * noop
+
+! IMDb
+www.imdb.com media-amazon.com * noop
+www.imdb.com media-imdb.com * noop
+
+! Others
+docs.gtk.org gnome.org * noop
+letsgetrusty.com kartra.com * noop
+* readthedocs.io * noop

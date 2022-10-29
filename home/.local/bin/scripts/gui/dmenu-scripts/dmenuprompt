@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Opens a basic yes/no prompt with dmenu
+# This is useful for confirming whether an action should be taken
+
+# First try to run with restrict (-r) flag
+# however not everyone has this patch applied, so if that fails, fall back
+out="$(printf "No\nYes" | dmenu -i -r -p "$1" 2>/dev/null)"
+if [ $? -ne 0 ]; then
+    out="$(printf "No\nYes" | dmenu -i -p "$1")"
+fi
+
+
+if [ "$out" == "Yes" ]; then
+    exit 0
+elif [ "$out" == "No" ]; then
+    exit 1
+else
+    # Dmenu allows invalid picks by explicitly typing in a different option
+    # when that happens, end with code 2 instead.
+    exit 2
+fi

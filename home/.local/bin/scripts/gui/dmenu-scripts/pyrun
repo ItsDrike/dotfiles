@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Simple wrapper to quickly execute a simple python command and have it printed out.
+# The output is then sent back via notification.
+#
+# This already has random imported, since that's a common use-case for this script.
+
+echo "" | dmenu -i -p "Python" | xargs -0 -I % python -c "import random;print(%)" | xargs -I % notify-send "Pyrun output:" "%"
