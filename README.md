@@ -6,6 +6,19 @@ into `/`
 
 You are highly advised to first go through these dotfiles yourself and adjust them to your liking.
 
+## :warning: NOTICE :warning:
+
+I'm currently in the process of migrating to Hyprland WM, running on wayland. This means that most of the config here
+will need to be reworked. However since I'm still in the process of setting everything up, I haven't yet done this, and
+so this repository still contains my older settings.
+
+Until I settle on everything, since some people asked for my dotfiles, if you are interested in my wayland dotfiles,
+I've created a temporary repository with these already in: <https://github.com/ItsDrike/temp-dotfiles>
+
+However know that this repo might often get force-pushes, and it's very much gonna be deleted within a few weeks once I
+get everything in order, at which point I'll migrate these settings here, and remove the outdated Xorg config.
+(Obviously, you'll still be able to find the older versions in the git history, and I might create a tag or even a
+branch pointing to this Xorg version).
 
 ## Sample images
 
