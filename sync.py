@@ -28,6 +28,7 @@ class DiffStatus(Enum):
     UNEXPECTED_SYMLINK = auto()
     CONTENT_DIFFERS = auto()
     SYMLINK_DIFFERS = auto()
+    UNEXPECTED_DIRECTORY = auto()
 
 
 class FileDiff(NamedTuple):
@@ -89,6 +90,9 @@ def compare_files(dot_file: Path, sys_file: Path) -> DiffStatus:
         return DiffStatus.EXPECTED_SYMLINK
     elif sys_file.is_symlink():
         return DiffStatus.UNEXPECTED_SYMLINK
+
+    if sys_file.is_dir():
+        return DiffStatus.UNEXPECTED_DIRECTORY
 
     try:
         if file_sum(dot_file) == file_sum(sys_file):
