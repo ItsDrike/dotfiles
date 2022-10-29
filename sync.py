@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import annotations
 
+import os
 import hashlib
 import sys
 from collections.abc import Iterable, Iterator
@@ -14,10 +15,10 @@ except ImportError:
     print("rich not found (`pip install rich`), falling back to no colors", file=sys.stderr)
     rich = None
 
-DOTHOMEDIR = Path("./home")
-HOMEDIR = Path("~")
 DOTROOTDIR = Path("./root")
 ROOTDIR = Path("/")
+DOTHOMEDIR = Path("./home")
+HOMEDIR = Path(f"~{os.environ.get('SUDO_USER', os.getlogin())}")  # Make sure we use correct home even in sudo
 
 
 class DiffStatus(Enum):
