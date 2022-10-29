@@ -65,12 +65,6 @@ alias cfenv='cfenvironment'
 alias cfhandlers='vim ~/.config/shell/handlers'
 alias cfprompt='vim ~/.config/shell/prompt'
 alias cfkeybinds='vim ~/.config/shell/keybinds'
-alias cfxprofile='vim ~/.config/x11/xprofile'
-alias cfsxhkd='vim ~/.config/sxhkd/sxhkdrc'
-alias cfkbd='cfsxhkd'
-alias cfbspwm='vim ~/.config/bspwm/bspwmrc'
-alias cfxmonad='vim ~/.config/xmonad/xmonad.hs && xmonad --recompile && xmonad --restart'
-alias cfxmobar='vim ~/.config/xmobar/xmobarrc.hs && ~/.config/xmobar/multi_mon.sh 2'
 alias cftodo='vim ~/Personal/vimwiki/todo.md'
 alias cfnvim='vim ~/.config/nvim'
 alias cfvim='cfnvim'
@@ -90,11 +84,17 @@ command -v vim > /dev/null && alias vi='vim' # Let vim take precedence over vi
 command -v nvim > /dev/null && alias vi='nvim' && alias vim='nvim' # Let nvim take precedence over vi/vim
 command -v vimtutor > /dev/null || alias vimtutor='nvim -c Tutor'  # Let vimtutor fallback to nvim's tutor
 
-# X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
-command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
-command -v xclip > /dev/null && alias pbpaste='xclip -selection clipboard -o'
-command -v xsel > /dev/null && alias pbcopy='xsel --clipboard --input'
-command -v xsel > /dev/null && alias pbpaste='xsel --clipboard --output'
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  # Wayland clipboard
+  alias pbcopy="wl-copy"
+  alias pbpaste="wl-paste"
+else
+  # X11 clipboard (either using xclip or xsel, xsel takes precedence if both)
+  command -v xclip > /dev/null && alias pbcopy='xclip -selection clipboard'
+  command -v xclip > /dev/null && alias pbpaste='xclip -selection clipboard -o'
+  command -v xsel > /dev/null && alias pbcopy='xsel --clipboard --input'
+  command -v xsel > /dev/null && alias pbpaste='xsel --clipboard --output'
+fi
 
 # File validation and manipulation
 alias yamlcheck='python -c "import sys, yaml as y; y.safe_load(open(sys.argv[1]))"' # Validate YAML
@@ -235,6 +235,7 @@ alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 alias sudovim='sudoedit'
+alias cls='clear'
 
 # If user is not root, pass all commands via sudo/doas
 if [ "$(id -u)" -ne 0 ]; then
