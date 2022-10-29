@@ -173,15 +173,17 @@ def exclude_fun(diff: FileDiff) -> bool:
         lambda d: d.status is DiffStatus.MATCH,
         lambda d: d.dot_file.name == ".keep" and d.sys_file.parent.is_dir(),
         lambda d: Path("root/etc/opensnitchd/rules") in d.rel_dot_file.parents,
-        lambda d: Path("home/.config/xmobar") in d.rel_dot_file.parents,
-        lambda d: Path("home/.config/xmonad") in d.rel_dot_file.parents,
-        lambda d: Path("home/.local/share/xmonad") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/local/src/eww") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/local/src/z.lua") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/local/src/Hyprland") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/share/zsh/site-functions/zsh-you-should-use") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/share/zsh/site-functions/zsh-syntax-highlighting") in d.rel_dot_file.parents,
+        lambda d: Path("root/usr/share/zsh/site-functions/zsh-autosuggestions") in d.rel_dot_file.parents,
         lambda d: Path("home/.config/topgrade.toml") == d.rel_dot_file,
         lambda d: Path("home/.config/newsboat") in d.rel_dot_file.parents,
         lambda d: Path("home/.cache/zsh/history") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
-        lambda d: Path("home/.local/scripts") in d.rel_dot_file.parents,
         lambda d: Path("home/.config/nomacs/Image Lounge.conf") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
-        lambda d: Path("root") in d.rel_dot_file.parents,  # Temporary
+        lambda d: Path("home/.config/pcmanfm/default/pcmanfm.conf") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
     ]
 
     for exc_rule in EXCLUDE_RULES:
