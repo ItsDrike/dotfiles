@@ -67,7 +67,7 @@ fi
 
 # Other program settings
 export HISTTIMEFORMAT="%Y-%m-%d %T "
-export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
+export SUDO_ASKPASS="$HOME/.local/bin/scripts/gui/prompt/menupass"
 export PIPENV_VENV_IN_PROJECT=1         # Force pipenv to create new environments within projects ./.venv
 export XSECURELOCK_SHOW_HOSTNAME=0      # Don't show hostname in xsecurelock
 export XSECURELOCK_SHOW_DATETIME=1      # Show current date and time in xsecurelock
