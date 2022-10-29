@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# shellcheck source=include
-source "./scripts/include"
-
-hyprland_ipc "workspace|createworkspace|destroyworkspace"
