@@ -1,4 +1,4 @@
-timeout 300 "hyprctl dispatch dpms off" resume "hyprctl dispatch dpms on"
+timeout 300 "hyprctl dispatch dpms off && dunstctl set-paused true" resume "hyprctl dispatch dpms on && dunstctl set-paused false"
 timeout 310 "loginctl lock-session"
 before-sleep swaylock -fF
 lock swaylock -fF
