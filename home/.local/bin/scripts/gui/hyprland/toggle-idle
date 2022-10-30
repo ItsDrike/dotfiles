@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if pgrep swayidle >/dev/null; then
+    killall swayidle
+    notify-send "Idle" "Idle timeouts disabled"
+else
+    swayidle & disown
+    notify-send "Idle" "Idle timeouts enabled"
+fi
