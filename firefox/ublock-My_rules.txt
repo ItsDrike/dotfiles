@@ -59,6 +59,7 @@ behind-the-scene * * block
 ! GitHub
 github.com avatars.githubusercontent.com * noop
 github.com githubassets.com * noop
+github.com camo.githubusercontent.com * noop
 
 ! Google
 accounts.google.com googleusercontent.com * noop
