@@ -5,15 +5,16 @@ GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="Arch"
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
 
-# Since we're using encrypted root, during grub's configuration creation, it can 
-# only pick up on the UUID of the current (already encrypted) root, i.e. the mapper device.
-# For that reason, we instead specify the UUID of our actual physical (encrypted) partition
-# here ourselves. We then specify the name for the mapper device, and additional options.
+# Since we're using encrypted root, grub won't be able to automatically pick up the UUID of our
+# root paritition (it will just pick up the UUID of the already decrypted mapper device). Because
+# of this, we need to specify the UUID of the actual physical (stil encrypted) partition ourselves.
+#
+# We then also set the name of the mapper device (cryptroot), and additional LUKS options.
 # Specifically, we set allow-discards, which is here for SSD optimizations.
 #
-# Handling the decryption of this device will then be delegated to initramfs. Note that we do
-# need to add the encrypt hook, along with some other hooks (like keyboard) to our mkinitcpio
-# so that our initramfs will actually be able to prompt us for this password.
+# Handling the decryption of this device will then be delegated to initramfs. Note that we do need
+# to specify the encrypt hook, along with some other hooks (like keyboard), into our mkinitcpio
+# config, and recompile it, so that it will support asking us for the encryption password.
 GRUB_CMDLINE_LINUX="cryptdevice=UUID=1864bad3-7e73-415a-a36d-49d941eb98c2:cryptroot:allow-discards"
 
 # Preload both GPT and MBR modules so that they are not missed
