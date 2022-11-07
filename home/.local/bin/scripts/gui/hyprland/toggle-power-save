@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ "$1" = "on" ]; then
+  echo "Enabled power saving mode"
+  hyprctl keyword decoration:blur false >/dev/null
+  hyprctl keyword decoration:drop_shadow false >/dev/null
+  hyprctl keyword misc:no_vfr false >/dev/null
+  hyprctl keyword misc:disable_autoreload true >/dev/null
+else
+  echo "Disabled power saving mode"
+  hyprctl keyword decoration:blur true >/dev/null
+  hyprctl keyword decoration:drop_shadow true >/dev/null
+  hyprctl keyword misc:no_vfr true >/dev/null
+  hyprctl keyword misc:disable_autoreload false >/dev/null
+fi
