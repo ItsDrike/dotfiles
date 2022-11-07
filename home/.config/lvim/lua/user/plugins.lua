@@ -31,26 +31,18 @@ lvim.plugins = {
       vim.cmd "let g:minimap_width = 10"
     end,
   },
-  {
-    -- Integrated lf file manager
-    "ptzz/lf.vim",
-    config = function()
-      vim.g.lf_map_keys = 0
-    end,
-    requires = "voldikss/vim-floaterm",
-  },
 
   -- Github copilot for code completion
-  {
-    "zbirenbaum/copilot.lua",
-    event = { "VimEnter" },
-    config = function()
-      vim.defer_fn(function()
-        require("copilot").setup()
-      end, 100)
-    end,
-  },
-  { "zbirenbaum/copilot-cmp", after = { "copilot.lua", "nvim-cmp" } },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   event = { "VimEnter" },
+  --   config = function()
+  --     vim.defer_fn(function()
+  --       require("copilot").setup()
+  --     end, 100)
+  --   end,
+  -- },
+  -- { "zbirenbaum/copilot-cmp", after = { "copilot.lua", "nvim-cmp" } },
 
   --
   { "jasonccox/vim-wayland-clipboard" },
@@ -97,5 +89,5 @@ lvim.plugins = {
 }
 
 -- Register copilot as cmp source
-lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
-table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
+-- lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
+-- table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })

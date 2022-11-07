@@ -63,6 +63,6 @@ linters.setup {
   -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   { command = "flake8", filetypes = { "python" } },
   { command = "shellcheck", extra_args = { "--severity", "warning" } },
-  { command = "codespell", filetypes = { "javascript", "python" } },
+  { command = "codespell", filetypes = { "javascript", "python", "lua" } },
   { command = "luacheck", filetypes = { "lua" } },
 }

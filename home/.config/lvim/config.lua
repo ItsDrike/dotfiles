@@ -23,21 +23,22 @@ require "user.treesitter"
 -- lvim.keys.insert_mode["<Right>"] = ""
 
 
--- general
+-- General
 lvim.log.level = "warn"
 lvim.format_on_save = false
 lvim.colorscheme = "onedarker"
+-- lvim.colorscheme = "lunar"
+
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dap.active = true
-lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.project.patterns = { ".git", ".svn" }
+--lvim.builtin.project.patterns = { ".git", ".svn" }
 lvim.builtin.bufferline.options.always_show_bufferline = true
 -- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false

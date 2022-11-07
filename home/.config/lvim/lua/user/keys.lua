@@ -1,4 +1,4 @@
--- keymappings [view all the defaults by pressing <leader>Lk]
+-- keymappings (view all the lunarvim keybinds with <leader>Lk or list every mapping with :map)
 lvim.leader = "space"
 
 -- Common shortcuts
@@ -7,7 +7,7 @@ lvim.keys.insert_mode["<C-s>"] = "<Esc>:w<CR>i"
 lvim.keys.normal_mode["<C-z>"] = ":undo<CR>"
 lvim.keys.normal_mode["<C-y>"] = ":redo<CR>"
 
--- Moevements
+-- Horizonal movements
 lvim.keys.normal_mode["H"] = "^"
 lvim.keys.normal_mode["L"] = "$"
 
@@ -40,14 +40,6 @@ lvim.keys.normal_mode["<S-F5>"] = ":DapTerminate<CR>"
 lvim.keys.normal_mode["<F10>"] = ":DapStepOver<CR>"
 lvim.keys.normal_mode["<F11>"] = ":DapStepInto<CR>"
 lvim.keys.normal_mode["<S-F11>"] = ":DapStepOut<CR>"
-
-lvim.builtin.which_key.mappings["h"] = {
-  name = "+Hop",
-  w = { "<cmd>HopWord<CR>", "Word" },
-  p = { "<cmd>HopPattern<CR>", "Pattern" },
-  a = { "<cmd>HopAnywhere<CR>", "Anywhere" },
-  v = { "<cmd>HopVertical<CR>", "Vertical" },
-}
 
 -- Quick word replacing (use . for next word)
 lvim.keys.normal_mode["cn"] = "*``cgn"
