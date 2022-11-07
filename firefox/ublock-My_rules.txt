@@ -62,9 +62,8 @@ behind-the-scene * * block
 !! Per-site (mostly noop) settings
 
 ! GitHub
-github.com avatars.githubusercontent.com * noop
 github.com githubassets.com * noop
-github.com camo.githubusercontent.com * noop
+github.com githubusercontent.com * noop
 
 ! Google
 accounts.google.com googleusercontent.com * noop
