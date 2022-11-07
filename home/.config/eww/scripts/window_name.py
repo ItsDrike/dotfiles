@@ -52,6 +52,7 @@ REMAP_RULES: list[RemapRule] = [
     RemapRule(r"(.+) \+ \((.+)\) - N?VIM", " {0} ({1}) [MODIFIED]"),
     RemapRule(r"(.+) \((.+)\) - N?VIM", " {0} ({1})"),
     RemapRule(r"(?:\[\d+\] )?\*?WebCord - (.+)", " {}", "WebCord"),
+    RemapRule(r"(.+) - Discord", " {}", "discord"),
     RemapRule(r"(.+) - mpv", " {}", "mpv"),
     RemapRule(r"Stremio - (.+)", " Stremio - {}", "com.stremio.stremio"),
     RemapRule(r"Spotify", " Spotify", "Spotify"),
