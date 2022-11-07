@@ -7,7 +7,7 @@
 (include "./modules/memory.yuck")
 (include "./modules/uptime.yuck")
 ; (include "./modules/kernel.yuck")
-(include "./modules/battery.yuck")
+; (include "./modules/battery.yuck")
 (include "./modules/window_name.yuck")
 (include "./modules/workspaces.yuck")
 
@@ -31,8 +31,8 @@
     ; (sep)
     (volume_module)
     (sep)
-    (battery_module)
-    (sep)
+    ; (battery_module)
+    ; (sep)
     (bitcoin_module)
     (sep)
     (cpu_module)
@@ -61,8 +61,20 @@
     (center)
     (right)))
 
-(defwindow bar
+(defwindow bar0
   :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width: "100%"
+                      :height "32px"
+                      :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  (bar))
+
+
+(defwindow bar1
+  :monitor 1
   :geometry (geometry :x "0%"
                       :y "0%"
                       :width: "100%"
