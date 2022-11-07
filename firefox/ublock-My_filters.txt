@@ -1,13 +1,13 @@
-! Replace third-party frames with a click2load banner
+!! Replace third-party frames with a click2load banner
 *$3p,frame,redirect=click2load.html
 
-! click2load exceptions
+!! click2load exceptions
 @@||viewscreen.githubusercontent.com^$3p,frame,domain=github.com
 @@||www.redditmedia.com^$3p,frame,domain=www.reddit.com
 @@||cdn.embedly.com^$3p,frame
 @@||imgur.com^$3p,frame
 
-! Bad TLDs (from https://github.com/DandelionSprout/adfilt/blob/master/Dandelion%20Sprout's%20Anti-Malware%20List.txt)
+!! Bad TLDs (from https://github.com/DandelionSprout/adfilt/blob/master/Dandelion%20Sprout's%20Anti-Malware%20List.txt)
 ||agency^
 ||bid^
 ||cf^
@@ -21,7 +21,7 @@
 ||tk^
 ||top^
 
-! Hide GDPR consent banners
+!! Hide GDPR consent banners
 sat1.de##cmp-banner
 !meteoblue.com##.gdpr_message
 askubuntu.com##.js-consent-banner
@@ -31,21 +31,26 @@ gitbook.io##.r-1yzf0co.r-ymttw5.r-18u37iz.r-1quu1zo.r-1i7sdiz.r-rs99b7.r-156hn8l
 www.morgenpost.de##.footer .no-js
 www.morgenpost.de##+js(remove-class, no-js, html)
 
-! Hide/Block annoying elements
+!! Hide/Block annoying elements
 stackoverflow.com###saves-launch-popover
 
-! Hide/Block ad banners
+!! Hide/Block ad banners
 
-! Privacy
+!! Privacy
 ||collector.github.com^
 ||api.github.com/_private/browser/errors
 ||cmp.zdf.de^
 ||discord.com/api/v*/science
 
-! XSS hardening on codebergs login page
+!! XSS hardening on codebergs login page
 ||codeberg.org/user/login^$script
 ||codeberg.org/user/login^$inline-script
 ||codeberg.org/user/login^$third-party
 
-! Badfilters
+!! Badfilters
 meteoblue.com#@#.social-wrapper
+
+!! Cosmetic rules
+
+! Make theater mode in youtube 
+youtube.com##body ytd-watch-flexy[theater-requested_]:not([fullscreen]) #player-theater-container:style(height:calc(100vh - 56px) !important; max-height:calc(100vh - 56px) !important;min-height:calc(100vh - 56px) !important; )
