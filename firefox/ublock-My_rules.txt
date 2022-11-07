@@ -45,8 +45,13 @@ behind-the-scene * * block
 * imgur.com * noop
 * shields.io * noop
 * gravatar.com * noop
+* fontawesome.com * noop
 
-!! Explicit blocks (even though we block all 3rd parties, explicitly block these to signify that they're evil)
+!! Explicit blocks 
+!! (Even though we block all 3rd parties, mark these as explicitly denied,
+!! they're evil and it makes manual overrides easier since we know what not
+!! to even consider for overriding, and it also makes it easy to notice sites
+!! that use one of these evil services)
 * fonts.googleapis.com * block
 * doubleclick.net * block
 * sentry.io * block
