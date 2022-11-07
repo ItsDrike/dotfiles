@@ -5,7 +5,9 @@
 # export QT_QPA_PLATFORM=wayland
 # export XDG_CURRENT_DESKTOP=sway
 # export XDG_SESSION_DESKTOP=sway
+#
+HYPRLAND_LOG="${XDG_CACHE_HOME:-$HOME/.cache}/hyprlog.txt"
 
-echo "---------- NEW RUN $(date) ----------" >> ~/.hyprlog.txt
-Hyprland 2>&1 | awk '{ print strftime("%s: "), $0, fflush(); }' | tee -a "${XDG_CACHE_HOME:-$HOME/.cache}/.hyprlog.txt"
-echo "---------- ENDED $(date) ----------" >> ~/.hyprlog.txt
+echo "---------- NEW RUN $(date) ----------" >> "$HYPRLAND_LOG"
+Hyprland 2>&1 | awk '{ print strftime("%s: "), $0, fflush(); }' | tee -a "$HYPRLAND_LOG"
+echo "---------- ENDED $(date) ----------" >> "$HYPRLAND_LOG"
