@@ -45,6 +45,8 @@ lvim.keys.normal_mode["<S-F11>"] = ":DapStepOut<CR>"
 lvim.keys.normal_mode["cn"] = "*``cgn"
 lvim.keys.normal_mode["cN"] = "*``cgN"
 
+lvim.builtin.terminal.open_mapping = "<C-t>"
+
 -- Quick replace all
 vim.api.nvim_set_keymap("n", "<A-r>", "", {
   noremap = true,
