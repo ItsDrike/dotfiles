@@ -157,9 +157,12 @@ fontawesome.com fortawesome.com * noop
 www.imdb.com media-amazon.com * noop
 www.imdb.com media-imdb.com * noop
 
+! Python docs
+* readthedocs.io * noop
+* readthedocs.org * noop
+
 ! Others
 docs.gtk.org gnome.org * noop
 letsgetrusty.com kartra.com * noop
-* readthedocs.io * noop
 * freedesktop.org * noop
 * herokudns.com * noop
