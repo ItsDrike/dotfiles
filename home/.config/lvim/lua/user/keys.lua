@@ -7,7 +7,7 @@ lvim.keys.insert_mode["<C-s>"] = "<Esc>:w<CR>i"
 lvim.keys.normal_mode["<C-z>"] = ":undo<CR>"
 lvim.keys.normal_mode["<C-y>"] = ":redo<CR>"
 
--- Horizonal movements
+-- Horizontal movements
 lvim.keys.normal_mode["H"] = "^"
 lvim.keys.normal_mode["L"] = "$"
 
