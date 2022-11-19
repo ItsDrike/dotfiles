@@ -20,7 +20,6 @@ lvim.keys.normal_mode["<A-H>"] = ":BufferLineMovePrev<CR>"
 -- Opening various menus
 lvim.keys.normal_mode["<C-n>"] = ":NvimTreeFindFileToggle<CR>"
 lvim.keys.normal_mode["<C-f>"] = ":Lf<CR>"
-lvim.keys.normal_mode["<A-m>"] = ":MinimapToggle<CR>"
 lvim.keys.normal_mode["<A-s>"] = ":SymbolsOutline<CR>"
 
 -- Delete to void register
@@ -40,6 +39,14 @@ lvim.keys.normal_mode["<S-F5>"] = ":DapTerminate<CR>"
 lvim.keys.normal_mode["<F10>"] = ":DapStepOver<CR>"
 lvim.keys.normal_mode["<F11>"] = ":DapStepInto<CR>"
 lvim.keys.normal_mode["<S-F11>"] = ":DapStepOut<CR>"
+
+-- Goto preview
+lvim.keys.normal_mode["gpd"] = ":lua require('goto-preview').goto_preview_definition()<CR>"
+lvim.keys.normal_mode["gpt"] = ":lua require('goto-preview').goto_preview_type_definition()<CR>"
+lvim.keys.normal_mode["gpi"] = ":lua require('goto-preview').goto_preview_implementation()<CR>"
+lvim.keys.normal_mode["gpr"] = ":lua require('goto-preview').goto_preview_references()<CR>"
+lvim.keys.normal_mode["gP"] = ":lua require('goto-preview').close_all_win()<CR>"
+
 
 -- Quick word replacing (use . for next word)
 lvim.keys.normal_mode["cn"] = "*``cgn"

@@ -1,8 +1,6 @@
--- Additional Plugins
 lvim.plugins = {
-  { "wakatime/vim-wakatime" },
-
   -- LSP
+
   {
     -- Tree-like view for symbols in current file using LSP
     "simrat39/symbols-outline.nvim",
@@ -23,17 +21,18 @@ lvim.plugins = {
   },
 
   -- User interface
+
+  -- Autocompletion
+
   {
-    -- Code minimap for easy orientation in a longer file
-    "wfxr/minimap.vim",
-    run = "cargo install --locked code-minimap",
-    config = function()
-      vim.cmd "let g:minimap_width = 10"
-    end,
+    -- Local AI completion helper
+    "tzachar/cmp-tabnine",
+    run = "./install.sh",
+    requires = "hrsh7th/nvim-cmp",
   },
 
-  -- Github copilot for code completion
   -- {
+  --   -- Github copilot for code completion
   --   "zbirenbaum/copilot.lua",
   --   event = { "VimEnter" },
   --   config = function()
@@ -42,23 +41,25 @@ lvim.plugins = {
   --     end, 100)
   --   end,
   -- },
-  -- { "zbirenbaum/copilot-cmp", after = { "copilot.lua", "nvim-cmp" } },
+  -- {
+  --   -- Github compilot cmp source
+  --   "zbirenbaum/copilot-cmp",
+  --   after = { "copilot.lua", "nvim-cmp" }
+  -- },
 
-  --
-  { "jasonccox/vim-wayland-clipboard" },
-
-  -- Yuck.vim (eww configuration language support)
-  { "elkowar/yuck.vim" },
 
   -- Treesitter
+
   -- {
   --   -- Colorize matching parenthesis using treesitter
   --   "p00f/nvim-ts-rainbow",
   -- },
+
   {
     -- Treesitter information shown directly in neovim
     "nvim-treesitter/playground",
   },
+
   {
     -- Alwats show class/function name we're in
     "romgrk/nvim-treesitter-context",
@@ -86,8 +87,38 @@ lvim.plugins = {
       }
     end,
   },
+
+  -- Other
+
+  {
+    -- Code time & habit tracking
+    "wakatime/vim-wakatime"
+  },
+
+  {
+    -- Make clipboard work on wayland (using wl-copy)
+    "jasonccox/vim-wayland-clipboard"
+  },
+
+  {
+    -- eww configuration language support
+    "elkowar/yuck.vim"
+  },
+
+  {
+    -- Goto preview (definition/implementation/references)
+    "rmagatti/goto-preview",
+    config = function()
+      require('goto-preview').setup {}
+    end
+  },
+
 }
 
 -- Register copilot as cmp source
 -- lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
 -- table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
+
+-- Register tabnine as cmp source
+lvim.builtin.cmp.formatting.source_names["tabnine"] = "(Tabnine)"
+table.insert(lvim.builtin.cmp.sources, { name = "tabnine" })

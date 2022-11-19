@@ -34,9 +34,9 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
 -- ft_to_parser.apparmor = "apparmor"
 
--- Temporary treesitter
-lvim.keys.normal_mode["gu"] = ":TSUpdate apparmor<CR>"
-lvim.keys.normal_mode["gU"] = ":TSToggle apparmor<CR>"
-lvim.keys.normal_mode["gt"] = ":TSPlaygroundToggle<CR>"
-lvim.keys.normal_mode["gh"] = ":TSNodeUnderCursor<CR>"
-lvim.keys.normal_mode["gH"] = ":TSHighlightCapturesUnderCursor<CR>"
+-- Temporary mappings
+-- lvim.keys.normal_mode["gu"] = ":TSUpdate apparmor<CR>"
+-- lvim.keys.normal_mode["gU"] = ":TSToggle apparmor<CR>"
+-- lvim.keys.normal_mode["gt"] = ":TSPlaygroundToggle<CR>"
+-- lvim.keys.normal_mode["gh"] = ":TSNodeUnderCursor<CR>"
+-- lvim.keys.normal_mode["gH"] = ":TSHighlightCapturesUnderCursor<CR>"
