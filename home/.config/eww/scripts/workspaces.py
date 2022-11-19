@@ -44,6 +44,7 @@ class MonitorInfo(TypedDict):
 class OutputWorkspaceInfo(WorkspaceInfo):
     format_name: str
     active: bool
+    monitor_id: int
 
 
 # workspace id -> remapped name
@@ -94,6 +95,7 @@ def fill_blank_workspaces(open: list[OutputWorkspaceInfo]) -> list[OutputWorkspa
             "lastwindowtitle": "N/A",
             "active": False,
             "format_name": format_name,
+            "monitor_id": 0,
         }
         lst.append(blank_ws)
 
@@ -118,7 +120,8 @@ def get_workspaces() -> list[OutputWorkspaceInfo]:
             continue
         format_name = REMAPS.get(workspace["id"], workspace["name"])
         active = workspace["id"] in active_workspaces
-        out.append({**workspace, "format_name": format_name, "active": active})
+        mon_id = [monitor["id"] for monitor in monitors if monitor["name"] == workspace["monitor"]][0]
+        out.append({**workspace, "format_name": format_name, "active": active, "monitor_id": mon_id})
 
     out = fill_blank_workspaces(out)
     out.sort(key=workspace_sort)
