@@ -1,0 +1,18 @@
+[Unit]
+Description=Run Swaylock screenlocker on lock dbus event (using systemd-lock-handler)
+# if swaylock exists cleanly, unlock this session
+OnSuccess=unlock.target
+# When lock.target is stopped, stop this too
+PartOf=lock.target
+# Delay lock.target until this service is ready
+After=lock.target
+
+[Service]
+# systemd will consider this service started when swaylock forks
+# which swaylock will only do after it has locked the screen
+Type=forking
+ExecStart=/usr/bin/swaylock -fF
+Restart=on-failure
+
+[Install]
+WantedBy=lock.target
