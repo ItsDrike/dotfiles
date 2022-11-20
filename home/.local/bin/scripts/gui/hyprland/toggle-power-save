@@ -1,15 +1,37 @@
 #!/bin/sh
 
-if [ "$1" = "on" ]; then
+if [ "$#" -gt 1 ]; then
+  >&2 echo "Invalid amount of arguments!"
+  exit 1
+elif [ "$#" -eq 1 ]; then
+  # user specified on/off mode
+  if [ "$1" = "on" ]; then
+    ENABLE=1
+  elif [ "$1" = "off" ]; then
+    ENABLE=0
+  else
+    >&2 echo "Argument $1 not recognized."
+    exit 1
+  fi
+else
+  # Toggle mode
+  if [ "$(hyprctl getoption misc:no_vfr -j | jq ".int")" = "1" ]; then
+    ENABLE=1
+  else
+    ENABLE=0
+  fi
+fi
+
+if [ "$ENABLE" -eq 1 ]; then
   echo "Enabled power saving mode"
-  hyprctl keyword decoration:blur false >/dev/null
-  hyprctl keyword decoration:drop_shadow false >/dev/null
   hyprctl keyword misc:no_vfr false >/dev/null
   hyprctl keyword misc:disable_autoreload true >/dev/null
+  hyprctl keyword decoration:blur false >/dev/null
+  hyprctl keyword decoration:drop_shadow false >/dev/null
 else
   echo "Disabled power saving mode"
-  hyprctl keyword decoration:blur true >/dev/null
-  hyprctl keyword decoration:drop_shadow true >/dev/null
   hyprctl keyword misc:no_vfr true >/dev/null
   hyprctl keyword misc:disable_autoreload false >/dev/null
+  hyprctl keyword decoration:blur true >/dev/null
+  hyprctl keyword decoration:drop_shadow true >/dev/null
 fi
