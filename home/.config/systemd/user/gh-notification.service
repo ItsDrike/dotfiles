@@ -1,0 +1,13 @@
+[Unit]
+Description="Show unread GitHub notifications"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/scripts/gui/gh-notification -nd -v
+Type=oneshot
+RemainAfterExit=false
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=wm-ready.target
