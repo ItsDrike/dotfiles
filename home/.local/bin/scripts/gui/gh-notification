@@ -242,6 +242,24 @@ if [ "$total" -gt 0 ]; then
             # Because we don't know the tag or commit ID, best we can do is use the page for all releases
             # the new release will be the first one there anyway
             url="https://github.com/$repo_id/releases"
+        elif [ "$issue_type" == "Commit" ]; then
+            description="$(echo "$line" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type)"
+
+            # Because we don't know the commit SHA, just go to the repo itself
+            url="https://github.com/$repo_id"
+        elif [ "$issue_type" == "Discussion" ]; then
+            description="$(echo "$line" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type)"
+
+            # Annoyingly, the discussion ID isn't included here, so best we can do is go to the discussions section
+            url="https://github.com/$repo_id/discussions"
+        elif [ "$issue_type" == "RepositoryDependabotAlertsThread" ]; then
+            description="$(echo "$line" | awk '{for (i=5; i<NF; i++) printf $i " "; print $NF}' | sed 's/\x1b\[[0-9;]*m//g')"
+            name="$repo_id ($issue_type)"
+
+            # The specific dependabot notification id isn't included, so this just goes to all security warnings for the repo
+            url="https://github.com/$repo_id/security/dependabot"
         else
             echo "Unknown issue type: '$issue_type'!"
             echo "Can't construct URL, falling back to just repository URL."
