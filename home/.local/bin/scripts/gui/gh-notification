@@ -178,9 +178,9 @@ send_notify() {
     if [ $NO_DISPLAY -eq 1 ]; then
         XDG_RUNTIME_DIR="/run/user/$(id -u)" \
         DISPLAY=:0 \
-        notify-send --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
+        notify-send -i "$HOME/.local/share/icons/hicolor/64x64/apps/github-notification.png" --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
     else
-        notify-send --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
+        notify-send -i "$HOME/.local/share/icons/hicolor/64x64/apps/github-notification.png" --app-name=github-notification --urgency="$URGENCY" "$1" "$2"
     fi
 }
 
