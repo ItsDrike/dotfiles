@@ -1,0 +1,10 @@
+[Unit]
+Description="Idle management daemon"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/swayidle
+Restart=on-failure
+
+[Install]
+WantedBy=wm-ready.target

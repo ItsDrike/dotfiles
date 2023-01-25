@@ -1,0 +1,10 @@
+[Unit]
+Description="Dunst daemon"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/dunst
+Restart=on-failure
+
+[Install]
+WantedBy=wm-ready.target
