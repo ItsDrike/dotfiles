@@ -5,3 +5,5 @@ Wants=wireplumber.service
 Wants=pipewire-pulse.socket
 Wants=systemd-lock-handler.service
 Wants=usbguard-notifier.service
+Wants=xdg-desktop-portal.service
+Wants=xdg-desktop-portal-hyprland.service
