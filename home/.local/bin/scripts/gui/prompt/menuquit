@@ -1,6 +1,6 @@
 #!/bin/bash
 
-action="$(printf 'Quit WM\nLock session\nLock TTYs\nPoweroff\nReboot\nNothing' | menuprompt -c --app wofi -p "Select Action" -- -O default)"
+action="$(printf 'Quit WM\nLock session\nLogout\nLock TTYs\nPoweroff\nReboot\nNothing' | menuprompt -c --app wofi -p "Select Action" -- -O default)"
 
 case "$action" in
     "Quit WM")
@@ -8,6 +8,9 @@ case "$action" in
         ;;
     "Lock session")
         loginctl lock-session
+        ;;
+    "Logout")
+        loginctl terminate-user "$USER"
         ;;
     "Lock TTYs")
         physlock
