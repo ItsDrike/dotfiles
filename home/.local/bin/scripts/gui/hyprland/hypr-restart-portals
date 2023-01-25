@@ -1,8 +1,0 @@
-#!/bin/sh
-
-sleep 4
-systemctl --user stop xdg-desktop-portal
-systemctl --user stop xdg-desktop-portal-wlr
-sleep 2
-systemctl --user start xdg-desktop-portal
-systemctl --user start xdg-desktop-portal-wlr
