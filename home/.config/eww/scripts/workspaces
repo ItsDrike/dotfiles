@@ -4,7 +4,7 @@
 source "./scripts/include"
 
 if [ "$1" = "--switch" ]; then
-  swap-workspace "$2" >/dev/null
+  $HOME/.local/bin/scripts/gui/hyprland/swap-workspace "$2" >/dev/null
   # hyprctl dispatch workspace "$2" >/dev/null
 elif [ "$1" = "--loop" ]; then
   hyprland_ipc "workspace|createworkspace|destroyworkspace" | ./scripts/workspaces.py "$@"
