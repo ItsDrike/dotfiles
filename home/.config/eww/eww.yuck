@@ -43,7 +43,7 @@
     (sep)
     (clock_module)
     (sep)
-    (system-tray)
+    (system-tray :active-only false)
   ))
 
 (defwidget center []
