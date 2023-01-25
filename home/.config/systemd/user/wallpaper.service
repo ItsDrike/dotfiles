@@ -1,0 +1,11 @@
+[Unit]
+Description="Wallpaper setter"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/scripts/gui/setbg
+Type=oneshot
+RemainAfterExit=false
+
+[Install]
+WantedBy=wm-ready.target
