@@ -214,6 +214,9 @@ if [ "$total" -gt 0 ]; then
 
     # Go through each notification, one by one
     printf "%s\n" "$out" | while read -r line; do
+
+        [ $VERY_VERY_VERBOSE -eq 1 ] && echo "gh-notify output line: $line"
+
         # Parse out the data from given output lines
         issue_type="$(echo "$line" | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g')"
         repo_id="$(echo "$line" | awk '{print $3}' | sed 's/\x1b\[[0-9;]*m//g')"
