@@ -3,9 +3,9 @@ Description="Wallpaper setter"
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=%h/.local/bin/scripts/gui/setbg
-Type=oneshot
-RemainAfterExit=false
+Environment=WALLPAPER_IMAGE=%h/.local/share/background
+ExecStart=/usr/bin/swaybg --image $WALLPAPER_IMAGE
+Restart=always
 
 [Install]
 WantedBy=wm-ready.target
