@@ -3,4 +3,5 @@
 # shellcheck source=include
 source "./scripts/include"
 
-hyprland_ipc "workspace|createworkspace|destroyworkspace|activewindow"
+#hyprland_ipc "workspace|createworkspace|destroyworkspace|activewindow"
+hyprland_ipc
