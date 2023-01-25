@@ -3,7 +3,7 @@ Description="Show unread GitHub notifications"
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=%h/.local/bin/scripts/gui/gh-notification -v
+ExecStart=%h/.local/bin/scripts/gui/gh-notification -vv
 Type=oneshot
 RemainAfterExit=false
 Restart=on-failure
