@@ -1,6 +1,7 @@
 [Unit]
 Description="Show unread GitHub notifications"
 PartOf=graphical-session.target
+After=dunst.service
 
 [Service]
 ExecStart=%h/.local/bin/scripts/gui/gh-notification -vv
