@@ -1,5 +1,5 @@
 (defpoll battery 
-  :interval "2s"
+  :interval "1s"
   :initial '{"percent":"0","plugged":"false","status":"N/A","capacity_icon":"","extra_icon":"","manufacturer":"N/A","model_name":"N/A","technology":"N/A","energy_now":"0","enerfy_full":"0","enerfy_full_design":"0","cycle_count":"0","critical":"false","full":"false"}'
   `scripts/battery`)
 

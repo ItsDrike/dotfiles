@@ -45,6 +45,14 @@ capacity="$(get_bat_info capacity)"
 status="$(get_bat_info status)"
 [ "$(get_adp_info online)" -eq 1 ] && adp_connected="true" || adp_connected="false"
 
+# Quick overrides to showcase how battery works
+# capacity=100
+# adp_connected="true"
+# status="Charging"
+# status="Not charging"
+# status="Discharging"
+
+
 full="false"
 capacity_icon="$(pick_icon "$capacity" 0 100 "${CAPACITY_ICONS[@]}")"
 
@@ -60,6 +68,7 @@ elif [ "$status" = "Charging" ]; then
 fi
 
 [ "$capacity" -le "$CRITICAL_PERCENTAGE" ] && critical="true" || critical="false"
+
 
 jq -n -c --monochrome-output \
   --arg percent "$capacity" \
