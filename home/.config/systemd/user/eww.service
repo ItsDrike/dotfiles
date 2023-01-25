@@ -1,0 +1,10 @@
+[Unit]
+Description="Eww daemon"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/local/bin/eww daemon --no-daemonize
+Restart=on-failure
+
+[Install]
+WantedBy=wm-ready.target
