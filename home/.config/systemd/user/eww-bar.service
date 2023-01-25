@@ -1,0 +1,14 @@
+[Unit]
+Description="Open eww bar"
+PartOf=graphical-session.target
+After=eww.service
+
+[Service]
+ExecStart=/usr/local/bin/eww open bar0
+Type=oneshot
+RemainAfterExit=false
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=wm-ready.target
