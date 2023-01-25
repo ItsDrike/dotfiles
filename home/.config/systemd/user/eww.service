@@ -4,7 +4,7 @@ PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/local/bin/eww daemon --no-daemonize
-Restart=on-failure
+Restart=always
 
 [Install]
 WantedBy=wm-ready.target
