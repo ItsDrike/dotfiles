@@ -1,3 +1,7 @@
 [Unit]
 Description=Window Manager loaded and ready
 BindsTo=graphical-session.target
+Wants=wireplumber.service
+Wants=pipewire-pulse.socket
+Wants=systemd-lock-handler.service
+Wants=usbguard-notifier.service
