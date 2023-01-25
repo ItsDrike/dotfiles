@@ -54,10 +54,11 @@ REMAP_RULES: list[RemapRule] = [
     RemapRule(r"(?:\[\d+\] )?\*?WebCord - (.+)", " {}", "WebCord"),
     RemapRule(r"(.+) - Discord", " {}", "discord"),
     RemapRule(r"(.+) - mpv", " {}", "mpv"),
-    RemapRule(r"Stremio - (.+)", " Stremio - {}", "Stremio"),
+    RemapRule(r"Stremio - (.+)", " Stremio - {}", r"(Stremio)|(com.stremio.stremio)"),
     RemapRule(r"Spotify", " Spotify", "Spotify"),
     RemapRule(r"pulsemixer", " Pulsemixer"),
     RemapRule(r"(.*)", " {}", "Pcmanfm"),
+    RemapRule(r"(.*)", " {}", "pcmanfm-qt"),
 ]
 
 MAX_LENGTH = 65
