@@ -5,8 +5,9 @@ After=eww.service
 
 [Service]
 ExecStart=/usr/local/bin/eww open bar0
+ExecStop=/usr/local/bin/eww close bar0
 Type=oneshot
-RemainAfterExit=false
+RemainAfterExit=true
 Restart=on-failure
 RestartSec=3s
 
