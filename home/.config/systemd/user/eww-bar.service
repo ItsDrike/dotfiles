@@ -1,7 +1,7 @@
 [Unit]
 Description="Open eww bar"
 PartOf=graphical-session.target
-After=eww.service
+PartOf=eww.service
 
 [Service]
 ExecStart=/usr/local/bin/eww open bar0
