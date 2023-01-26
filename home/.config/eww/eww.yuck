@@ -10,6 +10,7 @@
 ; (include "./modules/battery.yuck")
 (include "./modules/window_name.yuck")
 (include "./modules/workspaces.yuck")
+(include "./modules/gammarelay.yuck")
 
 (include "./windows/calendar.yuck")
 
@@ -20,6 +21,8 @@
   (box 
     :space-evenly false
     :halign "start"
+    (gammarelay_module)
+    (sep)
     (window_name_module)
     ))
 
