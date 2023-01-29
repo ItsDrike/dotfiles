@@ -50,6 +50,7 @@
     (sep)
     (system-tray 
       :active-only false
+      :pack-direction "left"
       :class "module tray"
       )
   ))
