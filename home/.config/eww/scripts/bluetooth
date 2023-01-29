@@ -11,6 +11,10 @@ toggle() {
     rfkill block bluetooth
   else
     rfkill unblock bluetooth
+    if ! systemctl -q is-active bluetooth.service; then
+      # This will use polkit for privillege elevation
+      systemctl start bluetooth
+    fi
   fi
 }
 
