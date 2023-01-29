@@ -49,3 +49,12 @@
 (deflisten temperature `scripts/gammarelay temperature watch`)
 (deflisten brightness `scripts/gammarelay brightness watch`)
 (deflisten gamma `scripts/gammarelay gamma watch`)
+
+(defpoll net 
+  :interval "3s"
+  :initial '{"essid":"N/A","icon":"󱛇","state":"unknown","signal":"0"}'
+  `scripts/net status`)
+(defpoll bluetooth 
+  :interval "3s"
+  :initial '{"icon":"󰂲","status":"unknown","name":"","mac":"","battery":""}'
+  `scripts/bluetooth status`)

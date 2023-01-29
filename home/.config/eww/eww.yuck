@@ -15,6 +15,7 @@
 (include "./modules/gammarelay.yuck")
 
 (include "./windows/calendar.yuck")
+(include "./windows/radio-menu.yuck")
 
 (defwidget sep []
   (label :class "separ module" :text "|"))
