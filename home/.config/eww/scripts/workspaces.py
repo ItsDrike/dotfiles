@@ -106,7 +106,15 @@ def get_workspaces() -> list[OutputWorkspaceInfo]:
     """Obtain workspaces from hyprctl, sort them and add format_name arg."""
     proc = subprocess.run(["hyprctl", "workspaces", "-j"], stdout=subprocess.PIPE)
     proc.check_returncode()
-    workspaces: list[WorkspaceInfo] = json.loads(proc.stdout)
+    try:
+        workspaces: list[WorkspaceInfo] = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        sys.stderr.writelines([
+            "Error decoding json response from hyprctl, returning empty workspaces",
+            f"Actual captured output from hyprctl: {proc.stdout!r}"
+        ])
+        sys.stderr.flush()
+        workspaces = []
 
     proc = subprocess.run(["hyprctl", "monitors", "-j"], stdout=subprocess.PIPE)
     proc.check_returncode()
