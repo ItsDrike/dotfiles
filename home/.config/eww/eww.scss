@@ -27,12 +27,13 @@
 @import "css/modules/battery";
 @import "css/modules/workspaces";
 @import "css/modules/gammarelay";
+@import "css/modules/window_name";
 
 .bar {
   background-color: $bg-a;
   color: $fg;
 
-  font-family: "JetBrains Mono", "Font Awesome 6 Free", sans-serif;
+  font-family: "JetBrains Mono", sans-serif;
   // margin-right: 10px;
 
   label {
@@ -51,6 +52,10 @@ tooltip {
   label {
     font-size: 1rem;
   }
+}
+
+.icon, .icon label {
+  font-family: "Font Awesome 6 Free";
 }
 
 .module { margin: 0 5px; }
