@@ -15,6 +15,15 @@
 //  }
 
 .battery {
+
+  .icon, .icon label {
+    font-family: "Material Symbols Outlined";
+
+    .extra, .extra label {
+      font-family: "Font Awesome 6 Free";
+    }
+  }
+
   .critical { 
     .unplugged {
       color: #f00; 

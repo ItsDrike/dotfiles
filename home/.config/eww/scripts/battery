@@ -7,7 +7,7 @@ source "./scripts/include"
 # devices (in /sys/class/power_supply/) i.e. BATTERY=BAT0 ADAPTER=ADP0
 # or, if left unset, they will be automatically picked.
 
-CAPACITY_ICONS=("" "" "" "" "")
+CAPACITY_ICONS=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
 CHARGING_ICON=""
 DISCHARGING_ICON=""
 FULL_ICON=""  # Plugged in, but no longer charging (fully charged)
