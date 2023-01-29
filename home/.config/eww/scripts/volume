@@ -64,16 +64,14 @@ get_report() {
 
 # Continually run and report every volume change (into stdout)
 loop() {
+  get_report
   pactl subscribe | grep --line-buffered "change" | while read -r _; do
     get_report
   done
 }
 
 case "$1" in
-  "loop") 
-    get_report
-    loop 
-    ;;
+  "loop") loop ;;
 
   "once") get_report ;;
 
@@ -107,8 +105,5 @@ case "$1" in
     fi
     ;;
 
-  *)
-    >&2 echo "Invalid usage, argument '$1' not recognized."
-    exit 1
-    ;;
+  *) >&2 echo "Invalid usage, argument '$1' not recognized."; exit 1 ;;
 esac
