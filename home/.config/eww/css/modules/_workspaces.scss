@@ -2,18 +2,20 @@
   background-color: $bg1-a;
   border-radius: 25px;
 
+  .icon, .icon label {
+    font-family: "Material Symbols Outlined";
+    font-size: 1.15rem;
+  }
+
   .value {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 0 9px;
   }
 
   .focused {
     // text-decoration: underline;
     // text-decoration-color: red;
     // text-decoration-style: double;
-    font-weight: 900;
-    // color: $sapphire;
-    color: #fff;
+    color: $fg;
   }
 
   .active {

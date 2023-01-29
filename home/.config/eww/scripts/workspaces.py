@@ -49,12 +49,12 @@ class OutputWorkspaceInfo(WorkspaceInfo):
 
 # workspace id -> remapped name
 REMAPS = {
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
+    1: "󰞷",
+    2: "󰈹",
+    3: "󱕂",
+    4: "󰭹",
+    5: "󰝚",
+    6: "󰋹",
     7: "7",
     8: "8",
     9: "9",

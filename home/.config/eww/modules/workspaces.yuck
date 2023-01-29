@@ -20,7 +20,7 @@
         :onclick `scripts/workspaces --switch ${workspace.id}`
 
         (label
-          :class "value"
+          :class "value icon"
           :text {workspace.format_name}))
       )
   ))
