@@ -1,7 +1,3 @@
-(deflisten window_name
-  :initial `{"class":"","name":"","formatted_name":""}`
-  `scripts/window_name`)
-
 ; Consider making the window name clickable, opening up a full window that's showing
 ; the selected window details (class, unformatted name, and perhaps even more, like
 ; xwayland status, ...)

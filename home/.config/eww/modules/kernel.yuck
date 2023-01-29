@@ -1,11 +1,3 @@
-; TODO: Figure out how to store this one-time
-
-(defpoll kernel
-  :interval "10000h"
-  :initial 'N/A'
-  ; `uname -r | sed -r 's/(.+)-arch(.+)/\\1/'`
-  `uname -r`)
-
 (defwidget kernel_module []
   (eventbox
     :class "module kernel"

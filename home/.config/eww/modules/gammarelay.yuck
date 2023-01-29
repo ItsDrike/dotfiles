@@ -1,7 +1,3 @@
-(deflisten temperature `scripts/gammarelay temperature watch`)
-(deflisten brightness `scripts/gammarelay brightness watch`)
-; (deflisten gamma `scripts/gammarelay gamma watch`)
-
 (defwidget gammarelay_module []
   (box
     :class "module gammarelay"

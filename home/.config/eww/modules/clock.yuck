@@ -1,8 +1,3 @@
-(defpoll time
-  :interval "5s"
-  :initial '{"date": "01 Jan", "hour": "00", "minute": "00", "day": "Monday"}'
-  `date +'{"date": "%d %b", "hour": "%H", "minute": "%M", "day": "%A"}'`)
-
 (defwidget clock_module []
 
   (eventbox

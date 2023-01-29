@@ -1,5 +1,7 @@
 (defvar terminal "alacritty -e")
 
+(include "./modules/variables.yuck")
+
 (include "./modules/clock.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/bitcoin.yuck")

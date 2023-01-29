@@ -1,9 +1,5 @@
 (defvar mic_rev false)
 
-(deflisten volume 
-  :initial '{ "speaker_vol": "100", "speaker_mute": false, "speaker_icon": "", "microphone_mute": false, "microphone_vol": "100", "microphone_icon": "" }'
-  `scripts/volume loop`)
-
 (defwidget volume_module []
   (box
     :class "module volume"

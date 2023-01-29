@@ -1,17 +1,3 @@
-(defpoll uptime
-  :interval "1m"
-  :initial 'N/A'
-  `uptime -p | sed \\
-    -e 's/^up //' \\
-    -e 's/ years\\?,\\?/y/' \\
-    -e 's/ months\\?,\\?/m/' \\
-    -e 's/ weeks\\?,\\?/w/' \\
-    -e 's/ days\\?,\\?/d/' \\
-    -e 's/ hours\\?,\\?/h/' \\
-    -e 's/ minutes\\?,\\?/m/' \\
-    -e 's/ seconds\\?,\\?/s/' \\
-    | cut -d' ' -f-2`)
-
 (defwidget uptime_module []
   (eventbox
     :class "module uptime"
