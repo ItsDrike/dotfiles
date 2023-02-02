@@ -193,14 +193,15 @@ def print_report(diffs: Iterable[FileDiff]) -> None:
 
     for diff in diffs:
         _str_status = diff.status.name.replace("_", " ")
-        if diff.status is DiffStatus.MATCH:
-            status_str = (f"[green]{_str_status}[/green]")
-        elif diff.status is DiffStatus.PERMISSION_ERROR:
-            status_str = f"[bold yellow]{_str_status}[/bold yellow]"
-        elif diff.status is DiffStatus.NOT_FOUND:
-            status_str = f"[bold orange_red1]{_str_status}[/bold orange_red1]"
-        else:
-            status_str = f"[bold red]{_str_status}[/bold red]"
+        match diff.status:
+            case DiffStatus.MATCH:
+                status_str = (f"[green]{_str_status}[/green]")
+            case DiffStatus.PERMISSION_ERROR:
+                status_str = f"[bold yellow]{_str_status}[/bold yellow]"
+            case DiffStatus.NOT_FOUND:
+                status_str = f"[bold orange_red1]{_str_status}[/bold orange_red1]"
+            case _:
+                status_str = f"[bold red]{_str_status}[/bold red]"
 
         try:
             # Unexpand home (/home/xyz/foo -> ~/foo)
@@ -244,84 +245,85 @@ class FixChoice(Enum):
 
 
 def apply_fix(diff: FileDiff) -> None:
-    if diff.status is DiffStatus.PERMISSION_ERROR:
-        print("Skipping fix: insufficient permissions")
-
-    elif diff.status is DiffStatus.UNEXPECTED_DIRECTORY:
-        _choice = FixChoice.pick(diff.sys_file, "directory", "file")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            shutil.rmtree(diff.sys_file)
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            diff.dot_file.unlink()
-            shutil.copytree(diff.sys_file, diff.dot_file, symlinks=True)
-
-    elif diff.status is DiffStatus.UNEXPECTED_SYMLINK:
-        _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            diff.sys_file.unlink()
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            diff.dot_file.unlink()
-            shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
-
-    elif diff.status is DiffStatus.EXPECTED_SYMLINK:
-        _choice = FixChoice.pick(diff.sys_file, "file", "symlink")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            diff.sys_file.unlink()
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            diff.dot_file.unlink()
-            shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
-
-    elif diff.status is DiffStatus.SYMLINK_DIFFERS:
-        _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            diff.sys_file.unlink()
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            diff.dot_file.unlink()
-            shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
-
-    elif diff.status is DiffStatus.NOT_FOUND:
-        _choice = FixChoice.pick(diff.sys_file, None, "file")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            diff.sys_file.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            diff.dot_file.unlink()
-
-    elif diff.status is DiffStatus.CONTENT_DIFFERS:
-        _choice = FixChoice.pick(diff.sys_file, "file", "file")
-        if _choice is FixChoice.SKIP:
-            return
-        elif _choice is FixChoice.OVERWRITE_SYSTEM:
-            shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-        elif _choice is FixChoice.OVERWRITE_DOTFILE:
-            shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+    match diff.status:
+        case DiffStatus.PERMISSION_ERROR:
+            print("Skipping fix: insufficient permissions")
+        case DiffStatus.UNEXPECTED_DIRECTORY:
+            _choice = FixChoice.pick(diff.sys_file, "directory", "file")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    shutil.rmtree(diff.sys_file)
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    diff.dot_file.unlink()
+                    shutil.copytree(diff.sys_file, diff.dot_file, symlinks=True)
+        case DiffStatus.UNEXPECTED_SYMLINK:
+            _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    diff.sys_file.unlink()
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    diff.dot_file.unlink()
+                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+        case DiffStatus.EXPECTED_SYMLINK:
+            _choice = FixChoice.pick(diff.sys_file, "file", "symlink")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    diff.sys_file.unlink()
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    diff.dot_file.unlink()
+                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+        case DiffStatus.SYMLINK_DIFFERS:
+            _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    diff.sys_file.unlink()
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    diff.dot_file.unlink()
+                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+        case DiffStatus.NOT_FOUND:
+            _choice = FixChoice.pick(diff.sys_file, None, "file")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    diff.sys_file.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    diff.dot_file.unlink()
+        case DiffStatus.CONTENT_DIFFERS:
+            _choice = FixChoice.pick(diff.sys_file, "file", "file")
+            match _choice:
+                case FixChoice.SKIP:
+                    return
+                case FixChoice.OVERWRITE_SYSTEM:
+                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
+                case FixChoice.OVERWRITE_DOTFILE:
+                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
 
 
 def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt: bool) -> None:
     for diff in diffs:
-        if diff.status is DiffStatus.MATCH:
-            continue
-
-        if diff.status is DiffStatus.CONTENT_DIFFERS:
-            if ask_show_diff is False or yes_no(f"Show diff for {diff.sys_file}?"):
-                subprocess.run(["git", "diff", str(diff.sys_file), str(diff.dot_file)])
-        else:
-            _str_status = diff.status.name.replace("_", " ")
-            print(f"Skipping {diff.sys_file} diff for status: {_str_status}")
+        match diff.status:
+            case DiffStatus.MATCH:
+                continue
+            case DiffStatus.CONTENT_DIFFERS:
+                if ask_show_diff is False or yes_no(f"Show diff for {diff.sys_file}?"):
+                    subprocess.run(["git", "diff", str(diff.sys_file), str(diff.dot_file)])
+            case _:
+                _str_status = diff.status.name.replace("_", " ")
+                print(f"Skipping {diff.sys_file} diff for status: {_str_status}")
 
         if apply_fix_prompt:
             apply_fix(diff)
