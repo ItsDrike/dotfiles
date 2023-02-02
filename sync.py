@@ -244,73 +244,67 @@ class FixChoice(Enum):
         raise Exception("This can't happen (just here for typing.NoReturn)")
 
 
+def _overwrite_file(source: Path, target: Path):
+    """Overwrite content of `target` file/directory/symlink with `source` file/directory/symlink."""
+    if not source.exists():
+        raise ValueError(f"Can't overwrite target with non-existent source ({target=}, {source=})")
+
+    # Remove the target, if it already exists
+    if target.exists():
+        if target.is_dir():
+            shutil.rmtree(target)
+        else:
+            target.unlink()
+
+    # Ensure parent dir exists for the target
+    target.parent.mkdir(parents=True, exist_ok=True)
+
+    # Copy the source to given target, preserving symlinks
+    if source.is_dir():
+        shutil.copytree(source, target, symlinks=True)
+    else:
+        shutil.copy(source, target, follow_symlinks=False)
+
+
 def apply_fix(diff: FileDiff) -> None:
+    """Ask the user how to fix the difference, and apply requested fix."""
     match diff.status:
         case DiffStatus.PERMISSION_ERROR:
             print("Skipping fix: insufficient permissions")
+            return
         case DiffStatus.UNEXPECTED_DIRECTORY:
             _choice = FixChoice.pick(diff.sys_file, "directory", "file")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    shutil.rmtree(diff.sys_file)
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    diff.dot_file.unlink()
-                    shutil.copytree(diff.sys_file, diff.dot_file, symlinks=True)
         case DiffStatus.UNEXPECTED_SYMLINK:
             _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    diff.sys_file.unlink()
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    diff.dot_file.unlink()
-                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
         case DiffStatus.EXPECTED_SYMLINK:
-            _choice = FixChoice.pick(diff.sys_file, "file", "symlink")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    diff.sys_file.unlink()
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    diff.dot_file.unlink()
-                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+            _choice = FixChoice.pick(diff.sys_file, "file/directory", "symlink")
         case DiffStatus.SYMLINK_DIFFERS:
-            _choice = FixChoice.pick(diff.sys_file, "symlink", "file")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    diff.sys_file.unlink()
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    diff.dot_file.unlink()
-                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+            _choice = FixChoice.pick(diff.sys_file, "symlink", "symlink")
         case DiffStatus.NOT_FOUND:
             _choice = FixChoice.pick(diff.sys_file, None, "file")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    diff.sys_file.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    diff.dot_file.unlink()
         case DiffStatus.CONTENT_DIFFERS:
             _choice = FixChoice.pick(diff.sys_file, "file", "file")
-            match _choice:
-                case FixChoice.SKIP:
-                    return
-                case FixChoice.OVERWRITE_SYSTEM:
-                    shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
-                case FixChoice.OVERWRITE_DOTFILE:
-                    shutil.copy(diff.sys_file, diff.dot_file, follow_symlinks=False)
+        case status:
+            raise Exception(f"Diff status {status!r} didn't match on any cases. This should never happen")
+
+    match _choice:
+        case FixChoice.SKIP:
+            return
+        case FixChoice.OVERWRITE_SYSTEM:
+            source = diff.dot_file
+            target = diff.sys_file
+        case FixChoice.OVERWRITE_DOTFILE:
+            source = diff.sys_file
+            target = diff.dot_file
+        case choice:
+            raise Exception(f"Choice {choice!r} didn't match on any cases. This should never happen")
+
+    try:
+        _overwrite_file(source=source, target=target)
+    except PermissionError:
+        print("Fix failed: insufficient permissions")
+        return
+
 
 
 def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt: bool) -> None:
