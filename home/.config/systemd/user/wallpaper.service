@@ -6,6 +6,7 @@ PartOf=graphical-session.target
 Environment=WALLPAPER_IMAGE=%h/.local/share/background
 ExecStart=/usr/bin/swaybg --image $WALLPAPER_IMAGE
 Restart=always
+RestartSec=3s
 
 [Install]
 WantedBy=wm-ready.target
