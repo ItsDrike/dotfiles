@@ -1,13 +1,13 @@
 [Unit]
-Description="Open eww bar"
+Description="Open %I eww window"
 PartOf=graphical-session.target
 After=eww.service
 PartOf=eww.service
 
 [Service]
 ExecStartPre=/usr/local/bin/eww ping
-ExecStart=/usr/local/bin/eww open bar0
-ExecStop=/usr/local/bin/eww close bar0
+ExecStart=/usr/local/bin/eww open %i
+ExecStop=/usr/local/bin/eww close %i
 Type=oneshot
 RemainAfterExit=true
 Restart=on-failure
