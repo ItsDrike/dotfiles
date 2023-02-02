@@ -1,0 +1,10 @@
+[Unit]
+Description="Clipboard clipboard manager"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/wl-paste -t text --watch /usr/bin/clipman store
+Restart=on-failure
+
+[Install]
+WantedBy=wm-ready.target
