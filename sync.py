@@ -296,6 +296,7 @@ def apply_fix(diff: FileDiff) -> None:
         if _choice is FixChoice.SKIP:
             return
         elif _choice is FixChoice.OVERWRITE_SYSTEM:
+            diff.sys_file.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(diff.dot_file, diff.sys_file, follow_symlinks=False)
         elif _choice is FixChoice.OVERWRITE_DOTFILE:
             diff.dot_file.unlink()
