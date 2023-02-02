@@ -219,6 +219,7 @@ def print_report(diffs: Iterable[FileDiff]) -> None:
 class FixChoice(Enum):
     OVERWRITE_SYSTEM = auto()
     OVERWRITE_DOTFILE = auto()
+    PARTIAL_OVERWRITE = auto()
     SKIP = auto()
 
     @classmethod
@@ -229,25 +230,51 @@ class FixChoice(Enum):
         else:
             overwrite_system_prompt = f"Overwrite the system {system_type} with the dotfile {dotfile_type}"
             overwrite_dotfile_prompt = f"Overwrite the dotfile {dotfile_type} with the system {system_type}"
-        answer = choice_input(
-            f"How to fix {file_path}?",
-            [overwrite_system_prompt, overwrite_dotfile_prompt, "Skip this fix"],
-        )
+
+        options = [overwrite_system_prompt, overwrite_dotfile_prompt, "Skip this fix"]
+
+        # With 2 files, partial overwrites are also a possibility
+        partial_prompt = "Selectively apply partial overwrites to either file"
+        if system_type == dotfile_type == "file":
+            # Add the partial option before the skip option
+            options.insert(-1, partial_prompt)
+
+        answer = choice_input(f"How to fix {file_path}?", options)
 
         if answer == overwrite_system_prompt:
             return cls.OVERWRITE_SYSTEM
-        elif answer == overwrite_dotfile_prompt:
+        if answer == overwrite_dotfile_prompt:
             return cls.OVERWRITE_DOTFILE
+        if answer == partial_prompt:
+            return cls.PARTIAL_OVERWRITE
         elif answer == "Skip this fix":
             return cls.SKIP
 
-        raise Exception("This can't happen (just here for typing.NoReturn)")
+        raise Exception("Invalid answer, this can't happen")
 
 
-def _overwrite_file(source: Path, target: Path):
-    """Overwrite content of `target` file/directory/symlink with `source` file/directory/symlink."""
+def _overwrite_file(source: Path, target: Path, partial: bool = False):
+    """Overwrite content of `target` file/directory/symlink with `source` file/directory/symlink.
+
+    If `partial` is True, `vimdiff` or `nvim -d` is opened for an interactive editor,
+    where the user can selectively apply any changes to either file.
+    """
     if not source.exists():
         raise ValueError(f"Can't overwrite target with non-existent source ({target=}, {source=})")
+
+    if partial:
+        if not target.exists():
+            raise ValueError(f"Can't apply a partial patch with non-existent target ({target=})")
+
+        if shutil.which("nvim") is not None:
+            prog = ["nvim", "-d"]
+        elif shutil.which("vim") is not None:
+            prog = ["vimdiff"]
+        else:
+            raise ValueError("No diff tool installed, please install neovim or vim")
+
+        subprocess.run([*prog, str(source), str(target)])
+        return
 
     # Remove the target, if it already exists
     if target.exists():
@@ -287,6 +314,7 @@ def apply_fix(diff: FileDiff) -> None:
         case status:
             raise Exception(f"Diff status {status!r} didn't match on any cases. This should never happen")
 
+    partial = False
     match _choice:
         case FixChoice.SKIP:
             return
@@ -296,11 +324,18 @@ def apply_fix(diff: FileDiff) -> None:
         case FixChoice.OVERWRITE_DOTFILE:
             source = diff.sys_file
             target = diff.dot_file
+        case FixChoice.PARTIAL_OVERWRITE:
+            # It doesn't really matter which is the target and which is source here
+            # since the user will be given an interactive environment where they can
+            # make changes to either file.
+            source = diff.dot_file
+            target = diff.sys_file
+            partial = True
         case choice:
             raise Exception(f"Choice {choice!r} didn't match on any cases. This should never happen")
 
     try:
-        _overwrite_file(source=source, target=target)
+        _overwrite_file(source=source, target=target, partial=partial)
     except PermissionError:
         print("Fix failed: insufficient permissions")
         return
