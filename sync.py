@@ -12,7 +12,6 @@ from enum import Enum, auto
 from pathlib import Path
 from typing import NamedTuple, Optional
 
-
 try:
     import rich
 except ImportError:
@@ -186,6 +185,7 @@ def print_report(diffs: Iterable[FileDiff]) -> None:
         return
 
     from rich.table import Table
+
     table = Table()
     table.add_column("Status")
     table.add_column("System file", style="magenta")
@@ -195,7 +195,7 @@ def print_report(diffs: Iterable[FileDiff]) -> None:
         _str_status = diff.status.name.replace("_", " ")
         match diff.status:
             case DiffStatus.MATCH:
-                status_str = (f"[green]{_str_status}[/green]")
+                status_str = f"[green]{_str_status}[/green]"
             case DiffStatus.PERMISSION_ERROR:
                 status_str = f"[bold yellow]{_str_status}[/bold yellow]"
             case DiffStatus.NOT_FOUND:
@@ -304,7 +304,6 @@ def apply_fix(diff: FileDiff) -> None:
     except PermissionError:
         print("Fix failed: insufficient permissions")
         return
-
 
 
 def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt: bool) -> None:
