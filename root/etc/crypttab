@@ -10,4 +10,4 @@
 # data2        /dev/sda5                                    /etc/cryptfs.key
 # swap         /dev/sdx4                                    /dev/urandom            swap,cipher=aes-cbc-essiv:sha256,size=256
 # vol          /dev/sdb7                                    none
-cryptdata	/dev/sda1				    /luksKey
+cryptdata	/dev/sda1										/luksKey				discard
