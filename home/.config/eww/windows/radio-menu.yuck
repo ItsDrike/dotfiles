@@ -21,6 +21,7 @@
         (box
           :class "element icon"
           :space-evenly false
+          :halign "center"
           (button
             :class "wifi-button"
             :tooltip "${net.state} (strength: ${net.signal}%)"
@@ -45,6 +46,7 @@
         (box
           :class "element icon"
           :space-evenly false
+          :halign "center"
           (button
             :class "bluetooth-button"
             :onclick "scripts/bluetooth toggle"
