@@ -13,6 +13,8 @@ alias cp='cp -iv' # Ask before overwriting, verbose
 alias mv='mv -iv' # Ask before overwriting, verbose
 alias rmt='trash-put' # Use trash-cli instead of true removal
 alias rm='rm -v'  # Verbose rm (asking before deleting is too annoying here)
+alias rmr='rm -r'
+alias rmrf='rm -rf'
 alias wget='wget -c' # Resume wget by default
 alias df='df -H' # Show sizes as powers of 1000
 
