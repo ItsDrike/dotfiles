@@ -1,7 +1,7 @@
 (defpoll time
   :interval "5s"
   :initial '{"date": "01 Jan", "hour": "00", "minute": "00", "day": "Monday"}'
-  `date +'{"date": "%d %b", "hour": "%H", "minute": "%M", "day": "%A"`)
+  `date +'{"date": "%d %b", "hour": "%H", "minute": "%M", "day": "%A"}'`)
 
 (deflisten volume 
   :initial '{ "speaker_vol": "100", "speaker_mute": false, "speaker_icon": "", "microphone_mute": false, "microphone_vol": "100", "microphone_icon": "" }'
