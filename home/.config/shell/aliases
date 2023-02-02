@@ -11,8 +11,8 @@ alias sduo='sudo '
 # Replacements (adding flags)
 alias cp='cp -iv' # Ask before overwriting, verbose
 alias mv='mv -iv' # Ask before overwriting, verbose
-alias rm='trash-put' # Use trash-cli instead of true removal
-alias rmr='\rm -v' # True rm, verbose (asking here is too annoying)
+alias rmt='trash-put' # Use trash-cli instead of true removal
+alias rm='rm -v'  # Verbose rm (asking before deleting is too annoying here)
 alias wget='wget -c' # Resume wget by default
 alias df='df -H' # Show sizes as powers of 1000
 
