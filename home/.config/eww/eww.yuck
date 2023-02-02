@@ -45,8 +45,8 @@
     (sep)
     (memory_module)
     (sep)
-    (uptime_module)
-    (sep)
+    ; (uptime_module)
+    ; (sep)
     (clock_module)
     (sep)
     (system-tray 
