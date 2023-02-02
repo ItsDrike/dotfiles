@@ -4,6 +4,7 @@
 
 [Unit]
 Description=Clean-up old pacman pkg
+After=network-online.target
 
 [Timer]
 OnCalendar=weekly
