@@ -123,6 +123,8 @@ zgenom autoupdate
 if ! zgenom saved; then
     zgenom load skywind3000/z.lua
     zgenom load akash329d/zsh-alias-finder
+    zgenom load clarketm/zsh-completions
+    zgenom load zsh-users/zsh-autosuggestions
     zgenom load zdharma-continuum/fast-syntax-highlighting
 
     # Generate the init script from plugins above
