@@ -1,27 +1,6 @@
 #!/usr/bin/zsh
 
 #########################
-# Zgenom Plugin Manager #
-#########################
-
-# Load zgenom (plugin manager for ZSH)
-source "${ZDOTDIR}/.zgenom/zgenom.zsh"
-
-# Check for zgenom updates
-# This does not increase startup time
-zgenom autoupdate
-
-# If the init script doesn't exist yet
-if ! zgenom saved; then
-    zgenom load zdharma-continuum/fast-syntax-highlighting
-    zgenom load zsh-users/zsh-autosuggestions
-    zgenom load skywind3000/z.lua
-
-    # Generate the init script from plugins above
-    zgenom save
-fi
-
-#########################
 # History Configuration #
 #########################
 export HISTSIZE=12000
@@ -128,3 +107,25 @@ mkdir -p "$ZSH_CACHE"
 if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
 fi
+
+#########################
+# Zgenom Plugin Manager #
+#########################
+
+# Load zgenom (plugin manager for ZSH)
+source "${ZDOTDIR}/.zgenom/zgenom.zsh"
+
+# Check for zgenom updates
+# This does not increase startup time
+zgenom autoupdate
+
+# If the init script doesn't exist yet
+if ! zgenom saved; then
+    zgenom load skywind3000/z.lua
+    zgenom load akash329d/zsh-alias-finder
+    zgenom load zdharma-continuum/fast-syntax-highlighting
+
+    # Generate the init script from plugins above
+    zgenom save
+fi
+
