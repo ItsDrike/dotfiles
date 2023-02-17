@@ -9,9 +9,12 @@
     cleanup = "!default_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}'); git remote prune origin && git checkout -q $default_branch && git for-each-ref refs/heads/ '--format=%(refname:short)' | while read branch; do mergeBase=$(git merge-base $default_branch $branch) && [[ $(git cherry $default_branch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == '-'* ]] && git branch -D $branch; done"
 
     m = "merge"
-    p = "push"
-    pl = "pull"
     f = "fetch"
+
+    p = "push"
+    pu = "!git push --set-upstream origin `git symbolic-ref --short HEAD`"
+    pf = "push --force"
+    pl = "pull"
 
     s = "status --short --branch"
     ss = "status"
@@ -56,6 +59,8 @@
     lo = "log --pretty=oneline --abbrev-commit --graph"
     lg = "log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
 
+    make-patch = "diff --no-prefix --relative"
+
     set-upstream = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
 
     stash-staged = "!sh -c 'git stash --keep-index; git stash push -m \"staged\" --keep-index; git stash pop stash@{1}'"
@@ -66,6 +71,7 @@
     tracked-files = "ls-tree --full-tree --name-only -r HEAD"
     total-lines = "!git tracked-files | xargs cat | wc -l"
     total-files = "!git tracked-files | wc -l"
+    total-commits = "!git log --oneline | wc -l"
 	comitter-lines = "!git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"
 [credential]
     helper = store --file ~/.config/git/git-credentials
