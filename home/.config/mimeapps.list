@@ -1,6 +1,5 @@
-
 [Default Applications]
-inode/directory=pcmanfm.desktop
+inode/directory=pcmanfm-qt.desktop
 image/jpeg=org.nomacs.ImageLounge.desktop
 image/png=org.nomacs.ImageLounge.desktop
 image/gif=org.nomacs.ImageLounge.desktop
