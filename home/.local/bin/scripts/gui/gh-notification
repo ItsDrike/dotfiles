@@ -188,7 +188,7 @@ send_notify() {
 # Obtain notifications and show them, if they weren't showed (aren't in cache) already
 # ------------------------------------------------------------------------------------
 # Request unread notifications with gh-notify extension for github-cli
-[ "$ALL" -eq 1 ] && out="$(gh notify -s -a -n "$MAX_AMOUNT")" || out="$(gh notify -s -n "$MAX_AMOUNT")"
+[ "$ALL" -eq 1 ] && out="$(gh notify -s -a -n "$MAX_AMOUNT" 2>/dev/null)" || out="$(gh notify -s -n "$MAX_AMOUNT" 2>/dev/null)"
 
 # When no notifications were found, set output to empty string, to avoid 'All caught up!' line 
 # being treated as notification
