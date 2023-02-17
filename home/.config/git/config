@@ -1,7 +1,7 @@
 [user]
     name = ItsDrike
     email = itsdrike@protonmail.com
-    signingkey = B014E761034AF742
+    signingkey = FA2745890B7048C0
 [alias]
     quickclone = "clone --single-branch --depth=1"
     bareclone = "!sh -c 'git clone --bare \"$0\" \"$1\"/.bare; echo \"gitdir: ./.bare\" > \"$1/.git\"'"
