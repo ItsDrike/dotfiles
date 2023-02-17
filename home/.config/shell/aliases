@@ -70,6 +70,9 @@ alias cfkeybinds='vim ~/.config/shell/keybinds'
 alias cftodo='vim ~/Personal/vimwiki/todo.md'
 alias cfnvim='vim ~/.config/nvim'
 alias cfvim='cfnvim'
+alias cfgit='vim ~/.config/git/config'
+alias cfhypr='vim ~/.config/hypr/hyprland.conf'
+alias cfsway='vim ~/.config/sway/config'
 
 # z.lua shortcuts
 alias j='z'             # for the sake of autojump old habits
