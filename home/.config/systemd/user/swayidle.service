@@ -7,4 +7,4 @@ ExecStart=/usr/bin/swayidle
 Restart=on-failure
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=wayland-session.target

@@ -9,4 +9,4 @@ Restart=always
 RestartSec=3s
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=wayland-session.target

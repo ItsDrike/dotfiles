@@ -1,0 +1,6 @@
+[Unit]
+Description=Waylnad compositor loaded and ready
+BindsTo=wm-ready.target
+Wants=xdg-desktop-portal.service
+Wants=xdg-desktop-portal-hyprland.service
+Wants=systemd-lock-handler.service
