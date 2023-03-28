@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/bin/systemctl start power-connected.target"
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/bin/systemctl start power-disconnected.target"

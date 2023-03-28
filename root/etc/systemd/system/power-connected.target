@@ -1,0 +1,5 @@
+Description=Power adapter is connected (charger plugged)
+Conflicts=power-disconnected.target
+
+[Install]
+WantedBy=multi-user.target
