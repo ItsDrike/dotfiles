@@ -1,0 +1,2 @@
+# Suspend when battery is at or below 2%
+SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-2]", RUN+="/usr/bin/systemctl suspend"
