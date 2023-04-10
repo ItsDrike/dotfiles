@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # User .profile definition.
 # This file is only sourced once, after login, Unlike
