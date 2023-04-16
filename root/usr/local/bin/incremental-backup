@@ -33,5 +33,5 @@ rsync -avHAXS \
 # want to override latest symlink to non-existent location
 if [ -d "${BACKUP_PATH}" ]; then
 	rm "${LATEST_LINK}" 2>/dev/null
-	ln -s "${BACKUP_PATH}" "${LATEST_LINK}"
+	ln -s "$(basename "$BACKUP_DIR")" "${LATEST_LINK}"
 fi
