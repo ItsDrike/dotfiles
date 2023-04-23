@@ -1,0 +1,5 @@
+[Thumbnailer Entry]
+Exec=ffmpegthumbnailer -f -s %s  -i %i -o %o
+MimeType=video/mp4
+
+# vi: ft=toml
