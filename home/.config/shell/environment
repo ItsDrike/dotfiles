@@ -55,19 +55,24 @@ export MYPY_CACHE_DIR="$XDG_CACHE_HOME/mypy"
 #export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
-# Colorful man pages
-# If bat is installed, use it as manpager
+# Colorful man pages!
+# Use neovim to open man pages
 # shellcheck disable=SC2155
-if command -v bat > /dev/null; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+if command -v nvim >/dev/null; then
+  export MANPAGER="nvim +Man!"
+# If neovim isn't installed, but bat is, use it as a manpager
+# (has color support)
+elif command -v bat >/dev/null; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# Export color definitions for less (default manpager) otherwise
 else
-    export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
-    export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
-    export LESS_TERMCAP_me="$(printf '%b' '[0m')"
-    export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
-    export LESS_TERMCAP_se="$(printf '%b' '[0m')"
-    export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
-    export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
+  export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
+  export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
+  export LESS_TERMCAP_me="$(printf '%b' '[0m')"
+  export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
+  export LESS_TERMCAP_se="$(printf '%b' '[0m')"
+  export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
+  export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 fi
 
 # Other program settings
