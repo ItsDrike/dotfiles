@@ -7,3 +7,6 @@
 [submodule "home/.config/zsh/.zgenom"]
 	path = home/.config/zsh/.zgenom
 	url = https://github.com/jandamm/zgenom
+[submodule "home/.config/tmux/plugins/tpm"]
+	path = home/.config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
