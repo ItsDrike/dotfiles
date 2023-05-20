@@ -48,10 +48,11 @@ stackoverflow.com###saves-launch-popover
 ||codeberg.org/user/login^$inline-script
 ||codeberg.org/user/login^$third-party
 
-!! Badfilters
-meteoblue.com#@#.social-wrapper
-
 !! Cosmetic rules
 
 ! Make theater mode in youtube 
 youtube.com##body ytd-watch-flexy[theater-requested_]:not([fullscreen]) #player-theater-container:style(height:calc(100vh - 56px) !important; max-height:calc(100vh - 56px) !important;min-height:calc(100vh - 56px) !important; )
+
+! Removes "Experiencing interruptions" toast popup in the bottom corner when a video is bufferring (due to network congestion, underperforming hardware, or any other reason)
+! https://gist.github.com/gidoBOSSftw5731; only for English YT version
+www.youtube.com#?##toast:has(#text-container:has-text(/experiencing interruptions/i))
