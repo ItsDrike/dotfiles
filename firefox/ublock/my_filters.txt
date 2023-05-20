@@ -20,6 +20,7 @@
 ||pw^
 ||tk^
 ||top^
+||zip^
 
 !! Hide GDPR consent banners
 sat1.de##cmp-banner
