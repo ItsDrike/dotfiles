@@ -1,5 +1,5 @@
 !! Replace third-party frames with a click2load banner
-*$3p,frame,redirect=click2load.html
+!*$3p,frame,redirect=click2load.html
 
 !! click2load exceptions
 @@||viewscreen.githubusercontent.com^$3p,frame,domain=github.com
