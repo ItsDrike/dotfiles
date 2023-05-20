@@ -56,3 +56,10 @@ youtube.com##body ytd-watch-flexy[theater-requested_]:not([fullscreen]) #player-
 ! Removes "Experiencing interruptions" toast popup in the bottom corner when a video is bufferring (due to network congestion, underperforming hardware, or any other reason)
 ! https://gist.github.com/gidoBOSSftw5731; only for English YT version
 www.youtube.com#?##toast:has(#text-container:has-text(/experiencing interruptions/i))
+
+! Hacker News dark mode
+! https://letsblock.it/filters/hackernews-darkmode
+news.ycombinator.com##html:style(filter:invert(100%) hue-rotate(180deg))
+news.ycombinator.com##body:style(background: white)
+news.ycombinator.com##div.toptext:style(color: black)
+news.ycombinator.com###hnmain td[bgcolor="#000000"]
