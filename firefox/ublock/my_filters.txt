@@ -24,7 +24,7 @@
 
 !! Hide GDPR consent banners
 sat1.de##cmp-banner
-!meteoblue.com##.gdpr_message
+meteoblue.com##.gdpr_message
 askubuntu.com##.js-consent-banner
 stackexchange.com##.js-consent-banner
 stackoverflow.com##.js-consent-banner
