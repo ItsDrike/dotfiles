@@ -42,6 +42,7 @@
     ds = "diff --staged"
     dw = "diff --word-diff"
     dcm = "!sh -c 'git diff $0~ $0'"
+    linediff = "!sh -c 'git diff --unified=0 $1 $2 | grep -Po \"(?<=^\\+)(?!\\+\\+).*\" '"
 
     b = "branch"
     ba = "branch --all"
