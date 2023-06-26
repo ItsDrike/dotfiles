@@ -1,4 +1,4 @@
-@import 'css/colors';
+@import "css/colors";
 
 @mixin rounding {
   border-radius: 16px;
@@ -54,11 +54,14 @@ tooltip {
   }
 }
 
-.icon, .icon label {
+.icon,
+.icon label {
   font-family: "Font Awesome 6 Free", "Material Symbols Outlined";
 }
 
-.module { margin: 0 5px; }
+.module {
+  margin: 0 5px;
+}
 
 .separ {
   color: $surface0;
