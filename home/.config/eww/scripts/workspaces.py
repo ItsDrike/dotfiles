@@ -28,6 +28,8 @@ class MonitorInfo(TypedDict):
     id: int
     name: str
     description: str
+    make: str
+    model: str
     width: int
     height: int
     refreshRate: float
@@ -39,6 +41,7 @@ class MonitorInfo(TypedDict):
     transform: int
     focused: bool
     dpmsStatus: bool
+    vrr: bool
 
 
 class OutputWorkspaceInfo(WorkspaceInfo):
