@@ -49,8 +49,7 @@
     ; (sep)
     (clock_module)
     (sep)
-    (system-tray 
-      :active-only false
+    (systray
       :pack-direction "left"
       :class "module tray"
       )
