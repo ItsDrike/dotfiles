@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-# Arch installation script to be ran after chroot
-# -----------------------------------------------
+# Arch installation script to be ran during OS installation, after chroot.
+# -----------------------------------------------------------------------
 
 if [ "$UID" != 0 ]; then
   echo >&2 "The script must be ran as root (after arch installation)!"
