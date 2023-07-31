@@ -29,6 +29,9 @@ cp -r root/etc/xdg/reflector /etc/xdg
 cp -r root/usr/local/bin /usr/local
 cp root/.rsync-filter /
 
+# Sync pacman repos after /etc/pacman.conf got updated
+sudo pacman -Sy
+
 # Copy ZSH shell configuration
 cp -a home/.zshenv ~
 mkdir ~/.config
