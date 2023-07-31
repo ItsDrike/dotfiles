@@ -34,7 +34,7 @@ sudo pacman -Sy
 
 # Copy ZSH shell configuration
 cp -a home/.zshenv ~
-mkdir ~/.config
+mkdir -p ~/.config
 cp -ra home/.config/shell ~/.config
 cp -ra home/.config/zsh ~/.config
 rm ~/.config/shell/py-alias # we don't need pyenv python aliases for root
