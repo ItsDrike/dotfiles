@@ -2,6 +2,11 @@
 set -euo pipefail
 
 # Arch installation script to be ran during OS installation, after chroot.
+# $ arch-chroot /mnt
+# $ pacman -S git
+# $ git clone https://github.com/ItsDrike/dotfiles ~/dots
+# $ cd ~/dots
+# $ ./install_root.sh
 # -----------------------------------------------------------------------
 
 if [ "$UID" != 0 ]; then
