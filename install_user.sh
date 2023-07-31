@@ -9,7 +9,7 @@ set -euo pipefail
 # $ install -o itsdrike -g itsdrike -d /home/itsdrike
 # $ passwd itsdrike
 # $ chsh -s /usr/bin/zsh itsdrike
-# $ su itsdrike
+# $ su -l itsdrike
 # $ git clone --recursive https://github.com/ItsDrike/dotfiles ~/dots
 # $ cd ~/dots
 # $ ./install_user.sh
