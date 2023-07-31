@@ -43,7 +43,7 @@ git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
 install -m 700 -d ~/.local/share/gnupg
 
 # Install zsh and make it the default shell for root
-sudo pacman -S zsh
+sudo pacman -S --noconfirm zsh
 chsh -s /usr/bin/zsh root
 
 # Enable some basic services
