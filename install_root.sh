@@ -61,3 +61,5 @@ systemctl enable pkgfile-update.timer
 echo "You can exit the chroot and re-run it with: arch-chroot /mnt zsh"
 echo "This will put you into a configured ZSH shell, you can continue" \
   "configuring the rest of the system manually from there"
+
+popd
