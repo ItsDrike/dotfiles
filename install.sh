@@ -13,7 +13,7 @@ fi
 pushd "$(dirname "$0")"
 
 # Install essential packages
-pacman -Syu --noconfirm networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git
+pacman -Syu --noconfirm networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
 pacman -Syu --noconfirm python-rich bc lua jq bat
