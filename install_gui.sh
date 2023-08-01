@@ -101,7 +101,7 @@ pushd ~/.local/src/Hyprland
 git checkout "$(git rev-list --tags --max-count=1)" # check out the last tag (latest stable release)
 sudo make install
 popd
-sudo yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
+yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
 cp -ra home/.config/hypr ~/.config/hypr # loads dwindle-autgoroup
 
 # Hyprland dwindle-autogroup plugin
