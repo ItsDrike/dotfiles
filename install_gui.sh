@@ -98,6 +98,7 @@ yay -S --noconfirm --needed \
 mkdir -p ~/.local/src
 git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland || true # don't fail if exists
 pushd ~/.local/src/Hyprland
+# TODO: Consider git pull here, in case the clone fell through and hyprland was already installed
 git checkout "$(git rev-list --tags --max-count=1)" # check out the last tag (latest stable release)
 sudo make install
 popd
