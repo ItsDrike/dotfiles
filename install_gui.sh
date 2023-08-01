@@ -16,8 +16,9 @@ fi
 pushd "$(dirname "$0")"
 
 # Copy over various settings
-cp -a home/.pki ~
+cp -a home/.pki ~ # symlink
 mkdir -p ~/.confg/pki
+cp -a home/.mozilla ~ # symlink
 mkdir -p ~/.config/mozilla
 mkdir -p ~/.config/nv
 cp -ar home/.local/share/thumbnailers ~/.local/share
