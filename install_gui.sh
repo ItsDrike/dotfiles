@@ -38,6 +38,8 @@ cp -ra home/.config/wireplumber ~/.config
 cp -ra home/.config/alacritty ~/.config
 cp -ra home/.config/kitty ~/.config
 cp -ra home/.config/systemd ~/.config
+cp -ra home/.config/dunst ~/.config
+cp -ra home/.config/eww ~/.config
 
 # Wayland-specific settings
 cp home/.config/chromium-flags.conf ~/.config
