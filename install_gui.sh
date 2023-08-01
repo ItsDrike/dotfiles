@@ -84,7 +84,7 @@ yay -S --noconfirm --needed \
 yay -S --noconfirm --needed \
   discord firefox chromium kitty mpv pcmanfm-qt file-roller obs-studio qbittorrent \
   qalculate-gtk-nognome spotify nomacs
-yes | sudo pacman -S --ask 4 --noconfirm --needed nodejs-lts-gallium # ask for package overwrite (potentially conflicting with base 'nodejs' dep) and overwrite it (for stremio)
+echo "y" | sudo pacman -S --ask 4 --noconfirm --needed nodejs-lts-gallium # ask for package overwrite (potentially conflicting with base 'nodejs' dep) and overwrite it (for stremio)
 yay -S --noconfirm --needed stremio
 
 # Bluetooth
