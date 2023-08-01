@@ -97,7 +97,7 @@ yay -S --noconfirm --needed \
   libinput libliftoff libdisplay-info cpio
 mkdir -p ~/.local/src
 git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland || true # don't fail if exists
-pushd ~/.local/src
+pushd ~/.local/src/Hyprland
 git checkout "$(git rev-list --tags --max-count=1)" # check out the last tag (latest stable release)
 sudo make install
 popd
