@@ -30,6 +30,9 @@ makepkg -si
 popd
 rm -rf ~/yay
 
+# Sync mirrors and update before other installations
+yay -Syu --noconfirm
+
 # Install some useful packages
 yay -S --noconfirm --needed \
   openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \

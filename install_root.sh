@@ -17,6 +17,9 @@ fi
 # cd into the dotfiles dir, no matter where the script was called from
 pushd "$(dirname "$0")"
 
+# Sync mirrors and update before other installations
+pacman -Syu --noconfirm
+
 # Install essential packages
 pacman -Syu --noconfirm --needed \
   networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile

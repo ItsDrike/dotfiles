@@ -46,6 +46,9 @@ cp -ra home/.config/swayidle ~/.config
 cp -ra home/.config/swaylock ~/.config
 cp -ra home/.config/wofi ~/.config
 
+# Sync mirrors and update before other installations
+yay -Syu --noconfirm
+
 # Instal fonts
 yay -S --noconfirm --needed \
   libxft ttf-hack ttf-joypixels noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-font-awesome \
