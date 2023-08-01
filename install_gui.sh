@@ -103,7 +103,8 @@ git checkout "$(git rev-list --tags --max-count=1)" # check out the last tag (la
 sudo make install
 popd
 yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
-cp -ra home/.config/hypr ~/.config/hypr # loads dwindle-autgoroup
+sudo pacman -R --noconfirm xdg-desktop-portal-gnome || true # don't fail if this isn't installed
+cp -ra home/.config/hypr ~/.config/hypr                     # loads dwindle-autgoroup
 
 # Hyprland dwindle-autogroup plugin
 git clone --recursive https://github.com/ItsDrike/hyprland-dwindle-autogroup ~/.local/src/hyprland-dwindle-autogroup || true # don't fail if exists
