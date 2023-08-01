@@ -105,7 +105,7 @@ yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
 cp -ra home/.config/hypr ~/.config/hypr # loads dwindle-autgoroup
 
 # Hyprland dwindle-autogroup plugin
-git clone --recursive https://github.com/ItsDrike/hyprland-dwindle-autogroup ~/.local/src/hyprland-dwindle-autogroup
+git clone --recursive https://github.com/ItsDrike/hyprland-dwindle-autogroup ~/.local/src/hyprland-dwindle-autogroup || true # don't fail if exists
 pushd ~/.local/src/hyprland-dwindle-autogroup
 make install
 popd
