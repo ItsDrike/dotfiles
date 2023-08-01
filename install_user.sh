@@ -50,6 +50,15 @@ git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
 mkdir -p ~/.cache/zsh
 touch ~/.cache/zsh/history
 
+# Install various python versions with pyenv
+# (note: if you don't need pyenv, remove ~/.config/shell/py-alias)
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.11\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.10\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.9\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.8\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.7\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.6\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+
 # Copy other user configurations
 mkdir -p ~/.local
 cp -ra home/.local/bin ~/.local
