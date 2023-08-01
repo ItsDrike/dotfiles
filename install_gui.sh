@@ -17,7 +17,7 @@ pushd "$(dirname "$0")"
 
 # Copy over various settings
 cp -a home/.pki ~ # symlink
-mkdir -p ~/.confg/pki
+mkdir -p ~/.local/share/pki
 cp -a home/.mozilla ~ # symlink
 mkdir -p ~/.config/mozilla
 mkdir -p ~/.config/nv
