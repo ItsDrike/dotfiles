@@ -17,7 +17,7 @@ pushd "$(dirname "$0")"
 
 # Copy over various settings
 cp -a home/.pki ~
-mkdir -p ~/.confg/.pki
+mkdir -p ~/.confg/pki
 mkdir -p ~/.config/mozilla
 mkdir -p ~/.config/nv
 cp -ar home/.local/share/thumbnailers ~/.local/share

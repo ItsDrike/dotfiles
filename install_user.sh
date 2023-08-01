@@ -63,7 +63,7 @@ pyenv install -l | cut -d' ' -f3 | grep -E '^3\.6\.[0-9]+$' | tail -n 1 | xargs 
 mkdir -p ~/.local
 cp -ra home/.local/bin ~/.local
 cp -a home/.python_history ~
-touch .cache/python_history
+touch ~/.cache/python_history
 install -m 700 -d ~/.local/share/gnupg
 mkdir -p ~/.local/share/npm/lib
 cp -ra home/.config/btop ~/.config
