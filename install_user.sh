@@ -31,7 +31,8 @@ popd
 rm -rf ~/yay
 
 # Install some useful packages
-yay -S --noconfirm openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \
+yay -S --noconfirm --needed \
+  openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \
   dnsutils net-tools wget jq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
   python-pip ripgrep zip unzip usbutils hexyl strace python-poetry pyenv yt-dlp \
   downgrade lf

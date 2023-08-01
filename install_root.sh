@@ -18,10 +18,11 @@ fi
 pushd "$(dirname "$0")"
 
 # Install essential packages
-pacman -Syu --noconfirm networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile
+pacman -Syu --noconfirm --needed \
+  networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
-pacman -Syu --noconfirm python-rich bc lua jq bat
+pacman -Syu --noconfirm --needed python-rich bc lua jq bat
 
 # Copy over system configuration data
 cp root/etc/pacman.conf /etc
@@ -48,7 +49,7 @@ git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
 install -m 700 -d ~/.local/share/gnupg
 
 # Install zsh and make it the default shell for root
-sudo pacman -S --noconfirm zsh
+sudo pacman -S --noconfirm --needed zsh
 chsh -s /usr/bin/zsh root
 
 # Enable some basic services

@@ -47,47 +47,47 @@ cp -ra home/.config/swaylock ~/.config
 cp -ra home/.config/wofi ~/.config
 
 # Instal fonts
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   libxft ttf-hack ttf-joypixels noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-font-awesome \
   ttf-jetbrains mono-xorg-font-util ttf-ms-fonts otf-jost ttf-material-design-icons-git \
   nerd-fonts-git
 
 # Audio
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   pipewire pipewire-pulse pipewire-pulse pipewire-jack wireplumber alsa-utils pulsemixer
 
 # Themes
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   gnome-themes-extra gnome-icon-theme-extras python-qt-material notify-osd papirus-icon-theme \
   lxappearance adwaita-qt5 adwaita-qt6 qt5ct
 
 # WM Essentials
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   dunst udisks2 udiskie gvfs gnome-keyring xorg-xinput polkit-gnome
 
 # Wayland WM essentials
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   wl-clipboard xdg-desktop-portal qt5-qayland qt6-wayland wev wl-gammarelay-rs wdisplays
 
 # Utilities
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   nm-connection-editor ffmpegthumbnailer upower devour dooit-git
 
 # Wayland Utilities
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   grim slurp wofi swappy-git swayidle swaybg wf-recorder wlogout hyprpicker-git clipman
 
 # Applications
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   discord firefox chromium kitty mpv pcmanfm-qt file-roller obs-studio qbittorrent \
   qalculate-gtk-nognome spotify stremio nomacs
 
 # Bluetooth
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   yay -S bluez bluiz-utils blueberry
 
 # Build hyprland
-yay -S --noconfirm \
+yay -S --noconfirm --needed \
   gdb ninja gcc cmake meson libxcb xcb-proto xcb-util xcb-util-keysyms libxfixes libx11 libxcomposite \
   xorg-xinput libxrender pixman wayland-protocols cairo pango seatd libxkbcommon xcb-util-wm xorg-xwayland \
   libinput libliftoff libdisplay-info cpio
@@ -96,10 +96,11 @@ git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland
 pushd ~/.local/src
 sudo make install
 popd
-sudo yay -S --noconfirm xdg-desktop-portal-hyprland-git hyprpaper
+sudo yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
 
 # Build eww
-sudo pacman -S --noconfirm gtk3 gtk-layer-shell rustup openbsd-netcat pango gdk-pixbuf2 cairo glib2 gcc-libs glibc libdbusmenu-gtk3
+sudo pacman -S --noconfirm --needed \
+  gtk3 gtk-layer-shell rustup openbsd-netcat pango gdk-pixbuf2 cairo glib2 gcc-libs glibc libdbusmenu-gtk3
 sudo rustup default stable
 # Use a fork instead of the original elkowar/eww, for system tray suppot
 sudo mkdir -p /usr/local/src
@@ -111,7 +112,7 @@ sudo ln -s /usr/local/src/eww/target/release/eww /usr/local/bin
 popd
 
 # Lockscreen
-yay -S --noconfirm swaylock-effects-git systemd-lock-handler
+yay -S --noconfirm --needed swaylock-effects-git systemd-lock-handler
 systemctl --user enable systemd-lock-handler.service
 # You'll need the systemd-lock-handler-swaylock.service from my dotfiles (in home/.config/systemd/user)
 # this is copied above by default, but if you're editing the script, be aware of it
