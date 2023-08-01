@@ -88,8 +88,7 @@ echo "y" | sudo pacman -S --ask 4 --noconfirm --needed nodejs-lts-gallium # ask 
 yay -S --noconfirm --needed stremio
 
 # Bluetooth
-yay -S --noconfirm --needed \
-  yay -S bluez bluiz-utils blueberry
+yay -S --noconfirm --needed bluez bluiz-utils blueberry
 
 # Build hyprland
 yay -S --noconfirm --needed \
