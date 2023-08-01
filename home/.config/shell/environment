@@ -23,6 +23,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_RUNTIME_DIR="/run/user/$uid"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 # Per-Application XDG settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

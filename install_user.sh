@@ -65,6 +65,7 @@ cp -ra home/.local/bin ~/.local
 cp -ra home/.config/python ~/.config
 install -m 700 -d ~/.local/share/gnupg
 mkdir -p ~/.local/share/npm/lib
+mkdir -p ~/.local/state
 cp -ra home/.config/btop ~/.config
 mkdir -p ~/.config/gtk-2.0
 mkdir -p ~/.config/gtk-3.0
