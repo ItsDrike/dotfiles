@@ -100,6 +100,7 @@ pushd ~/.local/src
 sudo make install
 popd
 sudo yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
+cp -ra home/.config/hypr ~/.config/hypr
 
 # Build eww
 sudo pacman -S --noconfirm --needed \
