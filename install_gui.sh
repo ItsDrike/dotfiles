@@ -95,7 +95,7 @@ yay -S --noconfirm --needed \
   xorg-xinput libxrender pixman wayland-protocols cairo pango seatd libxkbcommon xcb-util-wm xorg-xwayland \
   libinput libliftoff libdisplay-info cpio
 mkdir -p ~/.local/src
-git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland
+git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland | true # don't fail if exists
 pushd ~/.local/src
 git checkout "$(git rev-list --tags --max-count=1)" # check out the last tag (latest stable release)
 sudo make install
@@ -115,7 +115,7 @@ sudo pacman -S --noconfirm --needed \
 sudo rustup default stable
 # Use a fork instead of the original elkowar/eww, for system tray suppot
 sudo mkdir -p /usr/local/src
-sudo git clone https://github.com/railsmark/eww /usr/local/src/eww
+sudo git clone https://github.com/railsmark/eww /usr/local/src/eww | true # don't fail if exists
 pushd /usr/local/src/eww
 sudo git checkout tray-3
 sudo cargo build --release --no-default-features --features=wayland
