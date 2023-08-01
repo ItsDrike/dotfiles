@@ -368,3 +368,18 @@ Connect to a wifi network
 ```bash
 nmtui
 ```
+
+## Footnotes
+
+Note that this setup is based on my personal system, in which I dual boot
+multiple (2) arch instances, one running hyprland, the other running KDE (I
+mainly use the hyprland instance, the KDE one is purely there because it's X11
+and supports my NVidia card, which Hyprland currenly doesn't).
+
+The config here only really mentions how to get the first (hyprland)
+installation ready, however if you wanted to set up both, it's essentially just
+doing the same thing again, with some minor changes like in the systemd-boot
+entry and some fstab/crypttab entries.
+
+I do plan on writing a continuation guide for how to set up the system for GUI
+(Hyprland) too eventually. Once it's done, I will mention it here.
