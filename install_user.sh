@@ -43,7 +43,29 @@ cp -ra home/.config/shell ~/.config
 cp -ra home/.config/zsh ~/.config
 rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
+mkdir -p ~/.cache/zsh
+touch ~/.cache/zsh/history
+
+# Copy other user configurations
+mkdir -p ~/.local
+cp -ra home/.local/bin ~/.local
+cp -a home/.python_history ~
+touch .cache/python_history
 install -m 700 -d ~/.local/share/gnupg
+mkdir -p ~/.local/share/npm/lib
+cp -ra home/.config/btop ~/.config
+mkdir -p ~/.config/gtk-2.0
+mkdir -p ~/.config/gtk-3.0
+mkdir -p ~/.config/java
+
+# More opinionated settings, you may not need some of these
+cp home/.config/black ~/.config
+cp -ra home/.config/git ~/.config/git
+cp -ra home/.config/gtk-2.0 ~/.config
+cp -ra home/.config/gtk-3.0 ~/.config
+cp -ra home/.config/lf ~/.config
+cp -ra home/.local/share/gnupg/gpg.conf ~/.local/share/gnupg
+chmod 600 ~/.local/share/gnupg/gpg.conf
 
 echo "You should now exit (logout) the user and relogin with: su -l itsdrike"
 echo "This will put you into a configured ZSH shell, you can continue" \
