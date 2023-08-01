@@ -47,6 +47,6 @@ install -m 700 -d ~/.local/share/gnupg
 
 echo "You should now exit (logout) the user and relogin with: su -l itsdrike"
 echo "This will put you into a configured ZSH shell, you can continue" \
-  "configuring the resto of the system manually from there"
+  "configuring the rest of of the system manually from there"
 
 popd
