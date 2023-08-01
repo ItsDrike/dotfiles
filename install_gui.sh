@@ -117,7 +117,7 @@ sudo pacman -S --noconfirm --needed \
 sudo rustup default stable
 # Use a fork instead of the original elkowar/eww, for system tray suppot
 sudo mkdir -p /usr/local/src
-sudo git clone https://github.com/railsmark/eww /usr/local/src/eww || true # don't fail if exists
+sudo git clone https://github.com/ralismark/eww /usr/local/src/eww || true # don't fail if exists
 pushd /usr/local/src/eww
 sudo git checkout tray-3
 sudo cargo build --release --no-default-features --features=wayland
