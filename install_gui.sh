@@ -54,7 +54,7 @@ yay -Syu --noconfirm
 # Instal fonts
 yay -S --noconfirm --needed \
   libxft ttf-hack ttf-joypixels noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-font-awesome \
-  ttf-jetbrains mono-xorg-font-util ttf-ms-fonts otf-jost ttf-material-design-icons-git \
+  ttf-jetbrains-mono xorg-font-util ttf-ms-fonts otf-jost ttf-material-design-icons-git \
   nerd-fonts-git
 
 # Audio
