@@ -141,7 +141,7 @@ su -l itsdrike
 Install astronvim
 
 ```bash
-sudo pacman -S luarocks rustup cargo cmake meson npm
+sudo pacman -S --needed luarocks rustup cargo cmake meson npm
 rustup default stable
 mkdir -p ~/.config/wakatime
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
