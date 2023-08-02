@@ -46,6 +46,7 @@ yay -S --noconfirm --needed \
 # ~/.config/zsh/.zshenv to your home directory.
 mkdir -p ~/.config
 cp -ra home/.config/shell ~/.config
+rm -rf ~/.config/zsh/ || true  # in case there is already some zsh config
 cp -ra home/.config/zsh ~/.config
 rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
