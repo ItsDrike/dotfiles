@@ -8,7 +8,9 @@
 # Add all folders in ~/.local/bin into PATH
 # Some window managers require this line to be in profile
 # not in .zshenv
-PATH+=":${$(find -L ~/.local/bin -type d | tr '\n' ':')%%:}"
+if [ -d "$HOME/.local/bin" ]; then
+    PATH+=":${$(find -L ~/.local/bin -type d | tr '\n' ':')%%:}"
+fi
 
 if [ -d "$HOME/.local/share/pyenv/shims" ]; then
     PATH+=":$HOME/.local/share/pyenv/shims"
