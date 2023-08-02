@@ -21,11 +21,11 @@ pushd "$(dirname "$0")"
 pacman -Syu --noconfirm
 
 # Install essential packages
-pacman -Syu --noconfirm --needed \
+pacman -S --noconfirm --needed \
   networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
-pacman -Syu --noconfirm --needed python-rich bc lua jq bat
+pacman -S --noconfirm --needed python-rich bc lua jq bat
 
 # Copy over system configuration data
 cp root/etc/pacman.conf /etc
