@@ -43,7 +43,7 @@ sudo pacman -Sy
 
 # Copy ZSH shell configuration
 mkdir -p /etc/zsh
-cp -ra root/etc/zsh /etc/zsh
+cp -ra root/etc/zsh /etc
 mkdir -p ~/.config
 cp -ra home/.config/shell ~/.config
 cp -ra home/.config/zsh ~/.config
