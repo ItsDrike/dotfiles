@@ -41,7 +41,9 @@ yay -S --noconfirm --needed \
   downgrade lf xdg-ninja-git
 
 # Copy over zsh configuration
-cp -a home/.zshenv ~
+# Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
+# with $ZOOTDIR exported. If you haven't done that, you'll want to symlink the
+# ~/.config/zsh/.zshenv to your home directory.
 mkdir -p ~/.config
 cp -ra home/.config/shell ~/.config
 cp -ra home/.config/zsh ~/.config

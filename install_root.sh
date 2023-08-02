@@ -42,7 +42,8 @@ cp root/.rsync-filter /
 sudo pacman -Sy
 
 # Copy ZSH shell configuration
-cp -a home/.zshenv ~
+mkdir -p /etc/zsh
+cp -ra root/etc/zsh /etc/zsh
 mkdir -p ~/.config
 cp -ra home/.config/shell ~/.config
 cp -ra home/.config/zsh ~/.config
