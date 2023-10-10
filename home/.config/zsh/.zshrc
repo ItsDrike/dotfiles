@@ -131,3 +131,5 @@ if ! zgenom saved; then
     zgenom save
 fi
 
+# Override the comment color to make comments visible on black bg
+FAST_HIGHLIGHT_STYLES[comment]='fg=#696C76'
