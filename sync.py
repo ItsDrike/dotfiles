@@ -373,6 +373,7 @@ def exclude_fun(diff: FileDiff) -> bool:
         lambda d: Path("root/usr/share/zsh/site-functions/zsh-syntax-highlighting") in d.rel_dot_file.parents,
         lambda d: Path("root/usr/share/zsh/site-functions/zsh-autosuggestions") in d.rel_dot_file.parents,
         lambda d: Path("home/.config/zsh/.zgenom") in d.rel_dot_file.parents,
+        lambda d: Path("home/.config/tmux/plugins/tpm") in d.rel_dot_file.parents,
         lambda d: Path("home/.cache/zsh/history") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
         lambda d: Path("home/.config/nomacs/Image Lounge.conf") == d.rel_dot_file
         and d.status is DiffStatus.CONTENT_DIFFERS,
