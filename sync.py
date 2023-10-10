@@ -10,7 +10,7 @@ import sys
 from collections.abc import Iterable, Iterator, Sequence
 from enum import Enum, auto
 from pathlib import Path
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 try:
     import rich
@@ -24,7 +24,7 @@ DOTHOMEDIR = Path("./home")
 HOMEDIR = Path(f"~{os.environ.get('SUDO_USER', os.getlogin())}")  # Make sure we use correct home even in sudo
 
 
-def yes_no(prompt: str, default: Optional[bool] = None) -> bool:
+def yes_no(prompt: str, default: bool | None = None) -> bool:
     """Get a yes/no answer to given prompt by the user."""
     if default is None:
         prompt += " [y/n]: "
@@ -39,9 +39,9 @@ def yes_no(prompt: str, default: Optional[bool] = None) -> bool:
         inp = input(prompt).lower()
         if inp in {"y", "yes"}:
             return True
-        elif inp in {"n", "no"}:
+        if inp in {"n", "no"}:
             return False
-        elif inp == "" and default is not None:
+        if inp == "" and default is not None:
             return default
 
 
@@ -125,17 +125,18 @@ def compare_files(dot_file: Path, sys_file: Path) -> DiffStatus:
         if sys_file.is_symlink():
             if dot_file.readlink() == sys_file.readlink():
                 return DiffStatus.MATCH
-            else:
-                # In case the sys_file link uses an absolute path, make sure
-                # it points to the same location, even if that location is a
-                # symlink.
-                dot_target = sys_file.parent.joinpath(dot_file.readlink()).absolute()
-                sys_target = sys_file.parent.joinpath(sys_file.readlink()).absolute()
-                if dot_target == sys_target:
-                    return DiffStatus.MATCH
-                return DiffStatus.SYMLINK_DIFFERS
+
+            # In case the sys_file link uses an absolute path, make sure
+            # it points to the same location, even if that location is a
+            # symlink.
+            dot_target = sys_file.parent.joinpath(dot_file.readlink()).absolute()
+            sys_target = sys_file.parent.joinpath(sys_file.readlink()).absolute()
+            if dot_target == sys_target:
+                return DiffStatus.MATCH
+            return DiffStatus.SYMLINK_DIFFERS
         return DiffStatus.EXPECTED_SYMLINK
-    elif sys_file.is_symlink():
+
+    if sys_file.is_symlink():
         return DiffStatus.UNEXPECTED_SYMLINK
 
     if sys_file.is_dir():
@@ -223,7 +224,7 @@ class FixChoice(Enum):
     SKIP = auto()
 
     @classmethod
-    def pick(cls, file_path: Path, system_type: Optional[str], dotfile_type: str) -> FixChoice:
+    def pick(cls, file_path: Path, system_type: str | None, dotfile_type: str) -> FixChoice:
         if system_type is None:
             overwrite_system_prompt = f"Create non-existing {dotfile_type}"
             overwrite_dotfile_prompt = f"Delete dotfile {dotfile_type}"
@@ -247,7 +248,7 @@ class FixChoice(Enum):
             return cls.OVERWRITE_DOTFILE
         if answer == partial_prompt:
             return cls.PARTIAL_OVERWRITE
-        elif answer == "Skip this fix":
+        if answer == "Skip this fix":
             return cls.SKIP
 
         raise Exception("Invalid answer, this can't happen")
@@ -273,7 +274,7 @@ def _overwrite_file(source: Path, target: Path, partial: bool = False):
         else:
             raise ValueError("No diff tool installed, please install neovim or vim")
 
-        subprocess.run([*prog, str(source), str(target)])
+        subprocess.run([*prog, str(source), str(target)], check=True)  # noqa: S603
         return
 
     # Remove the target, if it already exists
@@ -348,7 +349,9 @@ def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt:
                 continue
             case DiffStatus.CONTENT_DIFFERS:
                 if ask_show_diff is False or yes_no(f"Show diff for {diff.sys_file}?"):
-                    subprocess.run(["git", "diff", str(diff.dot_file), str(diff.sys_file)])
+                    subprocess.run(
+                        ["git", "diff", str(diff.dot_file), str(diff.sys_file)], check=True  # noqa: S607,S603
+                    )
             case _:
                 _str_status = diff.status.name.replace("_", " ")
                 print(f"Skipping {diff.sys_file} diff for status: {_str_status}")
@@ -370,14 +373,13 @@ def exclude_fun(diff: FileDiff) -> bool:
         lambda d: Path("root/usr/share/zsh/site-functions/zsh-syntax-highlighting") in d.rel_dot_file.parents,
         lambda d: Path("root/usr/share/zsh/site-functions/zsh-autosuggestions") in d.rel_dot_file.parents,
         lambda d: Path("home/.cache/zsh/history") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
-        lambda d: Path("home/.config/nomacs/Image Lounge.conf") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
-        lambda d: Path("home/.config/pcmanfm/default/pcmanfm.conf") == d.rel_dot_file and d.status is DiffStatus.CONTENT_DIFFERS,
+        lambda d: Path("home/.config/nomacs/Image Lounge.conf") == d.rel_dot_file
+        and d.status is DiffStatus.CONTENT_DIFFERS,
+        lambda d: Path("home/.config/pcmanfm/default/pcmanfm.conf") == d.rel_dot_file
+        and d.status is DiffStatus.CONTENT_DIFFERS,
     ]
 
-    for exc_rule in EXCLUDE_RULES:
-        if exc_rule(diff):
-            return False
-    return True
+    return all(not exc_rule(diff) for exc_rule in EXCLUDE_RULES)
 
 
 def get_args() -> argparse.Namespace:
