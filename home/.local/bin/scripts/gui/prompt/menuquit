@@ -1,28 +1,31 @@
 #!/bin/bash
 
-action="$(printf 'Quit WM\nLock session\nLogout\nLock TTYs\nPoweroff\nReboot\nNothing' | menuprompt -c --app wofi -p "Select Action" -- -O default)"
+action="$(printf 'Quit WM\nLock session\nLogout\nLock TTYs\nPoweroff\nReboot\nUserspace Reboot\nNothing' | menuprompt -c --app wofi -p "Select Action" -- -O default)"
 
 case "$action" in
-    "Quit WM")
-        hyprctl dispatch exit ""
-        ;;
-    "Lock session")
-        loginctl lock-session
-        ;;
-    "Logout")
-        loginctl terminate-user "$USER"
-        ;;
-    "Lock TTYs")
-        physlock
-        ;;
-    "Poweroff")
-        systemctl poweroff
-        ;;
-    "Reboot")
-        systemctl reboot
-        ;;
-    "Nothing") ;&
-    *)
-    exit 1
-    ;;
+"Quit WM")
+  hyprctl dispatch exit ""
+  ;;
+"Lock session")
+  loginctl lock-session
+  ;;
+"Logout")
+  loginctl terminate-user "$USER"
+  ;;
+"Lock TTYs")
+  physlock
+  ;;
+"Poweroff")
+  systemctl poweroff
+  ;;
+"Reboot")
+  systemctl reboot
+  ;;
+"Userspace Reboot")
+  systemctl soft-reboot
+  ;;
+"Nothing") ;&
+*)
+  exit 1
+  ;;
 esac
