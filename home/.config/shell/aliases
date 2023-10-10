@@ -38,13 +38,13 @@ alias rrf='rmr -rf'
 alias vimdiff='nvim -d'
 
 # Directory listing aliases, defaults to exa, if aviable
-if command -v exa > /dev/null; then
-    alias ls='exa'
-    alias l='exa -glah --classify'
-    alias ll='exa -glah --classify -s=size --group-directories-first -r'
-    alias ldir='exa -glahD'
-    alias tree='exa -Tlagh'
-    alias dotall='exa -hulad .[a-z]*' # Show both dotdirs and dotfiles
+if command -v eza > /dev/null; then
+    alias ls='eza'
+    alias l='eza -glah --classify'
+    alias ll='eza -glah --classify -s=size --group-directories-first -r'
+    alias ldir='eza -glahD'
+    alias tree='eza -Tlagh'
+    alias dotall='eza -hulad .[a-z]*' # Show both dotdirs and dotfiles
     alias dotfiles='dotall | grep -v ^d' # Show all dotfiles
     alias dotdirs='dotall | grep --color=never ^d' # Show all dotdirs
 else
@@ -71,7 +71,7 @@ alias cftodo='vim ~/Personal/vimwiki/todo.md'
 alias cfnvim='vim ~/.config/nvim'
 alias cfvim='cfnvim'
 alias cfgit='vim ~/.config/git/config'
-alias cfhypr='vim ~/.config/hypr/hyprland.conf'
+alias cfhypr='vim ~/.config/hypr'
 alias cfsway='vim ~/.config/sway/config'
 
 # z.lua shortcuts
@@ -225,6 +225,12 @@ alias yta-best='youtube-dl --extract-audio --audio-format best'
 alias yta-mp3='youtube-dl --extract-audio --audio-format mp3'
 alias yta-wav='youtube-dl --extract-audio --audio-format wav'
 
+# Hyprland aliases
+alias hyprlog-cur-path='echo "/tmp/hypr/$(exa --sort created --group-directories-first --reverse --oneline --color never --no-icons /tmp/hypr | head -n 1)/hyprland.log"'
+alias hyprlog-last-path='echo "/tmp/hypr/$(exa --sort created --group-directories-first --reverse --oneline --color never --no-icons /tmp/hypr | head -n 2 | tail -n 1)/hyprland.log"'
+alias hyprlog-cur='bat $(hyprlog-cur-path)'
+alias hyprlog-last='bat $(hyprlog-last-path)'
+
 # Terminal vim-like exits, in case I think the terminal is vim
 alias :q='exit'
 alias :q!='exit'
@@ -239,9 +245,18 @@ alias vimwiki='vim -c VimwikiIndex' # Open vimwiki index
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
+alias nf='neofetch'
 alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 alias sudovim='sudoedit'
 alias cls='clear'
+
+# Kitty terminal kitten shorthands
+if [ "$TERM" = "xterm=kitty" ]; then
+    alias hls='\ls --hyperlink=auto'
+    alias hg='kitty +kitten hyperlinked_grep'
+    alias transfer='kitty +kitten transfer'
+    alias icat='kitty +kitten icat'
+fi
 
 # If user is not root, pass all commands via sudo/doas
 if [ "$(id -u)" -ne 0 ]; then
@@ -256,6 +271,9 @@ if [ "$(id -u)" -ne 0 ]; then
     command -v /usr/bin/sudo > /dev/null && alias doas='sudo ' && alias sudo='sudo '
     command -v /usr/bin/doas > /dev/null && alias doas='doas ' && alias sudo='doas '
 fi
+
+# XDG Base Directory fixes
+alias nvidia-settings='nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings'
 
 # enable color support
 if [ -x /usr/bin/dircolors ]; then
