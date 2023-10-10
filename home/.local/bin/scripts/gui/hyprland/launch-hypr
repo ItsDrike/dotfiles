@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# export SDL_VIDEODRIVER=wayland
-# export _JAVA_AWT_WM_NONREPARENTING=1
-# export QT_QPA_PLATFORM=wayland
-# export XDG_CURRENT_DESKTOP=sway
-# export XDG_SESSION_DESKTOP=sway
-#
+# export LIBVA_DRIVER_NAME=nvidia
+# export XDG_SESSION_TYPE=wayland
+# export __GLX_VENDOR_LIBRARY_NAME=nvidia
+# export WLR_NO_HARDWARE_CURSORS=1
+# export GBM_BACKEND=nvidia-drm  # can cause issues
+
 HYPRLAND_LOG="${XDG_CACHE_HOME:-$HOME/.cache}/hyprlog.txt"
 
 echo "---------- NEW RUN $(date) ----------" >> "$HYPRLAND_LOG"
