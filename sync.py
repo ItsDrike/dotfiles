@@ -7,7 +7,7 @@ import os
 import shutil
 import subprocess
 import sys
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from enum import Enum, auto
 from pathlib import Path
 from typing import NamedTuple
@@ -362,7 +362,7 @@ def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt:
 
 
 def exclude_fun(diff: FileDiff) -> bool:
-    EXCLUDE_RULES = [
+    exclude_rules: list[Callable[[FileDiff], bool]] = [
         lambda d: d.status is DiffStatus.MATCH,
         lambda d: d.dot_file.name == ".keep" and d.sys_file.parent.is_dir(),
         lambda d: Path("root/etc/opensnitchd/rules") in d.rel_dot_file.parents,
@@ -379,7 +379,7 @@ def exclude_fun(diff: FileDiff) -> bool:
         and d.status is DiffStatus.CONTENT_DIFFERS,
     ]
 
-    return all(not exc_rule(diff) for exc_rule in EXCLUDE_RULES)
+    return all(not exc_rule(diff) for exc_rule in exclude_rules)
 
 
 def get_args() -> argparse.Namespace:
