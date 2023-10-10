@@ -59,6 +59,7 @@
     lp = "log --patch"
     lo = "log --pretty=oneline --abbrev-commit --graph"
     lg = "log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+    loog = "log --format=fuller --show-signature --all --color --decorate --graph"
 
     make-patch = "diff --no-prefix --relative"
 
