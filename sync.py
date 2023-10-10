@@ -348,7 +348,7 @@ def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt:
                 continue
             case DiffStatus.CONTENT_DIFFERS:
                 if ask_show_diff is False or yes_no(f"Show diff for {diff.sys_file}?"):
-                    subprocess.run(["git", "diff", str(diff.sys_file), str(diff.dot_file)])
+                    subprocess.run(["git", "diff", str(diff.dot_file), str(diff.sys_file)])
             case _:
                 _str_status = diff.status.name.replace("_", " ")
                 print(f"Skipping {diff.sys_file} diff for status: {_str_status}")
