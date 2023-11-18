@@ -40,6 +40,10 @@ yay -S --noconfirm --needed \
   python-pip ripgrep zip unzip usbutils hexyl strace python-poetry pyenv yt-dlp \
   luarocks rustup cargo cmake meson npm downgrade lf glow xdg-ninja-git
 
+# Make yay automatically track development dependencies
+yay -Y --gendb
+yay -Y --devel --save
+
 # Copy over zsh configuration
 # Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
 # with $ZOOTDIR exported. If you haven't done that, you'll want to symlink the
