@@ -7,11 +7,11 @@
 # to define custom exclude rules for files/dirs in which it is present
 
 if [ $# -lt 2 ]; then
-	echo "Invalid amount of arguments passed!"
-	echo "Arguments: [Source path] [Backup path]"
-	echo "  Source path: directory to be backed up, usually '/'"
-	echo "  Backup path: directory to back up to (destination), usually mounted drive"
-	exit
+  echo "Invalid amount of arguments passed!"
+  echo "Arguments: <Source path> <Backup path> [--note]"
+  echo "  <Source path>: directory to be backed up, usually '/'"
+  echo "  <Backup path>: directory to back up to (destination), usually mounted drive"
+  exit
 fi
 
 SOURCE_DIR="$1"
@@ -19,19 +19,37 @@ BACKUP_DIR="$2"
 DATETIME="$(date '+%Y-%m-%d_%H:%M:%S')"
 BACKUP_PATH="${BACKUP_DIR}/${DATETIME}"
 LATEST_LINK="${BACKUP_DIR}/latest"
+NOTE_FILE="${BACKUP_PATH}/note.md"
 
 mkdir -p "$BACKUP_DIR"
 
 rsync -avHAXS \
-	--delete \
-	--filter='dir-merge /.rsync-filter' \
-	--link-dest "${LATEST_LINK}" \
-	"${@:3}" "${SOURCE_DIR}/" "${BACKUP_PATH}"
+  --delete \
+  --filter='dir-merge /.rsync-filter' \
+  --link-dest "${LATEST_LINK}" \
+  "${@:3}" "${SOURCE_DIR}/" "${BACKUP_PATH}"
 
 # Only attempt to override the symlink if we made new backup_path
 # user might've passed --dry-run option in which case we wouldn't
 # want to override latest symlink to non-existent location
 if [ -d "${BACKUP_PATH}" ]; then
-	rm "${LATEST_LINK}" 2>/dev/null
-	ln -s "$(basename "$BACKUP_DIR")" "${LATEST_LINK}"
+  rm "${LATEST_LINK}" 2>/dev/null
+  ln -s "$(basename "$BACKUP_PATH")" "${LATEST_LINK}"
+fi
+
+# Lastly, open a note file with $EDITOR insite of the backup dir,
+# so the user can put in any personal notes about this backup (such
+# as reason it was made, making it easy to identify it).
+#
+# If this command is ran with sudo (like for system wide backups),
+# open the note file with user's editor, not root's
+if [ "${SUDO_USER:-$USER}" != "$USER" ]; then
+  # Run command as the original user via sudo, with -s argument, to
+  # also load the user's shell, so the user's env variables ($EDITOR)
+  # gets set. Then make the user run sudoedit, opening a temp file,
+  # which when saved, will get written to the note file as user we're
+  # sudoed as. Note: this will re-prompt for sudo password.
+  NOTE_FILE="$NOTE_FILE" sudo -s --preserve-env="NOTE_FILE" -u "$SUDO_USER" sh -c 'sudoedit -u "$SUDO_USER" "$NOTE_FILE"'
+else
+  $EDITOR "$NOTE_FILE"
 fi
