@@ -17,45 +17,32 @@ Create partitions for the drives
 fdisk /dev/nvme0n1
 # Create new GPT table and make 5 partitions
 # first for boot (1G), second for swap (16G),
-# third for root 1 (100G), fourth for root 2 (100G), fifth for data (rest ~714G)
-fdisk /dev/nvme1n1
-# Create new GPT table with single partition
-fdisk /dev/sda
-# Create new GPT table with single partition
+# third for root (256G), fifth for data (rest ~680G)
 ```
 
 Format partitions that shouldn't be encrypted
 
 ```bash
 mkfs.fat -F 32 /dev/nvme0n1p1
-fatlabel /dev/nvme0n1p1 BOOT
+fatlabel /dev/nvme0n1p1 EFI
 mkswap -L SWAP /dev/nvme0n1p2
 ```
 
 Format drives using LUKS for encryption and open them to mapper devices
 
 ```bash
-cryptsetup luksFormat --label ARCH_ROOT1 /dev/nvme0n1p3
-cryptsetup luksFormat --label ARCH_ROOT2 /dev/nvme0n1p4
-cryptsetup luksFormat --label DATA /dev/nvme0n1p5
-cryptsetup luksFormat --label DATA2 /dev/sda1
-cryptsetup luksFormat --label BACKUPS /dev/nvme1n1p1
+cryptsetup luksFormat --type luks2 --label LINUXROOT /dev/nvme0n1p3
+cryptsetup luksFormat --type luks2 --label DATA /dev/nvme0n1p4
 
-cryptsetup luksOpen /dev/disk/by-label/ARCH_ROOT1 cryptroot
-cryptsetup luksOpen /dev/disk/by-label/ARCH_ROOT2 cryptroot2
+cryptsetup luksOpen /dev/disk/by-label/LINUXROOT cryptroot
 cryptsetup luksOpen /dev/disk/by-label/DATA cryptdata
-cryptsetup luksOpen /dev/disk/by-label/DATA2 cryptdata2
-cryptsetup luksOpen /dev/disk/by-label/BACKUPS cryptbackups
 ```
 
-Create EXT4 filesystem on the encrypted drives
+Create BTRFS filesystem on the encrypted drives
 
 ```bash
-mkfs.ext4 -L ARCH_HYPRLAND /dev/mapper/cryptroot
-mkfs.ext4 -L ARCH_KDE /dev/mapper/cryptroot2
-mkfs.ext4 -L CRYPTDATA /dev/mapper/cryptdata
-mkfs.ext4 -L CRYPTDATA2 /dev/mapper/cryptdata2
-mkfs.ext4 -L CRYPTBACKUPS /dev/mapper/cryptbackups
+mkfs.btrfs -f -L CRYPTROOT /dev/mapper/cryptroot
+mkfs.btrfs -f -L DATA /dev/mapper/cryptdata
 ```
 
 Mount the drives
@@ -63,13 +50,20 @@ Mount the drives
 ```bash
 mount /dev/mapper/cryptroot /mnt
 mount /dev/disk/by-label/BOOT /mnt/efi --mkdir
-mkdir /mnt/efi/arch-hyprland /mnt/efi/arch-kde
-mount --bind /mnt/efi/arch-kde /mnt/boot --mkdir
+mkdir /mnt/efi/arch-1
+mount --bind /mnt/efi/arch-1 /mnt/boot --mkdir
 mount /dev/mapper/cryptdata /mnt/mnt/data --mkdir
-mount /dev/mapper/cryptdata2 /mnt/mnt/data2 --mkdir
-mount /dev/mapper/cryptbackups /mnt/mnt/backups --mkdir
-mount /dev/mapper/cryptroot2 /mnt/mnt/arch-kde --mkdir
 swapon /dev/disk/by-label/SWAP
+```
+
+Create BTRFS subvolumes
+
+```bash
+btrfs subvolume create /mnt/home
+btrfs subvolume create /mnt/var
+btrfs subvolume create /mnt/var/log
+btrfs subvolume create /mnt/var/cache
+btrfs subvolume create /mnt/var/tmp
 ```
 
 ## Base installation
@@ -84,8 +78,7 @@ arch-chroot /mnt
 Configure essentials
 
 ```bash
-pacman -S networkmanager neovim sudo reflector pacman-contrib man-db man-pages \
-    rsync btop bind tldr git base-devel
+pacman -S git btrfs-progs
 ln -sf /usr/share/zoneinfo/CET /etc/localtime
 hwclock --systohc
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen

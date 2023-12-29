@@ -30,6 +30,8 @@ pacman -S --noconfirm --needed python-rich bc lua jq bat
 # Copy over system configuration data
 cp root/etc/pacman.conf /etc
 cp root/etc/hosts /etc
+HOSTNAME="$(cat /etc/hostname)"
+sed -i "s/^127.0.1.1   pc.localdomain pc/127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}/g" /etc/locale.gen
 install -m 640 root/etc/sudoers /etc
 install -m 640 root/etc/sudoers.d/* /etc/sudoers.d
 cp root/etc/modprobe.d/nobeep.conf /etc/modprobe.d # disable motherboard speaker
@@ -41,6 +43,10 @@ cp root/.rsync-filter /
 # Sync pacman repos after /etc/pacman.conf got updated
 sudo pacman -Sy
 
+# Install zsh and make it the default shell for root
+sudo pacman -S --noconfirm --needed zsh
+chsh -s /usr/bin/zsh root
+
 # Copy ZSH shell configuration
 mkdir -p /etc/zsh
 cp -ra root/etc/zsh /etc
@@ -51,10 +57,6 @@ rm ~/.config/shell/py-alias # we don't need pyenv python aliases for root
 rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
 install -m 700 -d ~/.local/share/gnupg
-
-# Install zsh and make it the default shell for root
-sudo pacman -S --noconfirm --needed zsh
-chsh -s /usr/bin/zsh root
 
 # Enable some basic services
 systemctl enable systemd-resolved
