@@ -44,6 +44,9 @@ yay -S --noconfirm --needed \
 yay -Y --gendb
 yay -Y --devel --save
 
+# Install stable channel default rust toolchain
+rustup default stable
+
 # Copy over zsh configuration
 # Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
 # with $ZOOTDIR exported. If you haven't done that, you'll want to symlink the
@@ -77,10 +80,12 @@ cp -ra home/.config/gtk-3.0 ~/.config
 cp -ra home/.config/lf ~/.config
 cp -ra home/.local/share/gnupg/gpg.conf ~/.local/share/gnupg
 chmod 600 ~/.local/share/gnupg/gpg.conf
+mkdir ~/.config/wakatime
 
 # Install various python versions with pyenv
 # This might take a while
 # (note: if you don't need pyenv, remove ~/.config/shell/py-alias, and commment these lines)
+pyenv install -l | cut -d' ' -f3 | grep -E '^3\.12\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.11\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.10\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.9\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}

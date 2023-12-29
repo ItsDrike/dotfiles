@@ -119,7 +119,7 @@ su -l itsdrike # press q or esc in the default zsh options
 Setup user account
 
 ```bash
-git clone --recursive https://github.com/dotfiles ~/dots
+git clone --recursive https://github.com/ItsDrike/dotfiles ~/dots
 cd ~/dots
 ./install_user.sh
 ```
@@ -134,18 +134,16 @@ su -l itsdrike
 Install astronvim
 
 ```bash
-sudo pacman -S --needed luarocks rustup cargo cmake meson npm
-rustup default stable
-mkdir -p ~/.config/wakatime
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 git clone https://github.com/ItsDrike/AstroNvimUser ~/.config/nvim/lua/user
 ```
 
 ## Auto-mounting encrypted partitions
 
-We've create a bunch of LUKS encrypted partitions to store our date into,
-however it would be very inconvenient to have to mount them ourselves on each
-boot. Instead, we'll probably want to set up a way to mount them automatically.
+We've created a LUKS encrypted partition to store our date into, however it
+would be very inconvenient to have to mount it ourselves on each boot. Instead,
+we'll probably want to set up a way to mount them automatically. Leaving only
+the root partition that we'll need to enter a password for on boot.
 
 ### Key files
 
@@ -169,31 +167,20 @@ should prefer this approach if your root partition isn't encrypted, although
 know that this can get pretty annoying with more than one encrypted device. If
 you wish to do this, you can skip this section.
 
-In this example, we'll be creating a different key for every encrypted
-partition, but you could also share the same key file for all of them if you
-wish. This is however more secure.
-
 ```bash
+exit # Go back to root account
 mkdir -p /etc/secrets
 dd if=/dev/random bs=4096 count=1 of=/etc/secrets/keyFile-data.bin
-dd if=/dev/random bs=4096 count=1 of=/etc/secrets/keyFile-data2.bin
-dd if=/dev/random bs=4096 count=1 of=/etc/secrets/keyFile-backups.bin
-dd if=/dev/random bs=4096 count=1 of=/etc/secrets/keyFile-arch-hyprland.bin
-dd if=/dev/random bs=4096 count=1 of=/etc/secrets/keyFile-arch-kde.bin
-chmod -R 004 /etc/secrets
-chmod 007 /etc/secrets
+chmod -R 400 /etc/secrets
+chmod 700 /etc/secrets
 ```
 
 The bs argument signifies a block size (in bits), so this will create 4096-bit keys.
 
-Now we can add these keys into our LUKS encrypted partitions:
+Now we can add this key into our LUKS encrypted data partition:
 
 ```bash
 cryptsetup luksAddKey /dev/disk/by-label/DATA --new-keyfile /etc/secrets/keyFile-data.bin
-cryptsetup luksAddKey /dev/disk/by-label/DATA2 --new-keyfile /etc/secrets/keyFile-data2.bin
-cryptsetup luksAddKey /dev/disk/by-label/BACKUPS --new-keyfile /etc/secrets/keyFile-backups.bin
-cryptsetup luksAddKey /dev/disk/by-label/ARCH_ROOT1 --new-keyfile /etc/secrets/keyFile-arch-hyprland.bin
-cryptsetup luksAddKey /dev/disk/by-label/ARCH_ROOT2 --new-keyfile /etc/secrets/keyFile-arch-kde.bin
 ```
 
 ### /etc/crypttab
@@ -216,9 +203,6 @@ This is the `/etc/crypttab` file that I use:
 # <name>       <device>                                     <password>              <options>
 
 cryptdata      	 LABEL=DATA         	 /etc/secrets/keyFile-data.bin        	 discard
-cryptdata2     	 LABEL=DATA2        	 /etc/secrets/keyFile-data2.bin       	 discard
-cryptbackups   	 LABEL=BACKUPS      	 /etc/secrets/keyFile-backups.bin     	 discard
-cryptarch2     	 LABEL=ARCH_ROOT2   	 /etc/secrets/keyFile-arch-kde.bin    	 discard
 ```
 
 <!-- markdownlint-enable MD010 MD013 -->
@@ -245,30 +229,25 @@ interfaces for them, to mount those to a concrete directory, we still use
 
 # region: LUKS encrypted devices (opened from /etc/crypttab, or mounted from initramfs)
 
-/dev/mapper/cryptroot     	 /               	 ext4    	 rw,relatime,nofail,discard     	 0 1
-/dev/mapper/cryptdata     	 /mnt/data       	 ext4    	 rw,relatime,nofail,discard     	 0 2
-/dev/mapper/cryptdata2    	 /mnt/data2      	 ext4    	 rw,relatime,nofail,discard     	 0 2
-/dev/mapper/cryptarch2    	 /mnt/arch-kde   	 ext4    	 rw,relatime,nofail,discard     	 0 2
+/dev/mapper/cryptroot     	 /               	 btrfs   	 rw,realtime,ssd,space_cache=v2,subvolid=5,subvol=/,discard     	 0 1
+/dev/mapper/cryptdata     	 /mnt/data       	 btrfs   	 rw,realtime,ssd,space_cache=v2,subvolid=5,subvol=/,discard     	 0 2
+
+# Or, an example with ext4 filesystem
+#/dev/mapper/cryptdata     	 /mnt/data       	 ext4    	 rw,relatime,nofail,discard     	 0 2
 
 # endregion
 # region: Physical devices
 
-LABEL=BOOT   	 /efi     	 vfat   	 rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro  	0 2
+LABEL=BOOT   	 /efi     	 vfat   	 rw,relatime,fmask=0137,dmask=0027,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro  	0 2
 LABEL=SWAP   	 none     	 swap   	 defaults    	 0 0
 
 # endregion
 # region: Bind mounts
 
-# Write kernel images to /efi/arch-hyprland, not directly to the efi system partition (esp), to avoid conflicts when dual booting
-/efi/arch-hyprland      	 /boot                              	 none  	 rw,bind  	 0 0
+# Write kernel images to /efi/arch-1, not directly to the efi system partition (esp), to avoid conflicts when dual booting
+/efi/arch-1      	 /boot                              	 none  	 rw,bind  	 0 0
 
-# Bind mounts for arch-kde
-/efi                    	 /mnt/arch-kde/efi                  	 none  	 rw,bind  	 0 0
-/efi/arch-kde           	 /mnt/arch-kde/boot                 	 none  	 rw,bind  	 0 0
-/mnt/data               	 /mnt/arch-kde/mnt/data             	 none  	 rw,bind  	 0 0
-/mnt/data2              	 /mnt/arch-kde/mnt/data2            	 none  	 rw,bind  	 0 0
-/mnt/backups            	 /mnt/arch-kde/mnt/backups          	 none  	 rw,bind  	 0 0
-/                       	 /mnt/arch-kde/mnt/arch-hyprland    	 none  	 rw,bind  	 0 0
+# endregion
 ```
 
 <!-- markdownlint-enable MD010 MD013 -->
@@ -299,7 +278,7 @@ environment.
 If you wish, you can also follow the instructions below to auto-enable numlock:
 
 ```bash
-yay -S mkinitcpio-numlock
+sudo -u itsdrike yay -S mkinitcpio-numlock
 # Go to HOOKS and add `numlock` after `keyboard` in:
 sudo nvim /etc/mkinitcpio.conf
 ```
@@ -328,10 +307,10 @@ Create a new file - `/efi/loader/entries/arch-hyprland.conf`, with:
 ```bash
 title Arch Linux (Hyprland)
 sort-key 0
-linux /arch-hyprland/vmlinuz-linux
-initrd /arch-hyprland/amd-ucode.img
-initrd /arch-hyprland/initramfs-linux.img
-options cryptdevice=LABEL=ARCH_ROOT1:cryptroot:allow-discards
+linux /arch-1/vmlinuz-linux
+initrd /arch-1/amd-ucode.img
+initrd /arch-1/initramfs-linux.img
+options cryptdevice=LABEL=LINUXROOT:cryptroot:allow-discards
 options root=/dev/mapper/cryptroot
 options rw loglevel=3
 ```
@@ -345,6 +324,13 @@ console-mode auto
 editor yes
 auto-firmware yes
 beep no
+```
+
+**Reboot**
+
+```bash
+exit  # go back to live iso (exit chroot)
+reboot
 ```
 
 ## Post-setup

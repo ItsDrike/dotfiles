@@ -60,7 +60,9 @@ install -m 700 -d ~/.local/share/gnupg
 
 # Enable some basic services
 systemctl enable systemd-resolved
+systemctl enable systemd-timesyncd
 systemctl enable NetworkManager
+systemctl mask systemd-networkd # We have NetworkManager for this
 systemctl enable paccache.timer
 systemctl enable reflector.timer
 systemctl enable pkgfile-update.timer
