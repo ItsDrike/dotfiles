@@ -10,19 +10,18 @@ source "./scripts/include"
 CAPACITY_ICONS=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
 CHARGING_ICON=""
 DISCHARGING_ICON=""
-FULL_ICON=""  # Plugged in, but no longer charging (fully charged)
+FULL_ICON="" # Plugged in, but no longer charging (fully charged)
 CRITICAL_ICON=""
 CRITICAL_PERCENTAGE=15
 
-
 if [ -z "$BATTERY" ]; then
   # shellcheck disable=SC2010
-  BATTERY="$(ls -t /sys/class/power_supply | grep "BAT" | head -n 1)"
+  BATTERY="$(\ls -t /sys/class/power_supply | grep "BAT" | head -n 1)"
 fi
 
 if [ -z "$ADAPTER" ]; then
   # shellcheck disable=SC2010
-  ADAPTER="$(ls -t /sys/class/power_supply | grep "ADP" | head -n 1)"
+  ADAPTER="$(\ls -t /sys/class/power_supply | grep -E "ADP|AC" | head -n 1)"
 fi
 
 get_bat_info() {
@@ -52,7 +51,6 @@ status="$(get_bat_info status)"
 # status="Not charging"
 # status="Discharging"
 
-
 full="false"
 capacity_icon="$(pick_icon "$capacity" 0 100 "${CAPACITY_ICONS[@]}")"
 
@@ -68,7 +66,6 @@ elif [ "$status" = "Charging" ]; then
 fi
 
 [ "$capacity" -le "$CRITICAL_PERCENTAGE" ] && critical="true" || critical="false"
-
 
 jq -n -c --monochrome-output \
   --arg percent "$capacity" \
