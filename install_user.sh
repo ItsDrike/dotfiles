@@ -44,9 +44,6 @@ yay -S --noconfirm --needed \
 yay -Y --gendb
 yay -Y --devel --save
 
-# Install stable channel default rust toolchain
-rustup default stable
-
 # Copy over zsh configuration
 # Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
 # with $ZOOTDIR exported. If you haven't done that, you'll want to symlink the
@@ -81,6 +78,14 @@ cp -ra home/.config/lf ~/.config
 cp -ra home/.local/share/gnupg/gpg.conf ~/.local/share/gnupg
 chmod 600 ~/.local/share/gnupg/gpg.conf
 mkdir ~/.config/wakatime
+
+# Source the environment file to make sure the commands below
+# install to the correct (XDG) location.
+# shellcheck source=home/.config/shell/environment
+source ~/.config/shell/environment
+
+# Install stable channel default rust toolchain
+rustup default stable
 
 # Install various python versions with pyenv
 # This might take a while
