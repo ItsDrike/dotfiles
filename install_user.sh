@@ -98,6 +98,15 @@ pyenv install -l | cut -d' ' -f3 | grep -E '^3\.8\.[0-9]+$' | tail -n 1 | xargs 
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.7\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.6\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 
+# Install IPython and upgrade pip on all pyenv python versions
+PYENV_VERSION="3.12" pip install --upgrade pip ipython
+PYENV_VERSION="3.11" pip install --upgrade pip ipython
+PYENV_VERSION="3.10" pip install --upgrade pip ipython
+PYENV_VERSION="3.9" pip install --upgrade pip ipython
+PYENV_VERSION="3.8" pip install --upgrade pip ipython
+PYENV_VERSION="3.7" pip install --upgrade pip ipython
+PYENV_VERSION="3.6" pip install --upgrade pip ipython
+
 # Pull my public key and give it ultimate trust
 # (Obviously, you might not want to do this in your case,
 # you can give it a lower trust level, or not import it at all)
