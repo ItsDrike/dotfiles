@@ -98,6 +98,12 @@ pyenv install -l | cut -d' ' -f3 | grep -E '^3\.8\.[0-9]+$' | tail -n 1 | xargs 
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.7\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 pyenv install -l | cut -d' ' -f3 | grep -E '^3\.6\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
 
+# Pull my public key and give it ultimate trust
+# (Obviously, you might not want to do this in your case,
+# you can give it a lower trust level, or not import it at all)
+gpg --keyserver keys.openpgp.org --recv-keys FA2745890B7048C0
+echo "136F5E08AFF7F6DD3E9227A0FA2745890B7048C0:6:" | gpg --import-ownertrust
+
 echo "You should now exit (logout) the user and relogin with: su -l itsdrike"
 echo "This will put you into a configured ZSH shell, you can continue" \
   "configuring the rest of of the system manually from there"
