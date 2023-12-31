@@ -323,7 +323,7 @@ For our purposes, we will choose these:
 
 > [!IMPORTANT]
 > If you're using systemd-boot (instead of booting directly from the UKI images), it is very important that we choose
-> all 2, including PCR12, as many tutorials only recommend 0 and 7, which would however lead to a security hole, where
+> all 3, including PCR12, as many tutorials only recommend 0 and 7, which would however lead to a security hole, where
 > an attacker would be able to remove the drive with the (unencrypted) EFI partition, and modify the systemd-boot
 > loader config (`loaders/loader.conf`), adding `editor=yes`, and the put the drive back in.
 >
