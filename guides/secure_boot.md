@@ -335,7 +335,7 @@ For our purposes, we will choose these:
 > From there, the attacker could simply add a kernel argument like `init=/bin/bash`, which would bypass systemd as the
 > init system and instead make the kernel run bash executable as the PID=1 (init) program. This would mean you would
 > get directly into bash console that is running as root, without any need to enter a password.
-
+>
 > However, with PCR12, this is prevented, as it detects that the kernel cmdline was overridden, and so the TPM module
 > wouldn't release the key.
 
