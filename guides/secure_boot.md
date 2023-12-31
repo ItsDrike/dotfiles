@@ -82,12 +82,11 @@ Now, we will remove everything in the EFI partition, and start from scratch (thi
 rm -rf /efi/*
 ```
 
-Then, we will reinstall systemd-boot, and create the `/efi/EFI/Linux` directory, which will contain our UKIs. (You
-can change this location in `/etc/mkinitcpio.d/linux.preset` if you wish to use some other directory than just
-Linux.)
+Then, we will create the `/efi/EFI/Linux` directory, which will contain our UKIs. (You can change this location in
+`/etc/mkinitcpio.d/linux.preset` if you wish to use some other directory in the EFI partition, however it is
+recommended that you stick with Linux).
 
 ```bash
-bootctl install --esp-path=/efi
 mkdir -p /efi/EFI/Linux
 ```
 
@@ -100,10 +99,58 @@ This will also trigger a initramfs rebuild, which will now create the UKI image 
 pacman -S linux amd-ucode
 ```
 
-We can now reboot. Systemd-boot should pick up the UKI images in `/efi/EFI/Linux` automatically, even without any
-entry configurations.
+### Boot Manager
 
-If everything went well, you should see a new systemd based initramfs, from where you'll be prompted for
+This step is optional, because the Unified Kernel Images can actually be booted into directly from the UEFI, if you
+wish to do that, you can run the following to add them as entries in the UEFI boot menu:
+
+```bash
+pacman -S efibootmgr
+efibootmgr --create --disk /dev/disk/nvme0n1 --part 1 --label "Arch Linux (Hyprland)" --loader 'EFI\Linux\arch-linux.efi' --unicode
+efibootmgr -c -d /dev/disk/nvme0n1 -p 1 -L "Arch Linux (Hyprland) Fallback" -l 'EFI\Linux\arch-linux-fallback.efi' -u
+pacman -R systemd-boot
+```
+
+You can also specify additional kernel parameters / override the default ones in the UKI, by simply adding a string as
+a last positional argument to the `efibootmgr` command, allowing you to create entires with different kernel command
+lines easily.
+
+Doing the above is technically safer than going with a boot manager, as it cuts out the middle-man entirely, however it
+can sometimes be nice to have boot manager, as it can show you a nice boot menu, and allow you to modify the kernel
+parameters, or add entries for different operating systems very easily, without having to rely on the specific
+implementation of the boot menu in your UEFI firmware (which might take really long to open, or just generally not
+provide that good/clean experience). Because of that, I like to instead still install the `systemd-boot`. To do so, we can
+just install normally with:
+
+```bash
+bootctl install --esp-path=/efi
+```
+
+We can now reboot. Systemd-boot will pick up any UKI images in `/efi/EFI/Linux` automatically (this path is
+hard-coded), even without any entry configurations.
+
+That said, if you do wish to do so, you can still add an explicit entry for your configuration in
+`/efi/loader/entries/arch-hyprland.conf`:
+
+```
+title Arch Linux (Hyprland)
+sort-key 0
+efi /EFI/Linux/arch-linux.efi
+# If you wish, you can also specify kernel options here, it will
+# append/override those in the UKI image
+#options rootflags=subvol=/@
+#options rw loglevel=3
+```
+
+Although do note that if your UKI image is stored in `/efi/EFI/Linux`, because systemd-boot picks it up automatically,
+you will see the entry twice, so you'll likely want to change the target directory for the UKIs (in
+`/etc/mkinitcpio.d/linux.preset`) to something else.
+
+I however wouldn't recommend this approach, and I instead just let systemd-boot autodetect the images, unless you need
+something specific.
+
+If everything went well, you should see a new systemd based initramfs, from where you'll be prompted for the LUKS2
+password.
 
 ## Secure Boot
 
@@ -156,6 +203,8 @@ sbctl sign -s /efi/EFI/Linux/arch-linux.efi
 sbctl sign -s /efi/EFI/Linux/arch-linux-fallback.efi
 ```
 
+(If you're not using `systemd-boot`, only sign the UKI images in `/efi/EFI/Linux`)
+
 The `-s` flag means save: The files will be automatically re-signed when we update the kernel (via a sbctl pacman
 hook). To make sure that this is the case, we can run `pacman -S linux` and check that messages about image
 signing appear.
@@ -178,14 +227,30 @@ If you see Secure Boot marked as Enabled, it worked!
 
 ## Set up TPM unlocking
 
-We'll now set up TPM to take 2 measurements: One of the firmware state, and one of the secure boot state (PCR0 and PCR7). If these remain the same on boot,
-the drive will get unlocked. If they've changed, it will fail, and either a recovery key or a password will need to be entered.
+We'll now set up the TPM module to store a LUKS encryption key for our root partition, which it can release if certain
+conditions are met (I'll talk about the specific conditions a few sections later). This will allow us to set it up in
+such a way, that allows automatic unlocking without having to enter the password at boot.
+
+This is safe, because set up correctly, TPM will only release the password to unlock the drive if there wasn't any
+editing done to the way the system was booted up, in which case we should always end up at a lockscreen after the
+bootup, which will be our line of defense against attackers, rather than it being the encryption password itself.
+
+Do make sure that if you go this route, your lockscreen doesn't have any vulnerabilities and can't be easily bypassed.
+In my case, I'm using the default linux account login screen, which I do trust is safe enough to keep others without
+password out. I also have PAM set up in such a way that after 3 failed attempts, the account will get locked for 10
+minutes, which should prevent any brute-force attempts (this is actually the default).
+
+Since TPM is a module integrated in the CPU or the motherboard, so if someone took out the physical drive with the
+encrypted data, they would still need to have a LUKS decryption key to actually be able to read the contents of the
+root partition.
+
+### Make sure you have a TPM v2 module
 
 ```bash
 pacman -S tpm2-tss tpm2-tools
 ```
 
-Verify that your system does actually have a TPM v2 module:
+Verify that your system does actually have a TPM v2 module
 
 ```bash
 systemd-cryptenroll --tpm2-device=list
@@ -203,6 +268,12 @@ Open `/etc/mkinitcpio.conf` and find a line that starts with `HOOKS=`
 - Change `udev` to `systemd`
 - Change `keymap consolefont` to `sd-vconsole`
 - Add `sd-encrypt` before `block`, and remove `encrypt`
+- If you were using `mkinitcpio-numlock`, also remove `numlock`, it doesn't work with systemd
+
+(As an alternative to `mkinitcpio-numlock`, there is `systemd-numlockontty`, which creates a systemd service that
+enables numlock in TTYs after booting (you'll need to enable it), this however doesn't happen in initramfs directly,
+only aftwerwars. This shouldn't be too annoying though, as we'lll no longer have to be entering the encryption
+password, which is the only reason we'd need numlock in initramfs anyway.)
 
 Additionally, with systemd initramfs, you shouldn't be specifying `root` nor `cryptdevice` kernel arguments, as
 systemd can actually pick those up automatically (via systemd-gpt-auto-generator). We will however still need the
@@ -229,10 +300,53 @@ We can now regenerate the initramfs with: `pacman -S linux` (we could also do `m
 trigger the pacman hook which auto-signs our final UKI images, so we'd have to re-sign them with `sbctl` manually)
 and reboot to check if it worked.
 
+### Choosing PCRs
+
+PCR stands for Platform Configuration Register, and all TPM v2 modules have a bunch of these registers, which hold
+hashes about the system's state. These registers are read-only, and their value is set by the TPM module itself.
+
+The data held by the TPM module (our LUKS encryption key) can then only be accessed when all of the selected PCR
+registers contain the expected values. You can find a list of the PCR registers on [Arch
+Wiki](https://wiki.archlinux.org/title/Trusted_Platform_Module#Accessing_PCR_registers).
+
+You can look at the current values of these registers with this command:
+
+```bash
+systemd-analyze pcrs
+```
+
+For our purposes, we will choose these:
+
+- **PCR0**: Hash of the UEFI firmware executable code (may change if you update UEFI)
+- **PCR7**: Secure boot state - contains the certificates used to validate each boot application
+- **PCR12**: Overridden kernel command line, credentials
+
+> [!IMPORTANT]
+> If you're using systemd-boot (instead of booting directly from the UKI images), it is very important that we choose
+> all 2, including PCR12, as many tutorials only recommend 0 and 7, which would however lead to a security hole, where
+> an attacker would be able to remove the drive with the (unencrypted) EFI partition, and modify the systemd-boot
+> loader config (`loaders/loader.conf`), adding `editor=yes`, and the put the drive back in.
+>
+> This wouldn't violate secure boot, as the `.efi` image files were unchanged, and are still signed, so the attacker
+> would be able to boot into the systemd-boot menu, from where they could edit the boot entry for our UKI and modify
+> the kernel parameters (yes, even though UKIs contain the kernel command line inside of them, systemd-boot can still
+> edit those arguments if `editor=yes`).
+>
+> From there, the attacker could simply add a kernel argument like `init=/bin/bash`, which would bypass systemd as the
+> init system and instead make the kernel run bash executable as the PID=1 (init) program. This would mean you would
+> get directly into bash console that is running as root, without any need to enter a password.
+
+> However, with PCR12, this is prevented, as it detects that the kernel cmdline was overridden, and so the TPM module
+> wouldn't release the key.
+
+The nice thing about also selecting PCR12 is that it will even allow us to securely keep `editor=yes` in our
+`loader.conf`, for easy debugging, as all that will happen if we do edit the kernel command line will be that the TPM
+module will not release the credentials, and so the initramfs will just ask us to enter the password manually.
+
 ### Generate recovery key
 
-The following command will generate a new LUKS key and automatically add it to
-the encrypted root. You will be prompted for a LUKS password to this device.
+The following command will generate a new LUKS key and automatically add it to the encrypted root. You will be prompted
+for a LUKS password to this device.
 
 This step is optional, as all it does is adding another LUKS keyslot with a generated recovery key, so that in case TPM
 wouldn't unlock the drive, you can use this key instead.
@@ -250,17 +364,15 @@ systemd-cryptenroll /dev/gpt-auto-root-luks --recovery-key
 
 The following command will enroll a new key into the TPM module and add it as a new keyslot of the specified LUKS2 encrypted device.
 
-We also specify `--tpm2-pcrs=0+7`, which selects PCR0 (UEFI firmware status) and PCR7 (Secure Boot status), which will
-make sure that if someone updates the UEFI firmware (could mean bypassing the UEFI password), or if someone disables
-secure boot, or changes the secure boot keys, the TPM module will not release the encryption key. If this happens, you
-will instead be prompted to enter a key manually. You can enter your recovery key here, or if you decided to keep your
-original key, you can enter it.
+We also specify `--tpm2-pcrs=0+7+12`, which selects the PCR registers that we decided on above.
+
+Note: If you already had something in the tpm2 moudle, you will want to add `--wipe-slot=tpm2` too.
 
 You will be prompted for a LUKS password to this device (you can still enter your original key, you don't need to use
 the recovery one, as we haven't deleted the original one yet).
 
 ```bash
-systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/gpt-auto-root-luks
+systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7+12 /dev/gpt-auto-root-luks
 ```
 
 This will enroll the TPM2 token token as a key slot 2 for the encrypted drive.
