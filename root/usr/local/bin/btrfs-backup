@@ -1,0 +1,110 @@
+#!/bin/bash
+
+usage() {
+  cat <<EOF
+Create a btrfs snapshot
+
+Usage btrfs-backup <subvolume> <backup_dir> [options]
+
+Will create a snapshot of given subvolume in given backup_dir.
+
+Options:
+-h | --help: Display this message
+-t | --total: Total amount of allowed backups in the same backup_dir
+-n | --name: Name of the snapshot (appended after date)
+
+Example for crontab (/etc/crontab):
+15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/quaterly --total 4
+15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/quaterly --total 4
+15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/quaterly --total 4
+15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/quaterly --total 4
+
+0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/hourly --total 8
+0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/hourly --total 8
+0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/hourly --total 8
+0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/hourly --total 8
+
+Example for Anacrontab (/etc/anacrontab):
+@daily   	 10 	 snapshot.daily.@      	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/daily --total 8
+@daily   	 10 	 snapshot.daily.@home  	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/daily --total 8
+@daily   	 10 	 snapshot.daily.@data  	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/daily --total 8
+@daily   	 10 	 snapshot.daily.@log   	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/daily --total 8
+
+@weekly  	 20 	 snapshot.weekly.@     	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/weekly --total 5
+@weekly  	 20 	 snapshot.weekly.@home 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/weekly --total 5
+@weekly  	 20 	 snapshot.weekly.@data 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/weekly --total 5
+@weekly  	 20 	 snapshot.weekly.@log  	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/weekly --total 5
+
+@monthly 	 30 	 snapshot.monthly.@     	/usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/monthly --total 3
+@monthly 	 30 	 snapshot.monthly.@home 	/usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/monthly --total 3
+@monthly 	 30 	 snapshot.monthly.@data 	/usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/monthly --total 3
+@monthly 	 30 	 snapshot.monthly.@log  	/usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/monthly --total 3
+EOF
+}
+
+backup() {
+  local now="$(date '+%Y_%M_%dT%H_%M_%S')"
+  local name="$now"
+  if [[ "$SNAPSHOT_NAME" ]]; then
+    name="$name-$SNAPSHOT_NAME"
+  fi
+  btrfs subvolume snapshot -r "$SUBVOLUME" "$BACKUP_DIR/$name"
+
+  # Clean up older snapshots
+  if [[ "$TOTAL_BACKUPS" -ne 0 ]]; then
+    for i in $(find "$BACKUP_DIR" -maxdepth 1 | sort | head -n -"${TOTAL_BACKUPS}"); do
+      btrfs subvolume delete "$i"
+    done
+  fi
+}
+
+# Extract the last two arguments
+SUBVOLUME="$1"
+BACKUP_DIR="$2"
+shift
+shift
+
+if [[ -z "$SUBVOLUME" || -z "$BACKUP_DIR" ]]; then
+  echo "Error: Both subvolume and backup_dir must be provided."
+  usage
+  exit 1
+fi
+
+if [[ ! -d "$SUBVOLUME" ]]; then
+  echo "Error: Specified subvolume path isn't a valid directory."
+  exit 1
+fi
+
+if [[ ! -d "$BACKUP_DIR" ]]; then
+  echo "Error: Specified backup directory path isn't a valid directory."
+  exit 1
+fi
+
+TOTAL_BACKUPS=0
+SNAPSHOT_NAME=""
+
+while [[ "$1" ]]; do
+  case "$1" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  -t | --total)
+    shift
+    TOTAL_BACKUPS="$1"
+    shift
+    ;;
+  -n | --name)
+    shift
+    SNAPSHOT_NAME="$1"
+    shift
+    ;;
+  *)
+    echo "Error: Unknown argument: $1"
+    usage
+    exit 1
+    ;;
+  esac
+done
+
+backup
