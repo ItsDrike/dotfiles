@@ -281,10 +281,12 @@ interfaces for them, to mount those to a concrete directory, we still use
 /dev/mapper/cryptroot	/var/cache	btrfs     	rw,noatime,compress=zstd:3,ssd,space_cache=v2,subvol=/@cache    	0 1
 /dev/mapper/cryptroot	/tmp      	btrfs     	rw,noatime,compress=no,ssd,space_cache=v2,subvol=/@tmp          	0 1
 /dev/mapper/cryptroot	/data     	btrfs     	rw,noatime,compress=zstd:5,ssd,space_cache=v2,subvol=/@data     	0 2
+/dev/mapper/cryptroot	/.btrfs   	btrfs     	rw,noatime,ssd,space_cache=v2                                   	0 2 # btrfs root
 
 # /dev/mapper/cryptdata LABEL=DATA UUID=...
-/dev/mapper/cryptdata	/data2    	btrfs     	rw,noatime,compress=zstd:5,ssd,space_cache=v2,subvol=/@data     	0 2
-/dev/mapper/cryptdata	/backups  	btrfs     	rw,noatime,compress=zstd:10,ssd,space_cache=v2,subvol=/@backups 	0 2
+/dev/mapper/cryptdata	/data2         	btrfs     	rw,noatime,compress=zstd:5,ssd,space_cache=v2,subvol=/@data     	0 2
+/dev/mapper/cryptdata	/backups       	btrfs     	rw,noatime,compress=zstd:10,ssd,space_cache=v2,subvol=/@backups 	0 2
+/dev/mapper/cryptdata	/.btrfs-data   	btrfs     	rw,noatime,ssd,space_cache=v2                                   	0 2 # btrfs root
 
 # endregion
 # region: Bind mounts
