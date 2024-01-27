@@ -1,110 +1,382 @@
 #!/bin/bash
 
+##
+# btrfs-backup for Linux
+# Automatically create, rotate, and destroy periodic BTRFS snapshots.
+#
+# Copyright 2024 ItsDrike <itsdrike@protonmail.com>
+#
+# This script was inspired by btrfs-auto-snapshot:
+#   <https://github.com/hunleyd/btrfs-auto-snapshot/blob/master/btrfs-auto-snapshot>
+#   Copyright 2014-2022 Doug Hunley <doug.hunley@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+set -euo pipefail
+
+VERSION="0.1.0"
+DEFAULT_SNAPS_DIR="/.btrfs/@snapshots"
+DEFAULT_PREFIX="backup"
+DEFAULT_LABEL="adhoc"
+
+ERR_CODE_MISSING_SYS_REQS=2
+ERR_CODE_NOT_ROOT=3
+ERR_CODE_GETOPT_FAILED=128
+ERR_CODE_INVALID_ARG=129
+ERR_CODE_INTERNAL_ERR=140
+
+trap argsp_cmdline_exit_handler SIGUSR1
+
+argsp_cmdline_exit=0
+
+help=''
+keep=''
+label=''
+prefix=''
+dry_run=''
+writable=''
+writable=''
+snapshot_directory=''
+skip_create=''
+paths=''
+
+##
+# Check for available necessary system requirements
+#
+check_sys_reqs() {
+  # Running as root
+  if [ "$EUID" -ne 0 ]; then
+    echo "The script must be ran as root" >&2
+    exit $ERR_CODE_NOT_ROOT
+  fi
+
+  # Bash support for associative arrays
+  unset assoc
+  # shellcheck disable=SC2034
+  if ! declare -A assoc 2>/dev/null; then
+    echo "Associative arrays not supported! At least BASH 4 is needed." >&2
+    exit $ERR_CODE_MISSING_SYS_REQS
+  fi
+
+  # TODO: Check for btrfs-tools
+}
+
 usage() {
-  cat <<EOF
-Create a btrfs snapshot
-
-Usage btrfs-backup <subvolume> <backup_dir> [options]
-
-Will create a snapshot of given subvolume in given backup_dir.
+  echo "$0 $VERSION"
+  echo
+  echo "Usage: $0 [options] <subvolume> [subvolume...]
 
 Options:
--h | --help: Display this message
--t | --total: Total amount of allowed backups in the same backup_dir
--n | --name: Name of the snapshot (appended after date)
+  -h, --help                    Print this usage message.
+  -k, --keep=NUM                Keep up to NUM most recent snapshots with this label, deleting all older ones (no snapshots will be deleted by default)
+  -l, --label=LAB               LAB is usually 'hourly', 'daily', or 'monthly', default: '$DEFAULT_LABEL'
+  -p, --prefix=PRE              PRE is '$DEFAULT_PREFIX' by default
+  -n, --dry-run                 Print actions without actually executing them
+  -w, --writable                Create writable snapshots, instead of read-only
+  -d, --snapshot-directory=DIR  DIR is a directory to create snapshots in, default: $DEFAULT_SNAPS_DIR
+  -s, --skip-create             Don't create a new snapshot (only useful with --keep to clean existing snapshots)
 
-Example for crontab (/etc/crontab):
-15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/quaterly --total 4
-15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/quaterly --total 4
-15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/quaterly --total 4
-15,30,45 * * * * 	 root 	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/quaterly --total 4
+Positional arguments:
+  subvolume           Path(s) to a mounted subvolume directory (like: '/.btrfs/@')
 
-0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/hourly --total 8
-0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/hourly --total 8
-0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/hourly --total 8
-0 * * * * 	root 	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/hourly --total 8
-
-Example for Anacrontab (/etc/anacrontab):
-@daily   	 10 	 snapshot.daily.@      	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/daily --total 8
-@daily   	 10 	 snapshot.daily.@home  	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/daily --total 8
-@daily   	 10 	 snapshot.daily.@data  	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/daily --total 8
-@daily   	 10 	 snapshot.daily.@log   	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/daily --total 8
-
-@weekly  	 20 	 snapshot.weekly.@     	 /usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/weekly --total 5
-@weekly  	 20 	 snapshot.weekly.@home 	 /usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/weekly --total 5
-@weekly  	 20 	 snapshot.weekly.@data 	 /usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/weekly --total 5
-@weekly  	 20 	 snapshot.weekly.@log  	 /usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/weekly --total 5
-
-@monthly 	 30 	 snapshot.monthly.@     	/usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/monthly --total 3
-@monthly 	 30 	 snapshot.monthly.@home 	/usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/monthly --total 3
-@monthly 	 30 	 snapshot.monthly.@data 	/usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/monthly --total 3
-@monthly 	 30 	 snapshot.monthly.@log  	/usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/monthly --total 3
-EOF
+Details:
+  A backup snapshot of each specified subvolume will be created in: <DIR>/<subvolume name>/<PRE>_<LAB>_<datetime>.
+  The <subvolume name> will be obtained automatically, from the given subvolume paths.
+  The <datetime> will contain the output from 'date +%F-%H%M' command.
+"
 }
 
-backup() {
-  local now="$(date '+%Y_%M_%dT%H_%M_%S')"
-  local name="$now"
-  if [[ "$SNAPSHOT_NAME" ]]; then
-    name="$name-$SNAPSHOT_NAME"
-  fi
-  btrfs subvolume snapshot -r "$SUBVOLUME" "$BACKUP_DIR/$name"
+##
+# Parse and set command line arguments, possible aborting in case of errors or missing
+# required arguments.
+#
+# @param[in]  Callers need to forward (@code $@)!
+# return      Associative array with all options and passed paths
+#
+argsp_cmdline() {
+  argsp_cmdline_exit="$ERR_CODE_GETOPT_FAILED"
+  getopt=$(getopt \
+    --longoptions=help,keep:,label:,prefix:,dry-run,writable,date-format:,snapshot-directory:,skip-create \
+    --options=h,k:,l:,p:,n,w,f:,d:,s \
+    -- "$@") ||
+    kill -SIGUSR1 $$
+  eval set -- "${getopt}"
 
-  # Clean up older snapshots
-  if [[ "$TOTAL_BACKUPS" -ne 0 ]]; then
-    for i in $(find "$BACKUP_DIR" -maxdepth 1 | sort | head -n -"${TOTAL_BACKUPS}"); do
-      btrfs subvolume delete "$i"
-    done
+  declare -A ret_val
+
+  ret_val[help]='0'
+  ret_val[keep]=''
+  ret_val[label]="$DEFAULT_LABEL"
+  ret_val[prefix]="$DEFAULT_PREFIX"
+  ret_val[dry_run]=''
+  ret_val[writable]='-r'
+  ret_val[snapshot_directory]="$DEFAULT_SNAPS_DIR"
+  ret_val[skip_create]='0'
+  ret_val[paths]=''
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+    -h | --help)
+      ret_val[help]=1
+      shift 1
+      ;;
+    -k | --keep)
+      if ! test "$2" -ge 0 2>/dev/null; then
+        echo "The $1 parameter must be a non-negative integer, got: $2" >&2
+        argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+        kill -SIGUSR1 $$
+      fi
+
+      ret_val[keep]=$2
+      shift 2
+      ;;
+    -l | --label)
+      label="$2"
+      case $label in
+      [![:alnum:]_.:\ -]*)
+        echo "The $1 parameter must be alphanumeric." >&2
+        argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+        kill -SIGUSR1 $$
+        ;;
+      esac
+
+      ret_val[label]="$label"
+      shift 2
+      ;;
+    -p | --prefix)
+      prefix="$2"
+
+      case $prefix in
+      [![:alnum:]_.:\ -]*)
+        echo "The $1 parameter must be alphanumeric." >&2
+        argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+        kill -SIGUSR1 $$
+        ;;
+      esac
+
+      ret_val[prefix]="$prefix"
+      shift 2
+      ;;
+    -n | --dry-run)
+      ret_val[dry_run]='echo'
+      echo "Doing a dry run. Not running these commands..." >&2
+      shift 1
+      ;;
+    -w | --writable)
+      ret_val[writable]=''
+      shift 1
+      ;;
+    -d | --snapshot-directory)
+      directory="$2"
+      if ! test -d "$directory" 2>/dev/null; then
+        echo "Invalid snapshots directory (must be an existing directory)" >&2
+        argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+        kill -SIGUSR1 $$
+      fi
+      ret_val[snapshot_directory]="$directory"
+      shift 2
+      ;;
+    -s | --skip-create)
+      ret_val[skip_create]=1
+      shift 1
+      ;;
+    --)
+      shift 1
+      break
+      ;;
+    esac
+  done
+
+  if [ $# -eq 0 ]; then
+    if [ "${ret_val[help]}" -eq 0 ]; then
+      echo "No subvolume path(s) specified." >&2
+      echo "See $0 --help." >&2
+      argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+      kill -SIGUSR1 $$
+    fi
+  fi
+
+  if [ "${ret_val[keep]}" -eq 0 ] && [ "${ret_val[skip_create]}" -eq 0 ]; then
+    echo "Using --keep=0 doesn't make sense without --skip-create." >&2
+    echo "It would delete the new snapshot you wanted to create." >&2
+    argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"
+    kill -SIGUSR1 $$
+  fi
+
+  ret_val[paths]="$*"
+
+  # Decrease keep by one if set during dry-run, since the snapshots won't
+  # actually be created, so there would be 1 extra snapshot in reality.
+  if [ -n "${ret_val[dry_run]}" ] && [ -n "${ret_val[keep]}" ] && [ "${ret_val[skip_create]}" -eq 0 ]; then
+    keep="${ret_val[keep]}"
+    ret_val[keep]=$((keep - 1))
+  fi
+
+  # Print the declaration of ret_val, removing the declaration part
+  declare -p ret_val | sed -e 's/^declare -A [^=]*=//'
+}
+
+##
+# Exit with the code stored in {@code argsp_cmdline_exit}.
+#
+# The corresponding parser function needs to be called as a subshell to be able to process
+# the returned list of paths to work with. So exit within that function doesn't work
+# easily, which is worked around by using a special global variable and {@code kill} with
+# {@code trap}.
+#
+argsp_cmdline_exit_handler() {
+  exit "$argsp_cmdline_exit"
+}
+
+##
+# Get the name of the subvolume from a file-system path
+#
+# @param[in] Subvolume path on the file-system
+#
+btrfs_subvol_name() {
+  local -r subvolume_path="$1"
+
+  local subvol_status
+  local subvol_status_code
+  local subvol_name
+  subvol_status="$(btrfs subvolume show "$subvolume_path")"
+  subvol_status_code="$?"
+  if [ "$subvol_status_code" -ne 0 ]; then
+    echo "Btrfs subvolume show command exitted with non-zero code: $subvol_status_code." >&2
+    echo "Captured output:" >&2
+    echo "$subvol_status" >&2
+    echo "-----------------------" >&2
+    echo "This is likely due to an invalid subvolume path: $subvolume_path" >&2
+    argsp_cmdline_exit="$ERR_CODE_INTERNAL_ERR"
+    kill -SIGUSR1 $$
+  fi
+
+  echo "$subvol_status" | awk '/^[[:space:]]Name:/ {print $NF}'
+}
+
+##
+# Create a snapshot of given subvolume.
+#
+# This will create a new BTRFS snapshot stored in {@code snapshot_directory/subvol_name}.
+# The subvolume name will be obtained using {@code btrfs subvol status}, exitting if the
+# command fails (most likely since subvolume at the given path doesn't exist).
+#
+# @param[in] Subvolume path on the file-system
+# @params[in] Snapshot file name to be created (<PRE>_<LAB>_<DATE>)
+#
+btrfs_take_snapshot() {
+  local -r subvolume_path="$1"
+  local -r snap_file_name="$2"
+
+  local subvol_name
+  local full_dir
+  local snap_path
+  local -a snap_opts=()
+
+  subvol_name="$(btrfs_subvol_name "$subvolume_path")"
+
+  # Make sure the snapshot directory exists
+  full_dir="$snapshot_directory/$subvol_name"
+  if [ ! -d "$full_dir" ]; then
+    ${dry_run} mkdir -p "$full_dir"
+  fi
+
+  snap_path="$full_dir/$snap_file_name"
+  snap_opts=("$writable" "$subvolume_path" "$snap_path")
+
+  if ! ${dry_run} btrfs subvolume snapshot "${snap_opts[@]}"; then
+    echo "Btrfs subvolume snapshot command failed!" >&2
+    argsp_cmdline_exit="$ERR_CODE_INTERNAL_ERR"
+    kill -SIGUSR1 $$
   fi
 }
 
-# Extract the last two arguments
-SUBVOLUME="$1"
-BACKUP_DIR="$2"
-shift
-shift
+##
+# Cleanup old snapshots, only keeping up to {@code keep} total snapshots.
+#
+# If {@code keep} isn't specified, no snapshots will be removed.
+#
+# @param[in] Subvolume path on the file-system
+# @param[in] Pattern to find the snapshot names for the current prefix and label.
+#
+btrfs_clean_snapshots() {
+  local -r subvolume_path="$1"
+  local -r snap_patt="$2"
 
-if [[ -z "$SUBVOLUME" || -z "$BACKUP_DIR" ]]; then
-  echo "Error: Both subvolume and backup_dir must be provided."
+  if [ -z "$keep" ]; then
+    return
+  fi
+
+  local subvol_name
+  local full_dir
+  local full_dir_escaped
+  local snaps
+  local paths
+
+  subvol_name="$(btrfs_subvol_name "$subvolume_path")"
+  full_dir="$snapshot_directory/$subvol_name"
+  full_dir_escaped=$(echo "${full_dir}" | sed 's/[\#]/\\&/g')
+
+  if [ ! -d "$full_dir" ] && [ -n "$dry_run" ]; then
+    echo "Ignoring cleanup in dry-run, $full_dir doesn't exist" >&2
+    return
+  fi
+
+  snaps="$(find "$full_dir" -maxdepth 1 -mindepth 1 -type d | sort)"
+  snaps="$(echo "${snaps}" | sed -r "\#${full_dir_escaped}/${snap_patt}#!d")"
+  snaps="$(echo "$snaps" | head -n "-$keep")"
+
+  while IFS= read -r i; do
+    if [ -z "$i" ]; then
+      continue
+    fi
+
+    ${dry_run} btrfs subvolume delete "$i"
+  done <<<"$snaps"
+}
+
+check_sys_reqs
+
+cmdline="$(argsp_cmdline "$@")"
+eval "declare -A cmdline=${cmdline}"
+
+help="${cmdline[help]}"
+keep="${cmdline[keep]}"
+label="${cmdline[label]}"
+prefix="${cmdline[prefix]}"
+dry_run="${cmdline[dry_run]}"
+writable="${cmdline[writable]}"
+writable="${cmdline[writable]}"
+snapshot_directory="${cmdline[snapshot_directory]}"
+skip_create="${cmdline[skip_create]}"
+paths="${cmdline[paths]}"
+
+if [ "$help" -eq 1 ]; then
   usage
-  exit 1
+  exit 0
 fi
 
-if [[ ! -d "$SUBVOLUME" ]]; then
-  echo "Error: Specified subvolume path isn't a valid directory."
-  exit 1
-fi
+snap_name="${prefix}_${label}_$(date +%F-%H%M)"
 
-if [[ ! -d "$BACKUP_DIR" ]]; then
-  echo "Error: Specified backup directory path isn't a valid directory."
-  exit 1
-fi
+# Used for sorting the snapshots later on
+date_patt='[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{4}'
+snap_patt="${prefix}_${label}_${date_patt}"
 
-TOTAL_BACKUPS=0
-SNAPSHOT_NAME=""
-
-while [[ "$1" ]]; do
-  case "$1" in
-  -h | --help)
-    usage
-    exit 0
-    ;;
-  -t | --total)
-    shift
-    TOTAL_BACKUPS="$1"
-    shift
-    ;;
-  -n | --name)
-    shift
-    SNAPSHOT_NAME="$1"
-    shift
-    ;;
-  *)
-    echo "Error: Unknown argument: $1"
-    usage
-    exit 1
-    ;;
-  esac
+for i in $paths; do
+  if [ "$skip_create" -eq 0 ]; then
+    btrfs_take_snapshot "$i" "$snap_name"
+  fi
+  btrfs_clean_snapshots "$i" "$snap_patt"
 done
-
-backup

@@ -10,24 +10,14 @@ RANDOM_DELAY=45
 # the jobs will be started during the following hours only
 START_HOURS_RANGE=3-22
 
-#period in days   delay in minutes   job-identifier   command
-1               	5                	 cron.daily     	nice run-parts /etc/cron.daily
-7               	25               	 cron.weekly    	nice run-parts /etc/cron.weekly
-@monthly        	45               	 cron.monthly   	nice run-parts /etc/cron.monthly
+#period in days   delay in minutes   job-identifier         command
+1               	5                	 cron.daily           	nice run-parts /etc/cron.daily
+7               	25               	 cron.weekly          	nice run-parts /etc/cron.weekly
+@monthly        	45               	 cron.monthly         	nice run-parts /etc/cron.monthly
 
-@daily          	15               	 pacman_file_db 	/usr/bin/pacman -Fy
+@daily          	15               	 pacman_file_db       	/usr/bin/pacman -Fy
 
-@daily          	10               	 snapshot.daily.@         	/usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/daily --total 8
-@daily          	10               	 snapshot.daily.@home     	/usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/daily --total 8
-@daily          	10               	 snapshot.daily.@data     	/usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/daily --total 8
-@daily          	10               	 snapshot.daily.@log      	/usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/daily --total 8
 
-@weekly         	20               	 snapshot.weekly.@         	/usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/weekly --total 5
-@weekly         	20               	 snapshot.weekly.@home     	/usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/weekly --total 5
-@weekly         	20               	 snapshot.weekly.@data     	/usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/weekly --total 5
-@weekly         	20               	 snapshot.weekly.@log      	/usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/weekly --total 5
-
-@monthly        	30               	 snapshot.monthly.@         	/usr/local/bin/btrfs-backup /.btrfs/@ /.btrfs/@snapshots/@/monthly --total 3
-@monthly        	30               	 snapshot.monthly.@home     	/usr/local/bin/btrfs-backup /.btrfs/@home /.btrfs/@snapshots/@home/monthly --total 3
-@monthly        	30               	 snapshot.monthly.@data     	/usr/local/bin/btrfs-backup /.btrfs/@data /.btrfs/@snapshots/@data/monthly --total 3
-@monthly        	30               	 snapshot.monthly.@log      	/usr/local/bin/btrfs-backup /.btrfs/@log /.btrfs/@snapshots/@log/monthly --total 3
+@daily          	10               	 snapshot.daily       	/usr/local/bin/btrfs-backup -l daily -k 8 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
+@weekly         	20               	 snapshot.weekly      	/usr/local/bin/btrfs-backup -l weekly -k 5 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
+@monthly        	30               	 snapshot.monthly     	/usr/local/bin/btrfs-backup -l monthly -k 3 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
