@@ -275,10 +275,11 @@ enables numlock in TTYs after booting (you'll need to enable it), this however d
 only aftwerwars. This shouldn't be too annoying though, as we'lll no longer have to be entering the encryption
 password, which is the only reason we'd need numlock in initramfs anyway.)
 
-Additionally, with systemd initramfs, you shouldn't be specifying `root` nor `cryptdevice` kernel arguments, as
-systemd can actually pick those up automatically (via systemd-gpt-auto-generator). We will however still need the
-`rootflags` argument for selecting the btrfs subvolume (unless your default subvolume is the root partition
-subvolume).
+Additionally, with systemd initramfs, you shouldn't be specifying `root` nor `cryptdevice` kernel arguments, as systemd
+can actually pick those up automatically (via
+[systemd-gpt-auto-generator](https://wiki.archlinux.org/title/Systemd#GPT_partition_automounting)). We will however
+still need the `rootflags` argument for selecting the btrfs subvolume (unless your default subvolume is the root
+partition subvolume).
 
 So, let's edit our kernel parameters:
 
