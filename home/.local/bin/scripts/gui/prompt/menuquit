@@ -24,6 +24,9 @@ case "$action" in
 "Userspace Reboot")
   systemctl soft-reboot
   ;;
+"Hibernate")
+  systemtcl hibernate
+  ;;
 "Nothing") ;&
 *)
   exit 1
