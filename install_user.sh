@@ -75,6 +75,7 @@ cp -ra home/.config/git ~/.config/git
 cp -ra home/.config/gtk-2.0 ~/.config
 cp -ra home/.config/gtk-3.0 ~/.config
 cp -ra home/.config/lf ~/.config
+cp -ra home/.config/npm ~/.config
 cp -ra home/.local/share/gnupg/gpg.conf ~/.local/share/gnupg
 chmod 600 ~/.local/share/gnupg/gpg.conf
 mkdir ~/.config/wakatime
