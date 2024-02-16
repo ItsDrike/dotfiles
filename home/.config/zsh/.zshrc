@@ -108,6 +108,10 @@ if command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
 fi
 
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init --cmd z zsh)"
+fi
+
 #########################
 # Zgenom Plugin Manager #
 #########################
@@ -121,7 +125,6 @@ zgenom autoupdate
 
 # If the init script doesn't exist yet
 if ! zgenom saved; then
-    zgenom load skywind3000/z.lua
     zgenom load akash329d/zsh-alias-finder
     zgenom load clarketm/zsh-completions
     zgenom load zsh-users/zsh-autosuggestions

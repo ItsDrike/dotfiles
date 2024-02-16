@@ -74,12 +74,11 @@ alias cfgit='vim ~/.config/git/config'
 alias cfhypr='vim ~/.config/hypr'
 alias cfsway='vim ~/.config/sway/config'
 
-# z.lua shortcuts
-alias j='z'             # for the sake of autojump old habits
-alias zz='z -c'         # restrict matches to subdirs of $PWD
-alias zb='z -b'         # restrict matches to parent directories
-alias zi='z -I'         # cd with interactive fzf selection
-alias zbi='z -b -I'     # pick parent directory to cd into with fzf
+# zoxide shortcuts
+alias cd='z'              # use zoxide as the default cd command
+alias cdi='zi'            # interactive mode (fzf)
+alias j='z'               # for the sake of old habits from autojump
+alias ji='zi'             # interactive mode (fzf)
 
 # Fallbacks
 command -v hd > /dev/null || alias hd='hexdump -C' # Cannonical hex dump; some systems have this symlinked
