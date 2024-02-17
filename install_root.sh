@@ -44,7 +44,7 @@ cp root/.rsync-filter /
 sudo pacman -Sy
 
 # Install zsh and make it the default shell for root
-sudo pacman -S --noconfirm --needed zsh
+sudo pacman -S --noconfirm --needed zsh zoxide
 chsh -s /usr/bin/zsh root
 
 # Copy ZSH shell configuration
