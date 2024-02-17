@@ -77,7 +77,7 @@ yay -S --noconfirm --needed \
 
 # Utilities
 yay -S --noconfirm --needed \
-  nm-connection-editor ffmpegthumbnailer upower devour
+  nm-connection-editor ffmpegthumbnailer upower devour hyfetch
 
 # Wayland Utilities
 yay -S --noconfirm --needed \
