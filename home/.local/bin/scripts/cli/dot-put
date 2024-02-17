@@ -4,12 +4,61 @@ set -euo pipefail
 dotdir="$HOME/dots"
 dothome="$dotdir/home"
 dotroot="$dotdir/root"
-syspath="$(realpath "$1")"
 
-if [[ "$syspath" == "$HOME"* ]]; then
-  dotpath="${syspath/#$HOME/$dothome}"
-else
-  dotpath="$dotroot$syspath"
+usage() {
+  echo "$0"
+  echo
+  echo "Usage: $0 [options] <file> <file...>
+
+Options:
+  -h, --help      Print this usage message.
+Positional arguments:
+  file            Path to be copied to dotfiles.
+
+Details:
+  A script to quickly copy specified files to dotfile directory.
+"
+}
+
+dotcopy() {
+  syspath="$1"
+
+  if [[ "$syspath" == "$HOME"* ]]; then
+    dotpath="${syspath/#$HOME/$dothome}"
+  else
+    dotpath="$dotroot$syspath"
+  fi
+
+  # Ensure the destination directory exists
+  mkdir -p "$(dirname "$dotpath")"
+
+  cp -vi "$syspath" "$dotpath"
+}
+
+getopt=$(getopt \
+  --longoptions=help \
+  --options=h \
+  -- "$@") || exit 1
+eval set -- "${getopt}"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  --)
+    shift 1
+    break
+    ;;
+  esac
+done
+
+if [ $# -eq 0 ]; then
+  echo "No paths specified" >&2
+  exit 1
 fi
 
-cp -vi "$syspath" "$dotpath"
+for arg in "$@"; do
+  dotcopy "$arg"
+done
