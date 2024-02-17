@@ -242,6 +242,7 @@ alias nf='neofetch'
 alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 alias sudovim='sudoedit'
 alias cls='clear'
+alias wh='which'
 
 # Kitty terminal kitten shorthands
 if [ "$TERM" = "xterm=kitty" ]; then
