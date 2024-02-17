@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+dotdir="$HOME/dots"
+dothome="$dotdir/home"
+dotroot="$dotdir/root"
+syspath="$(realpath "$1")"
+
+if [[ "$syspath" == "$HOME"* ]]; then
+  dotpath="${syspath/#$HOME/$dothome}"
+else
+  dotpath="$dotroot$syspath"
+fi
+
+cp -vi "$syspath" "$dotpath"
