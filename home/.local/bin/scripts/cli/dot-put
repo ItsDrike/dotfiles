@@ -2,8 +2,9 @@
 set -euo pipefail
 
 dotdir="$HOME/dots"
-dothome="$dotdir/home"
-dotroot="$dotdir/root"
+# the trailing slashes are important here!
+dothome="$dotdir/home/"
+dotroot="$dotdir/root/"
 
 usage() {
   echo "$0"
@@ -21,7 +22,7 @@ Details:
 }
 
 dotcopy() {
-  syspath="$1"
+  syspath="$(realpath "$1")"
 
   if [[ "$syspath" == "$HOME"* ]]; then
     dotpath="${syspath/#$HOME/$dothome}"
