@@ -81,7 +81,7 @@ yay -S --noconfirm --needed \
 
 # Wayland Utilities
 yay -S --noconfirm --needed \
-  grim slurp wofi swappy-git swayidle swaybg wf-recorder wlogout hyprpicker-git clipman
+  grim slurp wofi swappy-git swaybg wf-recorder wlogout hyprpicker-git clipman
 
 # Applications
 yay -S --noconfirm --needed \
@@ -129,11 +129,7 @@ sudo ln -s /usr/local/src/eww/target/release/eww /usr/local/bin
 popd
 
 # Lockscreen
-yay -S --noconfirm --needed swaylock-effects-git systemd-lock-handler
-systemctl --user enable systemd-lock-handler.service
-# You'll need the systemd-lock-handler-swaylock.service from my dotfiles (in home/.config/systemd/user)
-# this is copied above by default, but if you're editing the script, be aware of it
-systemctl enable --user systemd-lock-handler-swaylock.service
+yay -S --noconfirm --needed swaylock-effects-git hypridle-git
 # To test the lockscreen, you can run loginctl lock-session, while in a graphical session
 
 # Generate db for -git packages

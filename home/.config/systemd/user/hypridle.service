@@ -1,9 +1,9 @@
 [Unit]
 Description="Idle management daemon"
-PartOf=graphical-session.target
+PartOf=graphica-session.target
 
 [Service]
-ExecStart=/usr/bin/swayidle
+ExecStart=/usr/bin/hypridle
 Restart=on-failure
 
 [Install]
