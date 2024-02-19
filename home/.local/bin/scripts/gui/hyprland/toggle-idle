@@ -1,9 +1,18 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 
-if pgrep swayidle >/dev/null; then
-    killall swayidle
-    notify-send "Idle" "Idle timeouts disabled"
+idleprog="hypridle" # or swayidle
+
+pid="$(pidof "$idleprog" || true)"
+if [ -n "$pid" ]; then
+  # is process suspended?
+  if ps -o stat= -p "$pid" | grep T >/dev/null; then
+    kill -CONT "$pid"
+    notify-send "Idle-Toggle" "Idle timeouts enabled"
+  else
+    kill -STOP "$pid"
+    notify-send "Idle-Toggle" "Idle timeouts disabled"
+  fi
 else
-    swayidle & disown
-    notify-send "Idle" "Idle timeouts enabled"
+  notify-send "Idle-Toggle" "$idleprog not running!"
 fi
