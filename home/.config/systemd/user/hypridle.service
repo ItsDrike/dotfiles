@@ -3,7 +3,7 @@ Description="Idle management daemon"
 PartOf=graphica-session.target
 
 [Service]
-ExecStart=/usr/bin/hypridle
+ExecStart=/usr/bin/stdbuf -oL /usr/bin/hypridle
 Restart=on-failure
 
 [Install]
