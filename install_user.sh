@@ -38,7 +38,7 @@ yay -S --noconfirm --needed \
   openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \
   dnsutils net-tools wget jq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
   python-pip ripgrep zip unzip usbutils hexyl strace python-poetry pyenv yt-dlp \
-  luarocks rustup cargo cmake meson npm downgrade lf glow xdg-ninja-git
+  luarocks rustup cargo cmake meson npm downgrade lf glow xdg-ninja-git github-cli
 
 # Make yay automatically track development dependencies
 yay -Y --gendb
