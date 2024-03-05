@@ -1,6 +1,6 @@
 [Unit]
 Description="Idle management daemon"
-PartOf=graphica-session.target
+PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/stdbuf -oL /usr/bin/hypridle
