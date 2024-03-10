@@ -46,7 +46,6 @@ cp -ra home/.config/eww ~/.config
 cp home/.config/chromium-flags.conf ~/.config
 cp -ra home/.config/swappy ~/.config
 cp -ra home/.config/swayidle ~/.config
-cp -ra home/.config/swaylock ~/.config
 cp -ra home/.config/wofi ~/.config
 
 # Sync mirrors and update before other installations
@@ -124,7 +123,7 @@ sudo ln -s /usr/local/src/eww/target/release/eww /usr/local/bin
 popd
 
 # Lockscreen
-yay -S --noconfirm --needed swaylock-effects-git hypridle-git systemd-lock-handler
+yay -S --noconfirm --needed hyprlock-git hypridle-git systemd-lock-handler
 # To test the lockscreen, you can run loginctl lock-session, while in a graphical session
 
 # Generate db for -git packages

@@ -1,0 +1,15 @@
+[Unit]
+Description=Run hyprlock screenlocker on lock dbus event (using systemd-lock-handler)
+# if swaylock exists cleanly, unlock this session
+OnSuccess=unlock.target
+# When lock.target is stopped, stop this too
+PartOf=lock.target
+# Delay lock.target until this service is ready
+After=lock.target
+
+[Service]
+ExecStart=/usr/bin/stdbuf -oL /usr/bin/hyprlock
+Restart=on-failure
+
+[Install]
+WantedBy=lock.target
