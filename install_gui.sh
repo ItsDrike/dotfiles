@@ -124,7 +124,7 @@ sudo ln -s /usr/local/src/eww/target/release/eww /usr/local/bin
 popd
 
 # Lockscreen
-yay -S --noconfirm --needed swaylock-effects-git hypridle-git
+yay -S --noconfirm --needed swaylock-effects-git hypridle-git systemd-lock-handler
 # To test the lockscreen, you can run loginctl lock-session, while in a graphical session
 
 # Generate db for -git packages
