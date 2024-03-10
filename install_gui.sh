@@ -69,7 +69,7 @@ yay -S --noconfirm --needed \
 
 # WM Essentials
 yay -S --noconfirm --needed \
-  dunst udisks2 udiskie gvfs gnome-keyring xorg-xinput polkit-gnome
+  dunst udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome
 
 # Wayland WM essentials
 yay -S --noconfirm --needed \
