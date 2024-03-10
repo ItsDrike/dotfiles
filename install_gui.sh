@@ -107,13 +107,8 @@ sudo make install
 popd
 yay -S --noconfirm --needed xdg-desktop-portal-hyprland-git hyprpaper
 sudo pacman -R --noconfirm xdg-desktop-portal-gnome || true # don't fail if this isn't installed
-cp -ra home/.config/hypr ~/.config/hypr                     # loads dwindle-autogoroup
 
-# Hyprland dwindle-autogroup plugin
-git clone --recursive https://github.com/ItsDrike/hyprland-dwindle-autogroup ~/.local/src/hyprland-dwindle-autogroup || true # don't fail if exists
-pushd ~/.local/src/hyprland-dwindle-autogroup
-make install
-popd
+cp -ra home/.config/hypr ~/.config/hypr
 
 # Build eww
 sudo pacman -S --noconfirm --needed \
