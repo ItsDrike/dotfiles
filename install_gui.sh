@@ -96,7 +96,7 @@ yay -S --noconfirm --needed bluez bluiz-utils blueberry
 yay -S --noconfirm --needed \
   gdb ninja gcc cmake meson libxcb xcb-proto xcb-util xcb-util-keysyms libxfixes libx11 libxcomposite \
   xorg-xinput libxrender pixman wayland-protocols cairo pango seatd libxkbcommon xcb-util-wm xorg-xwayland \
-  libinput libliftoff libdisplay-info cpio
+  libinput libliftoff libdisplay-info cpio hyprlang-git hyprcursor-git
 mkdir -p ~/.local/src
 git clone --recursive https://github.com/hyprwm/Hyprland ~/.local/src/Hyprland || true # don't fail if exists
 pushd ~/.local/src/Hyprland
