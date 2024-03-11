@@ -11,6 +11,7 @@ x-scheme-handler/about=firefox.desktop
 x-scheme-handler-unknown=firefox.desktop
 application/json=nvim.desktop
 video/mp4=mpv.desktop
+x-scheme-handler/msteams=teams.desktop
 
 [Added Associations]
 application/x-desktop=nvim.desktop;
