@@ -16,3 +16,4 @@ video/mp4=mpv.desktop
 application/x-desktop=nvim.desktop;
 image/png=org.nomacs.ImageLounge.desktop;
 text/plain=nvim.desktop;
+image/svg+xml=org.nomacs.ImageLounge.desktop;
