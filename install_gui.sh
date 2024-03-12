@@ -84,7 +84,7 @@ yay -S --noconfirm --needed \
 
 # Applications
 yay -S --noconfirm --needed \
-  discord firefox chromium kitty mpv pcmanfm-qt file-roller obs-studio qbittorrent \
+  vesktop firefox chromium kitty mpv pcmanfm-qt file-roller obs-studio qbittorrent \
   qalculate-gtk-nognome spotify nomacs
 yay -S --noconfirm --needed stremio
 
