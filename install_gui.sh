@@ -48,6 +48,12 @@ cp -ra home/.config/swappy ~/.config
 cp -ra home/.config/swayidle ~/.config
 cp -ra home/.config/wofi ~/.config
 
+# Hyprcursor theme of my choice
+mkdir -p ~/.local/share/icons
+pushd ~/.local/share/icons
+git clone https://github.com/ndom91/rose-pine-cursor-hyprcursor
+popd
+
 # Sync mirrors and update before other installations
 yay -Syu --noconfirm
 
