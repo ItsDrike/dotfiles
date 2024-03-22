@@ -7,8 +7,8 @@ the window names. Window name and class are obtained from piped stdin, to preven
 needlessly keep restarting this program, which takes a while due to the interpreter starting
 overhead.
 """
-import re
 import json
+import re
 import sys
 from typing import Iterator, Optional
 
@@ -16,7 +16,12 @@ from typing import Iterator, Optional
 class RemapRule:
     __slots__ = ("name_pattern", "output_pattern", "class_pattern")
 
-    def __init__(self, name_pattern: str, output_pattern: str, class_pattern: Optional[str] = None):
+    def __init__(
+        self,
+        name_pattern: str,
+        output_pattern: str,
+        class_pattern: Optional[str] = None,
+    ):
         self.name_pattern = re.compile(name_pattern)
         self.output_pattern = output_pattern
         self.class_pattern = re.compile(class_pattern) if class_pattern else None
@@ -48,17 +53,23 @@ REMAP_RULES: list[RemapRule] = [
     RemapRule(r"(.*) — Mozilla Firefox", " {}", "firefox"),
     RemapRule(r"Mozilla Firefox", " Mozilla Firefox", "firefox"),
     RemapRule(r"Alacritty", " Alacritty", "Alacritty"),
-    RemapRule(r"zsh;#toggleterm#1 - \(term:\/\/(.+)\/\/(\d+):(.+)\) - N?VIM", " Terminal: {0}"),
+    RemapRule(
+        r"zsh;#toggleterm#1 - \(term:\/\/(.+)\/\/(\d+):(.+)\) - N?VIM",
+        " Terminal: {0}",
+    ),
     RemapRule(r"(.+) \+ \((.+)\) - N?VIM", " {0} ({1}) [MODIFIED]"),
     RemapRule(r"(.+) \((.+)\) - N?VIM", " {0} ({1})"),
     RemapRule(r"(?:\[\d+\] )?\*?WebCord - (.+)", " {}", "WebCord"),
     RemapRule(r"(.+) - Discord", " {}", "discord"),
+    RemapRule(r"(?:\(\d+\) )?Discord \| (.+)", " {}", "vesktop"),
     RemapRule(r"(.+) - mpv", " {}", "mpv"),
     RemapRule(r"Stremio - (.+)", " Stremio - {}", r"(Stremio)|(com.stremio.stremio)"),
     RemapRule(r"Spotify", " Spotify", "Spotify"),
     RemapRule(r"pulsemixer", " Pulsemixer"),
     RemapRule(r"(.*)", " {}", "Pcmanfm"),
     RemapRule(r"(.*)", " {}", "pcmanfm-qt"),
+    # Needs to be last
+    RemapRule(r"(.*)", " {}", "kitty"),
 ]
 
 MAX_LENGTH = 65
@@ -78,12 +89,21 @@ def main() -> None:
     for window_name, window_class in iter_window():
         formatted_name = window_name
         for remap_rule in REMAP_RULES:
-            formatted_name = remap_rule.apply(formatted_name, window_class)
+            new_name = remap_rule.apply(formatted_name, window_class)
+            if new_name != formatted_name:
+                formatted_name = new_name
+                break
 
         if len(formatted_name) > MAX_LENGTH:
-            formatted_name = formatted_name[:MAX_LENGTH - 3] + "..."
+            formatted_name = formatted_name[: MAX_LENGTH - 3] + "..."
 
-        ret = json.dumps({"name": window_name, "class": window_class, "formatted_name": formatted_name})
+        ret = json.dumps(
+            {
+                "name": window_name,
+                "class": window_class,
+                "formatted_name": formatted_name,
+            }
+        )
         print(ret)
         sys.stdout.flush()
 
