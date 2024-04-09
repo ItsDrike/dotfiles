@@ -131,7 +131,10 @@ def get_workspaces() -> list[OutputWorkspaceInfo]:
             continue
         format_name = REMAPS.get(workspace["id"], workspace["name"])
         active = workspace["id"] in active_workspaces
-        mon_id = [monitor["id"] for monitor in monitors if monitor["name"] == workspace["monitor"]][0]
+        try:
+            mon_id = [monitor["id"] for monitor in monitors if monitor["name"] == workspace["monitor"]][0]
+        except IndexError:  # Sometimes workspace["monitor"] is "?", which doesn't match any monitor
+            mon_id = -1
         out.append({**workspace, "format_name": format_name, "active": active, "monitor_id": mon_id})
 
     out = fill_blank_workspaces(out)
