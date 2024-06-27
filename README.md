@@ -1,3 +1,20 @@
+> [!CAUTION]
+> As of 18th June 2024, I have migrated from Arch to NixOS, rendering this repository archived.
+>
+> NixOS is a Linux distribution that allows declaratively defining the entire system and with
+> the help of some extra tools, such as home-manager, it's possible to declare configurations for
+> various programs in my home directory in this way too.
+>
+> This allows me to have all of my system configuration in a single repository from which I can
+> completely reproduce this system on any computer, down to specific versions of every installed
+> program / dependency. For obvious reasons, this is far superior to the installation scripts in
+> this repository.
+>
+> If you wish to take a look at my NixOS configuration, you can find the repository here:
+>
+> - <https://github.com/ItsDrike/nixdots>
+> - <https://git.itsdrike.com/ItsDrike/nixdots> (mirror)
+
 # Dotfiles
 
 Welcome to my personal dotfiles repository! Simply put, this is a complete collection of my system configuration files,
