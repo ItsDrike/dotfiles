@@ -1,4 +1,4 @@
-(defvar terminal "alacritty -e")
+(defvar terminal "kitty -e")
 
 (include "./modules/variables.yuck")
 

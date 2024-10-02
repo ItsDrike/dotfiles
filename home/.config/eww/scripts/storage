@@ -1,35 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 MOUNTPOINTS=("/" "/mnt/ext")
 
 data="$(df -H)"
 
 as_json() {
-  mountpoint="$1"
-  res="$2"
-  arr_res=($res)
+	mountpoint="$1"
+	res="$2"
+	arr_res=($res)
 
-  jq -n -c --monochrome-output \
-    --arg mountpoint "$mountpoint" \
-    --arg size "${arr_res[0]}" \
-    --arg used "${arr_res[1]}" \
-    --arg avail "${arr_res[2]}" \
-    --arg percent "${arr_res[3]}" \
-    '$ARGS.named'
+	jq -n -c --monochrome-output \
+		--arg mountpoint "$mountpoint" \
+		--arg size "${arr_res[0]}" \
+		--arg used "${arr_res[1]}" \
+		--arg avail "${arr_res[2]}" \
+		--arg percent "${arr_res[3]}" \
+		'$ARGS.named'
 }
 
 output_json="[]"
 for mountpoint in "${MOUNTPOINTS[@]}"; do
-    res="$(echo "$data" | awk -v m="$mountpoint" '$6 == m {print $2 " " $3 " " $4 " " $5}')"
-    out="$(as_json "$mountpoint" "$res")"
+	res="$(echo "$data" | awk -v m="$mountpoint" '$6 == m {print $2 " " $3 " " $4 " " $5}')"
+	out="$(as_json "$mountpoint" "$res")"
 
-    # echo "$output_json $out" | jq -c -s
+	# echo "$output_json $out" | jq -c -s
 
-    jq --argjson arr1 "$output_json" --argjson arr2 "[$out]" -n \
-'$arr1 + $arr2'
+	jq --argjson arr1 "$output_json" --argjson arr2 "[$out]" -n \
+		'$arr1 + $arr2'
 
-    # mount_data+=("$mountpoint" $res)
-    # echo "${mount_data[@]}"
+	# mount_data+=("$mountpoint" $res)
+	# echo "${mount_data[@]}"
 done
 
 # echo "${mount_data[@]}"

@@ -1,13 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # shellcheck source=include
 source "./scripts/include"
 
 if [ "$1" = "--switch" ]; then
-  $HOME/.local/bin/scripts/gui/hyprland/swap-workspace "$2" >/dev/null
-  # hyprctl dispatch workspace "$2" >/dev/null
+	hyprctl dispatch focusworkspaceoncurrentmonitor "$2" >/dev/null
 elif [ "$1" = "--loop" ]; then
-  hyprland_ipc "workspace|createworkspace|destroyworkspace" | ./scripts/workspaces.py "$@"
+	hyprland_ipc "workspace|createworkspace|destroyworkspace" | ./scripts/workspaces.py "$@"
 else
-  ./scripts/workspaces.py "$@"
+	./scripts/workspaces.py "$@"
 fi

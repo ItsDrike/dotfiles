@@ -1,0 +1,17 @@
+#!/bin/bash
+set -euo pipefail
+
+# This is a helper wrapper script for greetd.
+#
+# It will run the session / application using the appropriate shell configured for
+# this user. That way, we can make sure all of the environment variables are set
+# before the WM/DE session is started.
+#
+# This is very important, as without it, variables for things like qt theme
+# will not be set, and applications executed by the WM/DE will not be themed properly.
+
+script_name="$0"
+shell="$(getent passwd "$USER" | awk -F: '{print $NF}')"
+command=("$@")
+
+exec "$shell" -c 'exec "$@"' "$script_name" "${command[@]}"

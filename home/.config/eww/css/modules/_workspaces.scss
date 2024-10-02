@@ -2,13 +2,14 @@
   background-color: $bg1-a;
   border-radius: 25px;
 
-  .icon, .icon label {
-    font-family: "Material Symbols Outlined";
-    font-size: 1.15rem;
+  .icon,
+  .icon label {
+    font-family: "JetBrainsMono Nerd Font", "Material Symbols Outlined";
+    font-size: 1.2rem;
   }
 
   .value {
-    margin: 0 9px;
+    margin: 0 10px;
   }
 
   .focused {

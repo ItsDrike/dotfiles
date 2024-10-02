@@ -59,15 +59,12 @@ fi
 
 # Config access shortcuts
 alias cfzsh='vim ~/.config/zsh/.zshrc'
+alias cfprofile='vim ~/.config/zsh/.zprofile'
+alias cfprompt='vim ~/.config/zsh/rc/prompt.zsh'
 alias cfalias='vim ~/.config/shell/aliases'
 alias cffunctions='vim ~/.config/shell/functions'
-alias cfprofile='vim ~/.config/shell/profile'
 alias cfenvironment='vim ~/.config/shell/environment'
 alias cfenv='cfenvironment'
-alias cfhandlers='vim ~/.config/shell/handlers'
-alias cfprompt='vim ~/.config/shell/prompt'
-alias cfkeybinds='vim ~/.config/shell/keybinds'
-alias cftodo='vim ~/Personal/vimwiki/todo.md'
 alias cfnvim='vim ~/.config/nvim'
 alias cfvim='cfnvim'
 alias cfgit='vim ~/.config/git/config'
@@ -75,8 +72,6 @@ alias cfhypr='vim ~/.config/hypr'
 alias cfsway='vim ~/.config/sway/config'
 
 # zoxide shortcuts
-alias cd='z'              # use zoxide as the default cd command
-alias cdi='zi'            # interactive mode (fzf)
 alias j='z'               # for the sake of old habits from autojump
 alias ji='zi'             # interactive mode (fzf)
 
@@ -141,11 +136,6 @@ alias iptlistin='iptables -L INPUT -n -v --line-numbers' # IN rules
 alias iptlistout='iptables -L OUTPUT -n -v --line-numbers' # OUT rules
 alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
-
-# Kernel actions
-alias kernel-recompile='cd /usr/src/linux && make -j7 && make -j7 modules_install && make install'
-alias kernel-oldconfig='cd /usr/src/linux && make oldconfig'
-alias kernel-configure='cd /usr/src/linux && make menuconfig'
 
 # System actions
 alias sv='systemctl'
@@ -281,9 +271,11 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 
     alias diff='diff --color=auto'
+    # shellcheck disable=SC2032
     alias ip='ip --color=auto'
 
     # Take advantage of $LS_COLORS for completion as well
+    # shellcheck disable=SC2296
     zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 fi
 
@@ -296,12 +288,6 @@ if [ ! "$(uname -s)" = 'Darwin' ]; then
     else
         alias open='xdg-open'
     fi
-fi
-
-# Autogenerate python aliases
-if [ -f ~/.config/shell/py-alias ]; then
-    # shellcheck source=/home/itsdrike/.config/shell/py-alias
-    . "$HOME/.config/shell/py-alias"
 fi
 
 # Functions

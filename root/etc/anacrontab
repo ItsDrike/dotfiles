@@ -18,6 +18,6 @@ START_HOURS_RANGE=3-22
 @daily          	15               	 pacman_file_db       	/usr/bin/pacman -Fy
 
 
-@daily          	10               	 snapshot.daily       	/usr/local/bin/btrfs-backup -l daily -k 8 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
-@weekly         	20               	 snapshot.weekly      	/usr/local/bin/btrfs-backup -l weekly -k 5 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
-@monthly        	30               	 snapshot.monthly     	/usr/local/bin/btrfs-backup -l monthly -k 3 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
+@daily          	10               	 snapshot.daily       	/usr/local/bin/btrfs-backup -l daily -k 8 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data
+@weekly         	20               	 snapshot.weekly      	/usr/local/bin/btrfs-backup -l weekly -k 5 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data
+@monthly        	30               	 snapshot.monthly     	/usr/local/bin/btrfs-backup -l monthly -k 3 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data

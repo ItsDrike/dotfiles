@@ -3,7 +3,7 @@ Description="Eww daemon"
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=/usr/local/bin/eww daemon --no-daemonize
+ExecStart=/usr/bin/eww daemon --no-daemonize
 Restart=always
 RestartSec=3s
 

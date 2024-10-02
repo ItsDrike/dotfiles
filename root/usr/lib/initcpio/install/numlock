@@ -1,0 +1,28 @@
+#!/bin/bash
+build() {
+  add_binary /bin/bash
+  add_binary /usr/bin/setleds
+  add_binary /usr/local/bin/numlock
+
+  cat >"$BUILDROOT/usr/lib/systemd/system/numlock.service" <<EOF
+[Unit]
+Description=Enable numlock
+Before=cryptsetup-pre.target
+DefaultDependencies=no
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/numlock
+EOF
+
+  add_systemd_unit cryptsetup-pre.target
+  cd "$BUILDROOT/usr/lib/systemd/system/sysinit.target.wants" || exit
+  ln -sf /usr/lib/systemd/system/cryptsetup-pre.target cryptsetup-pre.target
+  ln -sf /usr/lib/systemd/system/numlock.service numlock.service
+}
+
+help() {
+  cat <<EOF
+This hook adds support to enable numlock before sd-encrypt hook is run.
+EOF
+}

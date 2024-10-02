@@ -1,9 +1,9 @@
 [Default]
-save_dir=$HOME/Pictures/Screenshots
+early_exit=true
+line_size=5
+paint_mode=rectangle
+save_dir=/home/itsdrike/Media/Pictures/Screenshots
 save_filename_format=Screenshot_%Y-%M-%d_%H-%M-%S.png
 show_panel=false
-line_size=5
-text_size=20
 text_font=JetBrains Mono
-early_exit=true
-paint_mode=rectangle
+text_size=20

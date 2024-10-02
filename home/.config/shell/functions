@@ -202,8 +202,8 @@ anonymize() {
     # Reset the prompt on initial run to allow this script
     # to be ran multiple times without user having to reload
     # PS1 manually
-    # shellcheck source=/home/itsdrike/.config/shell/prompt
-    . "${XDG_CONFIG_DIR:-$HOME/.config}/shell/prompt"
+    # shellcheck source=/home/itsdrike/.config/zsh/rc/prompt.zsh
+    . "${ZDOTDIR}/rc/prompt.zsh"
 
     # Regular expression to match 0-255 numbers (color)
     color_int_re='^(0+)?([0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'

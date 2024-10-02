@@ -23,26 +23,37 @@ fi
 # cd into the dotfiles dir, no matter where the script was called from
 pushd "$(dirname "$0")"
 
-# Install AUR helper (yay)
-git clone https://aur.archlinux.org/yay.git ~/yay
-pushd ~/yay
-makepkg -si
-popd
-rm -rf ~/yay
+if 0; then
+  # Install AUR helper (paru)
+  git clone https://aur.archlinux.org/paru.git ~/paru
+  pushd ~/paru
+  # Install rustup first, as otherwise, makepkg would ask whether to install rust or rustup
+  # and we always want rustup, user shouldn't choose here
+  sudo pacman -S rustup
+  makepkg -si
+  popd
+  rm -rf ~/paru
+fi
 
 # Sync mirrors and update before other installations
-yay -Syu --noconfirm
+paru -Syu --noconfirm
 
 # Install some useful packages
-yay -S --noconfirm --needed \
+paru -S --noconfirm --needed \
   openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \
   dnsutils net-tools wget jq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
-  python-pip ripgrep zip unzip usbutils hexyl strace python-poetry pyenv yt-dlp \
-  luarocks rustup cargo cmake meson npm downgrade lf glow xdg-ninja-git github-cli
+  python-pip ripgrep zip p7zip unzip usbutils hexyl strace python-poetry rye uv yt-dlp \
+  luarocks cargo cmake meson npm downgrade lf glow xdg-ninja-git github-cli act lsof \
+  procs du-dust skim thermald
 
-# Make yay automatically track development dependencies
-yay -Y --gendb
-yay -Y --devel --save
+# Make paru properly track git dependencies
+paru --gendb
+
+# Install some extensions for github-cli
+gh auth login
+gh extension install dlvhdr/gh-dash
+gh extension install jrnxf/gh-eco
+gh extension install meiji163/gh-notify
 
 # Copy over zsh configuration
 # Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
@@ -76,43 +87,47 @@ cp -ra home/.config/gtk-2.0 ~/.config
 cp -ra home/.config/gtk-3.0 ~/.config
 cp -ra home/.config/lf ~/.config
 cp -ra home/.config/npm ~/.config
+cp home/.config/pythonrc.py ~/.config
 cp -ra home/.local/share/gnupg/gpg.conf ~/.local/share/gnupg
 chmod 600 ~/.local/share/gnupg/gpg.conf
 mkdir ~/.config/wakatime
+cp home/.config/user-dirs.dirs ~/.config
+cp home/.config/user-dirs.locale ~/.config
+cp -ra home/.config/tealdeer ~/.config
 
 # Source the environment file to make sure the commands below
 # install to the correct (XDG) location.
+export ZSH_VERSION=0 # necessary for the environment script to succeed
 # shellcheck source=home/.config/shell/environment
 source ~/.config/shell/environment
 
 # Install stable channel default rust toolchain
 rustup default stable
 
-# Install various python versions with pyenv
-# This might take a while
-# (note: if you don't need pyenv, remove ~/.config/shell/py-alias, and commment these lines)
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.12\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.11\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.10\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.9\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.8\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.7\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
-pyenv install -l | cut -d' ' -f3 | grep -E '^3\.6\.[0-9]+$' | tail -n 1 | xargs -I {} pyenv install {}
+# Install various python versions with rye
+rye toolchain list --include-downloadable | rg "cpython@3.12" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.11" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.10" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.9" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.8" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.7" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+rye toolchain list --include-downloadable | rg "cpython@3.6" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
 
-# Install IPython and upgrade pip on all pyenv python versions
-PYENV_VERSION="3.12" pip install --upgrade pip ipython
-PYENV_VERSION="3.11" pip install --upgrade pip ipython
-PYENV_VERSION="3.10" pip install --upgrade pip ipython
-PYENV_VERSION="3.9" pip install --upgrade pip ipython
-PYENV_VERSION="3.8" pip install --upgrade pip ipython
-PYENV_VERSION="3.7" pip install --upgrade pip ipython
-PYENV_VERSION="3.6" pip install --upgrade pip ipython
+# Install ipython with rye
+rye tools install ipython
+rye tools install ruff
+rye tools install basedpyright
+rye tools install pyright
+rye tools install mypy
 
 # Pull my public key and give it ultimate trust
 # (Obviously, you might not want to do this in your case,
 # you can give it a lower trust level, or not import it at all)
 gpg --keyserver keys.openpgp.org --recv-keys FA2745890B7048C0
 echo "136F5E08AFF7F6DD3E9227A0FA2745890B7048C0:6:" | gpg --import-ownertrust
+
+# Enable systemd services
+sudo systemctl enable --now thermald
 
 echo "You should now exit (logout) the user and relogin with: su -l itsdrike"
 echo "This will put you into a configured ZSH shell, you can continue" \

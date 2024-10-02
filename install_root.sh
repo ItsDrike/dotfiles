@@ -22,7 +22,8 @@ pacman -Syu --noconfirm
 
 # Install essential packages
 pacman -S --noconfirm --needed \
-  networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop bind tldr base-devel git pkgfile
+  networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop \
+  bind tealdeer base-devel git pkgfile fd ripgrep fwupd
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
 pacman -S --noconfirm --needed python-rich bc lua jq bat
@@ -31,7 +32,7 @@ pacman -S --noconfirm --needed python-rich bc lua jq bat
 cp root/etc/pacman.conf /etc
 cp root/etc/hosts /etc
 HOSTNAME="$(cat /etc/hostname)"
-sed -i "s/^127.0.1.1   pc.localdomain pc/127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}/g" /etc/locale.gen
+sed -i "s/^127.0.1.1   pc.localdomain pc/127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}/g" /etc/hosts
 install -m 640 root/etc/sudoers /etc
 install -m 640 root/etc/sudoers.d/* /etc/sudoers.d
 cp root/etc/modprobe.d/nobeep.conf /etc/modprobe.d # disable motherboard speaker
@@ -63,9 +64,11 @@ systemctl enable systemd-resolved
 systemctl enable systemd-timesyncd
 systemctl enable NetworkManager
 systemctl mask systemd-networkd # We have NetworkManager for this
+systemctl enable seatd
 systemctl enable paccache.timer
 systemctl enable reflector.timer
 systemctl enable pkgfile-update.timer
+systemctl enable fstrim.timer
 
 echo "You can exit the chroot and re-run it with: arch-chroot /mnt zsh"
 echo "This will put you into a configured ZSH shell, you can continue" \

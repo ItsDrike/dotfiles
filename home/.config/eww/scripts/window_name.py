@@ -7,6 +7,7 @@ the window names. Window name and class are obtained from piped stdin, to preven
 needlessly keep restarting this program, which takes a while due to the interpreter starting
 overhead.
 """
+
 import json
 import re
 import sys
@@ -50,9 +51,9 @@ class RemapRule:
 # Rules will be applied in specified order
 REMAP_RULES: list[RemapRule] = [
     RemapRule(r"", "", ""),
-    RemapRule(r"(.*) — Mozilla Firefox", " {}", "firefox"),
-    RemapRule(r"Mozilla Firefox", " Mozilla Firefox", "firefox"),
-    RemapRule(r"Alacritty", " Alacritty", "Alacritty"),
+    RemapRule(r"(.*) — Mozilla Firefox", "  {}", "firefox"),
+    RemapRule(r"Mozilla Firefox", "  Mozilla Firefox", "firefox"),
+    RemapRule(r"Alacritty", "  Alacritty", "Alacritty"),
     RemapRule(
         r"zsh;#toggleterm#1 - \(term:\/\/(.+)\/\/(\d+):(.+)\) - N?VIM",
         " Terminal: {0}",
@@ -63,13 +64,13 @@ REMAP_RULES: list[RemapRule] = [
     RemapRule(r"(.+) - Discord", " {}", "discord"),
     RemapRule(r"(?:\(\d+\) )?Discord \| (.+)", " {}", "vesktop"),
     RemapRule(r"(.+) - mpv", " {}", "mpv"),
-    RemapRule(r"Stremio - (.+)", " Stremio - {}", r"(Stremio)|(com.stremio.stremio)"),
-    RemapRule(r"Spotify", " Spotify", "Spotify"),
-    RemapRule(r"pulsemixer", " Pulsemixer"),
+    RemapRule(r"Stremio - (.+)", "  Stremio - {}", r"(Stremio)|(com.stremio.stremio)"),
+    RemapRule(r"Spotify((?: Premium)?)", " Spotify{}", "[Ss]potify"),
+    RemapRule(r"pulsemixer", "  Pulsemixer"),
     RemapRule(r"(.*)", " {}", "Pcmanfm"),
     RemapRule(r"(.*)", " {}", "pcmanfm-qt"),
     # Needs to be last
-    RemapRule(r"(.*)", " {}", "kitty"),
+    RemapRule(r"(.*)", "  {}", "kitty"),
 ]
 
 MAX_LENGTH = 65
@@ -81,7 +82,9 @@ def iter_window() -> Iterator[tuple[str, str]]:
         line = line.removesuffix("\n")
         els = line.split(",", maxsplit=1)
         if len(els) != 2:
-            raise ValueError(f"Expected 2 arguments from stdin line (name, class), but got {len(els)}")
+            raise ValueError(
+                f"Expected 2 arguments from stdin line (name, class), but got {len(els)}"
+            )
         yield els[1], els[0]
 
 
@@ -94,6 +97,7 @@ def main() -> None:
                 formatted_name = new_name
                 break
 
+        formatted_name = formatted_name.split("\n")[0]
         if len(formatted_name) > MAX_LENGTH:
             formatted_name = formatted_name[: MAX_LENGTH - 3] + "..."
 

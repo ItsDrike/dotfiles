@@ -1,6 +1,6 @@
 (defwidget bitcoin_module []
   (eventbox
-    :onclick "~/.local/bin/scripts/cli/bitcoin | xargs -I_ ${EWW_CMD} update bitcoin=_"
+    :onclick "bitcoin | xargs -I{} ${EWW_CMD} update bitcoin={}"
     :class "module bitcoin"
 
     (box

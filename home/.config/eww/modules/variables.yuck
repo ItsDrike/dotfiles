@@ -37,7 +37,7 @@
 (defpoll bitcoin
   :interval "5m"
   :initial "$N/A"
-  `~/.local/bin/scripts/cli/bitcoin`)
+  `bitcoin`)
 
 ; TODO: Figure out how to store this one-time
 (defpoll kernel

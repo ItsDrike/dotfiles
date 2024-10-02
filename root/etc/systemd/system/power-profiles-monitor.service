@@ -1,0 +1,11 @@
+[Unit]
+Description=Monitor the battery status, switching power profiles accordingly
+Wants=power-profiles-daemon.service
+
+[Service]
+ExecStart=/usr/local/bin/power-profiles-monitor
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=default.target

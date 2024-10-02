@@ -208,7 +208,7 @@ argsp_cmdline() {
     fi
   fi
 
-  if [ "${ret_val[keep]}" -eq 0 ] && [ "${ret_val[skip_create]}" -eq 0 ]; then
+  if [ -n "${ret_val[keep]}" ] && [ "${ret_val[keep]}" -eq 0 ] && [ "${ret_val[skip_create]}" -eq 0 ]; then
     echo "Using --keep=0 doesn't make sense without --skip-create." >&2
     echo "It would delete the new snapshot you wanted to create." >&2
     argsp_cmdline_exit="$ERR_CODE_INVALID_ARG"

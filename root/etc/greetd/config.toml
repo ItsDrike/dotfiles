@@ -1,0 +1,20 @@
+[terminal]
+# The VT to run the greeter on. Can be "next", "current" or a number
+# designating the VT.
+vt = 1
+
+# Auto-login session, triggered right after boot.
+# If the user logs out, greetd will render the default session
+[initial_session]
+user = "itsdrike"
+command = "/usr/local/bin/greetd-session-wrapper Hyprland"
+
+# The default session, also known as the greeter.
+[default_session]
+
+command = "tuigreet --time --remember --remember-user-session --asterisks --greeting 'Stop staring and log in already' --theme 'border=magenta;text=cyan;prompt=green;time=red;action=white;button=yellow;container=black;input=gray' --sessions /usr/share/wayland-sessions --xsessions /usr/share/xsessions --session-wrapper /usr/local/bin/greetd-session-wrapper --xsession-wrapper /usr/local/bin/greetd-session-wrapper startx /usr/bin/env"
+
+# The user to run the command as. The privileges this user must have depends
+# on the greeter. A graphical greeter may for example require the user to be
+# in the `video` group.
+user = "greeter"

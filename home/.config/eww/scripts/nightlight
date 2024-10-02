@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # shellcheck source=include
 source "./scripts/include"
@@ -7,7 +7,6 @@ source "./scripts/include"
 # as we might be in transition state and just killing the program might
 # not be enough.
 
-
 if [ "$1" = "toggle" ]; then
-  gammastep -x
+	gammastep -x
 fi

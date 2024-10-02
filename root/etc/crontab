@@ -5,5 +5,5 @@
 # m h dom mon dow user command
 */30 * * * * 	 root 	/usr/bin/updatedb
 
-15,30,45 * * * * 	 root 	/usr/local/bin/btrfs-backup -l quaterly -k 4 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
-0        * * * * 	 root 	/usr/local/bin/btrfs-backup -l hourly -k 8 -- /.btrfs/@ /.btrfs/@home /.btrfs/@data /.btrfs/@log
+15,30,45 * * * * 	 root 	/usr/local/bin/btrfs-backup -l quaterly -k 4 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data
+0        * * * * 	 root 	/usr/local/bin/btrfs-backup -l hourly -k 8 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data

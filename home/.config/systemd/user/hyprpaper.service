@@ -1,0 +1,12 @@
+[Unit]
+Description="Hyprpaper (Hyprland wallpaper daemon"
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hyprpaper
+Restart=on-failure
+
+[Install]
+WantedBy=wayland-session.target

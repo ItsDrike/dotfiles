@@ -1,19 +1,19 @@
 {
-    "preset": "rainbow",
-    "mode": "rgb",
-    "light_dark": "dark",
-    "lightness": 0.65,
-    "color_align": {
-        "mode": "custom",
-        "custom_colors": {
-            "1": 1,
-            "2": 4
-        },
-        "fore_back": []
+  "preset": "rainbow",
+  "mode": "rgb",
+  "light_dark": "dark",
+  "lightness": 0.65,
+  "color_align": {
+    "mode": "custom",
+    "custom_colors": {
+      "1": 1,
+      "2": 4
     },
-    "backend": "neofetch",
-    "args": null,
-    "distro": null,
-    "pride_month_shown": [],
-    "pride_month_disable": false
+    "fore_back": []
+  },
+  "backend": "neofetch",
+  "args": null,
+  "distro": null,
+  "pride_month_shown": [],
+  "pride_month_disable": false
 }
