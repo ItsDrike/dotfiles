@@ -21,6 +21,7 @@ set -euo pipefail
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hyprland-monitord"
+INIT_SCRIPT="$SCRIPTS_DIR/init.sh"
 ADD_SCRIPT="$SCRIPTS_DIR/added.sh"
 REMOVE_SCRIPT="$SCRIPTS_DIR/removed.sh"
 
@@ -99,6 +100,12 @@ handle_remove() {
 }
 
 >&2 echo "Listening for monitor IPC events"
+
+if [ -f "$INIT_SCRIPT" ]; then
+  "$INIT_SCRIPT"
+else
+  >&2 echo "Init script file not found ($INIT_SCRIPT)"
+fi
 
 hyprland_ipc "monitoraddedv2" | while read -r line; do
   handle_add "$line"
