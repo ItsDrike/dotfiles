@@ -1,0 +1,10 @@
+[Unit]
+Description="Daemon watching for Hyprland monitor updates"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/scripts/gui/hyprland/hyprland-monitord
+Restart=on-failure
+
+[Install]
+WantedBy=wayland-session.target

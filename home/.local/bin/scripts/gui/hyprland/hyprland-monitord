@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Simple script that listens for changes in monitor configuration and performs
+# certain configured actions.
+
+# Copyright 2024 ItsDrike <me@itsdrike.com>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+SCRIPTS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hyprland-monitord"
+ADD_SCRIPT="$SCRIPTS_DIR/added.sh"
+REMOVE_SCRIPT="$SCRIPTS_DIR/removed.sh"
+
+if [ "$#" -ne 0 ]; then
+  >&2 echo "CLI arguments are not supported"
+  exit 1
+fi
+
+if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+  >&2 echo "Hyprland is not running, IPC not available"
+  exit 1
+fi
+
+SOCKET_PATH="${XDG_RUNTIME_DIR:-/run/user/$UID}/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+
+# Older versions of hyprland used a different socket path
+# (if someone still actually needs this condition, please for gods sake update)
+if ! [ -S "$SOCKET_PATH" ]; then
+  SOCKET_PATH="/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+fi
+
+if ! [ -S "$SOCKET_PATH" ]; then
+  >&2 echo "Hyprland IPC socket2 file wasn't found!"
+  exit 1
+fi
+
+# Will block and listen to the hyprland socket messages, outputting them.
+# Generally used like: hyprland_ipc | while read line; do handle $line; done
+# Read <https://wiki.hyprland.org/IPC/> for output format and available events
+# Note: requires openbsd version of netcat.
+# $1 - Optional event to listen for (no event filtering will be done if not provided)
+hyprland_ipc() {
+  if [ "$#" -eq 0 ]; then
+    nc -U "$SOCKET_PATH" | while read -r line; do
+      echo "$line"
+    done
+  else
+    nc -U "$SOCKET_PATH" | while read -r line; do
+      if echo "$line" | grep -E "$1>>" >/dev/null; then
+        echo "$line" | awk -F '>>' '{print $2}'
+      fi
+    done
+  fi
+}
+
+# Function ran whenever the monitoraddedv2 event is emitted
+handle_add() {
+  local monitor_id
+  local monitor_name
+  local monitor_description
+  monitor_id="$(echo "$1" | cut -d',' -f1)"
+  monitor_name="$(echo "$1" | cut -d',' -f2)"
+  monitor_description="$(echo "$1" | cut -d',' -f3)"
+
+  >&2 echo "Monitor added: $monitor_id;$monitor_name;$monitor_description"
+
+  if [ -f "$ADD_SCRIPT" ]; then
+    "$ADD_SCRIPT" "$monitor_id" "$monitor_name" "$monitor_description"
+  else
+    >&2 echo "Add script file not found ($ADD_SCRIPT)"
+  fi
+}
+
+# Function ran whenever the monitorremoved event is emitted
+handle_remove() {
+  local monitor_name
+  monitor_name="$1"
+
+  >&2 echo "Monitor removed: $monitor_name"
+
+  if [ -f "$REMOVE_SCRIPT" ]; then
+    "$REMOVE_SCRIPT" "$monitor_name"
+  else
+    >&2 echo "Remove script file not found ($REMOVE_SCRIPT)"
+  fi
+}
+
+>&2 echo "Listening for monitor IPC events"
+
+hyprland_ipc "monitoraddedv2" | while read -r line; do
+  handle_add "$line"
+done &
+
+hyprland_ipc "monitorremoved" | while read -r line; do
+  handle_remove "$line"
+done &
+
+wait
