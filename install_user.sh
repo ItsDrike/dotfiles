@@ -104,21 +104,12 @@ source ~/.config/shell/environment
 # Install stable channel default rust toolchain
 rustup default stable
 
-# Install various python versions with rye
-rye toolchain list --include-downloadable | rg "cpython@3.12" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.11" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.10" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.9" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.8" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.7" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
-rye toolchain list --include-downloadable | rg "cpython@3.6" | cut -d' ' -f1 | head -n 1 | xargs rye toolchain fetch
+# Install various python versions with uv
+uv python install 3.12 3.11 3.10 3.9 3.8 3.7
 
-# Install ipython with rye
-rye tools install ipython
-rye tools install ruff
-rye tools install basedpyright
-rye tools install pyright
-rye tools install mypy
+# Install various useful python packages
+paru -S --noconfirm --needed ipython ruff pyright mypy
+uv tool install basedpyright
 
 # Pull my public key and give it ultimate trust
 # (Obviously, you might not want to do this in your case,
