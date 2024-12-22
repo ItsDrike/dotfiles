@@ -1,0 +1,11 @@
+[Unit]
+Description=Uninhibit swaync notifications on unlock event
+Requisite=swaync.service
+After=unlock.target
+
+[Service]
+ExecStart=/usr/bin/swaync-client --inhibitor-remove screen-locker
+Type=oneshot
+
+[Install]
+WantedBy=unlock.target
