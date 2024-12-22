@@ -1,0 +1,10 @@
+[Unit]
+Description="Swaync daemon"
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/swaync
+Restart=on-failure
+
+[Install]
+WantedBy=wayland-session.target

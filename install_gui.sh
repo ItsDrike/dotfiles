@@ -47,7 +47,7 @@ cp -ra home/.config/wireplumber ~/.config
 cp -ra home/.config/alacritty ~/.config
 cp -ra home/.config/kitty ~/.config
 cp -ra home/.config/systemd ~/.config
-cp -ra home/.config/dunst ~/.config
+cp -ra home/.config/swaync ~/.config
 cp -ra home/.config/eww ~/.config
 cp -ra home/.config/hypr ~/.config
 cp home/.config/chromium-flags.conf ~/.config
@@ -95,7 +95,7 @@ paru -S --noconfirm --needed \
 
 # WM Essentials
 paru -S --noconfirm --needed \
-  dunst udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome brightnessctl
+  swaync udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome brightnessctl
 
 # Wayland WM essentials
 paru -S --noconfirm --needed \
