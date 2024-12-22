@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# A hook script to check the commit log message.
+# Called by "git commit" with one argument, the name of the file
+# that has the commit message.  The hook should exit with non-zero
+# status after issuing an appropriate message if it wants to stop the
+# commit.  The hook is allowed to edit the commit message file.
+
+# This script focuses on enforcing semantic commit message specification.
+#
+# It primarily focuses on the commit title, however, it also enforces some
+# the mandatory newline between the title and the body.
+
+LIGHT_GRAY="\033[0;37m"
+YELLOW="\033[33m"
+CYAN="\033[36m"
+RED="\033[31m"
+UNDO_COLOR="\033[0m"
+
+check_dependencies() {
+  if ! [ -x "$(command -v jq)" ]; then
+    echo "\`commit-msg\` hook failed. Please install jq."
+    exit 1
+  fi
+}
+
+load_config() {
+  config_file="$PWD/.commit-msg-config.json"
+
+  if [ ! -f "$config_file" ]; then
+    exit 0
+  fi
+
+  enabled=$(jq -r .enabled "$config_file")
+
+  if [ "$enabled" != "true" ]; then
+    exit 0
+  fi
+
+  title_semver_enabled=$(jq -r .semver_structure "$config_file")
+  mapfile -t special_types < <(jq -r '.special_types[]' "$config_file")
+  mapfile -t types < <(jq -r '.types[]' "$config_file")
+  mapfile -t scopes < <(jq -r '.scopes[]' "$config_file")
+  title_min_length=$(jq -r '.length.min' "$config_file")
+  title_max_length=$(jq -r '.length.max' "$config_file")
+}
+
+# Build a dynamic regex for the commit message
+build_title_regex() {
+  regexp="^("
+
+  # Special types
+  if [ ${#special_types[@]} -eq 0 ]; then
+    for s_type in "${special_types[@]}"; do
+      regexp="${regexp}$s_type|"
+    done
+    regexp="${regexp%|})"
+
+    regexp="${regexp}(: .+)?"
+
+    regexp="${regexp}$|^("
+  fi
+
+  # Types
+  if [ ${#types[@]} -eq 0 ]; then
+    regexp="${regexp}.+"
+  else
+    for type in "${types[@]}"; do
+      regexp="${regexp}$type|"
+    done
+    regexp="${regexp%|})"
+  fi
+
+  # Scope
+  regexp="${regexp}(\("
+  if [ ${#scopes[@]} -eq 0 ]; then
+    regexp="${regexp}.+"
+  else
+    for scope in "${scopes[@]}"; do
+      regexp="${regexp}$scope|"
+    done
+    regexp="${regexp%|}"
+  fi
+  regexp="${regexp}\))?"
+
+  # Breaking change indicator
+  regexp="${regexp}(!)?"
+
+  regexp="${regexp}: (.+)$"
+}
+
+error_header() {
+  echo -e "${RED}[Invalid Commit Message]${UNDO_COLOR}"
+  echo -e "------------------------"
+}
+
+# ---------------------------------------------
+
+INPUT_FILE="$1"
+
+check_dependencies
+load_config
+
+# Get the actual commit message, excluding comments
+commit_message=$(sed '/^#/d' <"$INPUT_FILE")
+
+# Don't do any checking on empty commit messages.
+# Git will abort empty commits by default anyways.
+if [ -z "$commit_message" ]; then
+  exit 0
+fi
+
+commit_title=$(echo "$commit_message" | head -n1 "$INPUT_FILE")
+
+# Check the semver commit title structure first
+if [ "$title_semver_enabled" == "true" ]; then
+  build_title_regex
+
+  if [[ ! $commit_title =~ $regexp ]]; then
+    error_header
+    echo -e "${LIGHT_GRAY}Valid types: ${UNDO_COLOR}${CYAN}${types[*]}${UNDO_COLOR}"
+    echo -e "${LIGHT_GRAY}Valid special types: ${UNDO_COLOR}${CYAN}${special_types[*]}${UNDO_COLOR}"
+    if [ ${#scopes[@]} -eq 0 ]; then
+      echo -e "${LIGHT_GRAY}Valid scopes: any${UNDO_COLOR}"
+    else
+      echo -e "${LIGHT_GRAY}Valid scopes: ${UNDO_COLOR}${CYAN}${scopes[*]}${UNDO_COLOR}"
+    fi
+
+    #echo -e "${LIGHT_GRAY}Expected regex: ${UNDO_COLOR}${CYAN}${regexp}${UNDO_COLOR}"
+
+    echo -e "Actual commit title: ${YELLOW}${commit_title}${UNDO_COLOR}"
+    exit 1
+  fi
+fi
+
+# Then check the length of the commit title
+commit_title_len=${#commit_title}
+if { [ "$title_min_length" != "null" ] && [ "$commit_title_len" -lt "$title_min_length" ]; } ||
+  { [ "$title_max_length" != "null" ] && [ "$commit_title_len" -gt "$title_max_length" ]; }; then
+  error_header
+  echo -e "${LIGHT_GRAY}Expected title (first line) length: Min=${CYAN}$title_min_length${UNDO_COLOR} Max=${CYAN}$title_max_length${UNDO_COLOR}"
+  echo -e "Actual length: ${YELLOW}${commit_title_len}${UNDO_COLOR}"
+  exit 1
+fi
+
+# Check for a newline between the title and the body
+if [ "$(echo "$commit_message" | wc -l)" -gt 1 ]; then
+  second_line=$(echo "$commit_message" | sed -n '2p')
+  third_line=$(echo "$commit_message" | sed -n '3p')
+  if [ "$second_line" != "" ] || [ "$third_line" == "" ]; then
+    error_header
+    echo -e "There must be exactly one blank line between the commit title and the body."
+    exit 1
+  fi
+fi

@@ -102,3 +102,4 @@
     gpgsign = true
 [init]
     defaultBranch = main
+    templatedir = ~/.config/git/templates
