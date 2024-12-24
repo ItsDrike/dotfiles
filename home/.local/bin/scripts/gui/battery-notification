@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# This is a script which can be kept running as a cronjob or systemd timer to
+# notify the user when the battery is low.
+
+# $BATTERY env var can be set manually, being the path of the device
+# (in /sys/class/power_supply/) i.e. BATTERY=/sys/class/power_supply/BAT0.
+#
+# If left unset, the script will automatically pick the battery device
+# with the most recent change time. (This provides some limited support
+# for systems with multiple batteries.)
+#
+# If the battery reaches below $NOTIFY_THRESHOLD (defaults to 5%),
+# a notification will be shown. Note that only a single notification
+# will be shown per charge cycle.
+
+NOTIFY_THRESHOLD="${NOTIFY_THRESHOLD:-5}"
+
+if [ -z "${BATTERY:-}" ]; then
+  BATTERY="$(find /sys/class/power_supply -maxdepth 1 -name 'BAT*' -exec stat -c '%Y %n' {} + | sort -k1,1nr | head -n 1 | cut -d' ' -f2-)"
+fi
+
+NOTIFY_LOCK_FILE=/tmp/battery-notif
+
+get_bat_info() {
+  cat "$BATTERY"/"$1"
+}
+
+capacity="$(get_bat_info capacity)"
+status="$(get_bat_info status)"
+
+reset_notify() {
+  if [ -f "$NOTIFY_LOCK_FILE" ]; then
+    echo "Resetting notification flag"
+    rm -f "$NOTIFY_LOCK_FILE"
+  fi
+}
+
+maybe_notify() {
+  if [ -f "$NOTIFY_LOCK_FILE" ]; then
+    exit 0
+  fi
+
+  echo "Sending notification"
+  notify-send \
+    -a battery-notification \
+    -u critical \
+    -i "$(pick_battery_icon)" \
+    "Battery low" "Battery is below $NOTIFY_THRESHOLD%"
+  touch "$NOTIFY_LOCK_FILE"
+}
+
+pick_battery_icon() {
+  local icon_candidate
+  local data_dirs="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" # fallback
+  local IFS=':'
+
+  for icon_candidate in battery-caution battery-low battery; do
+    for dir in $data_dirs; do
+      if find "$dir/icons" -type f -iname "${icon_candidate}.*" 2>/dev/null | grep -q .; then
+        echo "$icon_candidate"
+        return 0
+      fi
+    done
+  done
+
+  echo ""
+}
+
+# The battery is not discharging (i.e. charging or full),
+# we don't need to notify the user.
+if [ "$status" != "Discharging" ]; then
+  reset_notify
+  exit 0
+fi
+
+if [ "$capacity" -gt "$NOTIFY_THRESHOLD" ]; then
+  reset_notify
+  exit 0
+fi
+
+maybe_notify

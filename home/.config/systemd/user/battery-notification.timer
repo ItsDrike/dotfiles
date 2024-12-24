@@ -1,0 +1,9 @@
+[Unit]
+Description="Timer for low battery notification sendout"
+PartOf=graphical-session.target
+
+[Timer]
+OnUnitActiveSec=20s
+
+[Install]
+WantedBy=wm-ready.target
