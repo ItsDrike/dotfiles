@@ -107,7 +107,7 @@ paru -S --noconfirm --needed \
 
 # Wayland Utilities
 paru -S --noconfirm --needed \
-  grim slurp wofi swappy-git wf-recorder wlogout clipman hyprpicker hyprpaper
+  grim slurp wofi swappy wf-recorder wlogout clipman hyprpicker hyprpaper
 
 # Applications
 paru -S --noconfirm --needed \
