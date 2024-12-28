@@ -103,7 +103,8 @@ paru -S --noconfirm --needed \
 
 # Utilities
 paru -S --noconfirm --needed \
-  nm-connection-editor ffmpegthumbnailer upower devour hyfetch fastfetch bottom tesseract tesseract-data-eng
+  nm-connection-editor ffmpegthumbnailer upower devour hyfetch fastfetch bottom tesseract tesseract-data-eng \
+  nvtop
 
 # Wayland Utilities
 paru -S --noconfirm --needed \
