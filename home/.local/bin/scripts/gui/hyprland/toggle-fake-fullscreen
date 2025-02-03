@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-#ACTIVE_BORDER_COLOR="0xFF327BD1"
-ACTIVE_BORDER_COLOR="0xFFFF6600"
-DEFAULT_BORDER_COLOR="0xFFFFA500"
+#ACTIVE_BORDER_COLOR="rgba(FF327BD1)"
+ACTIVE_BORDER_COLOR="rgba(FF6600FF)"
+DEFAULT_BORDER_COLOR="rgba(FFA500FF)"
 
+window_address="$(hyprctl activewindow -j | jq -r '.address')"
 hyprctl dispatch fullscreenstate -1 2
 
 fullscreen_status="$(hyprctl activewindow -j | jq '.fullscreenClient')"
@@ -11,11 +13,9 @@ if [ "$fullscreen_status" = "null" ]; then
   echo "Update your hyprland, 'fakeFullscreen' window property not found."
   exit 1
 elif [ "$fullscreen_status" = "2" ]; then
-  window_address="$(hyprctl activewindow -j | jq -r '.address')"
-  hyprctl setprop "address:$window_address" activebordercolor "$ACTIVE_BORDER_COLOR" lock
+  hyprctl dispatch setprop "address:$window_address" activebordercolor "$ACTIVE_BORDER_COLOR"
 elif [ "$fullscreen_status" = "0" ]; then
-  window_address="$(hyprctl activewindow -j | jq -r '.address')"
-  hyprctl setprop "address:$window_address" activebordercolor "$DEFAULT_BORDER_COLOR"
+  hyprctl dispatch setprop "address:$window_address" activebordercolor "$DEFAULT_BORDER_COLOR"
 else
   echo "Unexpected output from 'fullscreenClient' window property: $fullscreen_status"
   exit 1
