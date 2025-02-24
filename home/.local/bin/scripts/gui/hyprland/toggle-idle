@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-idleprog="hypridle" # or swayidle
+serv="hypridle.service"
 
-pid="$(pidof "$idleprog" || true)"
-if [ -n "$pid" ]; then
-  # is process suspended?
-  if ps -o stat= -p "$pid" | grep T >/dev/null; then
-    kill -CONT "$pid"
-    notify-send "Idle-Toggle" "Idle timeouts enabled"
-  else
-    kill -STOP "$pid"
-    notify-send "Idle-Toggle" "Idle timeouts disabled"
-  fi
+if systemctl --user is-active --quiet "$serv"; then
+  systemctl --user stop "$serv"
+  notify-send "Idle-Toggle" "Idle timeouts disabled"
 else
-  notify-send "Idle-Toggle" "$idleprog not running!"
+  systemctl --user start "$serv"
+  notify-send "Idle-Toggle" "Idle timeouts enabled"
 fi
