@@ -96,6 +96,7 @@ export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export RYE_HOME="$XDG_CONFIG_HOME/rye"
+export OMNISHARPHOME="$XDG_CONFIG_HOME"/omnisharp
 
 # Theming
 export GTK_THEME="Tokyonight-Dark"
