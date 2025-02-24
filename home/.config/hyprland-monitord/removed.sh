@@ -3,4 +3,5 @@ set -euo pipefail
 
 MONITOR_NAME="$1"
 
-eww close bar1
+systemctl --user stop eww-window@bar1.service
+# eww close bar1

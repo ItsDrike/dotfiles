@@ -9,11 +9,15 @@ if [ "$MONITORS_AMT" -lt 1 ]; then
 fi
 
 if [ "$MONITORS_AMT" -eq 2 ]; then
-  eww open bar1
+  systemctl --user start eww-window@bar1.service
+  #eww open bar1
 fi
 
 if [ "$MONITORS_AMT" -eq 1 ]; then
-  eww active-windows | grep "bar1" && eww close bar1
+  if eww active-windows | grep "bar1"; then
+    systemctl --user stop eww-window@bar1.service
+    #eww close bar1
+  fi
 fi
 
 if [ "$MONITORS_AMT" -gt 2 ]; then
