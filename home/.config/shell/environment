@@ -8,18 +8,17 @@
 # which means the XDG definitions will be ignored anyway, and
 # defining them may break programs when root is actually logged in.
 
-
 # Add all folders in ~/.local/bin into PATH
 # Some window managers require this line to be in profile not in .zshenv
 if [ -d "$HOME/.local/bin" ]; then
-    PATH+=":${$(find -L ~/.local/bin -type d | tr '\n' ':')%%:}"
+  PATH+=":$(find -L ~/.local/bin -type d | tr '\n' ':' | sed 's/:$//')"
 fi
 
 if [ -d "$HOME/.local/share/npm/bin" ]; then
-    PATH+=":$HOME/.local/share/npm/bin"
+  PATH+=":$HOME/.local/share/npm/bin"
 fi
 
-# Prepend rye shims to PATH, to have rye python executables 
+# Prepend rye shims to PATH, to have rye python executables
 # take priority over the system-wide python.
 if [ -d "${RYE_HOME:-$HOME/.rye}/shims" ]; then
   PATH="${RYE_HOME:-$HOME/.rye}/shims:$PATH"
