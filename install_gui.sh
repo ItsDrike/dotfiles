@@ -99,7 +99,8 @@ paru -S --noconfirm --needed \
 
 # Wayland WM essentials
 paru -S --noconfirm --needed \
-  wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk qt5-wayland qt6-wayland wev wl-gammarelay-rs wdisplays
+  wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk qt5-wayland qt6-wayland wev wl-gammarelay-rs wdisplays \
+  uwsm
 
 # Utilities
 paru -S --noconfirm --needed \

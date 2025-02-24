@@ -1,13 +1,15 @@
 [Unit]
-Description="Show a notification when the battery is low"
+Description=Show a notification when the battery is low
+Requires=graphical-session.target
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=%h/.local/bin/scripts/gui/battery-notification
 Type=oneshot
+ExecStart=%h/.local/bin/scripts/gui/battery-notification
 RemainAfterExit=false
 Restart=on-failure
-RestartSec=3s
+Slice=background-graphical.slice
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target
+

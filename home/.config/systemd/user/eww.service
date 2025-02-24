@@ -1,11 +1,11 @@
 [Unit]
-Description="Eww daemon"
+Description=Eww daemon
 PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/eww daemon --no-daemonize
 Restart=always
-RestartSec=3s
+Slice=background-graphical.slice
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target

@@ -1,9 +1,12 @@
 [Unit]
-Description="Timer for low battery notification sendout"
+Description=Timer for low battery notification sendout
+After=graphical-session.target
+Requires=graphical-session.target
 PartOf=graphical-session.target
 
 [Timer]
 OnUnitActiveSec=20s
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target
+

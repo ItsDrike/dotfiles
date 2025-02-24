@@ -1,7 +1,0 @@
-[Unit]
-Description=Window Manager loaded and ready
-BindsTo=graphical-session.target
-Wants=wireplumber.service
-Wants=pipewire-pulse.socket
-Wants=usbguard-notifier.service
-Wants=gnome-keyring-daemon.service

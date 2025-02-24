@@ -1,14 +1,15 @@
 [Unit]
-Description="Show unread GitHub notifications"
+Description=Show unread GitHub notifications
+Requires=graphical-session.target
 PartOf=graphical-session.target
-After=dunst.service
 
 [Service]
-ExecStart=%h/.local/bin/scripts/gui/gh-notification -vv
 Type=oneshot
+ExecStart=%h/.local/bin/scripts/gui/gh-notification -vv
 RemainAfterExit=false
 Restart=on-failure
-RestartSec=3s
+Slice=background-graphical.slice
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target
+

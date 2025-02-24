@@ -7,7 +7,7 @@ vt = 1
 # If the user logs out, greetd will render the default session
 [initial_session]
 user = "itsdrike"
-command = "/usr/local/bin/greetd-session-wrapper Hyprland"
+command = "/usr/local/bin/greetd-session-wrapper uwsm start hyprland.desktop"
 
 # The default session, also known as the greeter.
 [default_session]

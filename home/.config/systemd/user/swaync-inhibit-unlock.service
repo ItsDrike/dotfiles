@@ -4,8 +4,9 @@ Requisite=swaync.service
 After=unlock.target
 
 [Service]
-ExecStart=/usr/bin/swaync-client --inhibitor-remove screen-locker
 Type=oneshot
+ExecStart=/usr/bin/swaync-client --inhibitor-remove screen-locker
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=unlock.target

@@ -1,9 +1,12 @@
 [Unit]
-Description="Timer for GitHub notification sendout"
+Description=Timer for GitHub notification sendout
+After=graphical-session.target
+Requires=graphical-session.target
 PartOf=graphical-session.target
 
 [Timer]
 OnUnitActiveSec=1m
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target
+

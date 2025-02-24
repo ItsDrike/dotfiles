@@ -1,17 +1,15 @@
 [Unit]
-Description="Open %I eww window"
-PartOf=graphical-session.target
+Description=Open %I eww window
 After=eww.service
-PartOf=eww.service
 
 [Service]
+Type=oneshot
 ExecStartPre=/usr/bin/eww ping
 ExecStart=/usr/bin/eww open %i
 ExecStop=/usr/bin/eww close %i
-Type=oneshot
 RemainAfterExit=true
 Restart=on-failure
 RestartSec=3s
 
 [Install]
-WantedBy=wm-ready.target
+WantedBy=graphical-session.target

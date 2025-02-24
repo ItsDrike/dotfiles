@@ -4,8 +4,10 @@ Requisite=swaync.service
 Before=lock.target
 
 [Service]
-ExecStart=/usr/bin/swaync-client --inhibitor-add screen-locker
 Type=oneshot
+ExecStart=/usr/bin/swaync-client --inhibitor-add screen-locker
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=lock.target
+
