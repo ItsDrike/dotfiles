@@ -2,7 +2,6 @@
 Description=Clipman clipboard manager
 After=graphical-session.target
 Requires=graphical-session.target
-PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/wl-paste -t text --watch /usr/bin/clipman store --no-persist

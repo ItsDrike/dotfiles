@@ -2,7 +2,6 @@
 Description=Redshift and brightness control for Wayland
 After=graphical-session.target
 Requires=graphical-session.target
-PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/wl-gammarelay-rs run

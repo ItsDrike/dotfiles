@@ -1,6 +1,9 @@
 [Unit]
 Description=Eww daemon
-PartOf=graphical-session.target
+After=graphical-session.target
+After=pipewire.service
+Requires=graphical-session.target
+Requires=pipewire.service
 
 [Service]
 ExecStart=/usr/bin/eww daemon --no-daemonize

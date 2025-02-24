@@ -1,8 +1,9 @@
 [Unit]
 Description=Daemon watching for Hyprland monitor updates
 After=wayland-session@hyprland.desktop.target
+After=eww.service
+Requires=eww.service
 Requires=wayland-session@hyprland.desktop.target
-PartOf=wayland-session@hyprland.desktop.target
 
 [Service]
 ExecStart=%h/.local/bin/scripts/gui/hyprland/hyprland-monitord

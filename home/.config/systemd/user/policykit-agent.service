@@ -2,7 +2,6 @@
 Description="PolicyKit authentication agent"
 After=graphical-session.target
 Requires=graphical-session.target
-PartOf=graphical-session.target
 
 [Service]
 ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1

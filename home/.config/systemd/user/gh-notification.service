@@ -1,7 +1,6 @@
 [Unit]
 Description=Show unread GitHub notifications
 Requires=graphical-session.target
-PartOf=graphical-session.target
 
 [Service]
 Type=oneshot

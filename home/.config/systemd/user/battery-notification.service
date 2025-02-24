@@ -1,7 +1,6 @@
 [Unit]
 Description=Show a notification when the battery is low
 Requires=graphical-session.target
-PartOf=graphical-session.target
 
 [Service]
 Type=oneshot
