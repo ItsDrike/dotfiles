@@ -6,6 +6,7 @@ PartOf=graphical-session.target
 
 [Timer]
 OnUnitActiveSec=1m
+Unit=gh-notification.service
 
 [Install]
 WantedBy=graphical-session.target
