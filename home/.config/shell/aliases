@@ -141,7 +141,9 @@ alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system jou
 alias sv='systemctl'
 alias pacnew="find / -name '*.pacnew' 2>/dev/null" # Search for all new configurations after pacman update
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
-alias upload='curl -F "f:1=<-" ix.io'
+#alias upload='curl -F "f:1=<-" ix.io' # ix.io was offline for about 10 months now...
+#alias upload='curl -F "sprunge=<-" http://sprunge.us' # sprunge.us was offline for a few weeks now, not sure why
+alias upload='curl -F "file=@-" https://hardfiles.org' # hardfiles.org works, but has 24-hour expiry
 alias upload-journal='sudo journalctl -b -1 | upload' # Upload journalctl from last boot to ix.io
 alias auth-log='journalctl SYSLOG_FACILITY=10 -r'
 alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done' # Run `yes > /dev/null` on all cores as stress test
