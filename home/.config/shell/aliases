@@ -201,6 +201,7 @@ alias gd='git diff'
 alias gdc='git diff --cached'
 alias gundo='git reset --soft HEAD~'
 alias gredo="git reset 'HEAD@{1}'"
+alias gpr="gh pr checkout"
 
 # Youtube-dl aliases
 alias ytv-best='youtube-dl -f bestvideo+bestaudio'
