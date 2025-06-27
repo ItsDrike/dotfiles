@@ -67,6 +67,17 @@ auto-mounted from initramfs via [systemd-gpt-auto-generator]). We will however
 still need the `rootflags` argument for selecting the btrfs subvolume (unless
 your default subvolume is the root partition subvolume).
 
+> [!IMPORTANT]
+> To make the GPT partition auto-mounting work, you will need to make sure that
+> you've used the correct GPT type labels during partitioning (they can also be
+> changed later if you haven't).
+>
+> Specifically, for systemd to pick up and attempt to auto-mount you root
+> partition, it needs to have one of the `Linux root` types (most likely the
+> `Linux root (x86-64)` type). You can achieve this with `fdisk`. You can use
+> `l` to list all GPT partition types and `t` to change the type of a specific
+> partition.
+
 [systemd-cryptsetup-generator]: https://wiki.archlinux.org/title/Dm-crypt/System_configuration#Using_systemd-cryptsetup-generator
 [systemd-gpt-auto-generator]: https://wiki.archlinux.org/title/Systemd#GPT_partition_automounting
 
