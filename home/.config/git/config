@@ -67,6 +67,8 @@
     set-upstream = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
 
     fixup-picker = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
+    auto-fixup = "!sh -c 'git commit --fixup=$0 && git rebase --autosquash $0~'"
+    auto-fixup-picker = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git auto-fixup";
 
     staash = "stash --all";
     stash-staged = "!sh -c 'git stash --keep-index; git stash push -m \"staged\" --keep-index; git stash pop stash@{1}'"
@@ -82,6 +84,8 @@
     total-files = "!git tracked-files | wc -l"
     total-commits = "!git log --oneline | wc -l"
 	  comitter-lines = "!git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"
+
+    contributors = "shortlog --summary --numbered --email"
 [credential]
     helper = store --file ~/.config/git/git-credentials
 [core]
