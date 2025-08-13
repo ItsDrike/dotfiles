@@ -8,6 +8,12 @@ It will:
 2. Validate that your local version matches the remote.
 3. Ensures that the provided tag is a valid semantic version bump from the latest release tag.
 4. Runs git tag -m "" -as <tag> if valid.
+
+Do note that this does NOT support versions outside of simple X.Y.Z (e.g. a version like 1.2.5rc-1 will not be picked up).
+If you're using such versions, this script will block the release and you will need to create the tag for it manually.
+That said, due to the nature of these versions, even if there's an alpha/beta/rc/post/dev/... version tag, this will still
+correctly identify whether the next stable release is following the previous, so you can use this even if your last version
+tag was one of these special forms, just not when creating new tags for them.
 """
 
 from __future__ import annotations
@@ -17,6 +23,7 @@ import re
 import subprocess
 import sys
 from typing import ClassVar, final, override
+
 
 RELEASE_BRANCHES = {"main", "master", "release", "stable"}
 
