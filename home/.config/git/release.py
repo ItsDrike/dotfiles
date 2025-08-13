@@ -51,8 +51,8 @@ class SemverTag:
 
     @override
     def __str__(self) -> str:
-        """Return tag in standard 'vX.Y.Z' format."""
-        return f"v{self.major}.{self.minor}.{self.patch}"
+        """Return tag in standard 'vX.Y.Z' format; the v can be omitted."""
+        return f"{self.has_v and 'v' or ''}{self.major}.{self.minor}.{self.patch}"
 
 
 def run_git(*args: str) -> str:
