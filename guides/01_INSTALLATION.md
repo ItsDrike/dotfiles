@@ -35,6 +35,8 @@ station [device] connect "[SSID]"
 
 Finally, let's to sure it worked, run: `ping 1.1.1.1`.
 
+To get DNS working too, you'll also want to run `dhcpcd`, then you can with `ping google.com`
+
 ## Partitioning
 
 First thing we will need to do is set up partitions. To do so, I recommend using
@@ -223,23 +225,24 @@ they're way too permissive. This is how I like to structure my fstab:
 # /dev/nvme1n1p1 LABEL=EFI UUID=A34B-A020
 /dev/disk/by-label/EFI     /efi       vfat       rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 2
 
-# /dev/nvme1n1p2 LABEL=SWAP UUID=d262a2e5-a1a3-42b1-ac83-18639f5e8f3d
-/dev/disk/by-label/SWAP    none       swap       defaults                                                                                                0 0
-
 # endregion
 # region: BTRFS Subvolumes
 
 # /dev/mapper/cryptfs LABEL=FS UUID=bffc7a62-0c7e-4aa9-b10e-fd68bac477e0
-/dev/mapper/cryptfs /            btrfs      rw,noatime,compress=zstd:1,subvol=/root         0 1
-/dev/mapper/cryptfs /data        btrfs      rw,noatime,compress=zstd:1,subvol=/data         0 2
-/dev/mapper/cryptfs /snapshots   btrfs      rw,noatime,compress=zstd:1,subvol=/snapshots    0 2
-/dev/mapper/cryptfs /.btrfs      btrfs      rw,noatime,compress=zstd:1                      0 2
+/dev/mapper/cryptfs /           btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async,subvol=/root        0 1
+/dev/mapper/cryptfs /data       btrfs       rw,noatime,lazytime,compress=zstd:5,ssd,space_cache=v2,commit=120,discard=async,subvol=/data        0 2
+/dev/mapper/cryptfs /snapshots  btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async,subvol=/snapshots   0 2
+/dev/mapper/cryptfs /swap       btrfs       rw,subvol=/swap                                                                                     0 0
+/dev/mapper/cryptfs /.btrfs     btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async                     0 2
 
 # endregion
 # region: Bind mounts
 
 # Write kernel images to /efi/arch, not directly to efi system partition (esp), to avoid conflicts when dual booting
-/efi/arch      /boot      none       rw,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro,bind  0 0
+/efi/arch           /boot       none        rw,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro,bind   0 0
+
+# Swap into a file on the btrfs partition
+/swap/swapfile      none        swap        defaults                                                                                            0 0
 
 # endregion
 ```
@@ -332,7 +335,7 @@ options rw loglevel=3
 And finally configure loader - `/efi/loader/loader.conf` (overwrite the contents):
 
 ```bash
-default arch-hyprland.conf
+default arch.conf
 timeout 4
 console-mode auto
 editor yes
