@@ -9,6 +9,32 @@ be a useful resource for you too, if you want to achieve a similar setup.
 This guide includes steps for full disk encryption, and sets up the system with
 some basic tools and my zsh configuration.
 
+## Internet
+
+If you're using ethernet, you can skip this part, it focuses on Wi-Fi.
+
+To connect to Wi-Fi from the installation ISO system, run `iwctl`. From there, run:
+
+```bash
+device list
+# Find the device you're interested in, usually something like wlan0
+# Also take notice of the adapter name that this device uses
+#
+# Before anything else, make sure to power on the device and the adapter
+device [device] set-property Powered on
+adapter [adapter] set-property Powered on
+# Now put the device into a scan mode and get the results
+# You can skip this part if you know the SSID
+station [device] scan
+station [device] get-networks
+# Find the SSID of the network you're interested
+station [device] connect "[SSID]"
+# You'll be prompted for a password, enter it, then you should get connected
+# To leave iwd, press Ctrl+D
+```
+
+Finally, let's to sure it worked, run: `ping 1.1.1.1`.
+
 ## Partitioning
 
 First thing we will need to do is set up partitions. To do so, I recommend using
@@ -16,18 +42,22 @@ First thing we will need to do is set up partitions. To do so, I recommend using
 partitions:
 
 - EFI (1 GB)
-- Swap (same size as your RAM, or more)
-- Data (rest)
+- Root, Data & Swap (rest)
 
-The swap partition is optional, however I do recommend creating it (instead of
-using a swap file), as it will allow you to hibernate your machine.
+Some people like to use a swap partition, however, doing so on an otherwise encrypted
+system introduces you to unnecessary risk factors, as your swap likely won't be encrypted.
+This is especially problematic for hibernation, as hibernating into an unencrypted swap
+partition will allow passwordless restore.
+
+Instead, I prefer using a swapfile within BTRFS. This still allows hibernation with
+systemd initrd, but only after unlocking the partition.
 
 > [!NOTE]
 > Don't forget to also set the type for these partitions (`t` command in `fdisk`).
 >
 > - EFI partition type: EFI System (1)
-> - Swap partition type: Linux swap (19)
-> - Data partition type: Linux filesystem (20)
+> - Root partition type: Linux root x86-64 (23)
+> - (Extra) Data partition type: Linux filesystem (20)
 
 ### File-Systems
 
@@ -36,8 +66,6 @@ Now we'll to create file systems on these partitions, and give them disk labels:
 ```bash
 mkfs.fat -F 32 /dev/sdX1
 fatlabel /dev/sdX1 EFI
-
-mkswap -L SWAP /dev/diskX2
 
 cryptsetup luksFormat /dev/sdX3 --label CRYPTFS
 cryptsetup open /dev/disk/by-label/CRYPTFS crypfs
@@ -62,12 +90,15 @@ Now we will split our btrfs partition into the following subvolumes:
   and backed up.
 - snapshots: A subvolume that will be used to store snapshots (backups) of the
   other subvolumes
+- swap: A subvolume containing the swap file
 
 ```bash
 mount /dev/mapper/cryptfs /mnt
 btrfs subvolume create /mnt/root
 btrfs subvolume create /mnt/data
 btrfs subvolume create /mnt/snapshots
+btrfs subvolume create /mnt/swap
+btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 umount /mnt
 ```
 
@@ -76,30 +107,29 @@ umount /mnt
 <!-- markdownlint-disable MD028 -->
 
 > [!NOTE]
-> Even though we're specifying the `compress` flag in the mount options of each
-> btrfs subvolume, somewhat misleadingly, you can't actually use different
-> compression levels for different subvolumes. Btrfs will share the same
-> compression level across the whole partition, so it's pointless to attempt to
-> set different values here.
+> The `compress` mount flag will only affect the newly created files, if you're adding
+> this option later on, older files will still remain uncompressed/differently compressed
+> on the disk.
 
 > [!NOTE]
 > You may have seen others use btrfs options such as `ssd`, `discard=async` and
-> `space_cache=v2`. These are all default (with the `ssd` being auto-detected),
-> so specifying them is pointless now.
+> `space_cache=v2`. These are all default on modern kernels (with the `ssd` being
+> auto-detected), so specifying them is pointless now.
 
 <!-- markdownlint-enable MD028 -->
 
 ```bash
-mount -o subvol=root,compress=zstd:3,noatime /dev/mapper/cryptfs /mnt
-mount --mkdir -o subvol=home,compress=zstd:3,noatime /dev/mapper/cryptfs /mnt/data
-mount --mkdir -o subvol=snapshots,compress=zstd:3,noatime /dev/mapper/cryptfs /mnt/snapshots
-mount --mkdir -o compress=zstd:3,noatime /dev/mapper/cryptfs /mnt/.btrfs
+mount -o subvol=root,noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt
+mount --mkdir -o subvol=snapshots,noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt/snapshots
+mount --mkdir -o subvol=home,noatime,lazytime,commit=120,compress=zstd:5 /dev/mapper/cryptfs /mnt/data
+mount --mkdir -o noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt/.btrfs
+mount --mkdir -o subvol=swap /dev/mapper/cryptfs /mnt/swap
 
 mount --mkdir /dev/disk/by-label/EFI /mnt/efi
 mkdir /mnt/efi/arch
 mount --mkdir --bind /mnt/efi/arch /mnt/boot
 
-swapon /dev/disk/by-label/SWAP
+swapon /mnt/swap/swapfile
 ```
 
 ## Base installation
