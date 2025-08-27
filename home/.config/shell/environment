@@ -53,11 +53,13 @@ export XDG_PICTURES_DIR="$HOME/Media/Pictures"
 export XDG_VIDEOS_DIR="$HOME/Media/Videos"
 export XDG_SCREENSHOTS_DIR="$HOME/Media/Pictures/Screenshots"
 
-# Per-Application XDG settings
+# ZSH dirs
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$HOME/.cache/zsh"
 export HISTFILE="$ZSH_CACHE/history"
-export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-$ZSH_VERSION"
+export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-${ZSH_VERSION:-}"
+
+# Per-Application XDG settings
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
 #export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export LESSHISTFILE="-"
