@@ -20,3 +20,6 @@
 - /swapfile
 - /swap/*
 - /home/*/.cache/*
+- /.btrfs/*
+- /snapshots/*
+- /data/*
