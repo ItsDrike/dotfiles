@@ -85,7 +85,7 @@ So, let's edit our kernel parameters:
 
 ```bash
 echo "rw loglevel=3" > /etc/kernel/cmdline  # overwrite the existing cmdline
-echo "rootflags=subvol=/@" >> /etc/kernel/cmdline
+echo "rootflags=subvol=/root" >> /etc/kernel/cmdline
 ```
 
 You'll also need to modify the `/etc/fstab`, as systemd will not use the
@@ -94,6 +94,12 @@ You'll also need to modify the `/etc/fstab`, as systemd will not use the
 If you prefer using a mapper device, you can also use `/dev/mapper/root`.
 Alternatively, you can use the label to mount. (if you followed the
 installation guide, that would be `/dev/disk/by-label/FS`.)
+
+```bash
+sed -i 's/\/dev\/mapper\/cryptfs/\/dev\/mapper\/root/g' /etc/fstab
+```
+
+Make sure to check that you did this right from:
 
 ```bash
 vim /etc/fstab
@@ -125,8 +131,15 @@ support there, you will need to do some more work.
 
 To enable numlock before you're prompted for the decryption password, we'll need
 to create a custom initcpio hook, that will return a systemd service which will
-do the enabling. We'll put this hook into `/usr/lib/initcpio/install/numlock`,
-with the following content:
+do the enabling. We'll put this hook into `/usr/lib/initcpio/install/numlock`.
+You can find the hook contents in this dotfiles repository under the matching path,
+and just copy it from there:
+
+```bash
+cp ~/dots/root/usr/lib/initcpio/install/numlock /usr/lib/initcpio/install
+```
+
+Or use the content below:
 
 ```bash
 #!/bin/bash
@@ -159,15 +172,16 @@ EOF
 }
 ```
 
-This script is also present in my dotfiles, so you can just copy it from there:
+Next we will need to create a `/usr/local/bin/numlock` script, which the
+service references. This script will do the actual enabling of numlock. Note
+that we can only use the binaries that we explicitly included in our hook
+inside our script.
 
-```bash
-cp ~/dots/root/usr/lib/initcpio/install/numlock /usr/lib/initcpio/install
-```
+If you ran the `install_root.sh` script from my dotfiles during
+[INSTALLATION](./01_INSTALLATION.md), this script will already be present in
+your `/usr/local/bin`
 
-Next we will need to create that `/usr/local/bin/numlock` script. This script
-will do the actual enabling of numlock. Note that we can only use the binaries
-that we explicitly included in our hook inside our script.
+Otherwise, create this file with the following contents:
 
 ```bash
 #!/bin/bash
@@ -176,13 +190,9 @@ for tty in /dev/tty[0-9]; do
 done
 ```
 
-If you ran the `install_root.sh` script from my dotfiles during
-[INSTALLATION](./01_INSTALLATION.md), this script will already be present in
-your `/usr/local/bin`
-
 Now we will need to add our custom new `numlock` hook to
 `/etc/mkinitcpio.conf`, before the `sd-encrypt` hook (assuming you're using
-encryption), but after the `keyboard` and `sd-vconsole` hooks.
+encryption), but after the `sd-vconsole` hook.
 
 Finally, we'll need to rebuild initramfs, which we should trigger with `sudo
 pacman -S linux`, to make sure the secure-boot signing also runs. When

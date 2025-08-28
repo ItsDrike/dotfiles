@@ -166,11 +166,10 @@ cd ~/dots
 ./install_root.sh
 ```
 
-Exit and reenter chroot, this time into zsh shell
+Enter a fish shell for a better experience
 
 ```bash
-exit
-arch-chroot /mnt zsh
+fish
 ```
 
 Create non-privileged user
@@ -179,15 +178,17 @@ Create non-privileged user
 useradd itsdrike
 usermod -aG wheel itsdrike
 install -o itsdrike -g itsdrike -d /home/itsdrike
+mv ~/dots /home/itsdrike
+chown -R itsdrike:itsdrike /home/itsdrike/dots
 passwd itsdrike
 chsh -s /usr/bin/zsh itsdrike
-su -l itsdrike # press q or esc in the default zsh options
+su -l itsdrike
+fish
 ```
 
 Setup user account
 
 ```bash
-git clone --recursive https://github.com/ItsDrike/dotfiles ~/dots
 cd ~/dots
 ./install_user.sh
 ```
@@ -197,12 +198,6 @@ Exit (logout) the user and relogin, this time into configured zsh shell
 ```bash
 exit
 su -l itsdrike
-```
-
-Install LazyVim
-
-```bash
-git clone https://github.com/ItsDrike/lazyvim ~/.config/nvim
 ```
 
 ## Fstab adjustments
@@ -356,17 +351,17 @@ reboot
 
 Log in as an unpriviledged user, and:
 
+Connect to Wi-Fi (NetworkManager)
+
+```bash
+nmtui  # set up your network from here
+```
+
 Enable Network Time Protocol (time synchronization)
 
 ```bash
 sudo timedatectl set-ntp true
 timedatectl status
-```
-
-Connect to a wifi network
-
-```bash
-nmtui
 ```
 
 ## Graphical User Interface

@@ -30,6 +30,13 @@ partition. You can do that with the `resume` parameter, like this:
 - `resume="PARTLABEL=Swap partition`
 - `resume=/dev/archVolumeGroup/archLogicalVolume`
 
+> [!NOTE]
+> If you're using `systemd` based initramfs, you don't actually need this kernel parameter, as it can pick up the
+> dynamically mounted swap partition and check it's contents for the hibernation data. If found, systemd will
+> perform a hibernation resume.
+>
+> This is especially nice for certain more complex setups, such as a swap file on an encrypted partition.
+
 ### Swap File
 
 If you'd like to use a swap file, set `resume` parameter to the partition on which your swap file lives, and set

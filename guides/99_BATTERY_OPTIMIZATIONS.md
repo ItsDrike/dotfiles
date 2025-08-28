@@ -132,6 +132,16 @@ pacman -S power-profiles-daemon
 systemctl enable --now power-profiles-daemon
 ```
 
+> [!NOTE]
+> Depending on where in the installation process you are, when setting this up,
+> your system might not yet have the `python-gobject` package, which is an
+> optional dependency of `power-profiles-daemon`. If you've already set up a
+> graphical environment, you will almost certainly have this pacakge brought in
+> by some other pakcage that has a hard-dependency on it, however, if you do
+> not, running `powerprofilesctl` will produce a `ModuleNotFound` python error.
+> If this happens to you, you can simply run `pacman -S --asdep
+> python-gobject`, to bring this package in.
+
 ### Setting power profile manually
 
 To try things out, you can set the power profile manually, using
@@ -251,9 +261,6 @@ With that, we can now enable our service:
 systemctl daemon-reload # make systemd aware of the new service
 systemctl enable --now power-profiles-monitor
 ```
-
-> [!TIP]
-> You may have noticed that the script
 
 ## TLP
 

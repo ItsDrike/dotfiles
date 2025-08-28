@@ -45,7 +45,7 @@ kernel command line args):
 ```bash
 echo "rw loglevel=3" > /etc/kernel/cmdline
 echo "cryptdevice=LABEL=CRYPTFS:cryptfs:allow-discards" >> /etc/kernel/cmdline
-echo "root=/dev/mapper/cryptfs rootflags=subvol=/@" >> /etc/kernel/cmdline
+echo "root=/dev/mapper/cryptfs rootflags=subvol=/root" >> /etc/kernel/cmdline
 ```
 
 <!-- markdownlint-disable MD028 -->
@@ -64,7 +64,7 @@ echo "root=/dev/mapper/cryptfs rootflags=subvol=/@" >> /etc/kernel/cmdline
 > (which mkinitramfs generates by default).
 >
 > That said, you will still need `rootflags` to select the btrfs subvolume
-> though, unless the root partition is your default subvolume.
+> (unless the root partition is your default subvolume).
 >
 > If you aren't sure which initramfs you're using, it's probably `BusyBox`.
 
@@ -176,6 +176,16 @@ initial OS installation:
 ```bash
 bootctl install --esp-path=/efi
 ````
+
+If you had some `systemd-boot` settings in your `/efi/loader/loader.conf`, make sure to re-add those, e.g.:
+
+```text
+timeout 3
+console-mode auto
+editor yes
+auto-firmware yes
+beep no
+```
 
 We can now reboot. Systemd-boot will pick up any UKI images in `/efi/EFI/Linux`
 automatically (this path is hard-coded), even without any entry configurations.

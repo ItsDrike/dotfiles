@@ -32,11 +32,12 @@ support TPM unlocking.
 > If you can't afford to be vulnerable to this type of attack, you can still
 > follow through with this, however instead of the TPM seamlessly releasing the
 > decryption password, you can require a password to be entered, without which
-> TPM won't release the decryption password.
+> TPM won't release the decryption password. This will be explained later.
 >
 > This can be useful if you use a very long encryption passwords, and you want
 > to be able to enter a shorter passphrase instead (TPM has brute-force
-> protection, so a short password isn't actually that unsafe to use).
+> protection, so a short password isn't actually that unsafe to use). I'm
+> personally using this approach on my devices.
 
 ## Check if you actually have the TPM module
 
@@ -149,10 +150,25 @@ sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7+12 /dev/gpt-auto-roo
 >
 > I have mentioned why you may want to do this in the beginning.
 >
-> In case you do want to go with a PIN, you can also safely drop PCR12, as you
-> will be asked for credentials each time anyways, and at that point, the TPM
-> unlocking is basically just as secure as regular passphrase unlocking, which
-> systemd would fall back to if PCR12 wasn't met.
+> In case you do want to go with a PIN, you can also relatively safely drop
+> PCR12, as you will be asked for credentials each time anyways, and at that
+> point, the TPM unlocking is basically just as secure as regular passphrase
+> unlocking, which systemd would fall back to if PCR12 wasn't met. But if you
+> still wish to require a full encryption password if kernel params were
+> changed, you can keep it (Personally, I like to still keep it).
+>
+> In case you followed the earlier command already before reading this, it's fine, just run:
+>
+> ```bash
+> cryptsetup luksKillSlot /dev/gpt-auto-root-luks [slot number]
+> ```
+> 
+> Where the slot number should've been shown to you from the cryptenroll
+> command. (If you only had one encryption password, that password will
+> probably be in slot 0, so you'll want to use slot 1 here.)
+>
+> After that, you can re-run the `systemd-cryptenroll`, with the
+> `--wipe-slot=tpm2` too.
 
 <!-- markdownlint-enable MD028 -->
 
@@ -167,7 +183,7 @@ instead of a decryption password.
 
 If you're using a bootloader, I'd recommend also trying to modify the kernel
 parameters, to make sure that TPM does not release the key anymore, and you will
-be prompted to enter it manually.
+be prompted to enter your full disk decryption key manually.
 
 ## Moving to a recovery key
 
@@ -179,6 +195,14 @@ You might want to do this as this recovery key will be guaranteed to have high
 entropy, likely making it a lot more secure than your original key, further
 improving your chances, if someone attempts a brute-force decryption of your
 drive.
+
+> [!NOTE]
+> I personally prefer to still use my own key which I have memorized, rather
+> than a randomly generated one, as I trust it to have sufficiently high
+> entropy and I do sometimes need to type it out manually when changing the
+> kernel parameters, so I like to be able to do that without having to search
+> for a recovery key somewhere. That said, if you store your recovery key
+> properly, it will very likely be the technically more secure option.
 
 To generate a recovery key, you can actually also just use `systemd-cryptenroll`
 (though you can also do it manually with `cryptsetup`):
