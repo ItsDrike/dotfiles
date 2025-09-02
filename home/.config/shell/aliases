@@ -9,10 +9,9 @@ alias suod='sudo '
 alias sduo='sudo '
 
 # Replacements (adding flags)
-alias cp='cp -iv' # Ask before overwriting, verbose
-alias mv='mv -iv' # Ask before overwriting, verbose
+alias cp='cp -i' # Ask before overwriting
+alias mv='mv -i' # Ask before overwriting
 alias rmt='trash-put' # Use trash-cli instead of true removal
-alias rm='rm -v'  # Verbose rm (asking before deleting is too annoying here)
 alias rmr='rm -r'
 alias rmrf='rm -rf'
 alias wget='wget -c' # Resume wget by default
@@ -69,7 +68,6 @@ alias cfnvim='vim ~/.config/nvim'
 alias cfvim='cfnvim'
 alias cfgit='vim ~/.config/git/config'
 alias cfhypr='vim ~/.config/hypr'
-alias cfsway='vim ~/.config/sway/config'
 
 # zoxide shortcuts
 alias j='z'               # for the sake of old habits from autojump
@@ -138,7 +136,6 @@ alias iptlistfw='iptables -L FORWARD -n -v --line-numbers' # FORWARD rules
 alias ufw-log='journalctl -f -n 100 -g ufw' # Show UFW log entries in system journal
 
 # System actions
-alias sv='systemctl'
 alias pacnew="find / -name '*.pacnew' 2>/dev/null" # Search for all new configurations after pacman update
 alias backup="rsync -avHAXS --delete --filter='dir-merge /.rsync-filter'" # Make full rsync backup, respecting .rsync-filter files for exclusions
 #alias upload='curl -F "f:1=<-" ix.io' # ix.io was offline for about 10 months now...
@@ -149,7 +146,6 @@ alias auth-log='journalctl SYSLOG_FACILITY=10 -r'
 alias cpu-stress='for i in $(seq $(getconf _NPROCESSORS_ONLN)); do yes > /dev/null & done' # Run `yes > /dev/null` on all cores as stress test
 alias cpu-power='sudo turbostat --Summary --quiet --show PkgWatt --interval 1'
 alias nvidia='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia' # Run app with nvidia (on hybrid mode with optimus)
-alias swapout='sudo swapoff -a; sudo swapon -a' # Reset swap (move everything to RAM)
 alias mount-ram='mount -t tmpfs tmpfs' # Mount RAM disk for fast filesystem
 alias screenlock='xset s activate' # Use DPMS to trigger xss-lock and handle screen locking
 
@@ -231,11 +227,9 @@ alias vimwiki='vim -c VimwikiIndex' # Open vimwiki index
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
-alias nf='neofetch'
 alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 alias sudovim='sudoedit'
 alias cls='clear'
-alias wh='which'
 
 # Kitty terminal kitten shorthands
 if [ "$TERM" = "xterm=kitty" ]; then
