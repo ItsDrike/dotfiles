@@ -1,3 +1,9 @@
 {
-  "storage-driver": "btrfs"
+  "storage-driver": "btrfs",
+  "default-address-pools": [
+    {
+      "base": "192.168.64.0/18",
+      "size": 24
+    }
+  ]
 }

@@ -13,103 +13,108 @@ if [ "$UID" = 0 ]; then
 fi
 
 # cd into the dotfiles dir, no matter where the script was called from
-pushd "$(dirname "$0")"
+pushd "$(dirname "$0")" >/dev/null
 
-# Copy over various settings
-cp -a home/.pki ~ # symlink
+# XDG base dir stuff
 mkdir -p ~/.local/share/pki
-cp -a home/.mozilla ~ # symlink
+ln -s ~/.local/share/pki ~/.pki
 mkdir -p ~/.config/mozilla
-mkdir -p ~/.config/nv
+ln -s ~/.config/mozilla ~/.mozilla
 mkdir -p ~/.cache/nv
-touch ~/.cache/nv/.keep
-cp -ar home/.local/share/thumbnailers ~/.local/share
-cp -ar home/.local/share/icons ~/.local/
-cp -ar home/.config/fontconfig ~/.config
-cp -ar home/.config/python_keyring ~/.config
 cp -ra home/.config/wget ~/.config
+mkdir -p ~/.config/gtk-2.0
+touch ~/.config/gtk-2.0/gtkrc
 
-# More opinionated settings
-cp home/.config/mimeapps.list ~/.config
-cp -ar home/.config/mpv ~/.config
-cp -ar home/.config/pcmanfm ~/.config
-cp -ar home/.config/pcmanfm-qt ~/.config
-cp -ar home/.config/pypoetry ~/.config
+# DE configs (core apps/tools that make up the base graphical experience)
+cp -ra home/.config/xdg-desktop-portal ~/.config
+cp -ra home/.config/hypr ~/.config
+cp -ra home/.config/swappy ~/.config
+cp -ra home/.config/systemd ~/.config
+#cp -ar home/.config/fontconfig ~/.config
+cp -ra home/.config/swaync ~/.config
+
+# Theme configs
 cp -ar home/.config/qt5ct ~/.config
 cp -ar home/.config/qt6ct ~/.config
 cp -ar home/.config/Kvantum ~/.config
-cp -ar home/.config/gtk-2.0 ~/.config
+cp -arf home/.config/gtk-2.0 ~/.config
 cp -ar home/.config/gtk-3.0 ~/.config
 cp -ar home/.config/gtk-4.0 ~/.config
-cp -ar home/.config/tmux ~/.config
-cp -ra home/.config/hyfetch ~/.config
-cp -ra home/.config/wireplumber ~/.config
-cp -ra home/.config/alacritty ~/.config
-cp -ra home/.config/kitty ~/.config
-cp -ra home/.config/systemd ~/.config
-cp -ra home/.config/swaync ~/.config
-cp -ra home/.config/eww ~/.config
-cp -ra home/.config/hypr ~/.config
+cp -ar home/.local/share/icons ~/.local/share
+sudo cp root/etc/fonts/local.conf /etc/fonts
+
+# Electron flags to make apps use wayland
 cp home/.config/chromium-flags.conf ~/.config
-cp -ra home/.config/swappy ~/.config
-cp -ra home/.config/wofi ~/.config
-cp -ra home/.config/nomacs ~/.config
-cp -ra home/.config/qimgv ~/.config
-cp -ra home/.config/xdg-desktop-portal ~/.config
+cp home/.config/code-flags.conf ~/.config
+cp home/.config/codium-flags.conf ~/.config
+cp home/.config/electron-flags.conf ~/.config
+cp home/.config/spotify-flags.conf ~/.config
+
+# Specific application configs (fairly opinionated)
+cp -ar home/.config/kitty ~/.config
+cp -ar home/.config/pcmanfm ~/.config
+cp -ar home/.config/pcmanfm-qt ~/.config
+cp -ar home/.config/nomacs ~/.config
+cp -ar home/.config/qimgv ~/.config
+cp -ar home/.config/mpv ~/.config
+cp -ar home/.config/pypoetry ~/.config
+cp -ar home/.config/tmux ~/.config
+cp -ar home/.config/hyfetch.json ~/.config
+
+# Other configs
+cp -ar home/.config/python_keyring ~/.config
+cp home/.config/mimeapps.list ~/.config
+cp home/.config/user-dirs.dirs ~/.config
+cp home/.config/user-dirs.locale ~/.config
 
 # Sync mirrors and update before other installations
 paru -Syu --noconfirm
 
-# Instal fonts
-paru -S --needed \
-  libxft xorg-font-util \
-  ttf-joypixels otf-jost lexend-fonts-git ttf-sarasa-gothic \
-  ttf-roboto ttf-work-sans ttf-comic-neue \
-  gnu-free-fonts tex-gyre-fonts ttf-liberation otf-unifont \
-  inter-font ttf-lato ttf-dejavu noto-fonts noto-fonts-cjk \
-  noto-fonts-emoji ttf-material-design-icons-git \
-  ttf-font-awesome ttf-twemoji otf-openmoji \
-  adobe-source-code-pro-fonts adobe-source-han-mono-otc-fonts \
-  adobe-source-sans-fonts ttf-jetbrains-mono otf-monaspace \
-  ttf-ms-fonts
-# nerd fonts (I like to install specific pkgs instead of the whole nerd-fonts group
-# as it's pretty large: ~8GB)
-paru -S --needed \
-  ttf-firacode-nerd otf-firamono-nerd ttf-iosevka-nerd ttf-nerd-fonts-symbols \
-  ttf-hack-nerd ttf-heavydata-nerd ttf-gohu-nerd
-
-# Audio
-paru -S --noconfirm --needed \
-  pipewire pipewire-pulse pipewire-pulse pipewire-jack wireplumber alsa-utils pulsemixer
-
-# Themes
-paru -S --noconfirm --needed \
-  rose-pine-cursor papirus-folders-catppuccin-git tokyonight-gtk-theme-git \
-  nwg-look kvantum kvantum-qt5 qt5ct qt6ct kvantum-theme-catppuccin-git
-
-# Extra themes (I don't use these in my config, but I might switch at some point
-# and it's nice to have them listed and available)
-paru -S --noconfirm --needed \
-  gnome-themes-extra gnome-icon-theme-extras python-qt-material notify-osd papirus-icon-theme \
-  adwaita-qt5 adwaita-qt6
-
 # WM Essentials
 paru -S --noconfirm --needed \
-  swaync udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome brightnessctl
+  udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome brightnessctl \
+  xdg-user-dirs playerctl
 
 # Wayland WM essentials
 paru -S --noconfirm --needed \
-  wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk qt5-wayland qt6-wayland wev wl-gammarelay-rs wdisplays \
-  uwsm
-
-# Utilities
-paru -S --noconfirm --needed \
-  nm-connection-editor ffmpegthumbnailer upower devour hyfetch fastfetch bottom tesseract tesseract-data-eng \
-  nvtop
+  xdg-desktop-portal xdg-desktop-portal-gtk qt5-wayland qt6-wayland \
+  wl-clipboard uwsm
 
 # Wayland Utilities
 paru -S --noconfirm --needed \
-  grim slurp wofi swappy wf-recorder wlogout clipman hyprpicker hyprpaper
+  wev wdisplays grim slurp swappy wf-recorder wlogout cliphist \
+  hyprpicker hyprpaper hyprsunset
+
+# Application launcher
+paru -S --noconfirm --needed walker elephant elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-symbols elephant-calc elephant-menus
+
+# Hyprland
+paru -S --noconfirm --needed hyprland xdg-desktop-portal-hyprland
+
+# Audio
+paru -S --noconfirm --needed \
+  pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack \
+  alsa-utils pulsemixer
+
+# Other Utilities
+paru -S --noconfirm --needed \
+  nm-connection-editor ffmpegthumbnailer hyfetch fastfetch tesseract tesseract-data-eng \
+  nvtop
+
+# Themes (Qt theme, GTK theme, icons theme, cursor theme)
+paru -S --noconfirm --needed \
+  papirus-folders-catppuccin-git tokyonight-gtk-theme-git \
+  kvantum kvantum-qt5 qt5ct qt6ct kvantum-theme-catppuccin-git \
+  rose-pine-cursor rose-pine-hyprcursor
+
+# Fonts
+paru -S --noconfirm --needed \
+  gnu-free-fonts noto-fonts noto-fonts-emoji noto-fonts-cjk \
+  ttf-jost ttf-comic-neue ttf-material-design-icons-webfont ttf-joypixels \
+  ttf-twemoji otf-openmoji ttf-ms-fonts
+
+# Nerd Fonts (These contain most of the other fonts that I need)
+paru -S --noconfirm --needed nerd-fonts
 
 # Applications
 paru -S --noconfirm --needed \
@@ -119,30 +124,34 @@ paru -S --noconfirm --needed \
 # Bluetooth
 paru -S --noconfirm --needed bluez bluez-utils blueberry
 
-# Hyprcursor theme of my choice
-mkdir -p ~/.local/share/icons
-pushd ~/.local/share/icons
-git clone https://github.com/ndom91/rose-pine-cursor-hyprcursor
-popd
-
 # Lockscreen
 # To test the lockscreen, you can run loginctl lock-session, while in a graphical session
 paru -S --noconfirm --needed hyprlock hypridle systemd-lock-handler
 
-# Eww bar
-paru -S --noconfirm --needed eww
+# Temporary
+# TODO: Swaync should be replaced by quickshell (also remove swaync.service)
+# TODO: Quickshell should be moved outside of temporary once config is ready
+paru -S --noconfirm --needed quickshell swaync
 
-# Hyprland
-paru -S --noconfirm --needed hyprland xdg-desktop-portal-hyprland
-sudo pacman -R --noconfirm xdg-desktop-portal-gnome || true # don't fail if this isn't installed
+# Dconf/Gsettings
+paru -S --needed --noconfirm dconf
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+gsettings set org.gnome.desktop.interface gtk-theme 'Tokyonight-Dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+gsettings set org.gnome.desktop.interface font-name 'Noto Sans 10'
+gsettings set org.gnome.desktop.interface document-font-name 'Noto Sans 10'
+gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro 10'
+gsettings set org.gnome.desktop.interface cursor-theme 'BreezeX-RosePine-Linux'
+gsettings set org.gnome.desktop.interface cursor-size 24
 
-# Tools needed to build hyprland from source
-# (even though I will not be building hyprland here and will instead use the packaged version,
-# I like to have these on my system, since I sometimes want to experiment with building hyprland
-# for debuggin)
-paru -S --noconfirm --needed \
-  gdb ninja gcc cmake meson libxcb xcb-proto xcb-util xcb-util-keysyms libxfixes libx11 libxcomposite \
-  xorg-xinput libxrender pixman wayland-protocols cairo pango seatd libxkbcommon xcb-util-wm xorg-xwayland \
-  libinput libliftoff libdisplay-info cpio hyprlang hyprcursor
+# Services
+sudo systemctl enable --now seatd.service
+systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service
 
-popd
+echo "GUI Installation finished, you should now reboot and run uwsm start hyprland.desktop"
+echo ""
+echo "Optional extra steps:"
+echo " - setup greetd (follow guide)"
+echo " - setup printing (follow guide)"
+
+popd >/dev/null

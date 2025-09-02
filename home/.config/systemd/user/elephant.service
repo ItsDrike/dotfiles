@@ -1,0 +1,15 @@
+[Unit]
+Description=Elephant data provider and executor backend for application launchers
+Documentation=https://github.com/abenz1267/elephant
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/elephant
+Restart=on-failure
+
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

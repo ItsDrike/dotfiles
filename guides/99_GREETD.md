@@ -104,6 +104,13 @@ script_name="$0"
 shell="$(getent passwd "$USER" | awk -F: '{print $NF}')"
 command=("$@")
 
+# This syntax might be a bit confusing at first. It works as follows:
+# 1. Replace this wrapper process with the user's login shell (through exec)
+# 2. The shell is told to run 'exec $@' replacing itself with another process
+# 3. The $@ in the exec above referrs to the arguments passed the shell (after -c '...')
+# 4. "$script_name" is passed to the shell as $0 (process name), not included in $@
+# 5. The ${command[@]} matches the $@ which this script was called with
+# -> The command passed into this script as args is ran within the user's shell
 exec "$shell" -c 'exec "$@"' "$script_name" "${command[@]}"
 ```
 
@@ -150,3 +157,5 @@ command = "tuigreet --time --remember --remember-user-session --asterisks --gree
 # in the `video` group.
 user = "greeter"
 ```
+
+Do note that if you're using UWSM, you'll want to run `uwsm start hyprland.desktop` instead of directly running `Hyprland`.

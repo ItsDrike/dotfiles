@@ -122,7 +122,6 @@ umount /mnt
 
 ```bash
 mount -o subvol=root,noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt
-mount --mkdir -o subvol=snapshots,noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt/snapshots
 mount --mkdir -o subvol=home,noatime,lazytime,commit=120,compress=zstd:5 /dev/mapper/cryptfs /mnt/data
 mount --mkdir -o noatime,lazytime,commit=120,compress=zstd:1 /dev/mapper/cryptfs /mnt/.btrfs
 mount --mkdir -o subvol=swap /dev/mapper/cryptfs /mnt/swap
@@ -166,10 +165,10 @@ cd ~/dots
 ./install_root.sh
 ```
 
-Enter a fish shell for a better experience
+Enter the ZSH shell for a better experience
 
 ```bash
-fish
+zsh
 ```
 
 Create non-privileged user
@@ -181,7 +180,6 @@ install -o itsdrike -g itsdrike -d /home/itsdrike
 mv ~/dots /home/itsdrike
 chown -R itsdrike:itsdrike /home/itsdrike/dots
 passwd itsdrike
-chsh -s /usr/bin/zsh itsdrike
 su -l itsdrike
 fish
 ```
@@ -198,6 +196,13 @@ Exit (logout) the user and relogin, this time into configured zsh shell
 ```bash
 exit
 su -l itsdrike
+```
+
+Setup neovim
+
+```bash
+git clone https://github.com/ItsDrike/lazyvim ~/.config/nvim
+nvim --headless "+Lazy! sync" +qa
 ```
 
 ## Fstab adjustments
@@ -226,7 +231,6 @@ they're way too permissive. This is how I like to structure my fstab:
 # /dev/mapper/cryptfs LABEL=FS UUID=bffc7a62-0c7e-4aa9-b10e-fd68bac477e0
 /dev/mapper/cryptfs /           btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async,subvol=/root        0 1
 /dev/mapper/cryptfs /data       btrfs       rw,noatime,lazytime,compress=zstd:5,ssd,space_cache=v2,commit=120,discard=async,subvol=/data        0 2
-/dev/mapper/cryptfs /snapshots  btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async,subvol=/snapshots   0 2
 /dev/mapper/cryptfs /swap       btrfs       rw,subvol=/swap                                                                                     0 0
 /dev/mapper/cryptfs /.btrfs     btrfs       rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,commit=120,discard=async                     0 2
 

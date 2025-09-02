@@ -15,7 +15,7 @@ if [ "$UID" != 0 ]; then
 fi
 
 # cd into the dotfiles dir, no matter where the script was called from
-pushd "$(dirname "$0")"
+pushd "$(dirname "$0")" >/dev/null
 
 # Sync mirrors and update before other installations
 pacman -Syu --noconfirm
@@ -23,7 +23,7 @@ pacman -Syu --noconfirm
 # Install essential packages
 pacman -S --noconfirm --needed \
   networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop \
-  bind tealdeer base-devel git pkgfile fd ripgrep fwupd arch-audit
+  bind base-devel git fd ripgrep fwupd arch-audit
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
 pacman -S --noconfirm --needed python-rich bc lua jq bat
@@ -44,34 +44,32 @@ cp root/.rsync-filter /
 # Sync pacman repos after /etc/pacman.conf got updated
 sudo pacman -Sy
 
-# Install zsh and make it the default shell for root
-sudo pacman -S --noconfirm --needed zsh zoxide
-chsh -s /usr/bin/zsh root
+# Enable some basic services
+systemctl enable \
+  systemd-resolved.service systemd-timesyncd.service systemd-oomd.service \
+  paccache.timer pacman-filesdb-refresh.timer reflector.timer \
+  NetworkManager.service
+systemctl mask systemd-networkd.service # We have NetworkManager for this
 
-# Copy ZSH shell configuration
-mkdir -p /etc/zsh
-cp -ra root/etc/zsh /etc
-mkdir -p ~/.config
+# Install ZSH shell
+pacman -S --noconfirm --needed zsh
 cp -ra home/.config/shell ~/.config
+rm -rf ~/.config/zsh/ || true # in case there is already some zsh config
 cp -ra home/.config/zsh ~/.config
-rm ~/.config/shell/py-alias # we don't need pyenv python aliases for root
 rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
-install -m 700 -d ~/.local/share/gnupg
+chsh -s /usr/bin/zsh root
 
-# Enable some basic services
-systemctl enable systemd-resolved
-systemctl enable systemd-timesyncd
-systemctl enable NetworkManager
-systemctl mask systemd-networkd # We have NetworkManager for this
-systemctl enable seatd
-systemctl enable paccache.timer
-systemctl enable reflector.timer
-systemctl enable pkgfile-update.timer
-systemctl enable fstrim.timer
+echo ""
+echo "You can now run zsh or exit the chroot, and re-run it with: arch-chroot /mnt zsh."
+echo "This will put you into a configured ZSH shell, you can continue " \
+  "configuring the rest of the system manually from there."
+echo ""
+echo "Optional extra steps:"
+echo " - enable cronie & copy /etc/crontab & anacrontab from dotfiles"
+echo " - install docker and copy /etc/docker"
+echo " - setup MAC address randomization by copying /etc/NetworkManager"
+echo " - setup battery optimizations (follow guide)"
+echo " - setup UKIs -> secure-boot -> systemd initramfs -> tpm unlocking (follow guides)"
 
-echo "You can exit the chroot and re-run it with: arch-chroot /mnt zsh"
-echo "This will put you into a configured ZSH shell, you can continue" \
-  "configuring the rest of the system manually from there"
-
-popd
+popd >/dev/null

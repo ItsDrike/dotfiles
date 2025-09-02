@@ -29,7 +29,7 @@
 
 # IPv4 and IPv6 localhost aliases
 127.0.0.1   localhost ip4-localhost
-::1         ip6-localhost
+::1         localhost ip6-localhost
 
 # Current system definition
 127.0.1.1   pc.localdomain pc

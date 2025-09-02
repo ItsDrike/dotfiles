@@ -16,3 +16,7 @@ if ! zgenom saved; then
     zgenom save
 fi
 
+# Override the comment color to make comments visible on black bg
+# (overrides the zsh-fast-highlighting plugin)
+FAST_HIGHLIGHT_STYLES[comment]='fg=#696C76'
+

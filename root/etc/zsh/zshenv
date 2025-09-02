@@ -1,1 +1,15 @@
-export ZDOTDIR="$HOME"/.config/zsh
+# Environmental variable definitions for ZSH.
+#
+# This is the very first startup file that ZSH will read and will always get sourced,
+# regardless of whether the shell is login or non-login, interactive or non-interactive,
+# used in a script or just ran as a command.
+
+
+# I prefer defining my environment variables through user-specific files, however, doing
+# so with ZSH generally requires at least a ~/.zshenv file. For this reason, this global
+# file is used to override the $ZDOTDIR env var, which allows me to instead use the more
+# XDG compliant path of ~/.config/zsh/.zshenv, avoiding clutter in my home directory.
+#
+# If you wish to replicate my setup but you don't have root rights, you can instead
+# symlink your ~/.zshenv to point to ~/.config/zsh/.zshenv and set $ZDOTDIR from there.
+export ZDOTDIR="$HOME/.config/zsh"

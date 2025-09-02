@@ -364,7 +364,7 @@ def show_diffs(diffs: Iterable[FileDiff], ask_show_diff: bool, apply_fix_prompt:
 def exclude_fun(diff: FileDiff) -> bool:
     exclude_rules: list[Callable[[FileDiff], bool]] = [
         lambda d: d.status is DiffStatus.MATCH,
-        lambda d: d.dot_file.name == ".keep" and d.sys_file.parent.is_dir(),
+        lambda d: d.dot_file.name == ".gitkeep" and d.sys_file.parent.is_dir(),
         lambda d: Path("root/etc/opensnitchd/rules") in d.rel_dot_file.parents,
         lambda d: Path("root/usr/local/src/eww") in d.rel_dot_file.parents,
         lambda d: Path("root/usr/local/src/z.lua") in d.rel_dot_file.parents,

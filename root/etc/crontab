@@ -3,7 +3,5 @@
 # See cron(8) and crontab(5) for details.
 
 # m h dom mon dow user command
-*/30 * * * * 	 root 	/usr/bin/updatedb
-
-15,30,45 * * * * 	 root 	/usr/local/bin/btrfs-backup -l quaterly -k 4 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data
+15,30,45 * * * * 	 root 	/usr/local/bin/btrfs-backup -l querter-hourly -k 4 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data
 0        * * * * 	 root 	/usr/local/bin/btrfs-backup -l hourly -k 8 -d /.btrfs/snapshots -- /.btrfs/root /.btrfs/data

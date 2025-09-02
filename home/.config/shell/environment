@@ -14,6 +14,7 @@ if [ -d "$HOME/.local/bin" ]; then
   PATH+=":$(find -L ~/.local/bin -type d | tr '\n' ':' | sed 's/:$//')"
 fi
 
+# Add all NPM global binaries to PATH
 if [ -d "$HOME/.local/share/npm/bin" ]; then
   PATH+=":$HOME/.local/share/npm/bin"
 fi
@@ -30,7 +31,7 @@ uid="$(id -u)"
 # Default programs
 export EDITOR="nvim"
 export BROWSER="firefox"
-export TERMINAL="alacritty"
+export TERMINAL="kitty"
 export DIFFPROG="nvim -d"
 export FILEMANAGER="pcmanfm-qt"
 
@@ -43,7 +44,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_BIN_HOME="$HOME/.local/bin"
 
 # XDG User directories (should match ~/.config/user-dirs.dirs)
-#export XDG_DESKTOP_DIR="$HOME/Desktop"
+export XDG_DESKTOP_DIR="$HOME/Desktop"
 export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export XDG_TEMPLATES_DIR="$XDG_DATA_HOME/templates"
 export XDG_PUBLICSHARE_DIR="$XDG_DATA_HOME/public"
@@ -53,15 +54,13 @@ export XDG_PICTURES_DIR="$HOME/Media/Pictures"
 export XDG_VIDEOS_DIR="$HOME/Media/Videos"
 export XDG_SCREENSHOTS_DIR="$HOME/Media/Pictures/Screenshots"
 
-# ZSH dirs
+# ZSH settings
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$HOME/.cache/zsh"
 export HISTFILE="$ZSH_CACHE/history"
 export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump-${ZSH_VERSION:-}"
 
 # Per-Application XDG settings
-export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export LESSHISTFILE="-"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc":"$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -81,7 +80,6 @@ export RANDFILE="$XDG_CACHE_HOME/rnd"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc.py"
 export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
 export PYTHONUSERBASE="$XDG_DATA_HOME/python"
-export _ZL_DATA="$XDG_DATA_HOME/zlua"
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
@@ -140,8 +138,6 @@ fi
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export SUDO_ASKPASS="$HOME/.local/bin/scripts/gui/prompt/menupass"
 export PIPENV_VENV_IN_PROJECT=1    # Force pipenv to create new environments within projects ./.venv
-export XSECURELOCK_SHOW_HOSTNAME=0 # Don't show hostname in xsecurelock
-export XSECURELOCK_SHOW_DATETIME=1 # Show current date and time in xsecurelock
 
 # Remove irrelevant variables added for posix compatibility
 unset posix

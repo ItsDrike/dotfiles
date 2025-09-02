@@ -1,0 +1,16 @@
+[Unit]
+Description=Walker - A Modern Application Launcher
+Documentation=https://github.com/abenz1267/walker
+After=graphical-session.target elephant.service
+Requires=elephant.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/walker --gapplication-service
+Restart=on-failure
+
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
