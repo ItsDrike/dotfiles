@@ -27,7 +27,7 @@
 set -euo pipefail
 
 VERSION="0.1.0"
-DEFAULT_SNAPS_DIR="/.btrfs/@snapshots"
+DEFAULT_SNAPS_DIR="/.btrfs/snapshots"
 DEFAULT_PREFIX="backup"
 DEFAULT_LABEL="adhoc"
 
