@@ -110,8 +110,8 @@ paru -S --noconfirm --needed \
 # Fonts
 paru -S --noconfirm --needed \
   gnu-free-fonts noto-fonts noto-fonts-emoji noto-fonts-cjk \
-  ttf-jost ttf-comic-neue ttf-material-design-icons-webfont ttf-joypixels \
-  ttf-twemoji otf-openmoji ttf-ms-fonts
+  otf-monaspace ttf-jost ttf-comic-neue ttf-material-design-icons-webfont \
+  ttf-joypixels ttf-twemoji otf-openmoji ttf-ms-fonts
 
 # Nerd Fonts (These contain most of the other fonts that I need)
 paru -S --noconfirm --needed nerd-fonts
