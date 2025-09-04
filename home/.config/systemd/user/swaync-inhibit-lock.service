@@ -1,0 +1,12 @@
+[Unit]
+Description=Inhibit swaync notifications on lock dbus event (using systemd-lock-handler)
+Requisite=swaync.service
+Before=lock.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/swaync-client --inhibitor-add screen-locker
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=lock.target

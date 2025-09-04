@@ -146,7 +146,7 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Services
 sudo systemctl enable --now seatd.service
-systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service
+systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service
 
 echo "GUI Installation finished, you should now reboot and run uwsm start hyprland.desktop"
 echo ""

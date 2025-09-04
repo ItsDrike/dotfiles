@@ -1,0 +1,17 @@
+[Unit]
+Description=Run hyprlock screenlocker on lock dbus event (using systemd-lock-handler)
+Requisite=graphical-session.target
+# If hyprlock exits cleanly, enter a 'unlock' target
+OnSuccess=unlock.target
+# When lock is stopped, stop this unit too
+PartOf=lock.target
+
+[Service]
+ExecStart=/usr/bin/hyprlock
+StandardOutput=journal
+ExecStopPost=/bin/loginctl unlock-session
+Restart=on-failure
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=lock.target
