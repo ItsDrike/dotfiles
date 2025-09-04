@@ -1,0 +1,15 @@
+(defwidget cpu_module []
+  (eventbox
+    :class "module cpu"
+
+    (box
+      :space-evenly false
+
+      (label
+        :class "icon"
+        :text " ")
+      (label
+        :class "value"
+        :text "${round(EWW_CPU.avg,2)}%"
+      )
+  )))

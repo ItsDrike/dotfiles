@@ -1,0 +1,18 @@
+[Unit]
+Description=Open %I eww window
+After=graphical-session.target
+After=eww.service
+PartOf=eww.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/eww ping
+ExecStart=/usr/bin/eww open %i
+ExecStop=/usr/bin/eww close %i
+RemainAfterExit=true
+Restart=on-failure
+RestartSec=3s
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

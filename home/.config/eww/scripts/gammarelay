@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "temperature" ]; then
+	watch_cmd="{t}"
+	update_cmd="UpdateTemperature"
+	update_signature="n"
+	set_cmd="Temperature"
+	set_signature="q"
+	default_val=6500
+	click_val=4500
+	scroll_change=100
+	cmp_op="<"
+
+elif [ "$1" = "brightness" ]; then
+	watch_cmd="{bp}"
+	update_cmd="UpdateBrightness"
+	update_signature="d"
+	set_cmd="Brightness"
+	set_signature="d"
+	default_val=1
+	click_val=0.8
+	scroll_change=0.02
+	cmp_op="<"
+
+elif [ "$1" = "gamma" ]; then
+	watch_cmd="{g}"
+	update_cmd="UpdateGamma"
+	update_signature="d"
+	set_cmd="Gamma"
+	set_signature="d"
+	default_val=1
+	click_val=1.1
+	scroll_change=0.02
+	cmp_op=">"
+
+else
+	>&2 echo "Invalid option, first argument must be one of: temperature, brightness, gamma"
+	exit 1
+fi
+
+if [ "$2" = "watch" ]; then
+	exec wl-gammarelay-rs watch "$watch_cmd"
+
+elif [ "$2" = "get" ]; then
+	exec busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay "$set_cmd" | cut -d' ' -f2
+
+elif [ "$2" = "scroll" ]; then
+	if [ "$3" = "up" ]; then
+		sign="+"
+	elif [ "$3" = "down" ]; then
+		sign="-"
+	else
+		>&2 echo "Invalid sign, second argument must be one of: up, down"
+		exit 1
+	fi
+
+	exec busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay "$update_cmd" "$update_signature" ${sign}${scroll_change}
+
+elif [ "$2" = "set" ]; then
+	mode="$3"
+	if [ "$mode" = "toggle" ]; then
+		cur_val="$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay "$set_cmd" | cut -d' ' -f2)"
+		if [ "$(echo "$cur_val $cmp_op $default_val" | bc -l)" = "1" ]; then
+			mode="off"
+		else
+			mode="on"
+		fi
+	fi
+
+	if [ "$mode" = "on" ]; then
+		exec busctl --user -- set-property rs.wl-gammarelay / rs.wl.gammarelay "$set_cmd" "$set_signature" "$click_val"
+	elif [ "$mode" = "off" ]; then
+		exec busctl --user -- set-property rs.wl-gammarelay / rs.wl.gammarelay "$set_cmd" "$set_signature" "$default_val"
+	else
+		>&2 echo "Invalid mode, third argument, must be one of: toggle, on, off"
+		exit 1
+	fi
+
+else
+	>&2 echo "Invalid operation, second argument must be one of: watch, scroll, set"
+	exit 1
+fi

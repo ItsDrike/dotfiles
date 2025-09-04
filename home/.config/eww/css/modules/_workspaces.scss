@@ -1,0 +1,29 @@
+.workspaces {
+  background-color: $bg1-a;
+  border-radius: 25px;
+
+  .icon,
+  .icon label {
+    font-family: "JetBrainsMono Nerd Font", "Material Symbols Outlined";
+    font-size: 1.2rem;
+  }
+
+  .value {
+    margin: 0 10px;
+  }
+
+  .focused {
+    // text-decoration: underline;
+    // text-decoration-color: red;
+    // text-decoration-style: double;
+    color: $fg;
+  }
+
+  .active {
+    color: #bbb;
+  }
+
+  .inactive {
+    color: #555;
+  }
+}

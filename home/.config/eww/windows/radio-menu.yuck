@@ -1,0 +1,78 @@
+(defwidget radio-menu-win []
+  (box
+    :class "radio-menu-box"
+    :space-evenly false
+    :orientation "v"
+
+    (box
+      :class "text-row"
+      :space-evenly false
+      (label
+        :class "title"
+        :text "Radio/Connections Panel"))
+
+    (box
+      :class "element-row"
+
+      (box
+        :class "wifi-box"
+        :space-evenly false
+        :orientation "v"
+        (box
+          :class "element icon"
+          :space-evenly false
+          :halign "center"
+          (button
+            :class "wifi-button"
+            :tooltip "${net.state} (strength: ${net.signal}%)"
+            :onclick "scripts/net toggle"
+            {net.icon})
+          (label
+            :class "separator"
+            :text "│")
+          (button
+            :class "wifi-arrow-btn"
+            :onclick "eww close radio-menu && nm-connection-editor &"
+            "󰅂"))
+        (label
+          :text {net.essid}
+          :xalign 0.5
+          :limit-width 15))
+
+      (box
+        :class "bluetooth-box"
+        :space-evenly false
+        :orientation "v"
+        (box
+          :class "element icon"
+          :space-evenly false
+          :halign "center"
+          (button
+            :class "bluetooth-button"
+            :onclick "scripts/bluetooth toggle"
+            :tooltip "${bluetooth.name} (${bluetooth.mac}) ${bluetooth.battery}"
+            {bluetooth.icon})
+          (label
+            :class "separator"
+            :text "│")
+          (button
+            :class "bluetooth-arrow-btn"
+            :onclick "eww close radio-menu && blueberry"
+            "󰅂"))
+        (label
+          :text {bluetooth.name}
+          :xalign 0.5
+          :tooltip "${bluetooth.name} (${bluetooth.mac}) ${bluetooth.battery}"
+          :limit-width 15)))
+    ))
+
+(defwindow radio-menu
+  :stacking "fg" 
+  :monitor 0
+  :geometry (geometry
+    :x "0"
+    :y "0"
+    :width "0%"
+    :height "0%"
+    :anchor "right top")
+  (radio-menu-win))

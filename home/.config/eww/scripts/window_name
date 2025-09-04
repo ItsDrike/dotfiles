@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# shellcheck source=include
+source "./scripts/include"
+
+hyprland_ipc "activewindow" | ./scripts/window_name.py

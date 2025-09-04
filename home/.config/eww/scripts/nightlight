@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# shellcheck source=include
+source "./scripts/include"
+
+# Consider usning a file as a flag for whether nightlight is on or off
+# as we might be in transition state and just killing the program might
+# not be enough.
+
+if [ "$1" = "toggle" ]; then
+	gammastep -x
+fi

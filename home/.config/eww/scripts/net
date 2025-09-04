@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# shellcheck source=include
+source "./scripts/include"
+
+STRENGTH_ICONS=("󰤫" "󰤯" "󰤟" "󰤢" "󰤥" "󰤨")
+DISCONNECTED_ICON="󰤮"
+WIFI_OFF="󰖪"
+
+toggle() {
+  status=$(rfkill -J | jq -r '.rfkilldevices[] | select(.type == "wlan") | .soft' | head -1)
+
+  if [ "$status" = "unblocked" ]; then
+    rfkill block wlan
+  else
+    rfkill unblock wlan
+  fi
+}
+
+get_report() {
+    connection_details="$(nmcli -t -f NAME,TYPE,DEVICE connection show --active | grep wireless | head -n1)"
+    essid="$(echo $connection_details | cut -d':' -f1)"
+    device="$(echo $connection_details | cut -d':' -f3)"
+    if [ -n "$device" ]; then
+      state="$(nmcli -t -f DEVICE,STATE device status | grep "$device" | head -n1 | cut -d':' -f2)"
+      signal="$(nmcli -t -f in-use,signal dev wifi | grep "\*" | cut -d':' -f2)"
+    else
+      state="unknown"
+      signal="0"
+    fi
+
+    if [ "$state" = "disconnected" ] ; then
+      icon="$DISCONNECTED_ICON"
+    elif [ "$state" = "unknown" ]; then
+      icon="$WIFI_OFF"
+    else
+      icon="$(pick_icon "$signal" 0 100 "${STRENGTH_ICONS[@]}")"
+    fi
+
+    jq -n -c --monochrome-output \
+      --arg essid "$essid" \
+      --arg icon "$icon" \
+      --arg state "$state" \
+      --arg signal "$signal" \
+      '$ARGS.named'
+}
+
+case "$1" in
+  "toggle") toggle ;;
+  "status") get_report ;;
+  *) >&2 echo "Invalid usage, argument '$1' not recognized."; exit 1 ;;
+esac

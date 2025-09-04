@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+ICON_IDLE="󰂯"
+ICON_CONNECTED="󰂱"
+ICON_OFF="󰂲"
+
+toggle() {
+  status=$(rfkill -J | jq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
+
+  if [ "$status" = "unblocked" ]; then
+    rfkill block bluetooth
+  else
+    rfkill unblock bluetooth
+    if ! systemctl -q is-active bluetooth.service; then
+      # This will use polkit for privillege elevation
+      systemctl start bluetooth
+    fi
+  fi
+}
+
+get_report() {
+  status=$(rfkill -J | jq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
+  if [ "$status" = "blocked" ] || ! systemctl -q is-active bluetooth.service || ! command -v bluetoothctl >/dev/null 2>&1; then
+    jq -n -c --monochrome-output \
+      --arg icon "$ICON_OFF" \
+      --arg status "unknown" \
+      --arg name "" \
+      --arg mac "" \
+      --arg battery "" \
+      '$ARGS.named'
+
+    return
+  fi
+
+  status="$(bluetoothctl show)"
+
+  powered="$(echo "$status" | grep Powered | cut -d' ' -f 2-)"
+  if [ "$powered" != "yes" ]; then
+    jq -n -c --monochrome-output \
+      --arg icon "$ICON_OFF" \
+      --arg status "unpowered" \
+      --arg name "" \
+      --arg mac "" \
+      --arg battery "" \
+      '$ARGS.named'
+
+    return
+  fi
+
+  status="$(bluetoothctl info)"
+  if [ "$status" == "Missing device address argument" ]; then
+    jq -n -c --monochrome-output \
+      --arg icon "$ICON_IDLE" \
+      --arg status "idle" \
+      --arg name "" \
+      --arg mac "" \
+      --arg battery "" \
+      '$ARGS.named'
+
+    return
+  fi
+
+  name="$(echo "$status" | grep Name | cut -d' ' -f 2-)"
+  mac="$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')"
+
+  if [ "$(echo "$status" | grep Percentage)" != "" ] && command -v upower >/dev/null 2>&1; then
+      battery="$(upower -i /org/freedesktop/UPower/devices/headset_dev_"$mac" | grep percentage | awk '{print $2}' | cut -f 1 -d '%')%"
+  else
+    battery=""
+  fi
+
+  jq -n -c --monochrome-output \
+    --arg icon "$ICON_CONNECTED" \
+    --arg status "connected" \
+    --arg name "$name" \
+    --arg mac "$mac" \
+    --arg battery "$battery" \
+    '$ARGS.named'
+}
+
+case "$1" in
+  "status") get_report ;;
+  "toggle") toggle ;;
+  *) >&2 echo "Invalid usage, argument '$1' not recognized."; exit 1 ;;
+esac

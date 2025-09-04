@@ -1,0 +1,21 @@
+; (defwidget sep []
+;   (label :class "separ module" :text "|"))
+
+
+; Consider making the window name clickable, opening up a full window that's showing
+; the selected window details (class, unformatted name, and perhaps even more, like
+; xwayland status, ...)
+(defwidget workspaces_module []
+  (box
+    :class "module workspaces"
+
+    (for workspace in workspaces
+      (eventbox
+        :class {workspace.active ? 'focused' : workspace.windows > 0 ? 'active' : 'inactive'}
+        :onclick `scripts/workspaces --switch ${workspace.id}`
+
+        (label
+          :class "value icon"
+          :text {workspace.format_name}))
+      )
+  ))

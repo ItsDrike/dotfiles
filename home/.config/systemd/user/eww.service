@@ -1,0 +1,14 @@
+[Unit]
+Description=Eww daemon
+After=graphical-session.target
+After=pipewire.service
+Requires=graphical-session.target
+Requires=pipewire.service
+
+[Service]
+ExecStart=/usr/bin/eww daemon --no-daemonize
+Restart=always
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

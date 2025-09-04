@@ -1,0 +1,24 @@
+(defwidget battery_module []
+  (eventbox
+    :class "module battery"
+
+    (box
+      :class {battery.critical ? "critical" : battery.full ? "full" : "normal"}
+      (box
+        :space-evenly false
+        :class {battery.plugged ? "plugged" : "unplugged" }
+
+        (box
+          :class "icon"
+          :space-evenly false
+
+          (label
+            :class "extra"
+            :text {battery.extra_icon})
+          (label
+            :text {battery.capacity_icon}))
+        (label
+          :class "value"
+          :text "${battery.percent}%"
+        )
+  ))))

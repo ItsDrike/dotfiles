@@ -1,0 +1,60 @@
+(defpoll time
+  :interval "5s"
+  :initial '{"date": "01 Jan", "hour": "00", "minute": "00", "day": "Monday"}'
+  `date +'{"date": "%d %b", "hour": "%H", "minute": "%M", "day": "%A"}'`)
+
+(deflisten volume 
+  :initial '{ "speaker_vol": "100", "speaker_mute": false, "speaker_icon": "", "microphone_mute": false, "microphone_vol": "100", "microphone_icon": "" }'
+  `scripts/volume loop`)
+
+(deflisten window_name
+  :initial `{"class":"","name":"","formatted_name":""}`
+  `scripts/window_name`)
+
+(deflisten workspaces
+  :initial `[{"id": 1,"name": "N/A","monitor": "N/A","windows": 1,"hasfullscreen": false,"lastwindow": "N/A","lastwindowtitle": "N/A","format_name": "N/A","active": true}]`
+  `scripts/workspaces --loop`)
+
+(defpoll battery 
+  :interval "1s"
+  :initial '{"percent":"0","plugged":"false","status":"N/A","capacity_icon":"","extra_icon":"","manufacturer":"N/A","model_name":"N/A","technology":"N/A","energy_now":"0","enerfy_full":"0","enerfy_full_design":"0","cycle_count":"0","critical":"false","full":"false"}'
+  `scripts/battery`)
+
+(defpoll uptime
+  :interval "1m"
+  :initial 'N/A'
+  `uptime -p | sed \\
+    -e 's/^up //' \\
+    -e 's/ years\\?,\\?/y/' \\
+    -e 's/ months\\?,\\?/m/' \\
+    -e 's/ weeks\\?,\\?/w/' \\
+    -e 's/ days\\?,\\?/d/' \\
+    -e 's/ hours\\?,\\?/h/' \\
+    -e 's/ minutes\\?,\\?/m/' \\
+    -e 's/ seconds\\?,\\?/s/' \\
+    | cut -d' ' -f-2`)
+
+(defpoll bitcoin
+  :interval "5m"
+  :initial "$N/A"
+  `bitcoin`)
+
+; TODO: Figure out how to store this one-time
+(defpoll kernel
+  :interval "10000h"
+  :initial 'N/A'
+  ; `uname -r | sed -r 's/(.+)-arch(.+)/\\1/'`
+  `uname -r`)
+
+(deflisten temperature `scripts/gammarelay temperature watch`)
+(deflisten brightness `scripts/gammarelay brightness watch`)
+(deflisten gamma `scripts/gammarelay gamma watch`)
+
+(defpoll net 
+  :interval "3s"
+  :initial '{"essid":"N/A","icon":"󱛇","state":"unknown","signal":"0"}'
+  `scripts/net status`)
+(defpoll bluetooth 
+  :interval "3s"
+  :initial '{"icon":"󰂲","status":"unknown","name":"","mac":"","battery":""}'
+  `scripts/bluetooth status`)

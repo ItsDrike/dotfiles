@@ -130,8 +130,9 @@ paru -S --noconfirm --needed hyprlock hypridle systemd-lock-handler
 
 # Temporary
 # TODO: Swaync should be replaced by quickshell (also remove swaync.service)
+# TODO: Eww should be replaced by quickshell (also remove associated services)
 # TODO: Quickshell should be moved outside of temporary once config is ready
-paru -S --noconfirm --needed quickshell swaync
+paru -S --noconfirm --needed quickshell swaync eww
 
 # Dconf/Gsettings
 paru -S --needed --noconfirm dconf

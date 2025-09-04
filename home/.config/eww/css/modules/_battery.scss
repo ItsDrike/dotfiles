@@ -1,0 +1,55 @@
+@keyframes blink {
+   0%{
+     opacity: 0;
+   }
+   50%{
+     opacity: 0.7;
+   }
+   100%{
+     opacity: 0;
+   }
+ }
+
+// .unplugged.low {
+//    color: #0000ff;
+//  }
+
+.battery {
+
+  .icon, .icon label {
+    font-family: "Material Symbols Outlined";
+
+    .extra, .extra label {
+      font-family: "Font Awesome 6 Free";
+    }
+  }
+
+  .critical { 
+    .unplugged {
+      color: #f00; 
+      .extra { animation: blink 1.2s linear infinite; }
+    }
+
+    .plugged {
+      .icon { color: $orange }
+      .extra { color: $green; }
+    }
+  }
+
+  .normal {
+    .unplugged {
+      .icon { color: $orange }
+    }
+    .plugged {
+      .icon { color: $green; } 
+    }
+  }
+
+  .full {
+    .icon { color: $green; }
+    .extra { color: $lime; }
+  }
+
+  .extra { margin-right: 5px; }
+  .icon { margin-right: 5px; }
+}
