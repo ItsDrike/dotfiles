@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Define some icons
-SPEAKER_ICONS=("" "" "")
-SPEAKER_MUTED_ICON=""
+SPEAKER_ICONS=("" "" "󰕾")
+SPEAKER_MUTED_ICON="󰖁"
 MIC_ICON=""
-MIC_MUTED_ICON=""
+MIC_MUTED_ICON="󰍭 "
 
 # Define some helper functions for getting/setting audio data using wireplumber (wpctl)
 
