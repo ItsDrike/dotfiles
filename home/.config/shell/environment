@@ -98,6 +98,7 @@ export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export RYE_HOME="$XDG_CONFIG_HOME/rye"
 export OMNISHARPHOME="$XDG_CONFIG_HOME"/omnisharp
+export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 
 # Theming
 export GTK_THEME="Tokyonight-Dark"
