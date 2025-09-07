@@ -232,11 +232,12 @@ alias sudovim='sudoedit'
 alias cls='clear'
 
 # Kitty terminal kitten shorthands
-if [ "$TERM" = "xterm=kitty" ]; then
+if [ "$TERM" = "xterm-kitty" ]; then
     alias hls='\ls --hyperlink=auto'
     alias hg='kitty +kitten hyperlinked_grep'
     alias transfer='kitty +kitten transfer'
     alias icat='kitty +kitten icat'
+    alias ssh="kitty +kitten ssh"
 fi
 
 # If user is not root, pass all commands via sudo/doas
