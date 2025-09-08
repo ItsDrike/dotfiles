@@ -165,10 +165,17 @@ cd ~/dots
 ./install_root.sh
 ```
 
-Enter the ZSH shell for a better experience
+Exit chroot and create an `/etc/resolv.conf` symlink (this needs to happen outside of chroot, since arch-chroot bind-mounts this file, so trying to override it from within won't work).
 
 ```bash
-zsh
+exit
+ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
+```
+
+Chroot back into the system, this time with the configured ZSH shell for better experience:
+
+```bash
+arch-chroot /mnt zsh
 ```
 
 Create non-privileged user

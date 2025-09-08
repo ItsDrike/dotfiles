@@ -7,6 +7,8 @@ set -euo pipefail
 # $ git clone https://github.com/ItsDrike/dotfiles ~/dots
 # $ cd ~/dots
 # $ ./install_root.sh
+# $ exit
+# $ ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 # -----------------------------------------------------------------------
 
 if [ "$UID" != 0 ]; then
@@ -65,6 +67,8 @@ echo "You can now run zsh or exit the chroot, and re-run it with: arch-chroot /m
 echo "This will put you into a configured ZSH shell, you can continue " \
   "configuring the rest of the system manually from there."
 echo ""
+echo "Required extra steps:"
+echo " - Symlink /etc/resolv.conf to use systemd-resolved stub (you need to be outside of arch-chroot for this, since arch-chroot is bind-mounting it). Run ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf"
 echo "Optional extra steps:"
 echo " - enable cronie & copy /etc/crontab & anacrontab from dotfiles"
 echo " - install docker and copy /etc/docker"
