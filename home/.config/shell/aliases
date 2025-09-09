@@ -229,6 +229,7 @@ alias tty-clock='tty-clock -Ssc' # Terminal clock screensaver
 alias rick='curl -s -L https://raw.githubusercontent.com/ItsDrike/rickrollrc/master/roll.sh| bash' # Terminal rickroll
 alias hist='fc -lt "$HISTTIMEFORMAT" 1'
 alias sudovim='sudoedit'
+alias sudonvim='sudoedit'
 alias cls='clear'
 
 # Kitty terminal kitten shorthands
