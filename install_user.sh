@@ -54,7 +54,7 @@ paru -S --noconfirm --needed \
   dnsutils net-tools wget jq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
   python-pip ripgrep zip p7zip unzip usbutils hexyl strace uv yt-dlp luarocks cargo \
   cmake meson npm downgrade glow xdg-ninja-git github-cli act lsof procs skim thermald \
-  tealdeer pkgfile zoxide
+  tealdeer pkgfile zoxide openbsd-netcat
 
 # Make paru properly track git dependencies
 paru --gendb
