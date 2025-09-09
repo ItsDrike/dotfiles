@@ -17,4 +17,4 @@ START_HOURS_RANGE=3-22
 
 @daily            10                snapshot.daily         /usr/local/bin/btrfs-backup -l daily -k 7 -d /.brtfs/snapshots -- /.btrfs/root /.btrfs/data
 @weekly           10                snapshot.daily         /usr/local/bin/btrfs-backup -l weekly -k 7 -d /.brtfs/snapshots -- /.btrfs/root /.btrfs/data
-@montly           10                snapshot.daily         /usr/local/bin/btrfs-backup -l monthly -k 7 -d /.brtfs/snapshots -- /.btrfs/root /.btrfs/data
+@monthly           10                snapshot.daily         /usr/local/bin/btrfs-backup -l monthly -k 7 -d /.brtfs/snapshots -- /.btrfs/root /.btrfs/data
