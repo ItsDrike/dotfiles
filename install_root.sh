@@ -25,7 +25,7 @@ pacman -Syu --noconfirm
 # Install essential packages
 pacman -S --noconfirm --needed \
   networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop \
-  bind base-devel git fd ripgrep fwupd arch-audit systemd-resolvconf
+  bind base-devel git fd ripgrep fwupd arch-audit systemd-resolvconf opensmtpd
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
 pacman -S --noconfirm --needed python-rich bc lua jq bat
@@ -33,6 +33,7 @@ pacman -S --noconfirm --needed python-rich bc lua jq bat
 # Copy over system configuration data
 cp root/etc/pacman.conf /etc
 cp root/etc/hosts /etc
+cp -r root/etc/smtpd /etc
 HOSTNAME="$(cat /etc/hostname)"
 sed -i "s/^127.0.1.1   pc.localdomain pc/127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}/g" /etc/hosts
 install -m 640 root/etc/sudoers /etc
@@ -50,7 +51,7 @@ sudo pacman -Sy
 systemctl enable \
   systemd-resolved.service systemd-timesyncd.service systemd-oomd.service \
   paccache.timer pacman-filesdb-refresh.timer reflector.timer \
-  NetworkManager.service
+  NetworkManager.service smtpd.service
 systemctl mask systemd-networkd.service # We have NetworkManager for this
 
 # Install ZSH shell
