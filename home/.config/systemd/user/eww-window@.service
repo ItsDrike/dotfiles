@@ -1,12 +1,13 @@
 [Unit]
 Description=Open %I eww window
+Documentation=https://elkowar.github.io/eww/
 After=graphical-session.target
 After=eww.service
 PartOf=eww.service
 
 [Service]
 Type=oneshot
-ExecStartPre=/usr/bin/eww ping
+ExecStartPre=/bin/sh -c "sleep 1 && eww ping"
 ExecStart=/usr/bin/eww open %i
 ExecStop=/usr/bin/eww close %i
 RemainAfterExit=true

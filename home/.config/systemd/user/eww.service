@@ -1,5 +1,6 @@
 [Unit]
 Description=Eww daemon
+Documentation=https://elkowar.github.io/eww/
 After=graphical-session.target
 After=pipewire.service
 Requires=graphical-session.target
