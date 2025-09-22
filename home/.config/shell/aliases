@@ -257,6 +257,7 @@ fi
 
 # XDG Base Directory fixes
 alias nvidia-settings='nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings'
+alias svn='svn --config-dir $XDG_CONFIG_HOME/subversion'
 
 # enable color support
 if [ -x /usr/bin/dircolors ]; then
