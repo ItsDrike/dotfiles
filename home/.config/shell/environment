@@ -102,6 +102,8 @@ export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export RYE_HOME="$XDG_CONFIG_HOME/rye"
 export OMNISHARPHOME="$XDG_CONFIG_HOME"/omnisharp
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
+export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
+export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 
 # Theming
 export GTK_THEME="Tokyonight-Dark"
