@@ -24,6 +24,7 @@ mkdir -p ~/.cache/nv
 cp -ra home/.config/wget ~/.config
 mkdir -p ~/.config/gtk-2.0
 touch ~/.config/gtk-2.0/gtkrc
+cp -ra home/.local/share/lein ~/.local/share
 
 # DE configs (core apps/tools that make up the base graphical experience)
 cp -ra home/.config/xdg-desktop-portal ~/.config
