@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+#
+# This script can be used to make a request to a specified TSA server,
+# which will cryptographically sign given git commit, with a verifiable
+# timestamp.
+#
+# This kind of signing can give the committer a way to prove that the
+# timestamps on their commits are in fact real (as it's fairly easy to
+# fake commit timestamps, even on the attached GPG signatures).
+#
+# If the TSA_URL isn't reachable (the internet is down), commit signing
+# will be skipped and a warning will be shown.
+#
+# Generally, this script is meant to be used as a post-commit git hook,
+# however you can also use it by manually invoking it. Doing so may be
+# useful if you made some commits while offline and you'd like to get a
+# TSA signature for those (even though the signature will no longer
+# closely match the commit date, it will still give anyone checking an
+# upper boundary of when you might've made your commit.)
+#
+# To install this as a git hook, run:
+# cp commit-tsa.sh "$(git rev-parse --git-dir)/hooks/post-commit"
+set -euo pipefail
+
+TSA_URL="https://freetsa.org/tsr"
+TSA_CA_CERT_URL="https://freetsa.org/files/cacert.pem"
+
+GIT_DIR="$(git rev-parse --git-dir)"
+TIMESTAMP_DIR="${GIT_DIR}/timestamps"
+
+mkdir -p "$TIMESTAMP_DIR"
+
+# Get the last commit, or the specified commit.
+commit="${TSA_COMMIT:-$(git rev-parse HEAD)}"
+
+# Create a temporary file with the exact commit object bytes as stored inside Git
+gitobj="${TIMESTAMP_DIR}/${commit}.obj"
+size="$(git cat-file -s "$commit")"
+printf 'commit %s\0' "$size" >"$gitobj" # git object header
+git cat-file commit "$commit" >>"$gitobj"
+
+# Sanity check (hashing the git object file should give the commit SHA)
+sha1_tmpobj="$(sha1sum "$gitobj" | awk '{print $1}')"
+if [[ "$sha1_tmpobj" != "$commit" ]]; then
+  echo "Error; reconstructed object hash ($sha1_tmpobj) does not match the commit id ($commit)" >&2
+  rm -rf "$gitobj"
+  exit 1
+fi
+
+# Create a timestamp request (sha256)
+req="${TIMESTAMP_DIR}/${commit}.tsq"
+openssl ts -query -data "$gitobj" -sha256 -cert -out "$req" 2>/dev/null
+
+resp="${TIMESTAMP_DIR}/${commit}.tsr"
+
+# If the response already exists, get user confirmation before overwriting
+if [ -f "$resp" ]; then
+  read -rp "Timestamp response for commit $commit already exists. Overwrite? [y/N]: " confirm
+  case "$confirm" in
+  [yY][eE][sS] | [yY]) ;;
+  *)
+    echo "Skipping timestamping for commit $commit (already timestamped)"
+    skip_request=true
+    ;;
+  esac
+fi
+
+# Send the request to TSA and save the response token
+if [ "${skip_request:-false}" != true ]; then
+  if ! curl -sf --data-binary @"$req" -H "Content-Type: application/timestamp-query" "$TSA_URL" -o "$resp"; then
+    echo "Warning: could not contact TSA server, skipping timestamping"
+    exit 2
+  fi
+fi
+
+# Get TSA certs for verification, if we don't already have them
+ca_file="${TIMESTAMP_DIR}/tsa-cs.pem"
+if [ ! -f "$ca_file" ]; then
+  if ! curl -sf "$TSA_CA_CERT_URL" -o "$ca_file"; then
+    echo "Warning: Getting TSA CA cert failed, skipping validation"
+    exit 2
+  fi
+fi
+
+# Validate against the CA
+openssl ts -verify -data "$gitobj" -in "$resp" -CAfile "$ca_file" 2>/dev/null | grep -E "Verification: OK" >/dev/null
+
+# Obtain the timestamp from the signed response and compare with commit
+ts_time="$(openssl ts -reply -in "$resp" -text 2>/dev/null | grep -E 'Time stamp:' | sed 's/^Time stamp: //')"
+ts_unix=$(date -d "$ts_time" +%s)
+
+commit_time=$(git show -s --format=%ct "$commit")
+
+diff=$((ts_unix - commit_time))
+
+# The margin here is to allow some time since after the commit was made and
+# this script was ran + we received the response + minor clock desync from TSA
+margin=3 # seconds
+
+abs_diff=${diff#-}
+readable_diff=$(awk -v s="$abs_diff" 'BEGIN{
+    y=int(s/31536000); s%=31536000
+    d=int(s/86400); s%=86400
+    h=int(s/3600); s%=3600
+    m=int(s/60); s%=60
+    str=""
+    if(y>0){ str=str y "y " d "d" }
+    else if(d>0){ str=str d "d " h "h" }
+    else if(h>0){ str=str h "h " m "m" }
+    else if(m>0){ str=str m "m " s "s" }
+    else{ str=s "s" }
+    print str
+}')
+
+if ((diff < 0)); then
+  echo "Warning: Commit is $readable_diff in the future compared to TSA."
+  exit 3
+elif ((diff > margin)); then
+  echo "Warning: Commit timestamp predates TSA by $readable_diff."
+  exit 3
+fi
