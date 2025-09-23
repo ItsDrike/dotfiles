@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright ItsDrike <itsdrike@protonmail.com>
+# Licensed under GPL-3.0
 #
 # This script can be used to make a request to a specified TSA server,
 # which will cryptographically sign given git commit, with a verifiable
