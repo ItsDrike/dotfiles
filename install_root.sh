@@ -25,7 +25,7 @@ pacman -Syu --noconfirm
 # Install essential packages
 pacman -S --noconfirm --needed \
   networkmanager neovim sudo reflector pacman-contrib man-db man-pages rsync btop \
-  bind base-devel git fd ripgrep fwupd arch-audit systemd-resolvconf opensmtpd
+  bind base-devel git fd ripgrep fwupd arch-audit systemd-resolvconf opensmtpd ntp
 
 # Install packages necessary for this script / other scripts in this dotfiles repo
 pacman -S --noconfirm --needed python-rich bc lua jq bat
