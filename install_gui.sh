@@ -87,7 +87,7 @@ paru -S --noconfirm --needed \
   hyprpicker hyprpaper hyprsunset
 
 # Application launcher
-paru -S --noconfirm --needed walker-bin elephant-bin elephant-desktopapplications-bin elephant-files-bin elephant-runner-bin elephant-websearch-bin elephant-symbols-bin elephant-calc-bin elephant-menus-bin
+paru -S --noconfirm --needed walker elephant elephant-desktopapplications elephant-files elephant-runner elephant-websearch elephant-symbols elephant-calc elephant-menus
 
 # Hyprland
 paru -S --noconfirm --needed hyprland xdg-desktop-portal-hyprland
