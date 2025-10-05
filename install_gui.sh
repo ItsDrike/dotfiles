@@ -95,7 +95,7 @@ paru -S --noconfirm --needed hyprland xdg-desktop-portal-hyprland
 # Audio
 paru -S --noconfirm --needed \
   pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack \
-  alsa-utils pulsemixer
+  alsa-utils alsa-firmware alsa-plugins rtkit pulsemixer
 
 # Other Utilities
 paru -S --noconfirm --needed \
