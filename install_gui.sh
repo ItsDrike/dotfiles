@@ -83,7 +83,7 @@ paru -S --noconfirm --needed \
 
 # Wayland Utilities
 paru -S --noconfirm --needed \
-  wev wdisplays grim slurp swappy wf-recorder wlogout cliphist \
+  wev wdisplays grim slurp swappy wf-recorder wlogout \
   hyprpicker hyprpaper hyprsunset
 
 # Application launcher
@@ -152,7 +152,7 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Services
 sudo systemctl enable --now seatd.service
-systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service blueman-applet.service cliphist.service
+systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service blueman-applet.service
 
 echo "GUI Installation finished, you should now reboot and run uwsm start hyprland.desktop"
 echo ""
