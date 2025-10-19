@@ -127,7 +127,7 @@ paru -S --noconfirm --needed \
   qalculate-gtk spotify qimgv nomacs stremio seahorse
 
 # Bluetooth
-paru -S --noconfirm --needed bluez bluez-utils blueberry
+paru -S --noconfirm --needed bluez bluez-utils blueberry blueman
 
 # Lockscreen
 # To test the lockscreen, you can run loginctl lock-session, while in a graphical session
@@ -152,7 +152,7 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Services
 sudo systemctl enable --now seatd.service
-systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service cliphist.service
+systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service blueman-applet.service cliphist.service
 
 echo "GUI Installation finished, you should now reboot and run uwsm start hyprland.desktop"
 echo ""
