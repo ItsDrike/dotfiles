@@ -1,0 +1,46 @@
+name = "system"
+name_pretty = "System"
+icon = "applications-other"
+
+[[entries]]
+keywords = ["disk", "drive", "space"]
+text = "Disk"
+actions = { "disk_copy" = "wl-copy '%VALUE%'" }
+async = """echo $(df -h / | tail -1 | awk '{print "Used: " $3 " - Available: " $4 " - Total: " $2}')"""
+icon = "drive-harddisk"
+
+[[entries]]
+text = "System"
+async = """echo $(echo "Memory: $(free -h | awk '/^Mem:/ {printf "%s/%s", $3, $2}') | CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{printf "%.1f%%", 100 - $8}')")"""
+icon = "computer"
+
+[[entries]]
+text = "Today"
+keywords = ["date", "today", "calendar"]
+async = """echo $(date "+%H:%M - %d.%m. %A - KW %V")"""
+icon = "clock"
+actions = { "open_cal" = "xdg-open https://calendar.google.com" }
+
+[[entries]]
+text = "Volume"
+async = "echo $(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
+icon = "audio-volume-high"
+
+[entries.actions]
+"volume_raise" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"
+"volume_lower" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"
+"volume_mute" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0"
+"volume_unmute" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1"
+"volume_set" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ %VALUE%"
+
+[[entries]]
+text = "Mic"
+async = "echo $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)"
+icon = "audio-input-microphone"
+actions = { "mic_set" = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ %VALUE%" }
+
+[[entries]]
+text = "uuctl"
+keywords = ["uuctl"]
+icon = "applications-system"
+submenu = "dmenu:uuctl"

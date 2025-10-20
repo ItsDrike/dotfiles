@@ -1,0 +1,53 @@
+name = "screenshots"
+name_pretty = "Screenshots"
+global_search = true
+fixed_order = true
+icon = "insert-image"
+
+[[entries]]
+text = "OCR"
+icon = "edit-select-text"
+keywords = ["ocr", "text", "reader", "optical", "character", "recognition"]
+actions = { "run" = "sleep 0.5 && ocr && notify-send 'OCR' 'Text copied to clipboard'" }
+
+[[entries]]
+text = "Color Picker"
+icon = "color-picker"
+keywords = ["color", "picker", "hypr"]
+actions = { "cp_use" = "sleep 0.5 && wl-copy --type image/png \"$(hyprpicker)\" && notify-send 'Picked color' \"$(wl-paste) (saved to clipboard)\"" }
+
+[[entries]]
+text = "Area"
+icon = "edit-paste"
+
+[entries.actions]
+"to_clipboard" = "hyprland-screenshot --notify --target area --copy"
+"to_file" = "hyprland-screenshot --notify --target area --save ~/Media/Pictures/Screenshots/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+"to_swappy" = "hyprland-screenshot --notify --target area --copy --edit"
+
+[[entries]]
+text = "Window"
+icon = "window-new"
+
+[entries.actions]
+"to_clipboard" = "hyprland-screenshot --notify --target window --copy"
+"to_file" = "hyprland-screenshot --notify --target window --save ~/Media/Pictures/Screenshots/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+"to_swappy" = "hyprland-screenshot --notify --target window --copy --edit"
+
+[[entries]]
+text = "Current monitor"
+icon = "video-display"
+
+[entries.actions]
+"to_clipboard" = "hyprshot --notify --target activemon --copy"
+"to_file" = "hyprland-screenshot --notify --target activemon --save ~/Media/Pictures/Screenshots/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+"to_swappy" = "hyprland-screenshot --notify --target activemon --copy --edit"
+
+[[entries]]
+text = "Fullscreen"
+icon = "view-fullscreen"
+
+[entries.actions]
+"to_clipboard" = "hyprshot --notify --target all --copy"
+"to_file" = "hyprland-screenshot --notify --target all --save ~/Media/Pictures/Screenshots/Screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+"to_swappy" = "hyprland-screenshot --notify --target all --copy --edit"
