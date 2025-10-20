@@ -1,0 +1,40 @@
+name = "power"
+name_pretty = "Power"
+global_search = true
+fixed_order = true
+icon = "system-shutdown"
+
+[[entries]]
+icon = "system-lock-screen"
+text = "Lock"
+actions = { "lock" = "loginctl lock-session" }
+
+[[entries]]
+icon = "system-suspend"
+text = "Suspend"
+actions = { "suspend" = "systemctl suspend" }
+
+[[entries]]
+icon = "system-hibernate"
+text = "Hibernate"
+actions = { "hibernate" = "systemctl hibernate" }
+
+[[entries]]
+icon = "system-log-out"
+text = "Log out"
+actions = { "logout" = "loginctl terminate-user" }
+
+[[entries]]
+icon = "system-reboot"
+text = "Soft Reboot"
+actions = { "soft_reboot" = "systemctl soft-reboot" }
+
+[[entries]]
+icon = "system-reboot"
+text = "Restart"
+actions = { "restart" = "systemctl reboot" }
+
+[[entries]]
+icon = "system-shutdown"
+text = "Shutdown"
+actions = { "shutdown" = "systemctl poweroff" }
