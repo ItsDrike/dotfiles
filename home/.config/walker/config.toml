@@ -156,3 +156,24 @@ clipboard = [
   { action = "toggle_images", global = true, label = "toggle images", bind = "ctrl i", after = "AsyncClearReload" },
   { action = "edit", bind = "ctrl o" },
 ]
+
+"menus:system" = [
+  { action = "lock", bind = "Return" },
+  { action = "suspend", bind = "Return" },
+  { action = "relaunch", bind = "Return" },
+  { action = "restart", bind = "Return" },
+  { action = "shutdown", bind = "Return" },
+]
+
+"menus:screenshots" = [
+  { action = "to_clipboard", default = true, bind = "Return" },
+  { action = "to_file", bind = "f" },
+  { action = "to_swappy", bind = "e" },
+  { action = "cp_use", default = true, bind = "Return" },
+]
+
+"menus:hyprland" = [
+  { action = "toggle", default = true, bind = "Return" },
+  { action = "start", bind = "u" },
+  { action = "stop", bind = "d" },
+]

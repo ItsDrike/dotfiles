@@ -13,6 +13,26 @@ icon = "weather-clear-night"
 actions = { "" = "hyprctl hyprsunset temperature 2700" }
 
 [[entries]]
-text = "Zoom Toggle"
+text = "Idle timeouts (hypridle)"
+icon = ""
+async = "printf 'Idle timeouts (hypridle): %s' $(toggle-idle check && echo 'ON' || echo 'OFF')"
+
+[entries.actions]
+"toggle" = "toggle-idle"
+"start" = "toggle-idle on"
+"stop" = "toggle-idle off"
+
+[[entries]]
+text = "Notifications (swaync)"
+icon = ""
+async = "printf 'Notifications (swaync): %s' $(toggle-notifications check && echo 'ON' || echo 'OFF')"
+
+[entries.actions]
+"toggle" = "toggle-notifications"
+"start" = "toggle-notifications on"
+"stop" = "toggle-notifications off"
+
+[[entries]]
+text = "Cursor zoom"
 icon = "zoom-in"
-actions = { "" = "hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float) | if . > 1 then 1 else 1.5 end')" }
+actions = { "toggle" = "hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float) | if . > 1 then 1 else 1.5 end')" }
