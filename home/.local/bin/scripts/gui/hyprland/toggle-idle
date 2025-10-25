@@ -1,12 +1,59 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+  echo "Usage: $0 [on|off|toggle|check]" >&2
+}
+
 serv="hypridle.service"
 
-if systemctl --user is-active --quiet "$serv"; then
+# Returns 0 if the service is active (idle timeouts enabled), 1 otherwise
+idle_enabled() {
+  systemctl --user is-active --quiet "$serv"
+}
+
+mode="toggle"
+
+if [ "$#" -ge 1 ]; then
+  if [ "$#" -gt 1 ]; then
+    echo "Invalid usage" >&2
+    usage
+    exit 2
+  fi
+
+  case "$1" in
+  --help)
+    usage
+    exit 0
+    ;;
+  on | off | toggle)
+    mode="$1"
+    ;;
+  check)
+    if idle_enabled; then
+      exit 0
+    else
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Invalid argument" >&2
+    usage
+    exit 2
+    ;;
+  esac
+fi
+
+# Determine new mode if toggling
+if [ "$mode" = "toggle" ]; then
+  mode="$(idle_enabled && echo 'off' || echo 'on')"
+fi
+
+# Apply the mode
+if [ "$mode" = "off" ]; then
   systemctl --user stop "$serv"
-  notify-send "Idle-Toggle" "Idle timeouts disabled"
+  notify-send "Idle-Toggle" "Idle timeouts disabled" -h string:x-canonical-private-synchronous:idle-toggle
 else
   systemctl --user start "$serv"
-  notify-send "Idle-Toggle" "Idle timeouts enabled"
+  notify-send "Idle-Toggle" "Idle timeouts enabled" -h string:x-canonical-private-synchronous:idle-toggle
 fi

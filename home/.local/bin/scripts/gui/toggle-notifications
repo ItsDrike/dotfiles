@@ -1,10 +1,56 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -euo pipefail
 
-if [ "$(dunstctl is-paused)" = "false" ]; then
+usage() {
+  echo "$0 [on/off/toggle/check]" >&2
+}
+
+# Returns 0 if notifications are enabled, 1 if DND is active
+notifs_enabled() {
+  [ "$(swaync-client --get-dnd)" = "false" ]
+}
+
+mode="toggle"
+
+if [ "$#" -ge 1 ]; then
+  if [ "$#" -gt 1 ]; then
+    echo "Invalid usage" >&2
+    usage
+    exit 2
+  fi
+
+  case "$1" in
+  --help)
+    usage
+    exit 0
+    ;;
+  on | off | toggle)
+    mode="$1"
+    ;;
+  check)
+    if notifs_enabled; then
+      exit 0
+    else
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Invalid argument" >&2
+    usage
+    exit 2
+    ;;
+  esac
+fi
+
+if [ "$mode" = "toggle" ]; then
+  mode="$(notifs_enabled && echo 'off' || echo 'on')"
+fi
+
+if [ "$mode" = "off" ]; then
   notify-send "Notifications" "Pausing notifications..." -h string:x-canonical-private-synchronous:notif-pause
   sleep 2
-  dunstctl set-paused true
+  swaync-client --dnd-on >/dev/null
 else
-  dunstctl set-paused false
+  swaync-client --dnd-off >/dev/null
   notify-send "Notifications" "Notifications enabled" -h string:x-canonical-private-synchronous:notif-pause
 fi
