@@ -99,12 +99,12 @@ paru -S --noconfirm --needed hyprland xdg-desktop-portal-hyprland
 # Audio
 paru -S --noconfirm --needed \
   pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack \
-  alsa-utils alsa-firmware alsa-plugins rtkit pulsemixer
+  alsa-utils alsa-firmware alsa-plugins rtkit pulsemixer wiremix
 
 # Other Utilities
 paru -S --noconfirm --needed \
   nm-connection-editor network-manager-applet ffmpegthumbnailer hyfetch fastfetch \
-  tesseract tesseract-data-eng nvtop
+  tesseract tesseract-data-eng nvtop lazydocker lazygit
 
 # Themes (Qt theme, GTK theme, icons theme, cursor theme)
 paru -S --noconfirm --needed \
