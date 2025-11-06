@@ -105,6 +105,7 @@ export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 export LEIN_HOME="$XDG_DATA_HOME"/lein
+export RUFF_CACHE_DIR="$XDG_CACHE_HOME/ruff"
 
 # Theming
 export GTK_THEME="Tokyonight-Dark"
