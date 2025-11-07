@@ -43,7 +43,7 @@ style = ""
 # --- Command duration ---
 [cmd_duration]
 min_time = 100
-format = " [took $duration]($style) "
+format = "[took $duration]($style) "
 style = "bright-blue"
 disabled = false
 
