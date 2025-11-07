@@ -1,0 +1,61 @@
+# --- Basic prompt structure ---
+add_newline = false
+format = "$python$username$context$directory$git_branch$git_status$git_state$rust$cmd_duration$character"
+right_format = "$status"
+
+# --- Username and root color ---
+[username]
+show_always = true
+style_user = "green"
+style_root = "red"
+format = "[$user]($style) "
+disabled = false
+
+# --- Context (ssh / chroot) ---
+[hostname]
+ssh_only = true
+format = "[@$hostname](orange)"
+
+# --- Working directory ---
+[directory]
+style = "blue"
+truncation_length = 4
+truncation_symbol = "…/"
+truncate_to_repo = false
+
+# --- Git integration ---
+[git_branch]
+symbol = ""
+style = "214"
+format = "[$branch]($style)"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bright-red"
+stashed = ""
+
+[python]
+format = '[${symbol}${pyenv_prefix}(\($virtualenv\) )]($style)'
+version_format = "${raw}"
+symbol = ""
+style = ""
+
+# --- Command duration ---
+[cmd_duration]
+min_time = 100
+format = " [took $duration]($style) "
+style = "bright-blue"
+disabled = false
+
+# --- Character (final symbol) ---
+[character]
+success_symbol = "[\\$](105)"
+error_symbol = "[\\$](105)"
+vicmd_symbol = "[\\$](105)"
+
+# --- Exit status on right prompt ---
+[status]
+disabled = false
+format = "[$status ↵]($style)"
+style = "red"
+map_symbol = true
