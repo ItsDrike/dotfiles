@@ -54,13 +54,14 @@ systemctl enable \
   NetworkManager.service smtpd.service
 systemctl mask systemd-networkd.service # We have NetworkManager for this
 
-# Install ZSH shell
-pacman -S --noconfirm --needed zsh
+# Install ZSH shell & starship prompt
+pacman -S --noconfirm --needed zsh starship
 cp -ra home/.config/shell ~/.config
 rm -rf ~/.config/zsh/ || true # in case there is already some zsh config
 cp -ra home/.config/zsh ~/.config
 rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
+cp home/.config/starship.toml ~/.config
 chsh -s /usr/bin/zsh root
 
 echo ""
