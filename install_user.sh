@@ -70,13 +70,13 @@ paru --gendb
 mkdir -p ~/.config
 mkdir -p ~/.local/{share,state,bin}
 
-# Copy over zsh configuration
+# Copy over zsh & starship configuration
 #
-# Note that this assumes you've ran install_root.sh, whcih created /etc/zsh/zshenv
+# Note that this assumes you've ran install_root.sh, which created /etc/zsh/zshenv
 # with $ZOOTDIR exported. If you haven't done that, you'll want to copy it over from
 # my dotfiles. If you can't (don't have root rights), it's also possible to use ~/.zshenv,
 # which you can symlink to ~/.config/zsh/.zshenv.
-pacman -S --noconfirm --needed zsh
+pacman -S --noconfirm --needed zsh starship
 cp -ra home/.config/shell ~/.config
 rm -rf ~/.config/zsh/ || true # in case there is already some zsh config
 cp -ra home/.config/zsh ~/.config
@@ -84,6 +84,7 @@ rm -rf ~/.config/zsh/.zgenom
 git clone https://github.com/jandamm/zgenom ~/.config/zsh/.zgenom
 mkdir -p ~/.cache/zsh
 touch ~/.cache/zsh/history
+cp home/.config/starship.toml ~/.config
 chsh -s /usr/bin/zsh "$USER"
 
 # GnuPG
