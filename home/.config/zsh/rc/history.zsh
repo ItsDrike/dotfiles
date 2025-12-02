@@ -57,3 +57,8 @@ setopt EXTENDED_HISTORY
 # beep in ZLE when a widget attempts to access a history entry which isn’t there
 unsetopt HIST_BEEP
 
+# Auto-create the histfile cache directory if it doesn't yet exist
+if [ ! -d "$(dirname "$HISTFILE")" ]; then
+  mkdir -p "$(dirname "$HISTFILE")"
+  touch "$HISTFILE"
+fi
