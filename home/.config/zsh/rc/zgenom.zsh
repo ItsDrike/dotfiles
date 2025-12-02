@@ -1,5 +1,12 @@
+ZGENOM_DIR="${ZDOTDIR}/.zgenom"
+
+# Clone zgenom if it's not present yet
+if [[ ! -d "$ZGENOM_DIR" ]]; then
+  git clone https://github.com/jandamm/zgenom "$ZGENOM_DIR"
+fi
+
 # Load zgenom (plugin manager for ZSH)
-source "${ZDOTDIR}/.zgenom/zgenom.zsh"
+source "${ZGENOM_DIR}/.zgenom/zgenom.zsh"
 
 # Check for zgenom updates
 # This does not increase startup time
