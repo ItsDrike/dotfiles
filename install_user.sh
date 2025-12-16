@@ -51,7 +51,7 @@ paru -Syu --noconfirm
 # Install some useful packages
 paru -S --noconfirm --needed \
   openssh cronie exa bat dust mlocate lshw trash-cli ncdu btop \
-  dnsutils net-tools wget jq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
+  dnsutils net-tools wget jq go-yq fzf polkit rebuild-detector hyperfine mediainfo git-delta \
   python-pip ripgrep zip p7zip unzip unrar usbutils hexyl strace uv yt-dlp luarocks cargo \
   cmake meson npm downgrade glow xdg-ninja-git github-cli act lsof procs skim thermald \
   tealdeer pkgfile zoxide openbsd-netcat
