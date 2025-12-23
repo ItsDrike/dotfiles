@@ -104,7 +104,7 @@ paru -S --noconfirm --needed \
 # Other Utilities
 paru -S --noconfirm --needed \
   nm-connection-editor network-manager-applet ffmpegthumbnailer hyfetch fastfetch \
-  tesseract tesseract-data-eng nvtop lazydocker lazygit
+  tesseract tesseract-data-eng nvtop lazydocker lazygit arch-update
 
 # Themes (Qt theme, GTK theme, icons theme, cursor theme)
 paru -S --noconfirm --needed \
@@ -152,7 +152,7 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Services
 sudo systemctl enable --now seatd.service
-systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service blueman-applet.service
+systemctl --user enable polkit-gnome-agent.service fumon.service hyprpaper.service hypridle.service hyprsunset.service elephant.service walker.service swaync.service systemd-lock-handler.service hyprlock.service swaync-inhibit-lock.service swaync-inhibit-unlock.service pcmanfm-qt.service nm-applet.service blueman-applet.service arch-update-tray.service
 
 echo "GUI Installation finished, you should now reboot and run uwsm start hyprland.desktop"
 echo ""
