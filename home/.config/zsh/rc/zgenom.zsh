@@ -6,7 +6,7 @@ if [[ ! -d "$ZGENOM_DIR" ]]; then
 fi
 
 # Load zgenom (plugin manager for ZSH)
-source "${ZGENOM_DIR}/.zgenom/zgenom.zsh"
+source "${ZGENOM_DIR}/zgenom.zsh"
 
 # Check for zgenom updates
 # This does not increase startup time
