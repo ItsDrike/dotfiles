@@ -33,6 +33,7 @@ cp -ra home/.config/swappy ~/.config
 cp -ra home/.config/systemd ~/.config
 #cp -ar home/.config/fontconfig ~/.config
 cp -ra home/.config/swaync ~/.config
+cp home/.config/xdg-terminals.list ~/.config
 
 # Theme configs
 cp -ar home/.config/qt5ct ~/.config
@@ -74,7 +75,7 @@ paru -Syu --noconfirm
 # WM Essentials
 paru -S --noconfirm --needed \
   udisks2 udiskie gvfs gvfs-mtp gnome-keyring xorg-xinput polkit-gnome brightnessctl \
-  xdg-user-dirs playerctl
+  xdg-user-dirs playerctl xdg-terminal-exec
 
 # Wayland WM essentials
 paru -S --noconfirm --needed \
