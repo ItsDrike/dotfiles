@@ -63,3 +63,7 @@ bindkey ' ' magic-space
 # [ctrl+space] Accept suggestion from zsh-autosuggestions plugin
 bindkey '^ ' autosuggest-accept
 
+# [Ctrl-xe] - open buffer line in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^e' edit-command-line
