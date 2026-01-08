@@ -162,7 +162,7 @@ sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7+12 /dev/gpt-auto-roo
 > ```bash
 > cryptsetup luksKillSlot /dev/gpt-auto-root-luks [slot number]
 > ```
-> 
+>
 > Where the slot number should've been shown to you from the cryptenroll
 > command. (If you only had one encryption password, that password will
 > probably be in slot 0, so you'll want to use slot 1 here.)
@@ -236,7 +236,7 @@ In case you'd ever want to remove the LUKS key from TPM, you can do so simply
 with:
 
 ```bash
-csystemd-cryptenroll --wipe-slot=tpm2
+systemd-cryptenroll --wipe-slot=tpm2 /dev/gpt-auto-root-luks
 ```
 
 This will actually also remove the LUKS key from the `/dev/gpt-auto-root-luks`
