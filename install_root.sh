@@ -74,7 +74,7 @@ echo " - Symlink /etc/resolv.conf to use systemd-resolved stub (you need to be o
 echo "Optional extra steps:"
 echo " - enable cronie & copy /etc/crontab & anacrontab from dotfiles"
 echo " - install docker and copy /etc/docker"
-echo " - setup MAC address randomization by copying /etc/NetworkManager"
+echo " - setup network manager privacy settings by copying /etc/NetworkManager"
 echo " - setup battery optimizations (follow guide)"
 echo " - setup UKIs -> secure-boot -> systemd initramfs -> tpm unlocking (follow guides)"
 
