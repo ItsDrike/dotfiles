@@ -154,7 +154,8 @@ fi
 # Other program settings
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export SUDO_ASKPASS="$HOME/.local/bin/scripts/gui/prompt/menupass"
-export PIPENV_VENV_IN_PROJECT=1 # Force pipenv to create new environments within projects ./.venv
+export PIPENV_VENV_IN_PROJECT=1                          # Force pipenv to create new environments within projects ./.venv
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket" # Use ssh-agent socket from the systemd user service
 
 # Remove irrelevant variables added for posix compatibility
 unset posix
