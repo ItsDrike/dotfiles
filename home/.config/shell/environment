@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 # Environmental variable definitions.
 # This file is only sourced once after login, unlike .zshrc/.bashrc
@@ -8,21 +8,25 @@
 # which means the XDG definitions will be ignored anyway, and
 # defining them may break programs when root is actually logged in.
 
-# Add all folders in ~/.local/bin into PATH
-# Some window managers require this line to be in profile not in .zshenv
-if [ -d "$HOME/.local/bin" ]; then
-  PATH+=":$(find -L ~/.local/bin -type d | tr '\n' ':' | sed 's/:$//')"
-fi
+# Keep PATH entries unique
+typeset -U path PATH
+
+# Add ~/.local/bin dir
+path=("$HOME/.local/bin" $path)
 
 # Add all NPM global binaries to PATH
 if [ -d "$HOME/.local/share/npm/bin" ]; then
-  PATH+=":$HOME/.local/share/npm/bin"
+  path=("$HOME/.local/share/npm/bin" $path)
 fi
 
-# Prepend rye shims to PATH, to have rye python executables
-# take priority over the system-wide python.
-if [ -d "${RYE_HOME:-$HOME/.rye}/shims" ]; then
-  PATH="${RYE_HOME:-$HOME/.rye}/shims:$PATH"
+# Add all directories in ~/.local/bin/scripts recursively into PATH
+# (Custom scripts grouped in several subdirs)
+if [ -d "$HOME/.local/bin/scripts" ]; then
+  local_dir=""
+  while IFS= read -r local_dir; do
+    path=("$local_dir" $path)
+  done < <(find -L "$HOME/.local/bin/scripts" -type d)
+  unset local_dir
 fi
 
 # Define some variables for POSIX compatibility
