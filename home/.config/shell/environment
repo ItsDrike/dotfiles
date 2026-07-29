@@ -110,6 +110,9 @@ export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 export LEIN_HOME="$XDG_DATA_HOME"/lein
 export RUFF_CACHE_DIR="$XDG_CACHE_HOME/ruff"
+export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
+export PYTHON_HISTORY="$XDG_STATE_HOME"/python_history
+export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
 
 # Theming
 export GTK_THEME="Tokyonight-Dark"
