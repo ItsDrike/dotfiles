@@ -4,7 +4,7 @@
 source "./scripts/include"
 
 if [ "$1" = "--switch" ]; then
-	hyprctl dispatch focusworkspaceoncurrentmonitor "$2" >/dev/null
+	hyprctl dispatch "hl.dsp.focus({ workspace = '$2', on_current_monitor = true })" >/dev/null
 elif [ "$1" = "--loop" ]; then
 	hyprland_ipc "workspace|createworkspace|destroyworkspace" | ./scripts/workspaces.py "$@"
 else
