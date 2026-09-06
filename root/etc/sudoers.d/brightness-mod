@@ -1,3 +1,0 @@
-ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/backlight/intel_backlight/brightness
-ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/backlight/amdgpu_bl0/brightness
-ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/backlight/amdgpu_bl1/brightness
