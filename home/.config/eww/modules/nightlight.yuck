@@ -1,3 +1,0 @@
-(deflisten nightlight
-  :initial `{"running": false,"temperature": 0}`
-  `scripts/nightlight --state`)
