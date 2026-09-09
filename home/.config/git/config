@@ -69,7 +69,7 @@
     set-upstream = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
 
     fixup-picker = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup";
-    auto-fixup = "!sh -c 'git commit --fixup=$0 && git rebase --autosquash $0~'"
+    auto-fixup = "!sh -c 'git commit --fixup=\"$0\" && git rebase --autosquash --autostash \"$0~\"'"
     auto-fixup-picker = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git auto-fixup";
 
     staash = "stash --all";
