@@ -1,0 +1,44 @@
+" General Settings
+set configversion 2.0
+set update.lastchecktime 1789456737440
+set smoothscroll true
+set editorcmd kitty nvim
+set hintfiltermode vimperator
+set hintchars 5432167890
+
+" Binds
+unbind h
+unbind j
+unbind k
+unbind l
+unbind <C-u>
+unbind <C-d>
+bind <D-j> scrollstart 0 100
+bind <D-k> scrollstart 0 -100
+bind <D-h> scrollstart -100 0
+bind <D-l> scrollstart 100 0
+bind <CD-d> scrollstart 0 500
+bind <CD-u> scrollstart 0 -500
+bind <U-j> scrollstop
+bind <U-k> scrollstop
+bind <U-h> scrollstop
+bind <U-l> scrollstop
+bind <U-J> scrollstop
+bind <U-K> scrollstop
+bind <U-H> scrollstop
+bind <U-L> scrollstop
+bind <CU-u> scrollstop
+bind <CU-d> scrollstop
+bind <CU-U> scrollstop
+bind <CU-D> scrollstop
+unbind <C-f>
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+bind n findnext --search-from-view
+bind N findnext --search-from-view --reverse
+bind ,<Space> nohlsearch
+bind K tabprev
+bind J tabnext
+
+" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
+" vim: set filetype=tridactyl
