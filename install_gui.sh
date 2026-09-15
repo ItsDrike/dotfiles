@@ -111,7 +111,7 @@ paru -S --noconfirm --needed \
 paru -S --noconfirm --needed \
   papirus-folders-catppuccin-git tokyonight-gtk-theme-git \
   kvantum kvantum-qt5 qt5ct qt6ct kvantum-theme-catppuccin-git \
-  rose-pine-cursor rose-pine-hyprcursor
+  posys-cursor-scalable
 
 # Fonts
 paru -S --noconfirm --needed \
@@ -148,7 +148,7 @@ gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 gsettings set org.gnome.desktop.interface font-name 'Noto Sans 10'
 gsettings set org.gnome.desktop.interface document-font-name 'Noto Sans 10'
 gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro 10'
-gsettings set org.gnome.desktop.interface cursor-theme 'BreezeX-RosePine-Linux'
+gsettings set org.gnome.desktop.interface cursor-theme 'Posys_Cursor'
 gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Services
