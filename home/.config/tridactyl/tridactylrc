@@ -1,6 +1,7 @@
 " General Settings
 set configversion 2.0
 set update.lastchecktime 1789456737440
+set newtab about:blank
 set smoothscroll true
 set editorcmd kitty nvim
 set hintfiltermode vimperator
@@ -39,6 +40,9 @@ bind N findnext --search-from-view --reverse
 bind ,<Space> nohlsearch
 bind K tabprev
 bind J tabnext
+
+" Autocmds
+autocmd DocStart youtube.com mode ignore
 
 " For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
 " vim: set filetype=tridactyl
