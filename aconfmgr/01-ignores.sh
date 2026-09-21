@@ -35,6 +35,8 @@ IgnorePath '/usr/lib/locale/locale-archive'
 IgnorePath '/usr/lib/modules/*/modules.*'
 IgnorePath '/usr/lib/udev/hwdb.bin'
 IgnorePath '/usr/share/info/dir'
+IgnorePath '/usr/lib/gio/modules/giomodule.cache'
+IgnorePath '/usr/share/glib-2.0/schemas/gschemas.compiled'
 
 # systemd runtime/persistent state that is not configuration
 IgnorePath '/var/lib/systemd/backlight'
@@ -56,6 +58,14 @@ IgnorePath '/var/lib/private'
 IgnorePath '/var/lib/systemd/linger'
 IgnorePath '/var/lib/systemd/network'
 IgnorePath '/var/lib/tpm2-tss'
+
+# Downloaded firmware metadata, update state, and fwupd client identity
+IgnorePath '/var/lib/fwupd'
+IgnorePath '/var/lib/fwupd/*'
+
+# Passim firmware-metadata cache and its generated TLS identity
+IgnorePath '/var/lib/passim'
+IgnorePath '/var/lib/passim/*'
 
 # Login/accounting databases
 IgnorePath '/var/lib/lastlog'
@@ -93,6 +103,9 @@ IgnorePath '/var/lib/dkms/mok.*'
 IgnorePath '/etc/hostname'
 IgnorePath '/etc/adjtime'
 
+# Mimetype definitions
+IgnorePath '/usr/share/mime/*'
+
 # Locally signed package-derived binary
 IgnorePath '/usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed'
 
@@ -116,7 +129,6 @@ IgnorePath '/etc/subgid-'
 IgnorePath '/etc/audisp'
 IgnorePath '/etc/audit/plugins.d'
 IgnorePath '/etc/audit/rules.d'
-
 
 # Sensitive files
 IgnorePath '/etc/NetworkManager/system-connections'
