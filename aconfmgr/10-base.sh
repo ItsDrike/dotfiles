@@ -28,8 +28,9 @@ AddPackage rustup # The Rust toolchain installer
 # Pacman config
 CopyFile /etc/pacman.conf
 
-# Wheel group sudo
+# Sudo config
 CopyFile /etc/sudoers.d/10-wheel 440
+CopyFile /etc/sudoers.d/99-insults 440
 
 # Virtual console configuration (TTY)
 CopyFile /etc/vconsole.conf
