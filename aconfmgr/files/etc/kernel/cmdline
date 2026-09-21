@@ -1,0 +1,1 @@
+ro loglevel=4 rootflags=subvol=@bootstrap-root

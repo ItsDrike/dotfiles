@@ -1,0 +1,24 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/mapper/cryptfs LABEL=FS UUID=1e234f6f-db0c-47f6-91ab-0210447d5ef7	
+LABEL=FS 		/         	btrfs     	rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,subvol=/@bootstrap-root	0 0
+
+# /dev/mapper/cryptfs LABEL=FS UUID=1e234f6f-db0c-47f6-91ab-0210447d5ef7	
+LABEL=FS 		/persist  	btrfs     	rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,subvol=/@persist	0 0
+
+# /dev/mapper/cryptfs LABEL=FS UUID=1e234f6f-db0c-47f6-91ab-0210447d5ef7	
+LABEL=FS 		/data     	btrfs     	rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,subvol=/@data	0 0
+
+# /dev/mapper/cryptfs LABEL=FS UUID=1e234f6f-db0c-47f6-91ab-0210447d5ef7	
+LABEL=FS 		/swap     	btrfs     	rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,subvol=/@swap	0 0
+
+# /dev/mapper/cryptfs LABEL=FS UUID=1e234f6f-db0c-47f6-91ab-0210447d5ef7	
+LABEL=FS 		/.btrfs   	btrfs     	rw,noatime,lazytime,compress=zstd:1,ssd,space_cache=v2,subvol=/	0 0
+
+# /dev/nvme0n1p1 LABEL=EFI UUID=DECC-CE58      	
+LABEL=EFI 		/efi      	vfat      	rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+/swap/swapfile      	none      	swap      	defaults  	0 0
+
