@@ -1,8 +1,9 @@
-# Unrelated subvolumes
+# Unrelated subvolumes and paths
 IgnorePath '/.btrfs'
 IgnorePath '/swap'
 IgnorePath '/persist'
 IgnorePath '/data'
+IgnorePath '/mnt'
 
 # Logs and temporary state
 IgnorePath '/var/log'
