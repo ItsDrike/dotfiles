@@ -25,4 +25,5 @@ CopyFile /etc/mkinitcpio.d/linux-cachyos.preset
 CopyFile /etc/mkinitcpio.d/linux.preset
 
 # Default kernel command line (baked into the UKIs)
+# The cmdline can be extended per-host with /etc/cmdline.d entries
 CopyFile /etc/kernel/cmdline
