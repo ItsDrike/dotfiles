@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+build() {
+    add_systemd_unit initrd-numlock.service
+}
+
+help() {
+    printf '%s\n' 'Enable numlock during early userspace before the LUKS password / TPM pin prompt.'
+}
