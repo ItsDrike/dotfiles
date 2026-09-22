@@ -10,6 +10,7 @@ AddPackage git # the fast distributed version control system
 AddPackage sudo # Give certain users the ability to run some commands as root
 AddPackage neovim # Fork of Vim aiming to improve user experience, plugins, and GUIs
 AddPackage less # A terminal based program for viewing text files
+AddPackage zsh # Interactive shell; global startup policy is managed below
 AddPackage man-db # A utility for reading man pages
 AddPackage man-pages # Linux man pages
 AddPackage networkmanager # Network connection manager and user applications
@@ -55,6 +56,9 @@ CopyFile /etc/sudoers.d/99-insults 440
 
 # Virtual console configuration (TTY)
 CopyFile /etc/vconsole.conf
+
+# Keep per-user Zsh configuration under XDG config directories.
+CopyFile /etc/zsh/zshenv
 
 # Disable the legacy PC speaker bell in the initrd and the running system.
 # (I would rather physically remove the motherboard speaker than have my
