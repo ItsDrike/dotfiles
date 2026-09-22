@@ -54,6 +54,11 @@ CopyFile /etc/sudoers.d/99-insults 440
 # Virtual console configuration (TTY)
 CopyFile /etc/vconsole.conf
 
+# Disable the legacy PC speaker bell in the initrd and the running system.
+# (I would rather physically remove the motherboard speaker than have my
+# system beep at me, luckily, we can disable it from software)
+CopyFile /etc/modprobe.d/nobeep.conf
+
 ## Systemd units
 
 # NetworkManager
