@@ -1,0 +1,12 @@
+[Unit]
+Description=Enable numlock during early userspace
+AssertPathExists=/etc/initrd-release
+AssertPathExists=/dev/tty0
+DefaultDependencies=no
+Before=cryptsetup-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/setleds -D +num
+StandardInput=file:/dev/tty0
