@@ -42,6 +42,7 @@ AddPackage arch-audit # A utility like pkg-audit based on Arch Security Team dat
 AddPackage btop # A monitor of system resources, bpytop ported to C++
 AddPackage macchina # A  system information fetcher, with an (unhealthy) emphasis on performance.
 AddPackage rustup # The Rust toolchain installer
+AddPackage github-cli # The GitHub CLI
 
 ## Configs
 
