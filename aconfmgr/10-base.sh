@@ -34,6 +34,7 @@ AddPackage ntp # Network Time Protocol reference implementation
 AddPackage fwupd # Simple daemon to allow session software to update firmware
 AddPackage pacman-contrib # Contributed scripts and tools for pacman systems
 AddPackage paru # Feature packed AUR helper
+AddPackage chezmoi # Manage your dotfiles across multiple machines
 
 ## Other packages
 
