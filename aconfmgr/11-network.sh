@@ -3,6 +3,8 @@
 # This file includes setup for the connection manager (NetworkManager),
 # DNS and DHCP setup, firewall / security hardening steps, etc.
 
+# TODO: Firewall
+
 ###############################################################################
 ## NetworkManager
 ###############################################################################
