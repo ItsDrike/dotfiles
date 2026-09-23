@@ -131,6 +131,12 @@ IgnorePath '/etc/audisp'
 IgnorePath '/etc/audit/plugins.d'
 IgnorePath '/etc/audit/rules.d'
 
+# Docker / Podman state
+IgnorePath '/var/lib/docker'
+IgnorePath '/var/lib/containerd'
+IgnorePath '/var/lib/conteainers'
+IgnorePath '/var/lib/cni'
+
 # Sensitive files
 IgnorePath '/etc/NetworkManager/system-connections'
 IgnorePath '/var/lib/sbctl'
