@@ -4,6 +4,7 @@ AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux
 
 AddPackage base # Minimal package set to define a basic Arch Linux installation
 AddPackage base-devel # Basic tools to build Arch Linux packages
+AddPackage arch-install-scripts # Provides arch-chroot and other Arch installation helpers
 AddPackage btrfs-progs # Btrfs filesystem utilities
 AddPackage cryptsetup # Userspace setup tool for transparent encryption of block devices using dm-crypt
 AddPackage git # the fast distributed version control system
@@ -75,6 +76,11 @@ CreateLink \
 CreateLink \
   /etc/systemd/system/timers.target.wants/paccache.timer \
   /usr/lib/systemd/system/paccache.timer
+
+# Enable weekly SSD TRIMming
+CreateLink \
+  /etc/systemd/system/timers.target.wants/fstrim.timer \
+  /usr/lib/systemd/system/fstrim.timer
 
 # Other
 CreateLink \
