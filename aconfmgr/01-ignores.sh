@@ -137,6 +137,9 @@ IgnorePath '/var/lib/containerd'
 IgnorePath '/var/lib/conteainers'
 IgnorePath '/var/lib/cni'
 
+# OpenSMTPD state
+IgnorePath '/var/spool/smtpd'
+
 # Sensitive files
 IgnorePath '/etc/NetworkManager/system-connections'
 IgnorePath '/var/lib/sbctl'
