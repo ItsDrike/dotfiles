@@ -81,3 +81,4 @@ CopyFile /etc/NetworkManager/conf.d/llmnr-mdns.conf
 
 AddPackage net-tools # Configuration tools for Linux networking
 AddPackage bind # A complete, highly portable implementation of the DNS protocol
+AddPackage tcpdump # Powerful command-line packet analyzer
