@@ -82,7 +82,6 @@ IgnorePath '/etc/.pwd.lock'
 IgnorePath '/var/lib/NetworkManager'
 
 # Dynamically generated networking configuration
-IgnorePath '/etc/resolv.conf'
 IgnorePath '/etc/pacman.d/mirrorlist'
 
 # Generated shell registry

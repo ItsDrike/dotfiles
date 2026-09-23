@@ -13,7 +13,6 @@ AddPackage neovim # Fork of Vim aiming to improve user experience, plugins, and 
 AddPackage less # A terminal based program for viewing text files
 AddPackage man-db # A utility for reading man pages
 AddPackage man-pages # Linux man pages
-AddPackage networkmanager # Network connection manager and user applications
 AddPackage openssh # SSH protocol implementation for remote login, command execution and file transfer
 AddPackage ripgrep # A search tool that combines the usability of ag with the raw speed of grep
 AddPackage fd # Simple, fast and user-friendly alternative to find
@@ -23,8 +22,6 @@ AddPackage sbctl # Secure Boot key manager
 AddPackage efitools # Tools for manipulating UEFI secure boot platforms
 AddPackage usbutils # A collection of USB tools to query connected USB devices
 AddPackage lsof # Lists open files for running Unix processes
-AddPackage net-tools # Configuration tools for Linux networking
-AddPackage bind # A complete, highly portable implementation of the DNS protocol
 AddPackage zip # Compressor/archiver for creating and modifying zipfiles
 AddPackage 7zip # File archiver for extremely high compression
 AddPackage unrar # The RAR uncompression program
@@ -63,14 +60,6 @@ CopyFile /etc/vconsole.conf
 CopyFile /etc/modprobe.d/nobeep.conf
 
 ## Systemd units
-
-# NetworkManager
-CreateLink \
-  /etc/systemd/system/multi-user.target.wants/NetworkManager.service \
-  /usr/lib/systemd/system/NetworkManager.service
-CreateLink \
-  /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service \
-  /usr/lib/systemd/system/NetworkManager-dispatcher.service
 
 # Automated pacman cache cleanup (from pacman-contrib)
 CreateLink \
