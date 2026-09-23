@@ -30,8 +30,6 @@ AddPackage curl # command line tool and library for transferring data with URLs
 AddPackage rsync # A fast and versatile file copying tool for remote and local files
 AddPackage ntp # Network Time Protocol reference implementation
 AddPackage fwupd # Simple daemon to allow session software to update firmware
-AddPackage pacman-contrib # Contributed scripts and tools for pacman systems
-AddPackage paru # Feature packed AUR helper
 AddPackage chezmoi # Manage your dotfiles across multiple machines
 
 ## Other packages
@@ -43,9 +41,6 @@ AddPackage rustup # The Rust toolchain installer
 AddPackage github-cli # The GitHub CLI
 
 ## Configs
-
-# Pacman config
-CopyFile /etc/pacman.conf
 
 # Sudo config
 CopyFile /etc/sudoers.d/10-wheel 440
@@ -60,11 +55,6 @@ CopyFile /etc/vconsole.conf
 CopyFile /etc/modprobe.d/nobeep.conf
 
 ## Systemd units
-
-# Automated pacman cache cleanup (from pacman-contrib)
-CreateLink \
-  /etc/systemd/system/timers.target.wants/paccache.timer \
-  /usr/lib/systemd/system/paccache.timer
 
 # Enable weekly SSD TRIMming
 CreateLink \
