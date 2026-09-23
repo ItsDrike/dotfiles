@@ -146,6 +146,11 @@ cryptsetup open /dev/disk/by-label/CRYPTFS cryptfs
 mkfs.btrfs -L FS /dev/mapper/cryptfs
 ```
 
+> [!WARNING]
+> Allowing discards through dm-crypt exposes rough filesystem allocation and
+> used-space patterns to an offline attacker. It does not expose encrypted file
+> contents. This setup accepts that tradeoff to allow periodic SSD TRIM.
+
 > [!NOTE]
 > For the LUKS encrypted partitions, I'd heavily recommend that you back up the
 > LUKS headers in case of a partial drive failure, so that you're still able to
@@ -154,6 +159,31 @@ mkfs.btrfs -L FS /dev/mapper/cryptfs
 > ```bash
 > cryptsetup luksHeaderBackup /dev/sdX2 --header-backup-file /mnt/external-drive/luks-header-backup.img
 > ```
+
+Additionally, if you're using SSD (which you likely are), you should
+consider enabling discard/TRIM requests to travel through dm-crypt to
+the pysical SSD. That way `fstrim` and filessytem discard operations can
+tell the SSD which blocks are no longer used, helping the long-term
+write performance and wear leveling.
+
+> [!NOTE]
+> Technically, there is a small security trade-off for doing this:
+>
+> Someone with raw access to the encrypted disk could distinguish blocks that
+> were discarded from blocks that were not. They still cannot decrypt their
+> contents, but may infer approximate used space or filesystem activity.
+>
+> For a typical personally used encrypted SSD, enabling it is usually a good
+> choice.
+
+```bash
+cryptsetup refresh --allow-discards --persistent cryptfs
+```
+
+After this, you will want to also enable `fstrim.timer` in systemd for
+automatic periodic (normally once per week) trimming on all mounted filesystems
+that support it. (This is usually preferable over a `discard` mount option, as
+it avoids doing discard work synchronously during file deletions.)
 
 ### BTRFS Subvolumes
 
