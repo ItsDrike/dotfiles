@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# nvidia-launch: launches a command PRIME-offloaded onto the NVIDIA dGPU (like
+# prime-run), and additionally requests the performance power profile and
+# ensures the system remains awake for as long as the wrapped command runs.
+#
+# This script was inspired by CachyOS-Settings game-performance script:
+# <https://github.com/CachyOS/CachyOS-Settings/blob/master/usr/bin/game-performance>
+
+
+# systemd-inhibit prevents sleep and idle events from triggering while the wrapped
+# command is running.
+cmd=(systemd-inhibit --what=idle:sleep --why "nvidia-launch is running" --)
+
+# If powerprofilesctl isn't available, setting a power profile is skipped.
+# Similarly, if the performance power profile isn't available, we also
+# skip setting the power profile.
+if command -v powerprofilesctl &>/dev/null && powerprofilesctl list | grep -q 'performance:'; then
+    cmd+=(powerprofilesctl launch -p performance -r "Launched with nvidia-launch" --)
+fi
+
+# If prime-run (from nvidia-prime) isn't installed, we fall back to setting
+# the same offload variables it sets, taken from its own source:
+# <https://gitlab.archlinux.org/archlinux/packaging/packages/nvidia-prime/-/raw/main/prime-run>
+if command -v prime-run &>/dev/null; then
+    cmd+=(prime-run "$@")
+else
+    cmd+=(env __NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia -- "$@")
+fi
+
+exec "${cmd[@]}"
