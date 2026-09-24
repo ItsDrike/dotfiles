@@ -42,6 +42,8 @@ AddPackage github-cli # The GitHub CLI
 
 ## Configs
 
+CopyFile /etc/environment.d/10-editor.conf
+
 # Sudo config
 CopyFile /etc/sudoers.d/10-wheel 440
 CopyFile /etc/sudoers.d/99-insults 440
