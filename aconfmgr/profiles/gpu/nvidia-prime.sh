@@ -7,9 +7,9 @@
 AddPackage nvidia-prime
 
 ###############################################################################
-## nvidia-launch
+## nvidia-perf
 ###############################################################################
 
 # prime-run, plus a performance power profile and a sleep/idle inhibitor for
 # the duration of the wrapped command.
-CopyFile /usr/local/bin/nvidia-launch 755
+CopyFile /usr/local/bin/nvidia-perf 755
