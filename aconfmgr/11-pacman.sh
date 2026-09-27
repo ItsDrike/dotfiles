@@ -2,7 +2,7 @@
 # (This assumes CachyOS)
 
 ###############################################################################
-## Base
+# Base Pacman + CachyOS
 ###############################################################################
 
 # CachyOS repository support must be installed during bootstrap.
@@ -13,15 +13,19 @@ AddPackage cachyos-mirrorlist
 AddPackage cachyos-v3-mirrorlist
 AddPackage cachyos-v4-mirrorlist
 
-# I like paru as my AUR helper
-# (CachyOS has it in their repos directly, so no need for --foreign)
-AddPackage paru
-
 # Main pacman configuration
 CopyFile /etc/pacman.conf
 
 ###############################################################################
-## Extra
+# AUR
+###############################################################################
+
+# I like paru as my AUR helper
+# (CachyOS has it in their repos directly, so no need for --foreign)
+AddPackage paru
+
+###############################################################################
+# Pacman-contrib
 ###############################################################################
 
 # Contains various useful pacman utilities and systemd timers
@@ -37,6 +41,10 @@ CreateLink \
 CreateLink \
   /etc/systemd/system/timers.target.wants/pacman-filesdb-refresh.timer \
   /usr/lib/systemd/system/pacman-filesdb-refresh.timer
+
+##############################################################################
+# Mirror ranking
+##############################################################################
 
 # CachyOS mirror ranking service
 # (Similar to reflector, but works for CachyOS mirrors too)
