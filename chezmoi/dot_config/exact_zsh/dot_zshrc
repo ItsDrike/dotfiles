@@ -1,0 +1,28 @@
+source ~/.config/zsh/rc/fallback_term.zsh
+source ~/.config/zsh/rc/keybinds.zsh
+source ~/.config/zsh/rc/history.zsh
+source ~/.config/zsh/rc/completion.zsh
+source ~/.config/zsh/rc/opts.zsh
+
+# Prefer starship if available
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+else
+  source ~/.config/zsh/rc/prompt.zsh
+fi
+
+source ~/.config/zsh/rc/cmd_not_found.zsh
+source ~/.config/zsh/rc/plugins.zsh
+
+#####
+
+alias g='git'
+alias gs='git status'
+alias gp='git push'
+alias ga='git add'
+alias gap='git add -p'
+alias gcm='git commit -m'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gundo='git reset --soft HEAD~'
+alias l='eza -la'

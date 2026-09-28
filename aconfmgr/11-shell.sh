@@ -5,7 +5,9 @@
 # strictly tied any any single shell.
 ################################################################################
 
-AddPackage starship
+AddPackage starship # The cross-shell prompt for astronauts
+AdPackage eza # A modern replacement for ls (community fork of exa)
+AddPackae zoxide # A smarter cd command for your terminal
 
 ################################################################################
 # Bash
