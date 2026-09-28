@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+#
+# User profile definition.
+# This file is only sourced once, after login.
+# (Unlike .zshrc, which will run whenever a new shell is started).
