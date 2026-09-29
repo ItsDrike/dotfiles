@@ -1,0 +1,6 @@
+# Allow eight password prompts before sudo aborts authentication.
+#
+# Note that this should ideally match the faillock `deny` configuration, which
+# sets the max amount of tries before a lockout. This being higher means those
+# later attempts after the lockout triggered cannot pass in PAM anyways.
+Defaults passwd_tries=8
