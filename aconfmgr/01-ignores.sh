@@ -81,6 +81,9 @@ IgnorePath '/etc/.pwd.lock'
 # NetworkManager runtime state
 IgnorePath '/var/lib/NetworkManager'
 
+# Plymouth-generated boot timing state
+IgnorePath '/var/lib/plymouth/boot-duration'
+
 # Dynamically generated networking configuration
 IgnorePath '/etc/pacman.d/mirrorlist'
 
