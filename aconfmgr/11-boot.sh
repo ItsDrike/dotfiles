@@ -6,6 +6,7 @@ AddPackage linux-cachyos # The Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sau
 AddPackage linux-cachyos-headers # Headers and scripts for building modules for the Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel
 AddPackage linux-firmware # Firmware files for Linux - Default set
 AddPackage kbd # Console keyboard utilities; provides setleds for the initrd numlock service
+AddPackage plymouth # Graphical boot splash screen
 
 # Install microcode packages dynamically based on the running CPU vendor
 case "$(uname -m)" in
@@ -18,7 +19,7 @@ case "$(uname -m)" in
         ;;
 esac
 
-# Extend mkinitcpio hooks configuration, adding sd-encrypt
+# Extend mkinitcpio hooks configuration, adding Plymouth and sd-encrypt.
 CopyFile /etc/mkinitcpio.conf.d/10-hooks.conf
 
 # Enable numlock before the initrd's LUKS password / TPM pin prompt
