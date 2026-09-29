@@ -130,10 +130,8 @@ IgnorePath '/etc/audisp'
 IgnorePath '/etc/audit/plugins.d'
 IgnorePath '/etc/audit/rules.d'
 
-# Docker / Podman state
-IgnorePath '/var/lib/docker'
-IgnorePath '/var/lib/containerd'
-IgnorePath '/var/lib/conteainers'
+# Other container runtime state
+IgnorePath '/var/lib/containers'
 IgnorePath '/var/lib/cni'
 
 # OpenSMTPD state
