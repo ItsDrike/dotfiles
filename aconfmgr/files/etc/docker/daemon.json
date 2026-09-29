@@ -1,0 +1,21 @@
+{
+  "bip": "172.17.0.1/16",
+  "default-address-pools": [
+    {
+      "base": "172.18.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.19.0.0/16",
+      "size": 24
+    }
+  ],
+  "dns": [
+    "172.17.0.1"
+  ],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-file": "5",
+    "max-size": "10m"
+  }
+}
