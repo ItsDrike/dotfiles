@@ -331,6 +331,9 @@ makepkg -si
 cd ..
 rm -rf paru
 paru -Syu
+
+# Make paru properly track git dependencies
+paru --gendb
 ```
 
 ### Systemd initrd
