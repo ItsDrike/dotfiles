@@ -139,6 +139,9 @@ IgnorePath '/var/lib/cni'
 # OpenSMTPD state
 IgnorePath '/var/spool/smtpd'
 
+# Font configuration (auto-populated)
+IgnorePath '/etc/fonts/conf.d'
+
 # Sensitive files
 IgnorePath '/etc/NetworkManager/system-connections'
 IgnorePath '/var/lib/sbctl'
