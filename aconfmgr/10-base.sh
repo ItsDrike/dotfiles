@@ -46,7 +46,12 @@ CopyFile /etc/environment.d/10-editor.conf
 
 # Sudo config
 CopyFile /etc/sudoers.d/10-wheel 440
+CopyFile /etc/sudoers.d/20-passwd-tries 440
 CopyFile /etc/sudoers.d/99-insults 440
+
+# Allow eight consecutive authentication failures before pam_faillock locks an
+# account. Other lockout timing defaults remain those provided by pambase.
+CopyFile /etc/security/faillock.conf
 
 # Virtual console configuration (TTY)
 CopyFile /etc/vconsole.conf
