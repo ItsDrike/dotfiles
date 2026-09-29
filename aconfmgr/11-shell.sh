@@ -6,8 +6,8 @@
 ################################################################################
 
 AddPackage starship # The cross-shell prompt for astronauts
-AdPackage eza # A modern replacement for ls (community fork of exa)
-AddPackae zoxide # A smarter cd command for your terminal
+AddPackage eza # A modern replacement for ls (community fork of exa)
+AddPackage zoxide # A smarter cd command for your terminal
 
 ################################################################################
 # Bash
