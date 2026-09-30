@@ -12,6 +12,17 @@ AddPackage docker-compose
 IgnorePath '/var/lib/docker'
 IgnorePath '/var/lib/containerd'
 
+# This directory holds CNI network configuration files. It is primarily used by
+# Kubernetes, not Docker alone, however, Docker uses containerd, and its
+# built-in CRI plugin creates this empty dir automatically.
+CreateDir /etc/cni/net.d 700
+
+# These directories hold externally supplied containerd extension binaries and
+# libraries. The built-in optional-extension plugin creates them empty
+# automatically, so declare them without hiding any future extension files.
+CreateDir /opt/containerd/bin 711
+CreateDir /opt/containerd/lib 711
+
 # Start Docker only when its local Unix socket is used. Long-running services
 # that must restart at boot should explicitly enable docker.service instead.
 CreateLink \
