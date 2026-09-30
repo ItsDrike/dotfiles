@@ -4,6 +4,7 @@ source "$config_root/profiles/gpu/nvidia.sh"
 source "$config_root/profiles/gpu/nvidia-prime.sh"
 source "$config_root/profiles/gpu/intel.sh"
 source "$config_root/profiles/containers/docker.sh"
+source "$config_root/profiles/containers/podman.sh"
 
 # Enables Intel VT-d DMA remapping.
 # (for VFIO device passthrough and DMA isolation / security hardening)
