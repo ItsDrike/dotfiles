@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Tailnet</short>
+  <description>Tailscale network interface with SSH access.</description>
+  <interface name="tailscale0"/>
+  <service name="ssh"/>
+</zone>
