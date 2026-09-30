@@ -24,6 +24,12 @@ CreateDir /opt/containerd 711
 CreateDir /opt/containerd/bin 711
 CreateDir /opt/containerd/lib 711
 
+# When firewalld is active, Docker creates these permanent firewalld objects to
+# assign its bridge interfaces to the docker zone and permit container
+# forwarding. Docker owns their lifecycle.
+IgnorePath '/etc/firewalld/zones/docker.xml'
+IgnorePath '/etc/firewalld/policies/docker-forwarding.xml'
+
 # Start Docker only when its local Unix socket is used. Long-running services
 # that must restart at boot should explicitly enable docker.service instead.
 CreateLink \
