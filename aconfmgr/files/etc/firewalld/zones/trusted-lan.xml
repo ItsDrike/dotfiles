@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<zone>
-  <short>Trusted LAN</short>
-  <description>Known local networks that may access SSH.</description>
-  <service name="dhcpv6-client"/>
-  <service name="ssh"/>
-</zone>

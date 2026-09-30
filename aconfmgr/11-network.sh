@@ -26,11 +26,6 @@ CreateLink \
 
 ###############################################################################
 # Firewall (firewalld)
-#
-# Firewalld provides NetworkManager-aware network zones using nftables.
-# - New and untrusted connections use the restrictive public zone.
-# - Known trusted LAN connection profiles are assigned to trusted-lan locally
-#   with: `sudo nmcli connection modify "[SSID]" connection.zone trusted-lan`.
 ###############################################################################
 
 # Install and enable firewalld
@@ -42,19 +37,21 @@ CreateLink \
 # Configure firewalld + the individual zones:
 # - By default, the `public` zone will be used for every network interface.
 # - For the `tailscale0` interface, the `tailnet` zone is used instead.
-# - The `trusted-lan` zone is unused by default and configures more permissive
-#   rules that can be used while in a home/trusted LAN network.
+# - The overridden `home` zone is unused by default and configures more
+#   permissive rules for explicitly trusted local networks.
+# - The overridden `work` zone currently remains restrictive without SSH.
 #
 # NetworkManager has a built-in firewalld integration, allowing a connection to
-# specify the firewall zone to be auto-configured for it's interface with:
-# `sudo nmcli connection modify "[SSID]" connection.zone trusted-lan`.
+# specify the firewall zone to be auto-configured for its interface with:
+# `sudo nmcli connection modify "[SSID]" connection.zone home`.
 #
 # Alternatively, a zone can be manually assigned to an interface with:
-# `firewall-cmd --zone=trusted-lan --change-interface=wlp0s20f3`.
+# `firewall-cmd --zone=home --change-interface=wlp0s20f3`.
 CopyFile /etc/firewalld/firewalld.conf
 CopyFile /etc/firewalld/zones/public.xml
-CopyFile /etc/firewalld/zones/trusted-lan.xml
+CopyFile /etc/firewalld/zones/home.xml
 CopyFile /etc/firewalld/zones/tailnet.xml
+CopyFile /etc/firewalld/zones/work.xml
 
 ###############################################################################
 # DNS configuration (systemd-resolved)
