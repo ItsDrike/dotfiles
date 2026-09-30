@@ -133,10 +133,6 @@ IgnorePath '/etc/audisp'
 IgnorePath '/etc/audit/plugins.d'
 IgnorePath '/etc/audit/rules.d'
 
-# Other container runtime state
-IgnorePath '/var/lib/containers'
-IgnorePath '/var/lib/cni'
-
 # OpenSMTPD state
 IgnorePath '/var/spool/smtpd'
 
