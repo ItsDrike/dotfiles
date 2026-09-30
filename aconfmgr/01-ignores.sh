@@ -87,6 +87,12 @@ IgnorePath '/var/lib/plymouth/boot-duration'
 # Dynamically generated networking configuration
 IgnorePath '/etc/pacman.d/mirrorlist'
 
+# Retained mirror-list backups created by CachyOS tooling or prior setups
+IgnorePath '/etc/pacman.d/cachyos-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/cachyos-v3-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/cachyos-v4-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/mirrorlist-backup'
+
 # Generated shell registry
 IgnorePath '/etc/shells'
 
