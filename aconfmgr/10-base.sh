@@ -60,6 +60,9 @@ CopyFile /etc/security/faillock.conf
 # manipulated /etc/shadow with a present nullok option from pam_unix.
 CopyFile /etc/pam.d/system-auth
 
+# Allow only wheel members to use su for root access.
+CopyFile /etc/pam.d/su
+
 # Virtual console configuration (TTY)
 CopyFile /etc/vconsole.conf
 
