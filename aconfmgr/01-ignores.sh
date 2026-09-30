@@ -21,13 +21,6 @@ IgnorePath '/efi'
 IgnorePath '/etc/ca-certificates/extracted'
 IgnorePath '/etc/ssl/certs'
 
-# Pacman keyring runtime state
-IgnorePath '/etc/pacman.d/gnupg'
-
-# Package database caches
-IgnorePath '/var/lib/pacman/local'
-IgnorePath '/var/lib/pacman/sync'
-
 # Generated caches and indexes
 IgnorePath '/etc/ld.so.cache'
 IgnorePath '/usr/lib/gconv/gconv-modules.cache'
@@ -83,18 +76,6 @@ IgnorePath '/var/lib/NetworkManager'
 
 # Plymouth-generated boot timing state
 IgnorePath '/var/lib/plymouth/boot-duration'
-
-# Dynamically generated networking configuration
-IgnorePath '/etc/pacman.d/mirrorlist'
-IgnorePath '/etc/pacman.d/cachyos-mirrorlist'
-IgnorePath '/etc/pacman.d/cachyos-v3-mirrorlist'
-IgnorePath '/etc/pacman.d/cachyos-v4-mirrorlist'
-
-# Retained mirror-list backups created by CachyOS tooling or prior setups
-IgnorePath '/etc/pacman.d/cachyos-mirrorlist-backup'
-IgnorePath '/etc/pacman.d/cachyos-v3-mirrorlist-backup'
-IgnorePath '/etc/pacman.d/cachyos-v4-mirrorlist-backup'
-IgnorePath '/etc/pacman.d/mirrorlist-backup'
 
 # Generated shell registry
 IgnorePath '/etc/shells'

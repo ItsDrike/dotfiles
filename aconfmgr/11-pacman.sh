@@ -16,6 +16,25 @@ AddPackage cachyos-v4-mirrorlist
 # Main pacman configuration
 CopyFile /etc/pacman.conf
 
+# Pacman's mutable keyring runtime state
+IgnorePath '/etc/pacman.d/gnupg'
+
+# Pacman's installed-package database and cached repository metadata state
+IgnorePath '/var/lib/pacman/local'
+IgnorePath '/var/lib/pacman/sync'
+
+# Pacman and CachyOS mirror-ranking tooling update these lists automatically
+IgnorePath '/etc/pacman.d/mirrorlist'
+IgnorePath '/etc/pacman.d/cachyos-mirrorlist'
+IgnorePath '/etc/pacman.d/cachyos-v3-mirrorlist'
+IgnorePath '/etc/pacman.d/cachyos-v4-mirrorlist'
+
+# The mirror-ranking tools also keep mirrorlist backups
+IgnorePath '/etc/pacman.d/cachyos-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/cachyos-v3-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/cachyos-v4-mirrorlist-backup'
+IgnorePath '/etc/pacman.d/mirrorlist-backup'
+
 ###############################################################################
 # AUR
 ###############################################################################
