@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Public</short>
+  <description>Default zone for untrusted networks. Incoming services are denied.</description>
+  <service name="dhcpv6-client"/>
+</zone>
