@@ -20,6 +20,7 @@ CreateDir /etc/cni/net.d 700
 # These directories hold externally supplied containerd extension binaries and
 # libraries. The built-in optional-extension plugin creates them empty
 # automatically, so declare them without hiding any future extension files.
+CreateDir /opt/containerd 711
 CreateDir /opt/containerd/bin 711
 CreateDir /opt/containerd/lib 711
 
