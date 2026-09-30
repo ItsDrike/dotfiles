@@ -42,6 +42,7 @@ IgnorePath '/var/lib/systemd/pstore'
 IgnorePath '/var/lib/systemd/random-seed'
 IgnorePath '/var/lib/systemd/rfkill'
 IgnorePath '/var/lib/systemd/timers'
+IgnorePath '/var/lib/systemd/timesync'
 IgnorePath '/var/lib/systemd/tpm2-srk-public-key.*'
 
 # Generated or runtime system state
@@ -130,5 +131,4 @@ IgnorePath '/var/spool/smtpd'
 IgnorePath '/etc/fonts/conf.d'
 
 # Sensitive files
-IgnorePath '/etc/NetworkManager/system-connections'
 IgnorePath '/var/lib/sbctl'

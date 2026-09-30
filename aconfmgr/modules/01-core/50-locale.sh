@@ -1,6 +1,14 @@
 # Time zone
 CreateLink /etc/localtime /usr/share/zoneinfo/CET
 
+# Synchronize the system clock using systemd's built-in NTP client.
+CreateLink \
+  /etc/systemd/system/dbus-org.freedesktop.timesync1.service \
+  /usr/lib/systemd/system/systemd-timesyncd.service
+CreateLink \
+  /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service \
+  /usr/lib/systemd/system/systemd-timesyncd.service
+
 # Enable generating localizations for the languages below:
 # - en_US: Primary locale for English messages and general formatting.
 # - en_DK: English with Danish regional conventions, used for ISO-style
