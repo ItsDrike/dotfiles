@@ -1,1 +1,1 @@
-ro quiet splash rootflags=subvol=@bootstrap-root
+ro quiet

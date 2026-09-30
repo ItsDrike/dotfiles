@@ -7,8 +7,8 @@ AddPackage linux-headers # Headers and scripts for building modules for the Linu
 AddPackage linux-cachyos # The Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel and modules
 AddPackage linux-cachyos-headers # Headers and scripts for building modules for the Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel
 
-# Default kernel command line (baked into the UKIs)
-# The cmdline can be extended per-host with /etc/cmdline.d entries
+# Universal kernel command line baseline (baked into the UKIs).
+# Modules and hosts add their own parameters with /etc/cmdline.d/*.conf.
 CopyFile /etc/kernel/cmdline
 
 ###############################################################################
