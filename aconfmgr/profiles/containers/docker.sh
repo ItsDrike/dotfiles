@@ -30,8 +30,9 @@ CreateDir /opt/containerd/lib 711
 IgnorePath '/etc/firewalld/zones/docker.xml'
 IgnorePath '/etc/firewalld/policies/docker-forwarding.xml'
 
-# Start Docker only when its local Unix socket is used. Long-running services
-# that must restart at boot should explicitly enable docker.service instead.
+# Start Docker only when its local Unix socket is used. Hosts with long-running
+# services that must restart at boot should explicitly enable docker.service
+# instead.
 CreateLink \
     /etc/systemd/system/sockets.target.wants/docker.socket \
     /usr/lib/systemd/system/docker.socket
