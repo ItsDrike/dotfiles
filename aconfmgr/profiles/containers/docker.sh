@@ -43,6 +43,10 @@ CreateLink \
 #     * 172.18.0.0/16 (/24 allocations)
 #     * 172.19.0.0/16 (/24 allocations)
 #
+# - Published ports to bind to localhost by default for both the default
+#   docker0 and created user-defined / Docker Compose bridge networks. External
+#   exposure therefore requires an explicit host address in the port mapping.
+#
 # - Explicit Docker DNS resolver at 172.17.0.1, which we then make
 #   systemd-resolved listen on. For detail on why, see the explanation comment
 #   on adding this extra listener to systemd-resolved.
