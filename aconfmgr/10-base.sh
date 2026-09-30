@@ -5,89 +5,16 @@ AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux
 AddPackage base # Minimal package set to define a basic Arch Linux installation
 AddPackage base-devel # Basic tools to build Arch Linux packages
 AddPackage arch-install-scripts # Provides arch-chroot and other Arch installation helpers
-AddPackage btrfs-progs # Btrfs filesystem utilities
-AddPackage cryptsetup # Userspace setup tool for transparent encryption of block devices using dm-crypt
-AddPackage git # the fast distributed version control system
-AddPackage sudo # Give certain users the ability to run some commands as root
-AddPackage neovim # Fork of Vim aiming to improve user experience, plugins, and GUIs
-AddPackage less # A terminal based program for viewing text files
-AddPackage man-db # A utility for reading man pages
-AddPackage man-pages # Linux man pages
-AddPackage openssh # SSH protocol implementation for remote login, command execution and file transfer
-AddPackage ripgrep # A search tool that combines the usability of ag with the raw speed of grep
-AddPackage fd # Simple, fast and user-friendly alternative to find
-AddPackage go-yq # Portable command-line YAML processor
-AddPackage jq # Command-line JSON processor
 AddPackage sbctl # Secure Boot key manager
 AddPackage efitools # Tools for manipulating UEFI secure boot platforms
-AddPackage usbutils # A collection of USB tools to query connected USB devices
-AddPackage lsof # Lists open files for running Unix processes
-AddPackage zip # Compressor/archiver for creating and modifying zipfiles
-AddPackage 7zip # File archiver for extremely high compression
-AddPackage unrar # The RAR uncompression program
-AddPackage wget # Network utility to retrieve files from the web
-AddPackage curl # command line tool and library for transferring data with URLs
-AddPackage rsync # A fast and versatile file copying tool for remote and local files
-AddPackage ntp # Network Time Protocol reference implementation
-AddPackage fwupd # Simple daemon to allow session software to update firmware
-AddPackage chezmoi # Manage your dotfiles across multiple machines
-
-## Other packages
-
-AddPackage arch-audit # A utility like pkg-audit based on Arch Security Team data
-AddPackage btop # A monitor of system resources, bpytop ported to C++
-AddPackage macchina # A  system information fetcher, with an (unhealthy) emphasis on performance.
-AddPackage rustup # The Rust toolchain installer
-AddPackage github-cli # The GitHub CLI
 
 ## Configs
 
 CopyFile /etc/environment.d/10-editor.conf
 
-# Sudo config
-CopyFile /etc/sudoers.d/10-wheel 440
-CopyFile /etc/sudoers.d/20-passwd-tries 440
-CopyFile /etc/sudoers.d/99-insults 440
-
-# Allow eight consecutive authentication failures before pam_faillock locks an
-# account. Other lockout timing defaults remain those provided by pambase.
-CopyFile /etc/security/faillock.conf
-
-# Disallow empty passwords for PAM authentication and password changes.
-#
-# Allowing empty passwords for authentication can increase the attack surface,
-# e.g. see CVE-2020-27780, or dirtyfrag (CVE-2026-43284 , CVE-2026-43500) - a
-# manipulated /etc/shadow with a present nullok option from pam_unix.
-CopyFile /etc/pam.d/system-auth
-
-# Allow only wheel members to use su for root access.
-CopyFile /etc/pam.d/su
-
-# Virtual console configuration (TTY)
-CopyFile /etc/vconsole.conf
-
-# Disable the legacy PC speaker bell in the initrd and the running system.
-# (I would rather physically remove the motherboard speaker than have my
-# system beep at me, luckily, we can disable it from software)
-CopyFile /etc/modprobe.d/nobeep.conf
-
 ## Systemd units
 
-# Enable weekly SSD TRIMming
-CreateLink \
-  /etc/systemd/system/timers.target.wants/fstrim.timer \
-  /usr/lib/systemd/system/fstrim.timer
-
 # Other
-CreateLink \
-  /etc/systemd/system/autovt@.service \
-  /usr/lib/systemd/system/getty@.service
-CreateLink \
-  /etc/systemd/system/getty.target.wants/getty@tty1.service \
-  /usr/lib/systemd/system/getty@.service
-CreateLink \
-  /etc/systemd/system/multi-user.target.wants/remote-fs.target \
-  /usr/lib/systemd/system/remote-fs.target
 CreateLink \
   /etc/systemd/system/sockets.target.wants/systemd-userdbd.socket \
   /usr/lib/systemd/system/systemd-userdbd.socket
