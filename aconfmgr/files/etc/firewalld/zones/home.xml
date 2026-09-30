@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Home</short>
+  <description>Explicitly trusted local networks that may access SSH and use mDNS.</description>
+  <service name="dhcpv6-client"/>
+  <service name="mdns"/>
+  <service name="ssh"/>
+</zone>

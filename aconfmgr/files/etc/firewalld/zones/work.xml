@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Work</short>
+  <description>Work networks with mDNS discovery but no inbound services.</description>
+  <service name="dhcpv6-client"/>
+  <service name="mdns"/>
+</zone>
