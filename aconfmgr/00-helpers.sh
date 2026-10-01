@@ -12,6 +12,30 @@ _SystemdQuote() {
     printf '"%s"' "$value"
 }
 
+# SourceProfile PROFILE
+#
+# Loads an explicitly selected host profile, emitting an indented aconfmgr log
+# entry while it is evaluated. PROFILE is relative to the profiles directory.
+SourceProfile() {
+    if (( $# != 1 )); then
+        FatalError 'Usage: SourceProfile PROFILE\n'
+        return 1
+    fi
+
+    local profile_root
+    local profile
+
+    profile_root="$(dirname -- "${BASH_SOURCE[0]}")/profiles"
+    profile="$profile_root/$1"
+
+    LogEnter 'Sourcing profile %s...\n' "$(Color C '%q' "$profile")"
+    source "$profile" || {
+        LogLeave ''
+        return 1
+    }
+    LogLeave ''
+}
+
 # Persist SOURCE TARGET
 #
 # Makes SOURCE available at TARGET through a bind-mount unit enabled by
