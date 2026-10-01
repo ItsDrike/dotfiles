@@ -13,6 +13,7 @@ _SourceModules() {
     [[ -d "$module_root" ]] || return 0
 
     while IFS= read -r -d '' module; do
+	echo ":::: Sourcing $module" >&2
         source "$module" || return 1
     done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
 }
