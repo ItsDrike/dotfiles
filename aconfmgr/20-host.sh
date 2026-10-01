@@ -14,13 +14,17 @@ config_root="$(dirname -- "${BASH_SOURCE[0]}")"
 # Hard-Fail for any unrecognized machines.
 case "$HOSTNAME" in
     orca)
-        source "$config_root/hosts/orca.sh"
+        host_config="$config_root/hosts/orca.sh"
         ;;
     *)
-        echo "No aconfmgr host configuration for this hostname." >&2
+        FatalError 'No aconfmgr host configuration for hostname %q.\n' "$HOSTNAME"
         exit 1
         ;;
 esac
+
+LogEnter 'Sourcing host config %s...\n' "$(Color C '%q' "$host_config")"
+source "$host_config"
+LogLeave
 
 # Generically create/copy other host-specific files
 CopyFileTo "/hosts/$HOSTNAME/etc/fstab" /etc/fstab
