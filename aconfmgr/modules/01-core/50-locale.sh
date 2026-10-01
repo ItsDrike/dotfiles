@@ -1,6 +1,12 @@
 # Time zone
 CreateLink /etc/localtime /usr/share/zoneinfo/CET
 
+# Generated hardware-clock mode state.
+IgnorePath '/etc/adjtime'
+
+# Compiled glibc's locale database generated from /etc/locale.gen.
+IgnorePath '/usr/lib/locale/locale-archive'
+
 # Synchronize the system clock using systemd's built-in NTP client.
 CreateLink \
   /etc/systemd/system/dbus-org.freedesktop.timesync1.service \

@@ -9,6 +9,9 @@ AddPackage starship # The cross-shell prompt for astronauts
 AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage zoxide # A smarter cd command for your terminal
 
+# Generated registry of installed login shells.
+IgnorePath '/etc/shells'
+
 ################################################################################
 # Bash
 #

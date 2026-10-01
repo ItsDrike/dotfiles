@@ -16,6 +16,9 @@ CreateLink \
   /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service \
   /usr/lib/systemd/system/NetworkManager-dispatcher.service
 
+# Generated runtime state and connection metadata.
+IgnorePath '/var/lib/NetworkManager'
+
 # Don't manage saved connection profiles
 #
 # (They contain Wi-Fi credentials and host-specific network metadata)

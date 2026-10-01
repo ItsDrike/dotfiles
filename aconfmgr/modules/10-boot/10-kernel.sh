@@ -1,15 +1,36 @@
 ###############################################################################
-# Packages, Config
+# Kernel images and boot configuration
 ###############################################################################
 
 AddPackage linux # The Linux kernel and modules
-AddPackage linux-headers # Headers and scripts for building modules for the Linux kernel
 AddPackage linux-cachyos # The Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel and modules
-AddPackage linux-cachyos-headers # Headers and scripts for building modules for the Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel
+
+# Generated kernel, initramfs, and microcode boot artifacts.
+IgnorePath '/boot/vmlinuz-*'
+IgnorePath '/boot/initramfs-*.img'
+IgnorePath '/boot/*-ucode.img'
+IgnorePath '/efi'
+IgnorePath '/usr/lib/modules/*/modules.*'
 
 # Universal kernel command line baseline (baked into the UKIs).
 # Modules and hosts add their own parameters with /etc/cmdline.d/*.conf.
 CopyFile /etc/kernel/cmdline
+
+###############################################################################
+# DKMS / out-of-tree kernel modules
+###############################################################################
+
+AddPackage linux-headers # Headers and scripts for building modules for the Linux kernel
+AddPackage linux-cachyos-headers # Headers and scripts for building modules for the Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements. kernel
+
+# DKMS-generated Machine Owner Key (MOK) material
+#
+# Used to sign out-of-tree kernel modules so they can load when kernel lockdown
+# requires trusted module signatures. Secure Boot commonly enables this kernel
+# policy: the loaded kernel validates modules, using keys it trusts via the MOK
+# chain. Regardless of secure boot status though, DKMS will always generate and
+# sign the modules by default.
+IgnorePath '/var/lib/dkms/mok.*'
 
 ###############################################################################
 # Firmware / Drivers
