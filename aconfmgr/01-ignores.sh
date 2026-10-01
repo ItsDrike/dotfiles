@@ -9,13 +9,6 @@ IgnorePath '/mnt'
 IgnorePath '/var/log'
 IgnorePath '/var/log/*'
 IgnorePath '/var/tmp'
-IgnorePath '/var/db/sudo'
-
-# Generated boot artifacts
-IgnorePath '/boot/vmlinuz-*'
-IgnorePath '/boot/initramfs-*.img'
-IgnorePath '/boot/*-ucode.img'
-IgnorePath '/efi'
 
 # Generated certificate stores
 IgnorePath '/etc/ca-certificates/extracted'
@@ -25,8 +18,6 @@ IgnorePath '/etc/ssl/certs'
 IgnorePath '/etc/ld.so.cache'
 IgnorePath '/usr/lib/gconv/gconv-modules.cache'
 IgnorePath '/usr/lib32/gconv/gconv-modules.cache'
-IgnorePath '/usr/lib/locale/locale-archive'
-IgnorePath '/usr/lib/modules/*/modules.*'
 IgnorePath '/usr/lib/udev/hwdb.bin'
 IgnorePath '/usr/share/info/dir'
 IgnorePath '/usr/lib/gio/modules/giomodule.cache'
@@ -54,32 +45,9 @@ IgnorePath '/var/lib/systemd/linger'
 IgnorePath '/var/lib/systemd/network'
 IgnorePath '/var/lib/tpm2-tss'
 
-# Downloaded firmware metadata, update state, and fwupd client identity
-IgnorePath '/var/lib/fwupd'
-IgnorePath '/var/lib/fwupd/*'
-
-# Passim firmware-metadata cache and its generated TLS identity
-IgnorePath '/var/lib/passim'
-IgnorePath '/var/lib/passim/*'
-
-# Login/accounting databases
-IgnorePath '/var/lib/lastlog'
-
 # Timestamp marker files
 IgnorePath '/etc/.updated'
 IgnorePath '/var/.updated'
-
-# Transient lock/state
-IgnorePath '/etc/.pwd.lock'
-
-# NetworkManager runtime state
-IgnorePath '/var/lib/NetworkManager'
-
-# Plymouth-generated boot timing state
-IgnorePath '/var/lib/plymouth/boot-duration'
-
-# Generated shell registry
-IgnorePath '/etc/shells'
 
 # Machine identity
 IgnorePath '/etc/machine-id'
@@ -90,34 +58,11 @@ IgnorePath '/usr/lib/os-release'
 # SSH host identity (public & private keys)
 IgnorePath '/etc/ssh/ssh_host_*'
 
-# DKMS signing identity (public & private keys)
-IgnorePath '/var/lib/dkms/mok.*'
-
 # Machine-specific system identity and state
 IgnorePath '/etc/hostname'
-IgnorePath '/etc/adjtime'
 
 # Mimetype definitions
 IgnorePath '/usr/share/mime/*'
-
-# Locally signed package-derived binary
-IgnorePath '/usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed'
-
-# Local account databases
-IgnorePath '/etc/passwd'
-IgnorePath '/etc/group'
-IgnorePath '/etc/shadow'
-IgnorePath '/etc/gshadow'
-IgnorePath '/etc/subuid'
-IgnorePath '/etc/subgid'
-
-# Account database backup files
-IgnorePath '/etc/passwd-'
-IgnorePath '/etc/group-'
-IgnorePath '/etc/shadow-'
-IgnorePath '/etc/gshadow-'
-IgnorePath '/etc/subuid-'
-IgnorePath '/etc/subgid-'
 
 # Audit configuration
 IgnorePath '/etc/audisp'
@@ -129,6 +74,3 @@ IgnorePath '/var/spool/smtpd'
 
 # Font configuration (auto-populated)
 IgnorePath '/etc/fonts/conf.d'
-
-# Sensitive files
-IgnorePath '/var/lib/sbctl'

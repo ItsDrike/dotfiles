@@ -1,9 +1,32 @@
-AddPackage sudo # Give certain users the ability to run some commands as root
+###############################################################################
+# Local account state
+###############################################################################
 
-# Sudo config
-CopyFile /etc/sudoers.d/10-wheel 440
-CopyFile /etc/sudoers.d/20-passwd-tries 440
-CopyFile /etc/sudoers.d/99-insults 440
+# Temporary lock file - prevents concurrent edits to account database files
+IgnorePath '/etc/.pwd.lock'
+
+# Local account databases
+IgnorePath '/etc/passwd'
+IgnorePath '/etc/group'
+IgnorePath '/etc/shadow'
+IgnorePath '/etc/gshadow'
+IgnorePath '/etc/subuid'
+IgnorePath '/etc/subgid'
+
+# Account database backup files
+IgnorePath '/etc/passwd-'
+IgnorePath '/etc/group-'
+IgnorePath '/etc/shadow-'
+IgnorePath '/etc/gshadow-'
+IgnorePath '/etc/subuid-'
+IgnorePath '/etc/subgid-'
+
+# Login/accounting databases
+IgnorePath '/var/lib/lastlog'
+
+###############################################################################
+# PAM authentication policy
+###############################################################################
 
 # Allow eight consecutive authentication failures before pam_faillock locks an
 # account. Other lockout timing defaults remain those provided by pambase.
@@ -18,3 +41,17 @@ CopyFile /etc/pam.d/system-auth
 
 # Allow only wheel members to use su for root access.
 CopyFile /etc/pam.d/su
+
+###############################################################################
+# Sudo
+###############################################################################
+
+AddPackage sudo
+
+# Sudo's runtime state (holds e.g. authentication timestamps)
+IgnorePath '/var/db/sudo'
+
+# Sudo config
+CopyFile /etc/sudoers.d/10-wheel 440
+CopyFile /etc/sudoers.d/20-passwd-tries 440
+CopyFile /etc/sudoers.d/99-insults 440
