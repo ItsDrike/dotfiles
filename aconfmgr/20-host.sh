@@ -8,23 +8,16 @@
 # The $HOSTNAME env var is used to select the active host configuration.
 # Override it deliberately when evaluating another host's declaration.
 
-config_root="$(dirname -- "${BASH_SOURCE[0]}")"
-
 # Load host-specific configs
 # Hard-Fail for any unrecognized machines.
 case "$HOSTNAME" in
     orca)
-        host_config="$config_root/hosts/orca.sh"
+        SourceHost orca.sh
         ;;
     *)
         FatalError 'No aconfmgr host configuration for hostname %q.\n' "$HOSTNAME"
-        exit 1
         ;;
 esac
-
-LogEnter 'Sourcing host config %s...\n' "$(Color C '%q' "$host_config")"
-source "$host_config"
-LogLeave
 
 # Generically create/copy other host-specific files
 CopyFileTo "/hosts/$HOSTNAME/etc/fstab" /etc/fstab

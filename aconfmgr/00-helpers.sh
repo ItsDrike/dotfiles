@@ -12,6 +12,21 @@ _SystemdQuote() {
     printf '"%s"' "$value"
 }
 
+# _SourceConfigScript TYPE PATH
+#
+# Sources a configuration script with a nested aconfmgr log entry.
+_SourceConfigScript() {
+    local type=$1
+    local path=$2
+
+    LogEnter 'Sourcing %s %s...\n' "$type" "$(Color C '%q' "$path")"
+    source "$path" || {
+        LogLeave ''
+        return 1
+    }
+    LogLeave ''
+}
+
 # SourceProfile PROFILE
 #
 # Loads an explicitly selected host profile, emitting an indented aconfmgr log
@@ -28,12 +43,45 @@ SourceProfile() {
     profile_root="$(dirname -- "${BASH_SOURCE[0]}")/profiles"
     profile="$profile_root/$1"
 
-    LogEnter 'Sourcing profile %s...\n' "$(Color C '%q' "$profile")"
-    source "$profile" || {
-        LogLeave ''
+    _SourceConfigScript profile "$profile"
+}
+
+# SourceHost HOST
+#
+# Loads the selected host configuration. HOST is relative to the hosts
+# directory.
+SourceHost() {
+    if (( $# != 1 )); then
+        FatalError 'Usage: SourceHost HOST\n'
         return 1
-    }
-    LogLeave ''
+    fi
+
+    local host_root
+    local host
+
+    host_root="$(dirname -- "${BASH_SOURCE[0]}")/hosts"
+    host="$host_root/$1"
+
+    _SourceConfigScript host "$host"
+}
+
+# SourceModules
+#
+# Loads shared default configuration modules in deterministic path order.
+# Profiles and hosts remain explicitly selected by their respective loaders.
+SourceModules() {
+    local config_root
+    local module_root
+    local module
+
+    config_root="$(dirname -- "${BASH_SOURCE[0]}")"
+    module_root="$config_root/modules"
+
+    [[ -d "$module_root" ]] || return 0
+
+    while IFS= read -r -d '' module; do
+        _SourceConfigScript module "$module" || return 1
+    done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
 }
 
 # Persist SOURCE TARGET
