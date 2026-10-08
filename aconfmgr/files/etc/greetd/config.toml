@@ -7,7 +7,7 @@ vt = 1
 # the default (tuigreet) session below on first start.
 [initial_session]
 user = "itsdrike"
-command = "user-login-shell"
+command = "uwsm start default"
 
 # The default session, also known as the greeter.
 [default_session]
