@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+# Desktop Entry Exec commands do not expand $SHELL. Resolve the authenticated
+# account's configured shell and start it as a login shell on the current VT.
+user="${USER:-$(id -un)}"
+shell="$(getent passwd "$user" | awk -F: '{print $7}')"
+
+if [ -z "$shell" ] || [ ! -x "$shell" ]; then
+  shell=/bin/sh
+fi
+
+exec "$shell" -l
