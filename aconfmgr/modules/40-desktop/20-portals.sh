@@ -7,3 +7,7 @@ AddPackage xdg-desktop-portal
 # desktop-integration requests. Compositor-specific backends provide screen
 # capture and input portals separately.
 AddPackage xdg-desktop-portal-gtk
+
+# Keep the D-Bus-activated GTK backend in the user session infrastructure
+# slice rather than the default application slice.
+CopyFile /etc/systemd/user/xdg-desktop-portal-gtk.service.d/10-session-slice.conf
