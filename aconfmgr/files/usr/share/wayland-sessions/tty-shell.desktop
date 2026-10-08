@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=TTY shell
+Comment=Log into a shell on the greetd virtual terminal
+Exec=/usr/local/bin/user-login-shell
+Type=Application
