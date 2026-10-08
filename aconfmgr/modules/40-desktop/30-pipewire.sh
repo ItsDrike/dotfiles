@@ -74,3 +74,14 @@ CreateLink \
 # It does not route or process media, PipeWire is usually its only consumer
 # on most normal desktop systems though.
 AddPackage rtkit
+
+###############################################################################
+# Interactive mixer tools
+###############################################################################
+
+# PulseAudio-protocol TUI mixer. Works with PipeWire through pipewire-pulse.
+AddPackage pulsemixer
+
+# Native PipeWire TUI mixer with playback, recording, device, and configuration
+# views.
+AddPackage wiremix
