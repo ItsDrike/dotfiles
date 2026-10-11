@@ -5,11 +5,11 @@ vt = 1
 
 # Auto-login session, triggered right after boot. When it exits, greetd skips
 # the default (tuigreet) session below on first start.
-[initial_session]
-user = "itsdrike"
-command = "uwsm start default"
+# [initial_session]
+# user = "itsdrike"
+# command = "uwsm start default"
 
-# The default session, also known as the greeter.
+# The default (password-authenticated) session, also known as the greeter.
 [default_session]
 command = "tuigreet --time --remember --remember-user-session --asterisks --greeting 'Found lost device? Email recovery@itsdrike.com' --theme 'border=magenta;text=cyan;prompt=green;time=red;action=white;button=yellow;container=black;input=gray' --sessions /usr/share/wayland-sessions --xsessions /usr/share/xsessions"
 
