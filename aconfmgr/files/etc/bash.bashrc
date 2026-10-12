@@ -54,6 +54,13 @@ _load_environment_d() {
     local name value
 
     while IFS='=' read -r name value; do
+        # systemd's generator shell-quotes values when needed, for example if a
+        # value that contains a semicolon. Remove that one layer of shell
+        # quoting before exporting the value into Bash.
+        if [[ $value == \"*\" ]]; then
+            value=${value:1:${#value}-2}
+            printf -v value '%b' "$value"
+        fi
         [[ -n $name ]] && export "$name=$value"
     done < <(
         /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
