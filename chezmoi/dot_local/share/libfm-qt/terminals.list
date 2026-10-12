@@ -1,0 +1,6 @@
+# Adapt libfm-qt's terminal interface to UWSM's XDG-aware terminal launcher.
+# Empty options make `Terminal=true` entries expand to:
+#   uwsm-terminal <application command...>
+[uwsm-terminal]
+open_arg=
+noclose_arg=
