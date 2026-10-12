@@ -21,5 +21,8 @@ AddPackage kvantum
 # used by Qt 5 applications.
 AddPackage kvantum-qt5
 
+# Catppuccin Mocha Blue is the Kvantum style selected for Qt Widgets apps.
+AddPackage --foreign kvantum-theme-catppuccin-git
+
 # Qt 6 development and diagnostic utilities, including Qt Help tools.
 AddPackage qt6-tools
