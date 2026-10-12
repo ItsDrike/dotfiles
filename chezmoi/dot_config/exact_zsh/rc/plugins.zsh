@@ -10,6 +10,10 @@ fi
 
 if [ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
   source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+  # The plugin defaults comments to black, which is unreadable in a dark
+  # terminal. Keep them muted but legible.
+  FAST_HIGHLIGHT_STYLES[comment]='fg=#737aa2'
 fi
 
 if (( $+commands[zoxide] )); then
