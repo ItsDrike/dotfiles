@@ -1,4 +1,11 @@
 [Default Applications]
+# Web pages and links
+text/html=firefox.desktop
+application/xhtml+xml=firefox.desktop
+application/pdf=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+
 # Images
 image/avif=swayimg.desktop
 image/bmp=swayimg.desktop
