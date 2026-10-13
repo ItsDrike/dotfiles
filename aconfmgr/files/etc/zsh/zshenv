@@ -46,4 +46,7 @@ _load_environment_d() {
 _load_environment_d
 unfunction _load_environment_d
 
+# To better follow XDG Base Directory specification and avoid cluttering the
+# $HOME directory with unstructured config files, we force ZDOTDIR for every
+# user to be in the XDG_CONFIG_HOME (~/.config).
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
