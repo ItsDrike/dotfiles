@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQml
+import Quickshell
 
 /*!
  * \qmltype NerdGlyphs
@@ -10,6 +10,6 @@ import QtQml
  *
  * See <https://www.nerdfonts.com/cheat-sheet>
  */
-QtObject {
+Singleton {
   readonly property string clock: "\uf017"
 }

@@ -13,6 +13,7 @@ Scope {
   readonly property int barHeight: 30
   readonly property int horizontalMargin: 10
   readonly property int widgetSpacing: 5
+  readonly property color color: Qt.rgba(30 / 255, 30 / 255, 40 / 255, 0.65)
 
   component BarLeft: RowLayout {
     spacing: root.widgetSpacing
@@ -34,6 +35,7 @@ Scope {
 
   PanelWindow {
     screen: root.screen
+    color: root.color
 
     anchors {
       top: true

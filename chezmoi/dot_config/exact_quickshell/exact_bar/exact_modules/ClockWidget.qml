@@ -1,27 +1,23 @@
 import QtQuick
+import QtQuick.Layouts
 import qs.components as Components
 import qs.services as Services
 
-Row {
-  spacing: 4
+Components.Widget {
+  RowLayout {
+    spacing: 4
 
-  Components.NerdIcon {
-    glyph: Components.NerdGlyphs.clock
-    color: "#89b4fa"
+    Components.NerdIcon {
+      glyph: Components.NerdGlyphs.clock
+      color: "#89b4fa"
 
-    anchors {
-      top: parent.top
-      bottom: parent.bottom
+      Layout.fillHeight: true
     }
-  }
 
-  Text {
+    Components.BarText {
       text: Services.ClockSource.time
 
-      verticalAlignment: Text.AlignVCenter
-      anchors {
-        top: parent.top
-        bottom: parent.bottom
-      }
+      Layout.fillHeight: true
+    }
   }
 }
