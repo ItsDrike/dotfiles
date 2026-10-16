@@ -46,6 +46,19 @@ swayimg.viewer.on_key("i", function()
   end
 end)
 
+local function shell_quote(value)
+  return "'" .. value:gsub("'", "'\\''") .. "'"
+end
+
+-- Open a second viewer on this image, retaining adjacent-image navigation
+swayimg.viewer.on_key("Ctrl+d", function()
+  local image = swayimg.viewer.get_image()
+  if image then
+    swayimg.text.status = "Opened duplicate"
+    os.execute("uwsm-app -- swayimg --viewer " .. shell_quote(image.path) .. " &")
+  end
+end)
+
 -- Reset scale and pan to the normal opening view
 swayimg.viewer.on_key({ "0", "KP_0", "KP_Insert", "KP_5", "KP_Begin" }, function()
   swayimg.viewer.reset()
