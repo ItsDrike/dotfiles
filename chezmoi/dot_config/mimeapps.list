@@ -1,4 +1,7 @@
 [Default Applications]
+# Directories
+inode/directory=pcmanfm-qt.desktop
+
 # Web pages and links
 text/html=firefox.desktop
 application/xhtml+xml=firefox.desktop
