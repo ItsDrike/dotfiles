@@ -1,5 +1,7 @@
 # Versatile media player for local audio/video files and network streams.
 AddPackage mpv
+# MPRIS plugin so playerctl and media keys can control MPV.
+AddPackage mpv-mpris
 
 # Standalone command-line downloader for supported video sites. MPV also
 # automatically uses it to play supported video-site URLs.
