@@ -1,0 +1,11 @@
+[Unit]
+Description=Atuin daemon socket
+Documentation=https://docs.atuin.sh/latest/
+
+[Socket]
+ListenStream=%t/atuin.sock
+SocketMode=0600
+RemoveOnStop=true
+
+[Install]
+WantedBy=sockets.target

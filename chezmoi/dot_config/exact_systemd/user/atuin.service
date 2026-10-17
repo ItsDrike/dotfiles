@@ -1,0 +1,13 @@
+[Unit]
+Description=Atuin Daemon - Magical shell history
+Documentation=https://docs.atuin.sh/latest/
+Requires=atuin.socket
+After=atuin.socket
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/atuin daemon start
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
