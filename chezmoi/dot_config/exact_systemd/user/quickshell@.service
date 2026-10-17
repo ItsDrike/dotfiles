@@ -1,0 +1,16 @@
+[Unit]
+Description=Quickshell configuration: %i
+Documentation=https://quickshell.org/
+Requisite=graphical-session.target
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/quickshell --config %i
+Restart=always
+RestartSec=2s
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
