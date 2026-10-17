@@ -34,7 +34,7 @@
 # update_channel = "stable"
 
 ## address of the sync server
-# sync_address = "https://api.atuin.sh"
+sync_address = "http://atuin.home.arpa"
 
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
@@ -359,6 +359,10 @@ systemd_socket = true
 
 [ai]
 enabled = true
+endpoint = "http://atuin-ai.home.arpa"
+
+[ai.opening]
+send_cwd = true
 ## Columns to display in the interactive search, from left to right.
 ## The selection indicator (" > ") is always shown first implicitly.
 ##
