@@ -2,3 +2,4 @@
 
 AddPackage pass # Standard Unix password manager backed by GnuPG
 AddPackage pwgen # Password generator
+AddPackage sops # Editor for encrypted files
