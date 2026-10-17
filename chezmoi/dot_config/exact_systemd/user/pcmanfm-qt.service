@@ -1,0 +1,16 @@
+[Unit]
+Description=PcManFM-Qt Daemon - The LXQt file manager, Qt port of PCManFM
+Documentation=man:pcmanfm-qt(1)
+Requisite=graphical-session.target
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/pcmanfm-qt --daemon-mode
+Restart=always
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
+
