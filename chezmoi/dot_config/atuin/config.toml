@@ -27,7 +27,7 @@
 # auto_sync = true
 
 ## enable or disable automatic update checks
-# update_check = true
+update_check = false
 
 ## which release channel to follow with `atuin update` and update checks
 ## "stable" for stable releases only, "nightly" to also receive prereleases
