@@ -17,6 +17,27 @@ local function notify(title, body)
     hl.exec_cmd(string.format("notify-send %q %q", title, body))
 end
 
+--- Toggle SwayNC DND while retaining the explicit state-change feedback
+---
+--- Query SwayNC instead of keeping local state so this binding remains correct
+--- when DND was changed from the control center or another client
+local function toggle_notification_dnd()
+    local client = io.popen("swaync-client --get-dnd --skip-wait 2>/dev/null", "r")
+
+    if client == nil then
+        return
+    end
+
+    local dnd_enabled = client:read("*l")
+    client:close()
+
+    if dnd_enabled == "false" then
+        hl.exec_cmd("sh -c 'notify-send Notifications \"Pausing notifications...\" -h string:x-canonical-private-synchronous:notif-pause; sleep 2; swaync-client --dnd-on --skip-wait'")
+    elseif dnd_enabled == "true" then
+        hl.exec_cmd("sh -c 'swaync-client --dnd-off --skip-wait && notify-send Notifications \"Notifications enabled\" -h string:x-canonical-private-synchronous:notif-pause'")
+    end
+end
+
 --- Move the active window in a given direction
 ---
 --- Floating windows move by 100 pixels, tiled windows move within the tiling
@@ -137,6 +158,10 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+
+-- Notifications
+hl.bind("SUPER + period", hl.dsp.exec_cmd("swaync-client --toggle-panel --skip-wait"))
+hl.bind("SUPER + SHIFT + D", toggle_notification_dnd)
 
 -- Brightness control.
 hl.bind("SUPER + Right", hl.dsp.exec_cmd("brightnessctl -n2 set 5%+"), { repeating = true, locked = true })

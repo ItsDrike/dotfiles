@@ -1,0 +1,59 @@
+/* TokyoNight Night colors, scoped to SwayNC's own surfaces. */
+:root {
+  --cc-bg: rgba(26, 27, 38, 0.96);
+  --noti-bg: 36, 40, 59;
+  --noti-bg-alpha: 0.96;
+  --noti-bg-darker: rgb(22, 22, 30);
+  --noti-bg-hover: rgb(41, 46, 66);
+  --noti-bg-focus: rgba(122, 162, 247, 0.2);
+  --noti-close-bg: rgba(247, 118, 142, 0.2);
+  --noti-close-bg-hover: rgba(247, 118, 142, 0.35);
+  --text-color: rgb(192, 202, 245);
+  --text-color-disabled: rgb(86, 95, 137);
+  --bg-selected: rgb(122, 162, 247);
+  --noti-border-color: rgba(122, 162, 247, 0.35);
+  --border: 1px solid var(--noti-border-color);
+  --border-radius: 8px;
+  --notification-icon-size: 56px;
+  --notification-app-icon-size: 20px;
+  --notification-group-icon-size: 28px;
+  --font-size-body: 10pt;
+  --font-size-summary: 11pt;
+  --mpris-album-art-overlay: rgba(26, 27, 38, 0.72);
+  --mpris-button-hover: rgba(122, 162, 247, 0.2);
+}
+
+* {
+  font-family: "Noto Sans";
+}
+
+.notification-row .notification-background .notification.critical {
+  border-color: rgb(247, 118, 142);
+}
+
+.notification-row .notification-background .notification.low {
+  opacity: 0.85;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  color: var(--text-color-disabled);
+}
+
+.widget {
+  background: rgba(36, 40, 59, 0.8);
+  border: var(--border);
+}
+
+.widget-title > button,
+.widget-mpris button {
+  color: var(--text-color);
+}
+
+.widget-title > button:hover,
+.widget-mpris button:hover {
+  background: var(--noti-bg-hover);
+}
+
+.widget-dnd switch:checked {
+  background: rgb(187, 154, 247);
+}
