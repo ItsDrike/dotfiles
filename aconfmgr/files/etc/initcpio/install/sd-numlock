@@ -2,6 +2,9 @@
 
 build() {
     add_systemd_unit initrd-numlock.service
+    add_symlink \
+        /usr/lib/systemd/system/initrd.target.wants/initrd-numlock.service \
+        /usr/lib/systemd/system/initrd-numlock.service
 }
 
 help() {
