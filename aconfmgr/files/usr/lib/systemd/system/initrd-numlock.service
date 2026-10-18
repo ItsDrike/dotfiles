@@ -3,6 +3,8 @@ Description=Enable numlock during early userspace
 AssertPathExists=/etc/initrd-release
 AssertPathExists=/dev/tty0
 DefaultDependencies=no
+Wants=systemd-vconsole-setup.service
+After=systemd-vconsole-setup.service
 Before=cryptsetup-pre.target
 
 [Service]

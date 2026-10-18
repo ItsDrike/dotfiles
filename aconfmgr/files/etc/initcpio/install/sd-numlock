@@ -5,5 +5,5 @@ build() {
 }
 
 help() {
-    printf '%s\n' 'Enable numlock during early userspace before the LUKS password / TPM pin prompt.'
+    printf '%s\n' 'Enable numlock after console setup and before the LUKS password / TPM pin prompt.'
 }
