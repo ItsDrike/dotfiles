@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodically update Rust stable toolchain
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=timers.target

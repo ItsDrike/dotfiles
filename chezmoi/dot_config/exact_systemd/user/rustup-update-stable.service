@@ -1,0 +1,10 @@
+[Unit]
+Description=Update Rust stable toolchain
+Documentation=https://rust-lang.github.io/rustup/
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rustup update stable
+Restart=on-failure
+RestartSec=15min
+Slice=background.slice
