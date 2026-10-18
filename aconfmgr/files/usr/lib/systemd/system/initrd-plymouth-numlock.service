@@ -1,0 +1,13 @@
+[Unit]
+Description=Enable NumLock in Plymouth
+AssertPathExists=/etc/initrd-release
+ConditionPathExists=/run/plymouth/pid
+DefaultDependencies=no
+Wants=initrd-numlock.service plymouth-start.service
+After=initrd-numlock.service plymouth-start.service
+Before=cryptsetup-pre.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/sleep 0.2
+ExecStart=/usr/bin/sh /usr/lib/initcpio/plymouth-numlock-toggle

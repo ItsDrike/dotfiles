@@ -1,0 +1,25 @@
+#!/usr/bin/sh
+# Plymouth starts with its independent XKB NumLock state off. Injecting a real
+# NumLock key event after it starts enables NumLock in this state.
+
+pid=$(cat /run/plymouth/pid)
+[ -d "/proc/$pid/fd" ] || exit 0
+
+# Only inject into evdev devices that Plymouth has opened.
+#
+# Note that this still means injecting the event into the keyboard input event
+# device itself, meaning every consumer of this keyboard's event device
+# (basically anything that's listening to the keyboard) will receive the
+# NumLock key too. Within initrd, this should however only be Plymouth.
+for fd in /proc/"$pid"/fd/*; do
+    device=$(/usr/bin/readlink "$fd") || continue
+    case $device in
+        /dev/input/event*) ;;
+        *) continue ;;
+    esac
+
+    /usr/bin/evemu-event --sync "$device" --type EV_KEY --code KEY_NUMLOCK --value 1 \
+        >/dev/null 2>&1 || continue
+    /usr/bin/evemu-event --sync "$device" --type EV_KEY --code KEY_NUMLOCK --value 0 \
+        >/dev/null 2>&1 || true
+done
