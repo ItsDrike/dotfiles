@@ -39,6 +39,10 @@ AddPackage wine-cachyos-opt
 # games and launchers.
 AddPackage ttf-liberation
 
+# GUI tool to install various Proton versions easily, supports GE-Proton,
+# Luxtorpeda & more for Steam, Lutris and Heroid
+AddPackage protonup-qt
+
 ###############################################################################
 # Debugging / Troubleshooting / Compatibility tools
 ###############################################################################
