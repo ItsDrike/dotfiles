@@ -16,6 +16,24 @@ IgnorePath '/usr/lib/modules/*/modules.*'
 # Modules and hosts add their own parameters with /etc/cmdline.d/*.conf.
 CopyFile /etc/kernel/cmdline
 
+# fbcon is the kernel's framebuffer-backed virtual console driver. It's what
+# gives a TTY its text grid. This configures it to take over the first usable
+# framebuffer immediately as soon as KMS is available, rather than deferring
+# takeover until some console output is actually first written. (KMS is Kernel
+# Mode Setting - API that a kernel graphics driver provides once initialized.)
+#
+# We do this to prevent visual artifacts connected to re-scaling right after
+# boot, caused by The kernel initially using a 80 col x 25 row dummy console
+# before switching to a real framebuffer and recalculating the terminal's text
+# grid.
+#
+# This is most noticeable for easly text-based interfaces, like agetty or
+# greetd's tuigreet. Without early framebuffer takeover, their first output
+# would initially use the dummy console, with the write triggering the switch,
+# which then triggers the app to redraw itself. That results in the interface
+# getting rescaled or re-centered.
+printf '%s\n' 'fbcon=nodefer' > "$(CreateFile /etc/cmdline.d/40-fbcon.conf)"
+
 ###############################################################################
 # DKMS / out-of-tree kernel modules
 ###############################################################################
