@@ -14,18 +14,4 @@ fi
 source ~/.config/zsh/rc/cmd_not_found.zsh
 source ~/.config/zsh/rc/plugins.zsh
 
-#####
-
-alias g='git'
-alias gs='git status'
-alias gp='git push'
-alias ga='git add'
-alias gap='git add -p'
-alias gcm='git commit -m'
-alias gch='git checkout'
-alias gchb='git checkout -b'
-alias gd='git diff'
-alias gc='git commit'
-alias gdc='git diff --cached'
-alias gundo='git reset --soft HEAD~'
-alias l='eza -la'
+source ~/.config/zsh/rc/aliases.zsh
