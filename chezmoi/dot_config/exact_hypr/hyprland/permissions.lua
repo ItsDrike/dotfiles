@@ -18,3 +18,10 @@ hl.permission({
 -- Other apps attempting to use direct screencopy without going through the
 -- portal will need explicit user confirmation from a dialog that will be shown
 -- by Hyprland
+
+-- Grim is used for taking screenshots
+hl.permission({
+    binary = "/usr/bin/grim",
+    type = "screencopy",
+    mode = "allow",
+})
