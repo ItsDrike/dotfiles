@@ -1,0 +1,20 @@
+# vi: ft=gitignore
+
+# Byte-compiled / optimized / DLL Python Files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+.venv
+
+# Personal TODO files
+TODO
+TODO.md
+
+# Local files
+.local
+.local.*
+
+# Claude AI's local settings
+**/.claude/settings.local.json

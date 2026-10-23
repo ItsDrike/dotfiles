@@ -1,0 +1,95 @@
+[user]
+    # Don't try to use an inferred git identity based on the from machine &
+    # local linux user identity. Require explicit user.username & user.email
+    # to be configured.
+    useConfigOnly = true
+
+[include]
+    # This is a private file, as it contains private work domains and account
+    # configurations. It is essentially just a bunch of [includeIf "..."]
+    # conditions, sometimes overlapping (last match wins), which select the
+    # desired git account based on git directory path, or configured remote url
+    # matches. It then sources additional identity configuration files,
+    # following the pattern: `~/.config/git/identities/<identity>.gitconfig`.
+    # These then configure the user name, email, gpg key / commit and tag
+    # signing enables and the corresponding account credentials.
+    path = ~/.config/git/identities/_selectors.gitconfig
+
+[core]
+    # This is what git launches when making a commit to enter it's message.
+    # (it's also used for `git merge`, `git tag -a`, `git rebase -i`, ...)
+    editor = nvim
+
+    # This is the pager tool that git sends text output through, by default
+    # that's less, it affects things like `git diff`, `git log` and `git show`.
+    # I prefer using delta as it's made specifically for git diffs and gives
+    # them easier to read highlighting and UI.
+    pager = delta
+
+[interactive]
+    # Applies when git itself renders a diff during some interactive workflow.
+    # E.g. for `git add -p`, `git restore -p`, ...
+    diffFilter = delta --color-only
+
+[delta]
+    # Show line numbers in delta (diffs).
+    line-numbers = true
+
+[init]
+    # Git uses `master` as the default branch, but most git hosting platforms
+    # (starting with GitHub) changed their default to `main`. Apparently
+    # because they didn't like the master/slave language. I don't really care
+    # but `main` is the more popular default now, and it's also shorter to type.
+    # Git itself also aims to change this default at some point (planned for
+    # Git 3.0).
+    defaultBranch = main
+
+    # Git will copy this directory's contents into the `.git/` directories when
+    # making a new repo (`git init`).
+    templatedir = ~/.config/git/templates
+
+[diff]
+    # Use histogram diff algorithm, which generally results in more readable
+    # diffs over the default, mathematically shortest ones. It works by using
+    # rarely occurring lines in the source code as anchors in the diff. It's
+    # technically a slightly slower algorithm, but it doesn't really matter for
+    # normal diffs.
+    algorithm = histogram
+
+    # Use neovim as the diff tool. This is used when `git difftool` is invoked
+    # explicitly).
+    tool = nvimdiff
+
+[merge]
+    # Include the common ancestor version inside conflict markers.
+    conflictstyle = diff3
+
+[fetch]
+    # Make fetching automatically remove stale remote-tracking references
+    # (e.g. if someone deleted branch `foo` from origin, with this setting, the
+    # next fetch would remove that obsolete `origin/foo` local reference).
+    prune = true
+
+[alias]
+    quickclone = "clone --single-branch --depth=1"
+
+    review = "!tuicr -w"
+    release = "!~/.config/git/scripts/release.py"
+
+    undo = "reset --soft HEAD~"
+    redo = "reset HEAD@{1}"
+    unstage = "restore --staged"
+
+    l = "log --oneline --decorate --all --graph"
+    lp = "log --patch"
+    lo = "log --pretty=oneline --abbrev-commit --graph"
+    lg = "log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    loog = "log --format=fuller --show-signature --all --color --decorate --graph"
+
+    set-upstream = "!git branch --set-upstream-to=origin/$(git branch --show-current)"
+
+    fixup-picker = "!f() { target=$(git log -n 50 --pretty=format:'%h %s' --no-merges | fzf) || return; git commit --fixup=\"${target%% *}\"; }; f"
+    auto-fixup = "!f() { target=$1; test -n \"$target\" || return 2; git commit --fixup=\"$target\" && git rebase --autosquash --autostash \"$target~\"; }; f"
+    auto-fixup-picker = "!f() { target=$(git log -n 50 --pretty=format:'%h %s' --no-merges | fzf) || return; git auto-fixup \"${target%% *}\"; }; f"
+
+    reauthor-all = "-c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE=\"%cD\" GIT_AUTHOR_DATE=\"%aD\" git commit --amend --no-edit --no-verify --reset-author' rebase --root"
