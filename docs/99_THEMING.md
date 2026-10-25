@@ -4,8 +4,9 @@ This guide will go over setting up Qt and GTK themes on Arch Linux.
 
 My preferred setup uses:
 
-- [Posy's Cursor Scalable](https://github.com/Morxemplum/posys-cursor-scalable)
-  cursor theme, size 24.
+- [XCursor Pro Light](https://github.com/ful1e5/XCursor-pro) cursor theme and
+  its [matching Hyprcursor port](https://github.com/0xk1f0/XCursor-Pro-Hyprcursor),
+  size 24.
 - [Papirus-Dark](https://github.com/catppuccin/papirus-folders) icon theme from
   catppuccin papirus folders, specifically the blue accent & mocha flavor
   variant.
@@ -39,7 +40,7 @@ paru -S --needed \
   kvantum kvantum-qt5 kvantum-theme-catppuccin-git \
   tokyonight-gtk-theme-git \
   papirus-icon-theme papirus-folders-catppuccin-git \
-  posys-cursor-scalable \
+  xcursor-pro-cursor-theme xcursor-pro-hyprcursor \
   fontconfig noto-fonts noto-fonts-cjk noto-fonts-emoji \
   ttf-dejavu ttf-liberation otf-monaspace ttf-nerd-fonts-symbols-mono
 ```
@@ -77,7 +78,7 @@ gsettings set org.gnome.desktop.interface document-font-name 'Noto Sans 10'
 gsettings set org.gnome.desktop.interface monospace-font-name 'Monaspace Krypton 10'
 
 # Cursor settings
-gsettings set org.gnome.desktop.interface cursor-theme 'Posys_Cursor'
+gsettings set org.gnome.desktop.interface cursor-theme 'XCursor-Pro-Light'
 gsettings set org.gnome.desktop.interface cursor-size 24
 ```
 
@@ -132,7 +133,7 @@ To configure theming in xsettings, you can put the following settings into your
 ```conf
 Net/ThemeName "Tokyonight-Dark"
 Net/IconThemeName "Papirus-Dark"
-Gtk/CursorThemeName "Posys_Cursor"
+Gtk/CursorThemeName "XCursor-Pro-Light"
 Net/EnableEventSounds 0
 EnableInputFeedbackSounds 0
 Xft/Antialias 1
@@ -171,7 +172,7 @@ with the following content:
 ```text
 gtk-theme-name = "Tokyonight-Dark"
 gtk-icon-theme-name = "Papirus-Dark"
-gtk-cursor-theme-name = "Posys_Cursor"
+gtk-cursor-theme-name = "XCursor-Pro-Light"
 gtk-cursor-theme-size = 24
 gtk-font-name = "Noto Sans 10"
 gtk-button-images=1
@@ -195,7 +196,7 @@ For GTK 3, we'll put the following into `~/.config/gtk-3.0/settings.ini`:
 gtk-application-prefer-dark-theme=true
 gtk-theme-name=Tokyonight-Dark
 gtk-icon-theme-name=Papirus-Dark
-gtk-cursor-theme-name=Posys_Cursor
+gtk-cursor-theme-name=XCursor-Pro-Light
 gtk-cursor-theme-size=24
 gtk-font-name=Noto Sans 10
 gtk-enable-animations=true
@@ -221,7 +222,7 @@ For GTK 4, we'll put the following into `~/.config/gtk-4.0/settings.ini`:
 gtk-application-prefer-dark-theme=true
 gtk-theme-name=Tokyonight-Dark
 gtk-icon-theme-name=Papirus-Dark
-gtk-cursor-theme-name=Posys_Cursor
+gtk-cursor-theme-name=XCursor-Pro-Light
 gtk-cursor-theme-size=24
 gtk-font-name=Noto Sans 10
 gtk-enable-event-sounds=0
@@ -376,7 +377,7 @@ To select a cursor theme to be used, you'll want to export the following
 environment variables:
 
 ```bash
-export XCURSOR_THEME="Posys_Cursor"
+export XCURSOR_THEME="XCursor-Pro-Light"
 export XCURSOR_SIZE="24"
 ```
 
@@ -401,7 +402,7 @@ To set the default cursor for your user, create a
 [Icon Theme]
 Name=Default
 Comment=Default Cursor Theme
-Inherits=Posys_Cursor
+Inherits=XCursor-Pro-Light
 ```
 
 > [!TIP]
@@ -409,7 +410,7 @@ Inherits=Posys_Cursor
 > directory, like so:
 >
 > ```bash
-> ln -s /usr/share/icons/Posys_Cursor/ ~/.local/share/icons/default
+> ln -s /usr/share/icons/XCursor-Pro-Light/ ~/.local/share/icons/default
 > ```
 >
 > That said, I prefer using `Inherits` here, as it allows me to easily store the
@@ -439,18 +440,19 @@ Hyprcursor is supported out of the box by Hyprland, so if you're using Hyprland,
 you can benefit from it. That said, this part is entirely optional and you can
 just stick with xcursor if you wish.
 
-The `posys-cursor-scalable` package provides both XCursor and Hyprcursor
-themes, so you can simply configure hyprcursor to use it:
+The `xcursor-pro-cursor-theme` and `xcursor-pro-hyprcursor` packages provide
+matching XCursor and Hyprcursor themes, so you can configure Hyprland to use
+the scalable representation:
 
 ```bash
-export HYPRCURSOR_THEME="Posys-Cursor-Scalable"
+export HYPRCURSOR_THEME="XCursor-Pro-Hyprcursor-Light"
 export HYPRCURSOR_SIZE="24"
 ```
 
 Alternatively, you can also set these variables right from your hyprland config:
 
 ```hyprlang
-env = HYPRCURSOR_THEME,Posys-Cursor-Scalable
+env = HYPRCURSOR_THEME,XCursor-Pro-Hyprcursor-Light
 env = HYPRCURSOR_SIZE,24
 ```
 
@@ -458,13 +460,16 @@ To apply the hyprcursor config immediately, from a running Hyprland instance,
 without having to re-login, you can run:
 
 ```bash
-hyprctl setcursor Posys-Cursor-Scalable 24
+hyprctl setcursor XCursor-Pro-Hyprcursor-Light 24
 ```
 
 This is also a nice way to quickly test out other cursor themes.
 
 > [!TIP]
 > Alternatives:
+> - [Posy's Cursor Scalable](https://github.com/Morxemplum/posys-cursor-scalable)
+>   provides matching XCursor and Hyprcursor themes through the
+>   `posys-cursor-scalable` package.
 > - [Nordzy White](https://gitlab.com/gboehm/Nordzy-cursors) provides matching
 >   XCursor and Hyprcursor themes through `nordzy-cursors` and
 >   `nordzy-hyprcursors` packages
