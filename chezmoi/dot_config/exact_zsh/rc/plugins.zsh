@@ -32,17 +32,6 @@ if [[ -n $KITTY_INSTALLATION_DIR && -n $KITTY_SHELL_INTEGRATION ]]; then
 fi
 
 if (( $+commands[atuin] )); then
-  # The self-hosted AI adapter requires a bearer token. Atuin maps nested
-  # settings from environment variables using double underscores, so this
-  # avoids storing the token in config.toml or the chezmoi source tree.
-  if (( $+commands[pass] )); then
-    atuin_ai_token="$(pass show homelab/atuin/ai-token 2>/dev/null | head -n 1)"
-    if [[ -n $atuin_ai_token ]]; then
-      export ATUIN_AI__API_TOKEN="$atuin_ai_token"
-    fi
-    unset atuin_ai_token
-  fi
-
   # Preserve the native Zsh up-arrow history traversal configured in keybinds.zsh.
   # Ctrl-r remains bound to Atuin's cross-session history search.
   eval "$(atuin init zsh --disable-up-arrow)"

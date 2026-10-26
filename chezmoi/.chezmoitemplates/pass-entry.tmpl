@@ -1,0 +1,2 @@
+{{- $dataHome := joinPath (env "HOME") ".local" "share" -}}
+{{- output "env" (printf "GNUPGHOME=%s" (joinPath $dataHome "gnupg")) (printf "PASSWORD_STORE_DIR=%s" (joinPath $dataHome "pass")) "pass" "show" . | trim -}}

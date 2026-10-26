@@ -1,3 +1,5 @@
+# vi: ft=toml
+
 ## Base directory for Atuin data files (databases, keys, session, etc.)
 ## All data file paths default to being relative to this directory.
 ## linux/mac: ~/.local/share/atuin (or XDG_DATA_HOME/atuin)
@@ -364,6 +366,8 @@ systemd_socket = true
 [ai]
 enabled = true
 endpoint = "http://atuin-ai.home.arpa"
+# Rendered from pass at apply time. The target file is private (0600).
+api_token = {{ includeTemplate "pass-entry.tmpl" "homelab/atuin/ai-token" | quote }}
 
 [ai.opening]
 send_cwd = true

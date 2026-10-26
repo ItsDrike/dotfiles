@@ -2,28 +2,33 @@
 set -euo pipefail
 
 ###############################################################################
-# This script handles configuring Atuin secrets / login. Generally, Atuin needs
-# three secrets in its configuration:
+# This script handles configuring Atuin sync server login.
+# It needs two kinds of secrets in its configuration:
 #
 # - Encryption key with which shell history gets encrypted - both local and
 #   remote (normally this is auto-initialized as something random, but since we
 #   want remote syncing, this key needs to match across all of our machines)
 # - Account login to the (self-hosted) sync server - username + password
-# - A configured api token for the (self-hosted) Atuin AI Server
 #
 # This script configures these secrets automatically, using `pass`. It expects
 # that you have the relevant entries in your pass database already and will
 # fail otherwise.
 #
-# Note that the AI token is actually handled from the shell startup (from this
-# pass entry), by exporting ATUIN_AI__API_TOKEN. This script only checks the
-# existence of the relevant pass secret.
+# The Atuin AI token is rendered into the private Atuin configuration by its
+# Chezmoi template, not handled here.
 ###############################################################################
 
 PASS_ENCRYPTION_KEY="homelab/atuin/encryption-key-b64"
 PASS_SYNC_USERNAME="homelab/atuin/sync-username"
 PASS_SYNC_PASSWORD="homelab/atuin/sync-password"
-PASS_AI_TOKEN="homelab/atuin/ai-token"
+
+# Chezmoi applies environment.d files during this run, but they do not affect
+# its own process environment. Keep pass and GnuPG on their XDG paths during a
+# first-machine bootstrap, before the next login session has loaded them.
+xdg_data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+export GNUPGHOME="${GNUPGHOME:-$xdg_data_home/gnupg}"
+export PASSWORD_STORE_DIR="${PASSWORD_STORE_DIR:-$xdg_data_home/pass}"
+unset xdg_data_home
 
 ###############################################################################
 # Checks
@@ -39,7 +44,7 @@ if ! command -v pass >/dev/null 2>&1; then
     exit 1
 fi
 
-for pass_entry in "$PASS_ENCRYPTION_KEY" "$PASS_SYNC_USERNAME" "$PASS_SYNC_PASSWORD" "$PASS_AI_TOKEN"; do
+for pass_entry in "$PASS_ENCRYPTION_KEY" "$PASS_SYNC_USERNAME" "$PASS_SYNC_PASSWORD"; do
     if ! pass_value="$(pass show "$pass_entry" | head -n 1)"; then
         printf 'Failed to configure Atuin: pass entry %q is unavailable.\n' "$pass_entry" >&2
         exit 1
@@ -54,7 +59,6 @@ for pass_entry in "$PASS_ENCRYPTION_KEY" "$PASS_SYNC_USERNAME" "$PASS_SYNC_PASSW
         "$PASS_ENCRYPTION_KEY") encryption_key="$pass_value" ;;
         "$PASS_SYNC_USERNAME") sync_username="$pass_value" ;;
         "$PASS_SYNC_PASSWORD") sync_password="$pass_value" ;;
-        "$PASS_AI_TOKEN") ai_token="$pass_value" ;;
     esac
 done
 
@@ -104,4 +108,4 @@ if ! atuin status >/dev/null 2>&1; then
         --key "$encryption_key"
 fi
 
-unset ai_token sync_username sync_password encryption_key
+unset sync_username sync_password encryption_key

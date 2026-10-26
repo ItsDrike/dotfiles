@@ -4,6 +4,27 @@
 different conditions (such as by hostnames), and provides various utils that
 help automate the process of managing dotfiles easily.
 
+> [!NOTE]
+> The configs in here are primarily designed for myself. I keep them
+> open-source and available to anyone as a reference of what's possible or
+> something to link people to when they ask me how I configure something. The
+> chezmoi file structure is easy to understand and follow, so if you're just
+> exploring the repo for interesting configs, or specifically searching for how
+> I configure tool X, you're in the right place.
+>
+> If you're looking to apply this config as a whole as-is, you will find that
+> to be a bit more difficult, as this is something it was not designed for for
+> anyone other than me. This is because the config holds some encrypted files,
+> and also relies on certain tools being installed and containing some local
+> state which is private by nature and I do not make the insturctions for
+> reproducing it all that obvious sometimes. I sync these untracked private
+> data manually across my devices and they are what allows this config to be
+> applied. You can work around this and reproduce most of the configs after
+> setting some things up and replacing the encrypted files if you really wish
+> to. The sections below document some of it, but do not rely on them always
+> being fully up-to-date with the actual configs, or overly detailed on how to
+> do this exactly.
+
 ## Setup
 
 To install chezmoi, run: `pacman -S chezmoi`.
@@ -13,6 +34,16 @@ Then create a `~/.config/chezmoi/chezmoi.toml` to tell chezmoi where the dotfile
 ```ini
 sourceDir = "/home/itsdrike/dots"
 ```
+
+## Usage
+
+- `chezmoi add ~/.config/xyz` to add `~/.config/xyz` as tracked configuration
+- `chezmoi diff` to see all changes between the dotfiles state and installed state
+- `chezmoi apply -v` to apply the configuration
+- `chezmoi chattr +template ~/.config/xyz` to turn config for `xyz` into a Go template
+- `chezmoi edit ~/.config/xyz` to edit the tracked config file
+
+## Secrets
 
 ### Encryption
 
@@ -46,12 +77,13 @@ Although I would recommend inspecting which of my files were encrypted (all
 files starting with `encrypted_`, you can search for them with `fd encrypted_`)
 and creating your own versions.
 
-## Usage
+### Other secrets
 
-- `chezmoi add ~/.config/xyz` to add `~/.config/xyz` as tracked configuration
-- `chezmoi diff` to see all changes between the dotfiles state and installed state
-- `chezmoi apply -v` to apply the configuration
-- `chezmoi chattr +template ~/.config/xyz` to turn config for `xyz` into a Go template
-- `chezmoi edit ~/.config/xyz` to edit the tracked config file
+Additionally, some of the templates / scripts that chezmoi runs invoke `pass`
+and expect it to contain certain secret values. It is therefore required that
+you reproduce equivalent values in your own `pass` database. Without these,
+chezmoi will fail to build the templates / run the scripts. You will generally
+see where the failure occurs and therefor which command failed and what you
+need to add.
 
 [chezmoi]: https://www.chezmoi.io/
