@@ -33,6 +33,16 @@ Then create a `~/.config/chezmoi/chezmoi.toml` to tell chezmoi where the dotfile
 
 ```ini
 sourceDir = "/home/itsdrike/dots"
+
+# Additionally exclude the scripts from diff/status, these will always be ran
+# by chezmoi, showing them in the diff causes a lot of clutter there which I
+# don't like.
+
+[diff]
+exclude = ["scripts"]
+
+[status]
+exclude = ["scripts"]
 ```
 
 ## Usage
