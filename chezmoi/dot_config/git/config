@@ -86,6 +86,7 @@
     lg = "log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
     loog = "log --format=fuller --show-signature --all --color --decorate --graph"
 
+    pu = "!git push --set-upstream origin `git symbolic-ref --short HEAD`"
     set-upstream = "!git branch --set-upstream-to=origin/$(git branch --show-current)"
 
     fixup-picker = "!f() { target=$(git log -n 50 --pretty=format:'%h %s' --no-merges | fzf) || return; git commit --fixup=\"${target%% *}\"; }; f"
