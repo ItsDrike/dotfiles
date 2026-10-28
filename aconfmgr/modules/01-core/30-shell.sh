@@ -43,4 +43,4 @@ CopyFile /etc/zsh/zshenv
 # ZSH extensions
 AddPackage zsh-autosuggestions # Fish-like command suggestions for Zsh
 AddPackage zsh-completions # Additional completion definitions for Zsh
-AddPackage --foreign zsh-fast-syntax-highlighting # Optimized and extended zsh-syntax-highlighting
+AddPackage zsh-syntax-highlighting # Fish-like syntax highlighting for Zsh
