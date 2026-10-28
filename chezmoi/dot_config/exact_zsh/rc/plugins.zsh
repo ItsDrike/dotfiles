@@ -32,7 +32,5 @@ if [[ -n $KITTY_INSTALLATION_DIR && -n $KITTY_SHELL_INTEGRATION ]]; then
 fi
 
 if (( $+commands[atuin] )); then
-  # Preserve the native Zsh up-arrow history traversal configured in keybinds.zsh.
-  # Ctrl-r remains bound to Atuin's cross-session history search.
-  eval "$(atuin init zsh --disable-up-arrow)"
+  eval "$(atuin init zsh)"
 fi
