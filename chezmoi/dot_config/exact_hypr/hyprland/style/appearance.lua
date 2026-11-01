@@ -57,3 +57,10 @@ hl.config({
         disable_splash_rendering = true,
     },
 })
+
+-- Use slightly larger gaps in the special workspace
+hl.workspace_rule({
+    workspace = "special",
+    gaps_in = 10,
+    gaps_out = 20,
+})

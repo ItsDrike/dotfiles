@@ -91,7 +91,7 @@ hl.bind("SUPER + CTRL + SHIFT + Space", hl.dsp.window.fullscreen_state({ action 
 
 -- Window groups.
 hl.bind("SUPER + G", hl.dsp.group.toggle())
-hl.bind("SUPER + SHIFT + G", hl.dsp.group.lock_active({ action = "toggle" }))
+hl.bind("SUPER + SHIFT + G", hl.dsp.group.lock({ action = "toggle" }))
 hl.bind("ALT + Tab", hl.dsp.group.next())
 hl.bind("ALT + SHIFT + Tab", hl.dsp.group.prev())
 
