@@ -1,0 +1,16 @@
+[Unit]
+Description=Hyprpaper wallpaper utility for Hyprland
+Documentation=man:hyprpaper(1)
+Requisite=graphical-session.target
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=exec
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition Hyprland ""
+ExecStart=/usr/bin/hyprpaper
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
