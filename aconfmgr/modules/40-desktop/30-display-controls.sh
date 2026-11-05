@@ -5,6 +5,11 @@
 # backlight control under /sys/class/backlight)
 AddPackage brightnessctl
 
+# Wrapper that selects the internal display's backlight device instead of
+# relying on brightnessctl's default selection, which can pick a GPU "ghost"
+# device (e.g. nvidia_0) on hybrid-GPU laptops.
+CopyFile /usr/local/bin/backlight 755
+
 # CLI utility for communicating with the firmware of external monitors over a
 # display connection (VGA/DVI/HDMI/DisplayPort/USB-C/...).
 #

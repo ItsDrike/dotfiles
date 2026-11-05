@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# backlight: brightnessctl wrapper that targets internal display backlight.
+#
+# The kernel can expose several backlight devices under /sys/class/backlight/,
+# especially on hybrid-GPU laptops (e.g. nvidia_0, amdgpu_bl0,
+# intel_backlight). brightnessctl can then end up selecting a backlight
+# belonging to an unrelated GPU rather than the internal panel.
+#
+# We handle this by:
+#
+# - First finding the active internal displays from the DRM (Direct Rendering
+#   Manager) kernel driver in sysfs (/sys/class/drm), looking at specifically
+#   only eDP / DSI / LVDS connectors, which are most commonly used for these
+#   internal panels. We then collect the udev ID_PATH for each such connector.
+# - Next, we go over /sys/class/backlight/ entries, and get each backlight
+#   device's udev ID_PATH. For every backlight whose ID_PATH matches a
+#   connected internal display connector, brightnessctl is invoked with the
+#   supplied (forwarded) arguments.
+
+set -euo pipefail
+
+
+udev_id_path() {
+    udevadm info --query=property --path="$1" 2>/dev/null |
+        sed -n 's/^ID_PATH=//p' |
+        head -n 1
+}
+
+declare -A internal_display_paths=()
+
+# Record the GPU/firmware path for each connected internal panel. The same
+# ID_PATH is reported by a matching backlight device even if that device is not
+# nested below the DRM connector in sysfs (as can happen in dGPU-only mode).
+for connector in /sys/class/drm/card*-{eDP,DSI,LVDS}-*; do
+    [ -f "$connector/status" ] || continue
+
+    [ "$(cat "$connector/status")" = connected ] || continue
+
+    id_path="$(udev_id_path "$connector")"
+    [ -n "$id_path" ] && internal_display_paths["$id_path"]=1
+done
+
+if (( ${#internal_display_paths[@]} == 0 )); then
+    printf '%s\n' 'backlight: no connected internal display found' >&2
+    exit 1
+fi
+
+devices=()
+for entry in /sys/class/backlight/*; do
+    [ -e "$entry" ] || continue
+
+    id_path="$(udev_id_path "$entry")"
+    [[ -n "$id_path" && ${internal_display_paths[$id_path]+_} ]] || continue
+    devices+=("${entry##*/}")
+done
+
+if (( ${#devices[@]} == 0 )); then
+    printf '%s\n' 'backlight: no backlight device matches a connected internal display' >&2
+    exit 1
+fi
+
+# Apply the operation to every connected internal panel. Relative percentage
+# changes scale independently to each panel's hardware brightness range.
+for device in "${devices[@]}"; do
+    brightnessctl --device "$device" "$@"
+done

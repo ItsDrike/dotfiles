@@ -163,11 +163,12 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 hl.bind("SUPER + period", hl.dsp.exec_cmd("swaync-client --toggle-panel --skip-wait"))
 hl.bind("SUPER + SHIFT + D", toggle_notification_dnd)
 
--- Brightness control.
-hl.bind("SUPER + Right", hl.dsp.exec_cmd("brightnessctl -n2 set 5%+"), { repeating = true, locked = true })
-hl.bind("SUPER + Left", hl.dsp.exec_cmd("brightnessctl -n2 set 5%-"), { repeating = true, locked = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -n2 set 5%-"), { repeating = true, locked = true })
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -n2 set 5%+"), { repeating = true, locked = true })
+-- Brightness control. `backlight` targets the internal display's backlight
+-- device (resolved at runtime) instead of brightnessctl's default selection.
+hl.bind("SUPER + Right", hl.dsp.exec_cmd("backlight -n2 set 5%+"), { repeating = true, locked = true })
+hl.bind("SUPER + Left", hl.dsp.exec_cmd("backlight -n2 set 5%-"), { repeating = true, locked = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("backlight -n2 set 5%-"), { repeating = true, locked = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("backlight -n2 set 5%+"), { repeating = true, locked = true })
 
 -- Keybind isolation submap for games or apps that should receive most keys.
 hl.bind("SUPER + End", function()
