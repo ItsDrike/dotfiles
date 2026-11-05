@@ -1,0 +1,25 @@
+# Opencode already auto-starts the background server when the first instance is
+# started, however, doing so takes a while and noticeably slows down the first
+# launch. This pre-starts the server on login and keeps it running in a managed
+# systemd service where we can also monitor and manage it's resource usage.
+
+[Unit]
+Description=Opencode Server - The open source coding agent
+Documentation=https://opencode.ai/docs/
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/opencode serve --service
+Restart=on-failure
+RestartSec=2s
+Slice=app.slice
+
+# opencode server doesn't actually support sd_notify, yet some child processes
+# it spawns may inherit the notification socket and send status/readiness,
+# which then appears in systemd logs as a warning that the service has the
+# wrong type (Type=exec when it could be Type=notify). Unsetting the
+# notification socket entirely prevents those warnings.
+UnsetEnvironment=NOTIFY_SOCKET
+
+[Install]
+WantedBy=default.target

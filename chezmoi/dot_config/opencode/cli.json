@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "session": {
+    "thinking": "show"
+  },
+  "theme": {
+    "name": "transparent-ayu",
+    "mode": "dark"
+  }
+}
