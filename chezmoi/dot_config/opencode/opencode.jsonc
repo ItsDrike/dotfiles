@@ -23,54 +23,42 @@
         "baseURL": "http://ai.home.arpa/v1",
       },
       "models": {
-        "gpt-6.1-sol": {
-          "name": "GPT-6.1 Sol (Proxy)",
+        "gpt-sol": {
+          "name": "GPT Sol (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
-        "gpt-6-luna": {
-          "name": "GPT-6 Luna (Proxy)",
+        "gpt-luna": {
+          "name": "GPT Luna (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
-        "gpt-6.1-terra": {
-          "name": "GPT-6.1 Terra (Proxy)",
-          "package": "@opencode/ai/providers/openai"
-        },
-        "gpt-5.5": {
-          "name": "GPT-5.5 (Proxy)",
+        "gpt-terra": {
+          "name": "GPT Terra (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
 
-        "personal/gpt-6.1-sol": {
-          "name": "GPT-6.1 Sol (Personal)",
+        "personal/gpt-sol": {
+          "name": "GPT Sol (Personal)",
           "package": "@opencode/ai/providers/openai"
         },
-        "personal/gpt-6-luna": {
-          "name": "GPT-6 Luna (Personal)",
+        "personal/gpt-luna": {
+          "name": "GPT Luna (Personal)",
           "package": "@opencode/ai/providers/openai"
         },
-        "personal/gpt-6.1-terra": {
-          "name": "GPT-6.1 Terra (Personal)",
-          "package": "@opencode/ai/providers/openai"
-        },
-        "personal/gpt-5.5": {
-          "name": "GPT-5.5 (Personal)",
+        "personal/gpt-terra": {
+          "name": "GPT Terra (Personal)",
           "package": "@opencode/ai/providers/openai"
         },
 
-        "work/gpt-6.1-sol": {
-          "name": "GPT-6.1 Sol (Work)",
+        "work/gpt-sol": {
+          "name": "GPT Sol (Work)",
           "package": "@opencode/ai/providers/openai"
         },
-        "work/gpt-6-luna": {
-          "name": "GPT-6 Luna (Work)",
+        "work/gpt-luna": {
+          "name": "GPT Luna (Work)",
           "package": "@opencode/ai/providers/openai"
         },
-        "work/gpt-6.1-terra": {
-          "name": "GPT-6.1 Terra (Work)",
-          "package": "@opencode/ai/providers/openai"
-        },
-        "work/gpt-5.5": {
-          "name": "GPT-5.5 (Work)",
+        "work/gpt-terra": {
+          "name": "GPT Terra (Work)",
           "package": "@opencode/ai/providers/openai"
         },
 
