@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# environment.d changes are not inherited by this Chezmoi process at bootstrap.
+xdg_data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+export GNUPGHOME="${GNUPGHOME:-$xdg_data_home/gnupg}"
+export PASSWORD_STORE_DIR="${PASSWORD_STORE_DIR:-$xdg_data_home/pass}"
+
+if ! command -v pass >/dev/null 2>&1; then
+    printf 'Cannot validate required password-store entries: pass is not installed.\n' >&2
+    exit 1
+fi
+
+failed=0
+validate_entry() {
+    local entry="$1" consumers="$2" value
+    if ! value="$(pass show "$entry")"; then
+        printf 'Required pass entry %q (%s) is unavailable.\n' "$entry" "$consumers" >&2
+        failed=1
+        return
+    fi
+    value="${value%%$'\n'*}"
+    if [[ -z "$value" ]]; then
+        printf 'Required pass entry %q (%s) has an empty first line.\n' "$entry" "$consumers" >&2
+        failed=1
+    fi
+}
+
+{{ range .requiredPassEntries -}}
+validate_entry {{ .entry | shellQuote }} {{ .consumers | shellQuote }}
+{{ end }}
+exit "$failed"

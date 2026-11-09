@@ -1,0 +1,21 @@
+# Entries required by the managed configuration. The descriptions identify
+# consumers; passwords themselves remain exclusively in the password store.
+[[requiredPassEntries]]
+entry = "homelab/cli-proxy-api/api-key-personal"
+consumers = "Claude Code and Pi"
+
+[[requiredPassEntries]]
+entry = "homelab/atuin/ai-token"
+consumers = "Atuin AI"
+
+[[requiredPassEntries]]
+entry = "homelab/atuin/encryption-key-b64"
+consumers = "Atuin sync encryption"
+
+[[requiredPassEntries]]
+entry = "homelab/atuin/sync-username"
+consumers = "Atuin sync login"
+
+[[requiredPassEntries]]
+entry = "homelab/atuin/sync-password"
+consumers = "Atuin sync login"
