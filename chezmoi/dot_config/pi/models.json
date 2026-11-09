@@ -1,0 +1,106 @@
+{
+  "$schema": "https://pi.dev/schemas/models.schema.json",
+  "providers": {
+    "cli-proxy-api": {
+      "name": "CLI Proxy API",
+      "baseUrl": "http://ai.home.arpa/v1",
+      "api": "openai-completions",
+      "apiKey": "!pass show homelab/cli-proxy-api/api-key-personal",
+      "authHeader": true,
+      "models": [
+        {
+          "id": "gpt-sol",
+          "name": "GPT Sol (Proxy)",
+          "reasoning": true
+        },
+        {
+          "id": "gpt-luna",
+          "name": "GPT Luna (Proxy)",
+          "reasoning": true
+        },
+        {
+          "id": "gpt-terra",
+          "name": "GPT Terra (Proxy)",
+          "reasoning": true
+        },
+        {
+          "id": "gpt-astra",
+          "name": "GPT Astra (Proxy)",
+          "reasoning": true
+        },
+        {
+          "id": "personal/gpt-sol",
+          "name": "GPT Sol (Personal)",
+          "reasoning": true
+        },
+        {
+          "id": "personal/gpt-luna",
+          "name": "GPT Luna (Personal)",
+          "reasoning": true
+        },
+        {
+          "id": "personal/gpt-terra",
+          "name": "GPT Terra (Personal)",
+          "reasoning": true
+        },
+        {
+          "id": "personal/gpt-astra",
+          "name": "GPT Astra (Personal)",
+          "reasoning": true
+        },
+        {
+          "id": "work/gpt-sol",
+          "name": "GPT Sol (Work)",
+          "reasoning": true
+        },
+        {
+          "id": "work/gpt-luna",
+          "name": "GPT Luna (Work)",
+          "reasoning": true
+        },
+        {
+          "id": "work/gpt-terra",
+          "name": "GPT Terra (Work)",
+          "reasoning": true
+        },
+        {
+          "id": "work/gpt-astra",
+          "name": "GPT Astra (Work)",
+          "reasoning": true
+        },
+        {
+          "id": "deepseek-flash",
+          "name": "DeepSeek Flash (Proxy)"
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro (Proxy)",
+          "reasoning": true
+        },
+        {
+          "id": "claude-haiku-4-5-20251001",
+          "name": "Claude Haiku 4.5 (Proxy)",
+          "api": "anthropic-messages"
+        },
+        {
+          "id": "claude-sonnet-5-5",
+          "name": "Claude Sonnet 5.5 (Proxy)",
+          "api": "anthropic-messages",
+          "reasoning": true
+        },
+        {
+          "id": "claude-opus-5-5",
+          "name": "Claude Opus 5.5 (Proxy)",
+          "api": "anthropic-messages",
+          "reasoning": true
+        },
+        {
+          "id": "claude-fable-5-1",
+          "name": "Claude Fable 5.1 (Proxy)",
+          "api": "anthropic-messages",
+          "reasoning": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "apiKeyHelper": "pass show homelab/cli-proxy-api/api-key-personal",
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://ai.home.arpa",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "500000"
+  },
+  "model": "gpt-terra",
+  "theme": "dark",
+  "hooks": {"SessionStart":[{"matcher":"^(startup|resume|clear|compact|fork)$","hooks":[{"type":"command","command":"bash '/home/itsdrike/.config/claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]}
+}

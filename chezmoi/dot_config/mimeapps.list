@@ -153,3 +153,4 @@ application/x-mpegurl=mpv.desktop
 
 # Application-specific association
 x-scheme-handler/discord=vesktop.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
