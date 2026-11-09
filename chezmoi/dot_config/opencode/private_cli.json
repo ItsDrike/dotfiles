@@ -6,5 +6,6 @@
   "theme": {
     "name": "transparent-ayu",
     "mode": "dark"
-  }
+  },
+  "plugins": ["./herdr-opencode"]
 }

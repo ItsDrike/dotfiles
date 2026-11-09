@@ -23,42 +23,54 @@
         "baseURL": "http://ai.home.arpa/v1",
       },
       "models": {
-        "gpt-sol": {
-          "name": "GPT Sol (Proxy)",
+        "gpt-astra": {
+          "name": "GPT Astra (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
-        "gpt-luna": {
-          "name": "GPT Luna (Proxy)",
+        "gpt-sol": {
+          "name": "GPT Sol (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
         "gpt-terra": {
           "name": "GPT Terra (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
-
-        "personal/gpt-sol": {
-          "name": "GPT Sol (Personal)",
+        "gpt-luna": {
+          "name": "GPT Luna (Proxy)",
           "package": "@opencode/ai/providers/openai"
         },
-        "personal/gpt-luna": {
-          "name": "GPT Luna (Personal)",
+
+        "personal/gpt-astra": {
+          "name": "GPT Astra (Personal)",
+          "package": "@opencode/ai/providers/openai"
+        },
+        "personal/gpt-sol": {
+          "name": "GPT Sol (Personal)",
           "package": "@opencode/ai/providers/openai"
         },
         "personal/gpt-terra": {
           "name": "GPT Terra (Personal)",
           "package": "@opencode/ai/providers/openai"
         },
+        "personal/gpt-luna": {
+          "name": "GPT Luna (Personal)",
+          "package": "@opencode/ai/providers/openai"
+        },
 
+        "work/gpt-astra": {
+          "name": "GPT Astra (Work)",
+          "package": "@opencode/ai/providers/openai"
+        },
         "work/gpt-sol": {
           "name": "GPT Sol (Work)",
           "package": "@opencode/ai/providers/openai"
         },
-        "work/gpt-luna": {
-          "name": "GPT Luna (Work)",
-          "package": "@opencode/ai/providers/openai"
-        },
         "work/gpt-terra": {
           "name": "GPT Terra (Work)",
+          "package": "@opencode/ai/providers/openai"
+        },
+        "work/gpt-luna": {
+          "name": "GPT Luna (Work)",
           "package": "@opencode/ai/providers/openai"
         },
 
