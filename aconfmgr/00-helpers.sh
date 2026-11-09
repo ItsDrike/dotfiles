@@ -73,15 +73,18 @@ SourceModules() {
     local config_root
     local module_root
     local module
+    local -a modules
 
     config_root="$(dirname -- "${BASH_SOURCE[0]}")"
     module_root="$config_root/modules"
 
     [[ -d "$module_root" ]] || return 0
 
-    while IFS= read -r -d '' module; do
+    # Recursively find all shell script files ordered according to path name.
+    mapfile -d '' -t modules < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
+    for module in "${modules[@]}"; do
         _SourceConfigScript module "$module" || return 1
-    done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
+    done
 }
 
 # SourceLocal
@@ -106,15 +109,18 @@ SourceLocal() {
     local config_root
     local module_root
     local module
+    local -a modules
 
     config_root="$(dirname -- "${BASH_SOURCE[0]}")"
     module_root="$config_root/local"
 
     [[ -d "$module_root" ]] || return 0
 
-    while IFS= read -r -d '' module; do
+    # Recursively find all shell script files ordered according to path name.
+    mapfile -d '' -t modules < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
+    for module in "${modules[@]}"; do
         _SourceConfigScript module "$module" || return 1
-    done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
+    done
 }
 
 # Persist SOURCE TARGET
