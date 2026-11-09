@@ -14,6 +14,9 @@ case "$HOSTNAME" in
     orca)
         SourceHost orca.sh
         ;;
+    giraffe)
+        SourceHost giraffe.sh
+        ;;
     *)
         FatalError 'No aconfmgr host configuration for hostname %q.\n' "$HOSTNAME"
         ;;

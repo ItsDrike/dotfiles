@@ -47,6 +47,12 @@ I'm using aconfmgr with a pretty particular structure in mind:
   - `SourceProfile PROFILE`: loads an explicitly selected profile relative to
     `profiles/`, such as `SourceProfile containers/docker.sh`.
   - `SourceHost HOST`: loads a host declaration relative to `hosts/`.
+- `98-local.sh` sources git-ignored modules from the `local/` directory after
+  the shared and host configuration. They can describe private settings or
+  temporarily preserve machine drift for gradual reconciliation. Saved file
+  contents for these overrides should belong under the ignored `files/local/`
+  tree; e.g.: `CopyFileTo /local/etc/example.conf /etc/example.conf` so they
+  override a file without changing its tracked source.
 - The `99-unsorted.sh` is generated discovery output from `aconfmgr save`. It
   is intentionally git ignored, configuration in it should be moved into other,
   more permanent and structured places.

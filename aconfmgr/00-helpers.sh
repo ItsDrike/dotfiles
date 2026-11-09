@@ -84,6 +84,39 @@ SourceModules() {
     done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
 }
 
+# SourceLocal
+#
+# Loads the local configuration modules in deterministic path order.
+# These contain structured local-only modules/files that intentionally
+# declare the config drift for this machine from the aconfmgr defaults.
+#
+# This is used for intentionally private configs that we do not wish to expose
+# from this public repository. This includes sensitive config values containing
+# secrets, and values which shouldn't be disclosed for privacy reasons (e.g. a
+# package installation declaration for a tool developed specifically by the
+# company I'm employed at, and only useful for work in company. Tracking this
+# declaration publicly would then leak potentially sensitive information.)
+#
+# It is additionally also used for temporary reconciliation until the config
+# for the local machine matches the expected aconfmgr config. (Adding a new
+# machine can require a fair bit of work if we're trying to synchronize it's
+# local state with the currently declared common aconfmgr state. This allows us
+# to have a private modules directory where we temporarily keep this drift.)
+SourceLocal() {
+    local config_root
+    local module_root
+    local module
+
+    config_root="$(dirname -- "${BASH_SOURCE[0]}")"
+    module_root="$config_root/local"
+
+    [[ -d "$module_root" ]] || return 0
+
+    while IFS= read -r -d '' module; do
+        _SourceConfigScript module "$module" || return 1
+    done < <(find "$module_root" -type f -name '*.sh' -print0 | LC_ALL=C sort -z)
+}
+
 # Persist SOURCE TARGET
 #
 # Makes SOURCE available at TARGET through a bind-mount unit enabled by

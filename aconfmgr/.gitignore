@@ -1,1 +1,4 @@
 99-unsorted.sh
+files/local/
+local/**
+!local/.gitkeep
